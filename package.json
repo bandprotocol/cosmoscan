@@ -1,0 +1,79 @@
+{
+  "name": "band-scan",
+  "scripts": {
+    "build": "rm -rf dist/ && bsb -make-world && parcel build index.html --no-source-maps --no-cache",
+    "start": "bsb -make-world -w",
+    "test": "yarn jest --coverage",
+    "cy:run": "cypress run --record --key a9dc5d7b-e8f3-4dd5-a5b2-7625f8a2ea3d",
+    "serve:build": "serve -s dist -l 1234",
+    "integration-test": "start-server-and-test 'yarn run serve:build' http://localhost:1234 cy:run"
+  },
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "@bandprotocol/bandchain.js": "^1.2.1",
+    "@cosmostation/cosmosjs": "^0.5.5",
+    "@glennsl/bs-json": "^5.0.2",
+    "@ledgerhq/hw-transport-webhid": "^5.19.0",
+    "@ledgerhq/hw-transport-webusb": "^5.43.0",
+    "@material-ui/core": "^4.11.3",
+    "@sentry/browser": "^6.2.3",
+    "axios": "^0.21.1",
+    "axios-hooks": "^2.3.0",
+    "bech32": "^1.1.4",
+    "bs-axios": "^0.0.43",
+    "bs-css-emotion": "^2.4.1",
+    "bs-let": "^0.1.14",
+    "bs-moment": "^0.4.5",
+    "bs-webapi": "^0.19.1",
+    "change-case": "^4.1.2",
+    "chart.js": "^2.9.4",
+    "clipboard-copy": "^4.0.1",
+    "crypto": "^1.0.1",
+    "html-react-parser": "^1.2.4",
+    "js-sha256": "^0.9.0",
+    "ledger-cosmos-js": "^2.1.8",
+    "marked": "^2.0.0",
+    "moment": "^2.29.1",
+    "obi.js": "^1.0.2",
+    "parcel-plugin-custom-dist-structure": "^1.1.16",
+    "qrcode.react": "^1.0.1",
+    "react": "^16.14.0",
+    "react-countup": "^4.3.3",
+    "react-dom": "^16.14.0",
+    "react-highlight": "^0.13.0",
+    "react-select": "^3.2.0",
+    "reason-apollo": "^0.18.0",
+    "reason-apollo-hooks": "^6.0.0",
+    "reason-react": ">=0.7.1",
+    "ripemd160": "^2.0.2",
+    "secp256k1": "^4.0.2",
+    "semver": "^7.3.2"
+  },
+  "devDependencies": {
+    "@baransu/graphql_ppx_re": "^0.7.1",
+    "@glennsl/bs-jest": "^0.7.0",
+    "bs-platform": "^7.0.1",
+    "bsb-js": "^1.1.7",
+    "cypress": "^6.8.0",
+    "parcel-bundler": "^1.12.4",
+    "serve": "^11.3.0",
+    "start-server-and-test": "^1.12.0"
+  },
+  "customDistStructure": {
+    "config": {
+      "assets": [
+        ".js",
+        ".css",
+        ".jpg",
+        ".svg",
+        ".png",
+        ".gif"
+      ]
+    }
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "cypress"
+    ]
+  }
+}

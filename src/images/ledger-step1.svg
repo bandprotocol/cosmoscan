@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="249px" height="40px" viewBox="0 0 249 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>2290460F-CB26-482A-BCA0-07E4487C75E4</title>
+    <g id="Validator" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Popup_Connect1" transform="translate(-846.000000, -547.000000)">
+            <g id="Ledger1" transform="translate(846.000000, 548.000000)">
+                <path d="M40.5,0 L161.25,0 L161.25,0 L161.25,37.5 L40.5,37.5 C38.8431458,37.5 37.5,36.1568542 37.5,34.5 L37.5,3 C37.5,1.34314575 38.8431458,3.04359188e-16 40.5,0 Z" id="Rectangle" fill="#555555"></path>
+                <path d="M244.5,0 C246.156854,-3.04359188e-16 247.5,1.34314575 247.5,3 L247.5,34.5 C247.5,36.1568542 246.156854,37.5 244.5,37.5 L142.5,37.5 C132.144661,37.5 123.75,29.1053391 123.75,18.75 C123.75,8.39466094 132.144661,0 142.5,0 L142.5,0 L244.5,0 Z" id="Combined-Shape" stroke="#EDEDED" stroke-width="1.5" fill="#EDEDED"></path>
+                <circle id="Oval" fill="#555555" cx="142.5" cy="18.75" r="9"></circle>
+                <path d="M21,11.25 L37.5,11.25 L37.5,11.25 L37.5,26.25 L21,26.25 C20.1715729,26.25 19.5,25.5784271 19.5,24.75 L19.5,12.75 C19.5,11.9215729 20.1715729,11.25 21,11.25 Z" id="Rectangle" fill="#555555"></path>
+                <path d="M16.5,15.75 L19.5,15.75 L19.5,15.75 L19.5,21.75 L16.5,21.75 C15.6715729,21.75 15,21.0784271 15,20.25 L15,17.25 C15,16.4215729 15.6715729,15.75 16.5,15.75 Z" id="Rectangle" fill="#555555"></path>
+                <path d="M1.5,17.25 L15,17.25 L15,17.25 L15,20.25 L1.5,20.25 C0.671572875,20.25 1.01453063e-16,19.5784271 0,18.75 C-1.01453063e-16,17.9215729 0.671572875,17.25 1.5,17.25 Z" id="Rectangle" fill="#555555"></path>
+                <circle id="Oval" fill="#FFFFFF" cx="51.75" cy="18.75" r="2.25"></circle>
+                <circle id="Oval-Copy" fill="#FFFFFF" cx="60.75" cy="18.75" r="2.25"></circle>
+                <circle id="Oval-Copy-2" fill="#FFFFFF" cx="69.75" cy="18.75" r="2.25"></circle>
+                <circle id="Oval-Copy-3" fill="#FFFFFF" cx="78.75" cy="18.75" r="2.25"></circle>
+                <circle id="Oval-Copy-4" fill="#FFFFFF" cx="87.75" cy="18.75" r="2.25"></circle>
+                <circle id="Oval-Copy-5" fill="#FFFFFF" cx="96.75" cy="18.75" r="2.25"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

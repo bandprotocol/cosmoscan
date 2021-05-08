@@ -1,0 +1,40 @@
+{
+  "name": "band-scan",
+  "reason": {
+    "react-jsx": 3
+  },
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    },
+    {
+      "dir": "__tests__",
+      "subdirs": true,
+      "type": "dev"
+    }
+  ],
+  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": true,
+  "ppx-flags": ["@baransu/graphql_ppx_re/ppx6", "bs-let/ppx"],
+  "bs-dependencies": [
+    "reason-react",
+    "reason-apollo-hooks",
+    "reason-apollo",
+    "@glennsl/bs-json",
+    "bs-moment",
+    "bs-css",
+    "bs-css-emotion",
+    "bs-axios",
+    "bs-webapi"
+  ],
+  "bs-dev-dependencies": ["@glennsl/bs-jest"],
+  "refmt": 3
+}
