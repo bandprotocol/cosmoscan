@@ -1,10 +1,9 @@
-# Scan
+# Cosmoscan
 
 ## Installation
 
 ```
 yarn install
-yarn global add local-cors-proxy
 ```
 
 ## Download GraphQL Schema
