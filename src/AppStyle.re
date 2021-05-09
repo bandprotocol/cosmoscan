@@ -104,6 +104,7 @@ h4,
 h5,
 h6 {
   line-height: 1.3;
+  font-family: 'Montserrat', sans-serif;
 }
 
 h1 {
@@ -210,15 +211,12 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -moz-osx-font-smoothing: grayscale;
 }
 
 button, input {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: 'Montserrat', sans-serif;
     sans-serif;
 }
 
