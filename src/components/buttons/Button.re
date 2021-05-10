@@ -36,7 +36,7 @@ module Styles = {
       switch (variant) {
       | Primary =>
         style([
-          backgroundColor(Colors.bandBlue),
+          backgroundColor(theme.primaryColor),
           color(Colors.white),
           border(`px(1), `solid, theme.primaryColor),
           hover([backgroundColor(Colors.buttonBaseHover)]),
