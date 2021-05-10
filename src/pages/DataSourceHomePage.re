@@ -147,12 +147,12 @@ let make = () => {
   let (searchTerm, setSearchTerm) = React.useState(_ => "");
   let (sortedBy, setSortedBy) = React.useState(_ => LatestUpdate);
   let pageSize = 10;
+  let isMobile = Media.isMobile();
 
   let dataSourcesCountSub = DataSourceSub.count(~searchTerm, ());
   let dataSourcesSub = DataSourceSub.getList(~pageSize, ~page, ~searchTerm, ());
 
   let allSub = Sub.all2(dataSourcesSub, dataSourcesCountSub);
-  let isMobile = Media.isMobile();
 
   React.useEffect1(
     () => {

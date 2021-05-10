@@ -119,9 +119,9 @@ module KVTableContainer = {
 
   [@react.component]
   let make = (~decodesOpt) => {
+    let isMobile = Media.isMobile();
     switch (decodesOpt) {
     | Some(decodes) =>
-      let isMobile = Media.isMobile();
       isMobile
         ? decodes
           ->Belt.Array.map(({Obi.fieldName, fieldValue}) =>
@@ -149,7 +149,7 @@ module KVTableContainer = {
                  </TBody>
                })
              ->React.array}
-          </>;
+          </>
     | None =>
       <EmptyContainer height={`px(200)} backgroundColor=Colors.blueGray1>
         <img src=Images.noSource className=Styles.noDataImage />

@@ -139,6 +139,7 @@ module Deposit = {
 module Voting = {
   [@react.component]
   let make = (~percent, ~label, ~amount) => {
+    let isMobile = Media.isMobile();
     <div>
       <div
         className={Css.merge([
@@ -148,7 +149,7 @@ module Voting = {
         <Heading value={VoteSub.toString(label, ~withSpace=true)} size=Heading.H4 />
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
           <Text value={percent |> Format.fPercent(~digits=2)} size=Text.Lg block=true />
-          {Media.isMobile()
+          {isMobile
              ? React.null
              : <>
                  <HSpacing size=Spacing.sm />

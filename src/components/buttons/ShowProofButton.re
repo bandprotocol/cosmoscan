@@ -1,5 +1,7 @@
 [@react.component]
 let make = (~showProof: bool, ~setShowProof) => {
+  let isMobile = Media.isMobile();
+
   <Button px=20 py=12 pxSm=12 pySm=10 onClick={_ => setShowProof(_ => !showProof)}>
     <div className={CssHelper.flexBox()}>
       <Icon
@@ -8,7 +10,7 @@ let make = (~showProof: bool, ~setShowProof) => {
       />
       <HSpacing size=Spacing.sm />
       <Text
-        value={(showProof ? "Hide" : "Show") ++ (Media.isMobile() ? " Proof" : " Proof JSON")}
+        value={(showProof ? "Hide" : "Show") ++ (isMobile ? " Proof" : " Proof JSON")}
         weight=Text.Medium
         block=true
         nowrap=true
