@@ -5,7 +5,6 @@ module Styles = {
     style([
       paddingTop(Spacing.lg),
       backgroundColor(theme.mainBg),
-      borderBottom(`px(2), `solid, Colors.blueGray1),
       zIndex(3),
       Media.mobile([
         padding(Spacing.md),
@@ -17,13 +16,23 @@ module Styles = {
     ]);
 
   let leftContainer = style([display(`flex), alignItems(`center), width(`percent(100.))]);
-  let bandLogo = style([width(`px(40)), Media.mobile([width(`px(34))])]);
+  let bandLogo = (theme: Theme.t) =>
+    style([
+      width(`px(40)),
+      backgroundColor(theme.baseBlue),
+      borderRadius(`percent(50.)),
+      padding(`px(8)),
+      marginRight(`px(5)),
+      Media.mobile([width(`px(34))]),
+    ]);
   let cmcLogo = style([width(`px(15)), height(`px(15))]);
   let blockImage = style([display(`block)]);
 
   let socialLink = style([marginLeft(`px(10)), display(`flex), textDecoration(`none)]);
 
   let link = style([cursor(`pointer)]);
+
+  let chainIDContainer = style([marginLeft(`px(24))]);
 };
 
 module LinkToHome = {
@@ -66,79 +75,94 @@ module DesktopRender = {
 
     <header className={Styles.header(theme)}>
       <div className="container">
-        <Row alignItems=Row.Center marginBottom=12>
-          <Col col=Col.Five>
-            <div className=Styles.leftContainer>
-              <LinkToHome> <img src=Images.bandLogo className=Styles.bandLogo /> </LinkToHome>
-              <HSpacing size=Spacing.md />
-              <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
-                <LinkToHome>
-                  <Text
-                    value="BandChain"
-                    size=Text.Xxl
-                    weight=Text.Bold
-                    nowrap=true
-                    color=Colors.gray8
-                    spacing={Text.Em(0.05)}
-                  />
-                </LinkToHome>
-                <VSpacing size=Spacing.xs />
-                <div className={CssHelper.flexBox()}>
-                  <LinkToHome>
+        <Row alignItems=Row.Center marginBottom=22>
+          <Col col=Col.Six>
+            <div className={CssHelper.flexBox(~align=`center, ())}>
+              <LinkToHome>
+                <div className={CssHelper.flexBox(~align=`center, ())}>
+                  <img src=Images.bandLogo className={Styles.bandLogo(theme)} />
+                  <div>
                     <Text
-                      value="CosmoScan"
+                      value="BANDCHAIN"
+                      size=Text.Md
+                      weight=Text.Bold
+                      nowrap=true
+                      color={theme.textPrimary}
+                      special=true
+                    />
+                    <br />
+                    <Text
+                      value="Cosmoscan"
                       nowrap=true
                       size=Text.Sm
                       weight=Text.Semibold
-                      color=Colors.gray6
-                      spacing={Text.Em(0.03)}
+                      color={theme.textPrimary}
+                      special=true
                     />
-                    <HSpacing size=Spacing.xs />
-                  </LinkToHome>
-                  <HSpacing size=Spacing.xs />
-                  <ChainIDBadge />
-                  <div className={CssHelper.flexBox(~align=`center, ())}>
-                    <a
-                      href="https://twitter.com/bandprotocol"
-                      target="_blank"
-                      rel="noopener"
-                      className=Styles.socialLink>
-                      <Icon name="fab fa-twitter" color=Colors.bandBlue size=16 />
-                    </a>
-                    <a
-                      href="https://t.me/bandprotocol"
-                      target="_blank"
-                      rel="noopener"
-                      className=Styles.socialLink>
-                      <Icon name="fab fa-telegram-plane" color=Colors.bandBlue size=17 />
-                    </a>
-                    <a
-                      href="https://coinmarketcap.com/currencies/band-protocol/"
-                      target="_blank"
-                      rel="noopener"
-                      className=Styles.socialLink>
-                      <img
-                        src=Images.cmcLogo
-                        className={Css.merge([Styles.cmcLogo, Styles.blockImage])}
-                      />
-                    </a>
                   </div>
                 </div>
-              </div>
+              </LinkToHome>
+              <div className=Styles.chainIDContainer> <ChainIDBadge /> </div>
             </div>
           </Col>
-          <Col col=Col.Seven> <SearchBar /> </Col>
-        </Row>
-        <Row alignItems=Row.Center>
-          <Col col=Col.Eight> <NavBar /> </Col>
-          <Col col=Col.Four>
-            <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-              <UserAccount />
-              <ToggleThemeButton />
+          //   <div
+          //     className={Css.merge([
+          //       CssHelper.flexBox(~align=`center, ()),
+          //       Styles.socialContainer,
+          //     ])}>
+          //     <a
+          //       href="https://twitter.com/bandprotocol"
+          //       target="_blank"
+          //       rel="noopener"
+          //       className=Styles.socialLink>
+          //       <Icon
+          //         name="fab fa-twitter"
+          //         color={isDarkMode ? Colors.white : theme.baseBlue}
+          //         size=16
+          //       />
+          //     </a>
+          //     <a
+          //       href="https://t.me/bandprotocol"
+          //       target="_blank"
+          //       rel="noopener"
+          //       className=Styles.socialLink>
+          //       <Icon
+          //         name="fab fa-telegram-plane"
+          //         color={isDarkMode ? Colors.white : theme.baseBlue}
+          //         size=17
+          //       />
+          //     </a>
+          //     <a
+          //       href="https://coinmarketcap.com/currencies/band-protocol/"
+          //       target="_blank"
+          //       rel="noopener"
+          //       className=Styles.socialLink>
+          //       <img
+          //         src={isDarkMode ? Images.cmcWhiteLogo : Images.cmcLogo}
+          //         className={Css.merge([Styles.cmcLogo, Styles.blockImage])}
+          //       />
+          //     </a>
+          //   </div>
+          <Col col=Col.Six>
+            <div className={CssHelper.flexBox(~align=`center, ~justify=`flexEnd, ())}>
+              <SearchBar />
             </div>
           </Col>
         </Row>
       </div>
+      <Section bg={theme.secondaryBg} pt=0 pb=0>
+        <div className="container">
+          <Row alignItems=Row.Center>
+            <Col col=Col.Eight> <NavBar /> </Col>
+            <Col col=Col.Four>
+              <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+                <UserAccount />
+                <ToggleThemeButton />
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </Section>
     </header>;
   };
 };
@@ -155,18 +179,18 @@ module MobileRender = {
             <LinkToHome>
               <img
                 src=Images.bandLogo
-                className={Css.merge([Styles.bandLogo, Styles.blockImage])}
+                className={Css.merge([Styles.bandLogo(theme), Styles.blockImage])}
               />
             </LinkToHome>
             <HSpacing size=Spacing.sm />
             <LinkToHome>
               <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
                 <Text
-                  value="BandChain"
-                  size=Text.Lg
+                  value="BANDCHAIN"
+                  size=Text.Md
                   weight=Text.Bold
                   nowrap=true
-                  color=Colors.gray8
+                  color={theme.textPrimary}
                   spacing={Text.Em(0.05)}
                 />
                 <VSpacing size=Spacing.xs />

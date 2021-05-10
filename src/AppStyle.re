@@ -235,7 +235,7 @@ code {
 
 .container {
   width: 100%;
-  max-width: 984px;
+  max-width: 1152px;
   margin: 0 auto;
   padding: 0 12px;
 }

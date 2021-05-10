@@ -2,7 +2,7 @@ module RenderDesktop = {
   module Styles = {
     open Css;
 
-    let nav = isActive =>
+    let nav = (isActive, theme: Theme.t) =>
       style([
         padding2(~v=`px(16), ~h=`zero),
         cursor(`pointer),
@@ -10,8 +10,8 @@ module RenderDesktop = {
         hover([color(Colors.gray6)]),
         active([color(Colors.gray6)]),
         transition(~duration=400, "all"),
-        color(isActive ? Colors.gray7 : Colors.gray6),
-        borderBottom(`px(4), `solid, isActive ? Colors.bandBlue : Colors.white),
+        color(isActive ? theme.textPrimary : theme.textSecondary),
+        borderBottom(`px(4), `solid, isActive ? theme.baseBlue : `transparent),
       ]);
   };
 
@@ -19,11 +19,13 @@ module RenderDesktop = {
   let make = (~routes) => {
     let currentRoute = ReasonReactRouter.useUrl() |> Route.fromUrl;
 
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <div className={CssHelper.flexBox(~justify=`spaceBetween, ())} id="navigationBar">
       {routes
        ->Belt.List.map(((v, route)) =>
            <div key=v className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
-             <Link className={Styles.nav(currentRoute == route)} route>
+             <Link className={Styles.nav(currentRoute == route, theme)} route>
                {v |> React.string}
              </Link>
            </div>

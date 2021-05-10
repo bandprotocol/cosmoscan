@@ -1,4 +1,4 @@
-[@bs.module] external bandLogo: string = "./band-logo.png";
+[@bs.module] external bandLogo: string = "./band-symbol-white.svg";
 [@bs.module] external searchIcon: string = "./search-icon.png";
 [@bs.module] external searchGray: string = "./search-gray.svg";
 [@bs.module] external rightArrow: string = "./right-arrow.svg";
@@ -42,6 +42,7 @@
 [@bs.module] external close: string = "./close.svg";
 [@bs.module] external menu: string = "./menu.svg";
 [@bs.module] external cmcLogo: string = "./coinmarketcap.svg";
+[@bs.module] external cmcWhiteLogo: string = "./coinmarketcap-white.svg";
 [@bs.module] external noBlock: string = "./no-block.svg";
 [@bs.module] external noAccount: string = "./no-account.svg";
 [@bs.module] external noSource: string = "./no-source.svg";
