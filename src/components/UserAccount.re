@@ -3,7 +3,7 @@ module Styles = {
 
   let container = style([position(`relative)]);
 
-  let oval =
+  let oval = (theme: Theme.t) =>
     style([
       display(`flex),
       width(`px(24)),
@@ -11,16 +11,16 @@ module Styles = {
       justifyContent(`center),
       alignItems(`center),
       padding(`px(5)),
-      backgroundColor(Colors.bandBlue),
+      backgroundColor(theme.baseBlue),
       borderRadius(`percent(50.)),
     ]);
 
   let logo = style([width(`px(12))]);
 
-  let profileCard = show =>
+  let profileCard = (show, theme: Theme.t) =>
     style([
       position(`absolute),
-      backgroundColor(Colors.white),
+      backgroundColor(theme.mainBg),
       top(`px(30)),
       right(`px(-10)),
       borderRadius(`px(4)),
@@ -32,7 +32,8 @@ module Styles = {
       zIndex(5),
     ]);
 
-  let innerProfileCard = style([padding(`px(16)), backgroundColor(Colors.profileBG)]);
+  let innerProfileCard = (theme: Theme.t) =>
+    style([padding(`px(16)), backgroundColor(theme.secondaryBg)]);
 
   let connect = style([padding2(~v=`px(10), ~h=`zero)]);
   let disconnect = style([paddingTop(`px(16))]);
@@ -41,24 +42,10 @@ module Styles = {
 module ConnectBtn = {
   [@react.component]
   let make = (~connect) => {
-    <div
-      id="connectButton"
-      className={Css.merge([
-        CssHelper.flexBox(~justify=`center, ~align=`center, ()),
-        CssHelper.clickable,
-        Styles.connect,
-      ])}
-      onClick={_ => connect()}>
-      <Text
-        value="Connect"
-        weight=Text.Medium
-        color=Colors.bandBlue
-        nowrap=true
-        spacing={Text.Em(0.03)}
-        block=true
-      />
-      <HSpacing size=Spacing.sm />
-      <div className=Styles.oval> <Icon name="fal fa-link" color=Colors.white /> </div>
+    <div id="connectButton">
+      <Button variant=Button.Outline px=24 py=8 onClick={_ => connect()}>
+        {"Connect Wallet" |> React.string}
+      </Button>
     </div>;
   };
 };
@@ -99,7 +86,7 @@ module FaucetBtn = {
                    });
               ();
             }}>
-            <Text value="Get 10 Testnet BAND" weight=Text.Medium nowrap=true />
+            {"Get 10 Testnet BAND" |> React.string}
           </Button>
         </div>;
   };
@@ -121,8 +108,10 @@ module Balance = {
   let make = (~address) => {
     let accountSub = AccountSub.get(address);
 
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
-      <Text value="Balance" weight=Text.Medium />
+      <Text value="Balance" weight=Text.Medium color={theme.textPrimary} />
       <div className={CssHelper.flexBox()} id="bandBalance">
         <Text
           value={
@@ -133,9 +122,10 @@ module Balance = {
             }
           }
           code=true
+          color={theme.textPrimary}
         />
         <HSpacing size=Spacing.sm />
-        <Text value="BAND" weight=Text.Thin />
+        <Text value="BAND" weight=Text.Thin color={theme.textPrimary} />
       </div>
     </div>;
   };
@@ -160,6 +150,8 @@ let make = () => {
     setShow(_ => false);
   };
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   switch (accountOpt) {
   | Some({address}) =>
     <div className={Css.merge([CssHelper.flexBox(~justify=`flexEnd, ()), Styles.container])}>
@@ -168,16 +160,18 @@ let make = () => {
           id="userInfoButton"
           className={Css.merge([CssHelper.flexBox(), CssHelper.clickable])}
           onClick={_ => setShow(prev => !prev)}>
-          <div className=Styles.oval> <Icon name="fal fa-user" color=Colors.white /> </div>
+          <div className={Styles.oval(theme)}>
+            <Icon name="fal fa-user" color=Colors.white />
+          </div>
           <HSpacing size=Spacing.sm />
-          <Icon name="fas fa-caret-down" color=Colors.bandBlue />
+          <Icon name="fas fa-caret-down" color={theme.baseBlue} />
         </div>
-        <div className={Styles.profileCard(show)} id="addressWrapper">
+        <div className={Styles.profileCard(show, theme)} id="addressWrapper">
           <div onClick={_ => setShow(_ => false)}>
             <AddressRender address position=AddressRender.Text />
           </div>
           <VSpacing size={`px(16)} />
-          <div className=Styles.innerProfileCard>
+          <div className={Styles.innerProfileCard(theme)}>
             <Balance address />
             <VSpacing size={`px(16)} />
             <div className={CssHelper.flexBox(~direction=`row, ~justify=`spaceBetween, ())}>

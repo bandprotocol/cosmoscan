@@ -48,11 +48,11 @@ module ToggleThemeButton = {
   module Styles = {
     let button = isDarkMode =>
       style([
-        backgroundColor(Colors.white),
-        padding2(~v=`px(3), ~h=`px(6)),
+        backgroundColor(isDarkMode ? Colors.white : Colors.black),
+        padding2(~v=`px(8), ~h=`px(10)),
         borderRadius(`px(8)),
         border(`px(1), `solid, isDarkMode ? Colors.white : Colors.black),
-        marginLeft(`px(5)),
+        marginLeft(`px(10)),
         cursor(`pointer),
         outlineStyle(`none),
       ]);
@@ -63,7 +63,11 @@ module ToggleThemeButton = {
     let ({ThemeContext.isDarkMode}, toggle) = React.useContext(ThemeContext.context);
 
     <button className={Styles.button(isDarkMode)} onClick={_ => toggle()}>
-      <Icon name={isDarkMode ? "fas fa-sun" : "fas fa-moon"} size=14 color=Colors.black />
+      <Icon
+        name={isDarkMode ? "fal fa-sun" : "fal fa-moon"}
+        size=14
+        color={isDarkMode ? Colors.black : Colors.white}
+      />
     </button>;
   };
 };

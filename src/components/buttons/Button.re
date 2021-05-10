@@ -5,7 +5,18 @@ type btn_style_t =
 module Styles = {
   open Css;
 
-  let btn = (~variant=Primary, ~fsize=12, ~px=25, ~py=13, ~pxSm=px, ~pySm=py, theme: Theme.t, ()) => {
+  let btn =
+      (
+        ~variant=Primary,
+        ~fsize=12,
+        ~px=25,
+        ~py=13,
+        ~pxSm=px,
+        ~pySm=py,
+        theme: Theme.t,
+        isDarkMode,
+        (),
+      ) => {
     let base =
       style([
         display(`block),
@@ -41,7 +52,10 @@ module Styles = {
           backgroundColor(`transparent),
           color(theme.textPrimary),
           border(`px(1), `solid, theme.textPrimary),
-          hover([backgroundColor(theme.textPrimary)]),
+          hover([
+            backgroundColor(theme.textPrimary),
+            color(isDarkMode ? Colors.black : Colors.white),
+          ]),
           active([backgroundColor(Colors.buttonOutlineActive)]),
           disabled([
             borderColor(Colors.buttonDisabled),
@@ -68,11 +82,11 @@ let make =
       ~style="",
       ~disabled=false,
     ) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <button
     className={Css.merge([
-      Styles.btn(~variant, ~px, ~py, ~pxSm, ~pySm, ~fsize, theme, ()),
+      Styles.btn(~variant, ~px, ~py, ~pxSm, ~pySm, ~fsize, theme, isDarkMode, ()),
       CssHelper.flexBox(~align=`center, ~justify=`center, ()),
       style,
     ])}

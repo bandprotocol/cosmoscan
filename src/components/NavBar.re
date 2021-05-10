@@ -90,6 +90,9 @@ module RenderMobile = {
   [@react.component]
   let make = (~routes) => {
     let (show, setShow) = React.useState(_ => false);
+
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <>
       <div className=Styles.menuContainer onClick={_ => setShow(prev => !prev)}>
         <img src={show ? Images.close : Images.menu} className=Styles.menu />
@@ -106,13 +109,13 @@ module RenderMobile = {
         <div className=Styles.socialContainer>
           <div className=Styles.socialLink>
             <a href="https://twitter.com/bandprotocol" target="_blank" rel="noopener">
-              <Icon name="fab fa-twitter" color=Colors.bandBlue size=20 />
+              <Icon name="fab fa-twitter" color={theme.baseBlue} size=20 />
             </a>
           </div>
           <HSpacing size={`px(24)} />
           <div className=Styles.socialLink>
             <a href="https://t.me/bandprotocol" target="_blank" rel="noopener">
-              <Icon name="fab fa-telegram-plane" color=Colors.bandBlue size=21 />
+              <Icon name="fab fa-telegram-plane" color={theme.baseBlue} size=21 />
             </a>
           </div>
           <HSpacing size={`px(24)} />
