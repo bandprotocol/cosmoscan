@@ -5,7 +5,18 @@ type btn_style_t =
 module Styles = {
   open Css;
 
-  let btn = (~variant=Primary, ~fsize=12, ~px=25, ~py=13, ~pxSm=px, ~pySm=py, ()) => {
+  let btn =
+      (
+        ~variant=Primary,
+        ~fsize=12,
+        ~px=25,
+        ~py=13,
+        ~pxSm=px,
+        ~pySm=py,
+        theme: Theme.t,
+        isDarkMode,
+        (),
+      ) => {
     let base =
       style([
         display(`block),
@@ -25,21 +36,29 @@ module Styles = {
       switch (variant) {
       | Primary =>
         style([
-          backgroundColor(Colors.bandBlue),
+          backgroundColor(theme.primaryColor),
           color(Colors.white),
-          border(`px(1), `solid, Colors.bandBlue),
+          border(`px(1), `solid, theme.primaryColor),
           hover([backgroundColor(Colors.buttonBaseHover)]),
           active([backgroundColor(Colors.buttonBaseActive)]),
-          disabled([backgroundColor(Colors.buttonDisabled), color(Colors.white), borderColor(Colors.buttonDisabled)]),
+          disabled([
+            backgroundColor(Colors.buttonDisabled),
+            color(Colors.white),
+            borderColor(Colors.buttonDisabled),
+          ]),
         ])
       | Outline =>
         style([
           backgroundColor(Colors.white),
-          color(Colors.bandBlue),
-          border(`px(1), `solid, Colors.bandBlue),
+          color(isDarkMode ? theme.primaryColor : theme.textPrimary),
+          border(`px(1), `solid, isDarkMode ? theme.primaryColor : theme.textPrimary),
           hover([backgroundColor(Colors.buttonOutlineHover)]),
           active([backgroundColor(Colors.buttonOutlineActive)]),
-          disabled([borderColor(Colors.buttonDisabled), color(Colors.buttonDisabled), hover([backgroundColor(Colors.white)])]),
+          disabled([
+            borderColor(Colors.buttonDisabled),
+            color(Colors.buttonDisabled),
+            hover([backgroundColor(Colors.white)]),
+          ]),
         ])
       };
     merge([base, custom]);
@@ -60,9 +79,11 @@ let make =
       ~style="",
       ~disabled=false,
     ) => {
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   <button
     className={Css.merge([
-      Styles.btn(~variant, ~px, ~py, ~pxSm, ~pySm, ~fsize, ()),
+      Styles.btn(~variant, ~px, ~py, ~pxSm, ~pySm, ~fsize, theme, isDarkMode, ()),
       CssHelper.flexBox(~align=`center, ~justify=`center, ()),
       style,
     ])}
