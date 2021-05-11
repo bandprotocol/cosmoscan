@@ -15,7 +15,6 @@ module Styles = {
       ]),
     ]);
 
-  let leftContainer = style([display(`flex), alignItems(`center), width(`percent(100.))]);
   let bandLogo = (theme: Theme.t) =>
     style([
       width(`px(40)),
@@ -25,14 +24,18 @@ module Styles = {
       marginRight(`px(5)),
       Media.mobile([width(`px(34))]),
     ]);
-  let cmcLogo = style([width(`px(15)), height(`px(15))]);
-  let blockImage = style([display(`block)]);
 
-  let socialLink = style([marginLeft(`px(10)), display(`flex), textDecoration(`none)]);
+  let blockImage = style([display(`block)]);
 
   let link = style([cursor(`pointer)]);
 
   let chainIDContainer = style([marginLeft(`px(24))]);
+
+  let boxShadow =
+    style([
+      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
+      position(`relative),
+    ]);
 };
 
 module LinkToHome = {
@@ -46,12 +49,12 @@ module ToggleThemeButton = {
   open Css;
 
   module Styles = {
-    let button = isDarkMode =>
+    let button = (isDarkMode, theme: Theme.t) =>
       style([
-        backgroundColor(isDarkMode ? Colors.white : Colors.black),
+        backgroundColor(isDarkMode ? theme.white : theme.black),
         padding2(~v=`px(8), ~h=`px(10)),
         borderRadius(`px(8)),
-        border(`px(1), `solid, isDarkMode ? Colors.white : Colors.black),
+        border(`px(1), `solid, isDarkMode ? theme.white : theme.black),
         marginLeft(`px(10)),
         cursor(`pointer),
         outlineStyle(`none),
@@ -60,13 +63,13 @@ module ToggleThemeButton = {
 
   [@react.component]
   let make = () => {
-    let ({ThemeContext.isDarkMode}, toggle) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.isDarkMode, theme}, toggle) = React.useContext(ThemeContext.context);
 
-    <button className={Styles.button(isDarkMode)} onClick={_ => toggle()}>
+    <button className={Styles.button(isDarkMode, theme)} onClick={_ => toggle()}>
       <Icon
         name={isDarkMode ? "fal fa-sun" : "fal fa-moon"}
         size=14
-        color={isDarkMode ? Colors.black : Colors.white}
+        color={isDarkMode ? theme.black : theme.white}
       />
     </button>;
   };
@@ -78,7 +81,7 @@ module DesktopRender = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <header className={Styles.header(theme)}>
-      <div className="container">
+      <div className=CssHelper.container>
         <Row alignItems=Row.Center marginBottom=22>
           <Col col=Col.Six>
             <div className={CssHelper.flexBox(~align=`center, ())}>
@@ -118,7 +121,6 @@ module DesktopRender = {
           //       href="https://twitter.com/bandprotocol"
           //       target="_blank"
           //       rel="noopener"
-          //       className=Styles.socialLink>
           //       <Icon
           //         name="fab fa-twitter"
           //         color={isDarkMode ? Colors.white : theme.baseBlue}
@@ -129,7 +131,6 @@ module DesktopRender = {
           //       href="https://t.me/bandprotocol"
           //       target="_blank"
           //       rel="noopener"
-          //       className=Styles.socialLink>
           //       <Icon
           //         name="fab fa-telegram-plane"
           //         color={isDarkMode ? Colors.white : theme.baseBlue}
@@ -154,8 +155,8 @@ module DesktopRender = {
           </Col>
         </Row>
       </div>
-      <Section bg={theme.secondaryBg} pt=0 pb=0>
-        <div className="container">
+      <Section bg={theme.secondaryBg} pt=0 pb=0 style=Styles.boxShadow>
+        <div className=CssHelper.container>
           <Row alignItems=Row.Center>
             <Col col=Col.Eight> <NavBar /> </Col>
             <Col col=Col.Four>
@@ -202,7 +203,7 @@ module MobileRender = {
                   value="CosmoScan"
                   nowrap=true
                   size=Text.Sm
-                  color=Colors.gray6
+                  color={theme.textSecondary}
                   spacing={Text.Em(0.03)}
                 />
               </div>
