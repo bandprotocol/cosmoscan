@@ -185,6 +185,7 @@ module RenderBodyMobile = {
   [@react.component]
   let make =
       (~reserveIndex, ~reportsSub: ApolloHooks.Subscription.variant(ReportSub.ValidatorReport.t)) => {
+    let isSmallMobile = Media.isSmallMobile();
     switch (reportsSub) {
     | Data({txHash, request: {id, oracleScript: {oracleScriptID, name}}, reportDetails}) =>
       <MobileCard
@@ -194,7 +195,7 @@ module RenderBodyMobile = {
           (
             "TX Hash",
             switch (txHash) {
-            | Some(txHash') => TxHash(txHash', Media.isSmallMobile() ? 170 : 200)
+            | Some(txHash') => TxHash(txHash', isSmallMobile ? 170 : 200)
             | None => Text("Syncing")
             },
           ),
@@ -225,7 +226,7 @@ module RenderBodyMobile = {
         values=InfoMobileCard.[
           ("Request ID", Loading(70)),
           ("Oracle Script", Loading(136)),
-          ("TX Hash", Loading(Media.isSmallMobile() ? 170 : 200)),
+          ("TX Hash", Loading(isSmallMobile ? 170 : 200)),
         ]
         key={reserveIndex |> string_of_int}
         idx={reserveIndex |> string_of_int}

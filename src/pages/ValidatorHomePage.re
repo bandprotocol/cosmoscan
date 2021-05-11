@@ -28,6 +28,7 @@ let getCurrentDay = _ => {
 let make = () => {
   let currentTime =
     React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
+  let isMobile = Media.isMobile();
 
   let (prevDayTime, setPrevDayTime) = React.useState(getPrevDay);
   let (searchTerm, setSearchTerm) = React.useState(_ => "");
@@ -57,7 +58,6 @@ let make = () => {
     );
 
   let allSub = Sub.all3(topPartAllSub, validatorsSub, votesBlockSub);
-  let isMobile = Media.isMobile();
 
   <Section>
     <div className=CssHelper.container id="validatorsSection">

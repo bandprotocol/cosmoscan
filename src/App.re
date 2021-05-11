@@ -15,10 +15,11 @@ module Styles = {
 [@react.component]
 let make = () => {
   let currentRoute = ReasonReactRouter.useUrl() |> Route.fromUrl;
+  let isMobile = Media.isMobile();
 
   <div className=Styles.container>
     <Header />
-    {Media.isMobile()
+    {isMobile
        ? <Section pt=16 pb=16 bg={currentRoute == HomePage ? Colors.highlightBg : Colors.bg}>
            <div className=CssHelper.container> <SearchBar /> </div>
          </Section>

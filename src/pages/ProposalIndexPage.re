@@ -94,12 +94,12 @@ module VoteButton = {
 
 [@react.component]
 let make = (~proposalID) => {
+  let isMobile = Media.isMobile();
   let proposalSub = ProposalSub.get(proposalID);
   let voteStatByProposalIDSub = VoteSub.getVoteStatByProposalID(proposalID);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
 
   let allSub = Sub.all3(proposalSub, voteStatByProposalIDSub, bondedTokenCountSub);
-  let isMobile = Media.isMobile();
 
   <Section pbSm=0>
     <div className=CssHelper.container>

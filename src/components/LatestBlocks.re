@@ -84,7 +84,7 @@ let renderMiniBlockLoading = (imaginaryIndex: int, imaginaryBlockHeight: ID.Bloc
     <LoadingCensorBar width=100 height=15 />
   </div>;
 
-let renderMobile = (~blocksSub) => {
+let renderMobile = blocksSub => {
   <div className={Css.merge([CssHelper.flexBox(~direction=`column, ()), Styles.blocksWrapper])}>
     {switch (blocksSub) {
      | ApolloHooks.Subscription.Data(blocks) =>
@@ -101,7 +101,7 @@ let renderMobile = (~blocksSub) => {
   </div>;
 };
 
-let renderDesktop = (~blocksSub) => {
+let renderDesktop = blocksSub => {
   <div className={Css.merge([CssHelper.flexBox(~direction=`column, ()), Styles.blocksWrapper])}>
     {switch (blocksSub) {
      | ApolloHooks.Subscription.Data(blocks) =>
@@ -120,6 +120,7 @@ let renderDesktop = (~blocksSub) => {
 
 [@react.component]
 let make = (~blocksSub) => {
+  let isMobile = Media.isMobile();
   <>
     <div
       className={CssHelper.flexBox(~justify=`spaceBetween, ~align=`flexEnd, ())}
@@ -163,6 +164,6 @@ let make = (~blocksSub) => {
       </Link>
     </div>
     <VSpacing size={`px(16)} />
-    {Media.isMobile() ? renderMobile(blocksSub) : renderDesktop(blocksSub)}
+    {isMobile ? renderMobile(blocksSub) : renderDesktop(blocksSub)}
   </>;
 };

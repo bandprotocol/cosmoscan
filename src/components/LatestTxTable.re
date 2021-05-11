@@ -4,78 +4,79 @@ module Styles = {
   let statusImg = style([width(`px(20)), marginTop(`px(-3))]);
 };
 
-let renderBody = (reserveIndex, txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
-  <TBody
-    key={
-      switch (txSub) {
-      | Data({txHash}) => txHash |> Hash.toHex
-      | _ => reserveIndex |> string_of_int
-      }
-    }
-    paddingH={`px(24)}>
-    <Row alignItems=Row.Start>
-      <Col col=Col.Two>
-        {switch (txSub) {
-         | Data({txHash}) => <TxLink txHash width=110 />
-         | _ => <LoadingCensorBar width=60 height=15 />
-         }}
-      </Col>
-      <Col col=Col.Two>
-        {switch (txSub) {
-         | Data({blockHeight}) => <TypeID.Block id=blockHeight />
-         | _ => <LoadingCensorBar width=50 height=15 />
-         }}
-      </Col>
-      <Col col=Col.One>
-        <div className={CssHelper.flexBox(~justify=`center, ~align=`center, ())}>
+module RenderBody = {
+  [@react.component]
+  let make = (~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
+    <TBody paddingH={`px(24)}>
+      <Row alignItems=Row.Start>
+        <Col col=Col.Two>
           {switch (txSub) {
-           | Data({success}) =>
-             <img src={success ? Images.success : Images.fail} className=Styles.statusImg />
-           | _ => <LoadingCensorBar width=20 height=20 radius=20 />
+           | Data({txHash}) => <TxLink txHash width=110 />
+           | _ => <LoadingCensorBar width=60 height=15 />
            }}
-        </div>
-      </Col>
-      <Col col=Col.Seven>
-        {switch (txSub) {
-         | Data({messages, txHash, success, errMsg}) =>
-           <TxMessages txHash messages success errMsg width=320 />
-         | _ => <LoadingCensorBar width=320 height=15 />
-         }}
-      </Col>
-    </Row>
-  </TBody>;
+        </Col>
+        <Col col=Col.Two>
+          {switch (txSub) {
+           | Data({blockHeight}) => <TypeID.Block id=blockHeight />
+           | _ => <LoadingCensorBar width=50 height=15 />
+           }}
+        </Col>
+        <Col col=Col.One>
+          <div className={CssHelper.flexBox(~justify=`center, ~align=`center, ())}>
+            {switch (txSub) {
+             | Data({success}) =>
+               <img src={success ? Images.success : Images.fail} className=Styles.statusImg />
+             | _ => <LoadingCensorBar width=20 height=20 radius=20 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Seven>
+          {switch (txSub) {
+           | Data({messages, txHash, success, errMsg}) =>
+             <TxMessages txHash messages success errMsg width=320 />
+           | _ => <LoadingCensorBar width=320 height=15 />
+           }}
+        </Col>
+      </Row>
+    </TBody>;
+  };
 };
 
-let renderBodyMobile = (reserveIndex, txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
-  switch (txSub) {
-  | Data({txHash, blockHeight, success, messages, errMsg}) =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Tx Hash", TxHash(txHash, Media.isSmallMobile() ? 170 : 200)),
-        ("Block", Height(blockHeight)),
-        ("Actions", Messages(txHash, messages, success, errMsg)),
-      ]
-      key={txHash |> Hash.toHex}
-      idx={txHash |> Hash.toHex}
-      status=success
-    />
-  | _ =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Tx Hash", Loading(Media.isSmallMobile() ? 170 : 200)),
-        ("Block", Loading(70)),
-        (
-          "Actions",
-          Loading(
-            {
-              Media.isSmallMobile() ? 160 : 230;
-            },
+module RenderBodyMobile = {
+  [@react.component]
+  let make = (~reserveIndex, ~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
+    let isSmallMobile = Media.isSmallMobile();
+
+    switch (txSub) {
+    | Data({txHash, blockHeight, success, messages, errMsg}) =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Tx Hash", TxHash(txHash, isSmallMobile ? 170 : 200)),
+          ("Block", Height(blockHeight)),
+          ("Actions", Messages(txHash, messages, success, errMsg)),
+        ]
+        key={txHash |> Hash.toHex}
+        idx={txHash |> Hash.toHex}
+        status=success
+      />
+    | _ =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Tx Hash", Loading(isSmallMobile ? 170 : 200)),
+          ("Block", Loading(70)),
+          (
+            "Actions",
+            Loading(
+              {
+                isSmallMobile ? 160 : 230;
+              },
+            ),
           ),
-        ),
-      ]
-      key={reserveIndex |> string_of_int}
-      idx={reserveIndex |> string_of_int}
-    />
+        ]
+        key={reserveIndex |> string_of_int}
+        idx={reserveIndex |> string_of_int}
+      />
+    };
   };
 };
 
@@ -151,13 +152,21 @@ let make = () => {
      | Data(txs) =>
        txs
        ->Belt_Array.mapWithIndex((i, e) =>
-           isMobile ? renderBodyMobile(i, Sub.resolve(e)) : renderBody(i, Sub.resolve(e))
+           isMobile
+             ? <RenderBodyMobile
+                 key={e.txHash |> Hash.toHex}
+                 reserveIndex=i
+                 txSub={Sub.resolve(e)}
+               />
+             : <RenderBody key={e.txHash |> Hash.toHex} txSub={Sub.resolve(e)} />
          )
        ->React.array
      | _ =>
        Belt_Array.make(txCount, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
-           isMobile ? renderBodyMobile(i, noData) : renderBody(i, noData)
+           isMobile
+             ? <RenderBodyMobile key={string_of_int(i)} reserveIndex=i txSub=noData />
+             : <RenderBody key={string_of_int(i)} txSub=noData />
          )
        ->React.array
      }}
