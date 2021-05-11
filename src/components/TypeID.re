@@ -24,7 +24,12 @@ let lineHeight =
 module Styles = {
   open Css;
 
-  let link = style([cursor(`pointer)]);
+  let link = (theme: Theme.t) =>
+    style([
+      cursor(`pointer),
+      selector("&:hover > span", [color(theme.baseBlue)]),
+      selector("> span", [transition(~duration=200, "all")]),
+    ]);
 
   let pointerEvents =
     fun
@@ -37,22 +42,24 @@ module Styles = {
 
 module ComponentCreator = (RawID: ID.IDSig) => {
   [@react.component]
-  let make = (~id, ~position=Text) =>
+  let make = (~id, ~position=Text) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <Link
-      className={Css.merge([Styles.link, Styles.pointerEvents(position)])}
+      className={Css.merge([Styles.link(theme), Styles.pointerEvents(position)])}
       route={id |> RawID.getRoute}>
       <Text
         value={id |> RawID.toString}
         size={position |> fontSize}
         weight=Text.Semibold
         height={position |> lineHeight}
-        color=RawID.color
-        spacing={Text.Em(0.02)}
         nowrap=true
         code=true
         block=true
+        color={theme.textPrimary}
       />
     </Link>;
+  };
 };
 
 module DataSource = ComponentCreator(ID.DataSource);

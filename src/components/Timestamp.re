@@ -13,15 +13,15 @@ let make =
       ~size=Text.Sm,
       ~weight=Text.Regular,
       ~spacing=Text.Unset,
-      ~color=Colors.gray7,
       ~code=false,
       ~upper=false,
       ~height=Text.Px(16),
+      ~textAlign=Text.Left,
     ) => {
   <div className=Styles.timeContainer>
     {prefix != ""
        ? <>
-           <Text value=prefix size weight spacing color code nowrap=true />
+           <Text value=prefix size weight spacing code nowrap=true />
            <HSpacing size=Spacing.sm />
          </>
        : React.null}
@@ -30,16 +30,16 @@ let make =
       size
       weight
       spacing
-      color
       code
       nowrap=true
       height
       block=true
+      align=textAlign
     />
     {suffix != ""
        ? <>
            <HSpacing size=Spacing.sm />
-           <Text value=suffix size weight spacing color code nowrap=true />
+           <Text value=suffix size weight spacing code nowrap=true />
          </>
        : React.null}
   </div>;

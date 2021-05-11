@@ -186,12 +186,6 @@ table {
   box-sizing: border-box;
 }
 
-a,
-a:hover,
-a:active {
-  color: #5269FF;
-}
-
 a:not(:hover) {
   text-decoration: none;
 }

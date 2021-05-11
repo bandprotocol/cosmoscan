@@ -22,8 +22,8 @@ module Styles = {
   let lineHeight = style([lineHeight(`em(1.41))]);
   let fontSize =
     fun
-    | H1 => style([fontSize(`px(40)), Media.smallMobile([fontSize(`px(32))])])
-    | H2 => style([fontSize(`px(32)), Media.smallMobile([fontSize(`px(24))])])
+    | H1 => style([fontSize(`px(24)), Media.smallMobile([fontSize(`px(20))])])
+    | H2 => style([fontSize(`px(20)), Media.smallMobile([fontSize(`px(18))])])
     | H3 => style([fontSize(`px(18)), Media.smallMobile([fontSize(`px(16))])])
     | H4 => style([fontSize(`px(14)), Media.smallMobile([fontSize(`px(12))])])
     | H5 => style([fontSize(`px(12)), Media.smallMobile([fontSize(`px(11))])]);
@@ -59,15 +59,18 @@ let make =
       ~marginBottom=0,
       ~marginBottomSm=marginBottom,
       ~style="",
-      ~color=Colors.gray7,
+      ~color=?,
     ) => {
   let children_ = React.string(value);
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   let style_ = size =>
     Css.merge(
       Styles.[
         fontSize(size),
         fontWeight(weight),
-        textColor(color),
+        textColor(color->Belt.Option.getWithDefault(theme.textPrimary)),
         textAlign(align),
         lineHeight,
         mb(~mb=marginBottom, ~mbSm=marginBottomSm, ()),

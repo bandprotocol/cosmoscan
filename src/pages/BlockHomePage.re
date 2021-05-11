@@ -1,12 +1,12 @@
 let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <TBody
     key={
       switch (blockSub) {
       | Data({height}) => height |> ID.Block.toString
       | _ => reserveIndex |> string_of_int
       }
-    }
-    paddingH={`px(24)}>
+    }>
     <Row alignItems=Row.Center>
       <Col col=Col.Two>
         {switch (blockSub) {
@@ -23,6 +23,7 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
              block=true
              code=true
              ellipsis=true
+             color={theme.textPrimary}
            />
          | _ => <LoadingCensorBar fullWidth=true height=15 />
          }}
@@ -41,7 +42,13 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
       <Col col=Col.One>
         <div className={CssHelper.flexBox(~justify=`center, ())}>
           {switch (blockSub) {
-           | Data({txn}) => <Text value={txn |> Format.iPretty} code=true weight=Text.Medium />
+           | Data({txn}) =>
+             <Text
+               value={txn |> Format.iPretty}
+               code=true
+               weight=Text.Medium
+               color={theme.textPrimary}
+             />
            | _ => <LoadingCensorBar width=40 height=15 />
            }}
         </div>
@@ -50,17 +57,8 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
           {switch (blockSub) {
            | Data({timestamp}) =>
-             <Timestamp.Grid
-               time=timestamp
-               size=Text.Md
-               weight=Text.Regular
-               textAlign=Text.Right
-             />
-           | _ =>
-             <>
-               <LoadingCensorBar width=70 height=15 />
-               <LoadingCensorBar width=80 height=15 mt=5 />
-             </>
+             <Timestamp time=timestamp size=Text.Md weight=Text.Regular textAlign=Text.Right />
+           | _ => <LoadingCensorBar width=130 height=15 />
            }}
         </div>
       </Col>
@@ -70,16 +68,17 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
 
 let renderBodyMobile = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
   switch (blockSub) {
-  | Data({height, timestamp, validator, txn}) =>
+  | Data({height, timestamp, hash, validator, txn}) =>
     <MobileCard
       values=InfoMobileCard.[
         ("Block", Height(height)),
-        ("Timestamp", Timestamp(timestamp)),
+        ("Block Hash", BlockHash(hash)),
         (
           "Proposer",
           Validator(validator.operatorAddress, validator.moniker, validator.identity),
         ),
         ("Txn", Count(txn)),
+        ("Timestamp", Timestamp(timestamp)),
       ]
       key={height |> ID.Block.toString}
       idx={height |> ID.Block.toString}
@@ -88,6 +87,7 @@ let renderBodyMobile = (reserveIndex, blockSub: ApolloHooks.Subscription.variant
     <MobileCard
       values=InfoMobileCard.[
         ("Block", Loading(70)),
+        ("Block Hash", Loading(100)),
         ("Timestamp", Loading(166)),
         ("Proposer", Loading(136)),
         ("Txn", Loading(20)),
@@ -103,12 +103,14 @@ let make = () => {
   let blocksSub = BlockSub.getList(~pageSize=10, ~page=1, ());
   let isMobile = Media.isMobile();
 
-  <Section>
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+  <Section ptSm=32 pbSm=32>
     <div className=CssHelper.container id="blocksSection">
       <div className=CssHelper.mobileSpacing>
         <Row alignItems=Row.Center marginBottom=40 marginBottomSm=24>
           <Col col=Col.Twelve>
-            <Heading value="All Blocks" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
+            <Heading value="Blocks" size=Heading.H2 marginBottom=16 marginBottomSm=8 />
             {switch (blocksSub) {
              | Data(blocks) =>
                <Heading
@@ -120,78 +122,82 @@ let make = () => {
                    ++ " In total"
                  }
                  size=Heading.H3
+                 weight=Heading.Thin
+                 color={theme.textSecondary}
                />
              | _ => <LoadingCensorBar width=65 height=21 />
              }}
           </Col>
         </Row>
-        {isMobile
-           ? React.null
-           : <THead>
-               <Row alignItems=Row.Center>
-                 <Col col=Col.Two>
-                   <Text
-                     block=true
-                     value="Block"
-                     size=Text.Md
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                   />
-                 </Col>
-                 <Col col=Col.Four>
-                   <Text
-                     block=true
-                     value="Block Hash"
-                     size=Text.Md
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                   />
-                 </Col>
-                 <Col col=Col.Three>
-                   <Text
-                     block=true
-                     value="Proposer"
-                     size=Text.Md
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                   />
-                 </Col>
-                 <Col col=Col.One>
-                   <Text
-                     block=true
-                     value="Txn"
-                     size=Text.Md
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                     align=Text.Center
-                   />
-                 </Col>
-                 <Col col=Col.Two>
-                   <Text
-                     block=true
-                     value="Timestamp"
-                     size=Text.Md
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                     align=Text.Right
-                   />
-                 </Col>
-               </Row>
-             </THead>}
-        {switch (blocksSub) {
-         | Data(blocks) =>
-           blocks
-           ->Belt_Array.mapWithIndex((i, e) =>
-               isMobile ? renderBodyMobile(i, Sub.resolve(e)) : renderBody(i, Sub.resolve(e))
-             )
-           ->React.array
-         | _ =>
-           Belt_Array.make(10, ApolloHooks.Subscription.NoData)
-           ->Belt_Array.mapWithIndex((i, noData) =>
-               isMobile ? renderBodyMobile(i, noData) : renderBody(i, noData)
-             )
-           ->React.array
-         }}
+        <Table>
+          {isMobile
+             ? React.null
+             : <THead>
+                 <Row alignItems=Row.Center>
+                   <Col col=Col.Two>
+                     <Text
+                       block=true
+                       value="Block"
+                       size=Text.Sm
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                     />
+                   </Col>
+                   <Col col=Col.Four>
+                     <Text
+                       block=true
+                       value="Block Hash"
+                       size=Text.Sm
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                     />
+                   </Col>
+                   <Col col=Col.Three>
+                     <Text
+                       block=true
+                       value="Proposer"
+                       size=Text.Sm
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                     />
+                   </Col>
+                   <Col col=Col.One>
+                     <Text
+                       block=true
+                       value="Txn"
+                       size=Text.Sm
+                       weight=Text.Semibold
+                       align=Text.Center
+                       transform=Text.Uppercase
+                     />
+                   </Col>
+                   <Col col=Col.Two>
+                     <Text
+                       block=true
+                       value="Timestamp"
+                       size=Text.Sm
+                       weight=Text.Semibold
+                       align=Text.Right
+                       transform=Text.Uppercase
+                     />
+                   </Col>
+                 </Row>
+               </THead>}
+          {switch (blocksSub) {
+           | Data(blocks) =>
+             blocks
+             ->Belt_Array.mapWithIndex((i, e) =>
+                 isMobile ? renderBodyMobile(i, Sub.resolve(e)) : renderBody(i, Sub.resolve(e))
+               )
+             ->React.array
+           | _ =>
+             Belt_Array.make(10, ApolloHooks.Subscription.NoData)
+             ->Belt_Array.mapWithIndex((i, noData) =>
+                 isMobile ? renderBodyMobile(i, noData) : renderBody(i, noData)
+               )
+             ->React.array
+           }}
+        </Table>
       </div>
     </div>
   </Section>;

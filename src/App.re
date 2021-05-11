@@ -7,7 +7,6 @@ module Styles = {
   let routeContainer =
     style([
       minHeight(`calc((`sub, `vh(100.), `px(200)))),
-      paddingBottom(`px(20)),
       Media.mobile([paddingBottom(`zero)]),
     ]);
 };

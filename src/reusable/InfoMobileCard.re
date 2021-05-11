@@ -31,6 +31,7 @@ type t =
   | Percentage(float, option(int))
   | Timestamp(MomentRe.Moment.t)
   | TxHash(Hash.t, int)
+  | BlockHash(Hash.t)
   | Validator(Address.t, string, string)
   | Messages(Hash.t, list(TxSub.Msg.t), bool, string)
   | PubKey(PubKey.t)
@@ -60,13 +61,15 @@ module Styles = {
 
 [@react.component]
 let make = (~info) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   switch (info) {
   | Address(address, width, accountType) =>
     <div className={Styles.addressContainer(width)}>
       <AddressRender address position=AddressRender.Text clickable=true accountType />
     </div>
   | Height(height) =>
-    <div className=Styles.vFlex> <TypeID.Block id=height position=TypeID.Subtitle /> </div>
+    <div className=Styles.vFlex> <TypeID.Block id=height position=TypeID.Text /> </div>
   | Coin({value, hasDenom}) =>
     <AmountRender coins=value pos={hasDenom ? AmountRender.TxIndex : Fee} />
   | Count(value) => <Text value={value |> Format.iPretty} size=Text.Md />
@@ -156,6 +159,15 @@ let make = (~info) => {
     />
   | PubKey(publicKey) => <PubKeyRender alignLeft=true pubKey=publicKey display=`block />
   | TxHash(txHash, width) => <TxLink txHash width size=Text.Lg />
+  | BlockHash(hash) =>
+    <Text
+      value={hash |> Hash.toHex(~upper=true)}
+      weight=Text.Medium
+      block=true
+      code=true
+      ellipsis=true
+      color={theme.textPrimary}
+    />
   | Messages(txHash, messages, success, errMsg) =>
     <TxMessages txHash messages success errMsg width=360 />
   | Badge({name, category}) => <MsgBadge name msgType=category />

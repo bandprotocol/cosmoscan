@@ -182,6 +182,10 @@ module Styles = {
     | Normal => style([textTransform(`unset)]);
 
   let breakAll = style([wordBreak(`breakAll)]);
+
+  let textColor = color_ => {
+    style([color(color_)]);
+  };
 };
 
 [@react.component]
@@ -206,6 +210,8 @@ let make =
       ~tooltipLeaveDelay=100,
       ~special=false,
     ) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   tooltipItem == React.null
     ? <span
         className={Css.merge([
@@ -215,11 +221,11 @@ let make =
           Styles.letterSpacing(spacing),
           Styles.lineHeight(height),
           Styles.textTransform(transform),
+          Styles.textColor(color->Belt.Option.getWithDefault(theme.textSecondary)),
           nowrap ? Styles.noWrap : "",
           block ? Styles.block : "",
           code ? Styles.code : "",
           special ? Styles.special : "",
-          color->Belt.Option.mapWithDefault("", c => Css.style([Css.color(c)])),
           ellipsis ? Styles.ellipsis : "",
           underline ? Styles.underline : "",
           breakAll ? Styles.breakAll : "",
@@ -238,10 +244,10 @@ let make =
             Styles.textAlign(align),
             Styles.letterSpacing(spacing),
             Styles.lineHeight(height),
+            Styles.textColor(color->Belt.Option.getWithDefault(theme.textSecondary)),
             nowrap ? Styles.noWrap : "",
             block ? Styles.block : "",
             code ? Styles.code : "",
-            color->Belt.Option.mapWithDefault("", c => Css.style([Css.color(c)])),
             ellipsis ? Styles.ellipsis : "",
             underline ? Styles.underline : "",
             breakAll ? Styles.breakAll : "",
