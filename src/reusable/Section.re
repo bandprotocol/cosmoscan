@@ -10,12 +10,13 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~children, ~pt=24, ~pb=24, ~ptSm=pt, ~pbSm=pb, ~bg=Colors.bg) => {
+let make = (~children, ~pt=24, ~pb=24, ~ptSm=pt, ~pbSm=pb, ~bg=Colors.bg, ~style="") => {
   let css =
     Css.merge([
       Styles.bgColor(bg),
       Styles.base(~pt, ~pb, ()),
       Styles.mobile(~ptSm, ~pbSm, ()),
+      style,
     ]);
 
   <section className=css> children </section>;

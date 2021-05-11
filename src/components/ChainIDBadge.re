@@ -1,65 +1,61 @@
 module Styles = {
   open Css;
 
-  let version =
+  let version = (theme: Theme.t, isDarkMode) =>
     style([
       display(`flex),
-      borderRadius(`px(10)),
-      backgroundColor(Colors.blue1),
-      padding2(~v=`pxFloat(5.), ~h=`px(10)),
-      minWidth(`px(120)),
-      justifyContent(`center),
+      borderRadius(`px(8)),
+      border(`px(1), `solid, isDarkMode ? theme.secondaryBg : theme.textSecondary),
+      backgroundColor(theme.secondaryBg),
+      padding2(~v=`px(8), ~h=`px(10)),
+      minWidth(`px(153)),
+      justifyContent(`spaceBetween),
       alignItems(`center),
-      marginLeft(Spacing.xs),
-      marginTop(`px(1)),
       position(`relative),
       cursor(`pointer),
       zIndex(3),
-      Media.mobile([padding2(~v=`pxFloat(5.), ~h=`px(10))]),
+      Media.mobile([padding2(~v=`px(5), ~h=`px(10))]),
       Media.smallMobile([minWidth(`px(90))]),
     ]);
 
-  let versionLoading =
+  let versionLoading = (theme: Theme.t) =>
     style([
       display(`flex),
-      borderRadius(`px(10)),
-      backgroundColor(Colors.blue1),
+      borderRadius(`px(8)),
+      backgroundColor(theme.lightenBlue),
       overflow(`hidden),
-      height(`px(16)),
+      minWidth(`px(153)),
       justifyContent(`center),
       alignItems(`center),
       marginLeft(Spacing.xs),
       marginTop(`px(1)),
     ]);
 
-  let downIcon = show =>
+  let dropdown = (show, theme: Theme.t, isDarkMode) =>
     style([
-      width(`px(6)),
-      marginTop(`px(1)),
-      transform(`rotate(`deg(show ? 180. : 0.))),
-      Media.mobile([width(`px(8)), height(`px(6))]),
-    ]);
-
-  let dropdown = show =>
-    style([
-      display(`flex),
-      borderRadius(`px(10)),
-      flexDirection(`column),
-      justifyContent(`center),
       position(`absolute),
       width(`percent(100.)),
-      alignItems(`center),
-      backgroundColor(Colors.blue1),
+      border(`px(1), `solid, isDarkMode ? theme.secondaryBg : theme.textPrimary),
+      backgroundColor(theme.secondaryBg),
+      borderRadius(`px(8)),
       transition(~duration=200, "all"),
-      top(`px(25)),
+      top(`percent(110.)),
+      left(`zero),
       height(`auto),
-      padding4(~top=`pxFloat(4.), ~bottom=`zero, ~left=`px(8), ~right=`px(8)),
       opacity(show ? 1. : 0.),
       pointerEvents(show ? `auto : `none),
+      overflow(`hidden),
       Media.mobile([top(`px(35))]),
     ]);
 
-  let link = style([textDecoration(`none)]);
+  let link = (theme: Theme.t) =>
+    style([
+      textDecoration(`none),
+      backgroundColor(theme.secondaryBg),
+      display(`block),
+      padding2(~v=`px(5), ~h=`px(10)),
+      hover([backgroundColor(theme.dropdownHover)]),
+    ]);
 };
 
 type chainID =
@@ -125,23 +121,25 @@ let make = () =>
     let%Sub tracking = trackingSub;
     let currentChainID = tracking.chainID->parseChainID;
 
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
     <div
-      className=Styles.version
+      className={Styles.version(theme, isDarkMode)}
       onClick={event => {
         setShow(oldVal => !oldVal);
         ReactEvent.Mouse.stopPropagation(event);
       }}>
       <Text
         value={currentChainID->getName}
-        size=Text.Sm
-        color=Colors.blue6
+        color={theme.textSecondary}
         nowrap=true
         weight=Text.Semibold
-        spacing={Text.Em(0.03)}
       />
       <HSpacing size=Spacing.sm />
-      <img src=Images.triangleDown className={Styles.downIcon(show)} />
-      <div className={Styles.dropdown(show)}>
+      {show
+         ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
+         : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
+      <div className={Styles.dropdown(show, theme, isDarkMode)}>
         {[|GuanYuMainnet, GuanYuTestnet|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
@@ -149,18 +147,10 @@ let make = () =>
              <a
                href={getLink(chainID)}
                key=name
-               className=Styles.link
+               className={Styles.link(theme)}
                target="_blank"
                rel="noopener">
-               <Text
-                 value=name
-                 size=Text.Sm
-                 color=Colors.blue6
-                 nowrap=true
-                 weight=Text.Semibold
-                 spacing={Text.Em(0.03)}
-               />
-               <VSpacing size={`px(8)} />
+               <Text value=name color={theme.textSecondary} nowrap=true weight=Text.Semibold />
              </a>;
            })
          ->React.array}
@@ -171,9 +161,15 @@ let make = () =>
   |> Sub.default(
        _,
        {
-         let width = Media.isSmallMobile() ? 80 : 110;
-         <div className=Styles.versionLoading>
-           <LoadingCensorBar width height=20 colorBase=Colors.blue1 colorLighter=Colors.white />
+         let width = Media.isSmallMobile() ? 80 : 153;
+         let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+         <div className={Styles.versionLoading(theme)}>
+           <LoadingCensorBar
+             width
+             height=30
+             colorBase={theme.lightenBlue}
+             colorLighter=Colors.white
+           />
          </div>;
        },
      );

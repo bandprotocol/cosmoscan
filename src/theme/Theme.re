@@ -7,9 +7,15 @@ type mode_t =
 type color_t = Types.Color.t;
 
 type t = {
+  baseBlue: color_t,
+  lightenBlue: color_t,
+  lightBlue: color_t,
+  darkBlue: color_t,
+  darkenBlue: color_t,
+  white: color_t,
+  black: color_t,
   textPrimary: color_t,
-  textSecondaty: color_t,
-  primaryColor: color_t,
+  textSecondary: color_t,
   mainBg: color_t,
   secondaryBg: color_t,
   successColor: color_t,
@@ -17,31 +23,61 @@ type t = {
   failColor: color_t,
   inputColor: color_t,
   activeColor: color_t,
+  dropdownHover: color_t,
 };
 
-let get =
+// Default Colors
+
+let baseBlue = hex("4520E6");
+let lightenBlue = hex("B4A5F5");
+let lightBlue = hex("6A4CEB");
+let darkBlue = hex("3719B8");
+let darkenBlue = hex("29138A");
+let black = hex("000000");
+let white = hex("ffffff");
+
+let successColor = hex("5FD3C8");
+let pendingColor = hex("F4D23E");
+let activeColor = hex("5FD3C8");
+let failColor = hex("E84A4B");
+
+let get: mode_t => t =
   fun
   | Day => {
+      baseBlue,
+      lightenBlue,
+      lightBlue,
+      darkBlue,
+      darkenBlue,
+      white,
+      black,
+      successColor,
+      pendingColor,
+      activeColor,
+      failColor,
       textPrimary: hex("303030"),
-      textSecondaty: hex("7D7D7D"),
-      primaryColor: hex("4520E6"),
-      mainBg: hex("fcfcfc"),
-      secondaryBg: hex("fff"),
-      successColor: hex("5FD3C8"),
-      pendingColor: hex("F4D23E"),
-      activeColor: hex("5FD3C8"),
-      failColor: hex("E84A4B"),
+      textSecondary: hex("7D7D7D"),
+      mainBg: hex("ffffff"),
+      secondaryBg: hex("FCFCFC"),
       inputColor: hex("2C2C2C"),
+      dropdownHover: hex("EDEDED"),
     }
   | Dark => {
+      baseBlue,
+      lightenBlue,
+      lightBlue,
+      darkBlue,
+      darkenBlue,
+      white,
+      black,
+      successColor,
+      pendingColor,
+      activeColor,
+      failColor,
       textPrimary: hex("ffffff"),
-      textSecondaty: hex("9A9A9A"),
-      primaryColor: hex("4520E6"),
+      textSecondary: hex("9A9A9A"),
       mainBg: hex("000000"),
       secondaryBg: hex("1B1B1B"),
-      successColor: hex("5FD3C8"),
-      pendingColor: hex("F4D23E"),
-      activeColor: hex("5FD3C8"),
-      failColor: hex("E84A4B"),
       inputColor: hex("ffffff"),
+      dropdownHover: hex("0F0F0F"),
     };

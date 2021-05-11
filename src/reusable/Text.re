@@ -172,6 +172,8 @@ module Styles = {
       ]),
     ]);
 
+  let special = style([fontFamilies([`custom("Lexend Exa"), `monospace])]);
+
   let textTransform =
     fun
     | Uppercase => style([textTransform(`uppercase)])
@@ -202,6 +204,7 @@ let make =
       ~tooltipItem=React.null,
       ~tooltipPlacement=AlignBottom,
       ~tooltipLeaveDelay=100,
+      ~special=false,
     ) => {
   tooltipItem == React.null
     ? <span
@@ -215,6 +218,7 @@ let make =
           nowrap ? Styles.noWrap : "",
           block ? Styles.block : "",
           code ? Styles.code : "",
+          special ? Styles.special : "",
           color->Belt.Option.mapWithDefault("", c => Css.style([Css.color(c)])),
           ellipsis ? Styles.ellipsis : "",
           underline ? Styles.underline : "",

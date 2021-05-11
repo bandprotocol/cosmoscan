@@ -3,7 +3,7 @@ module Styles = {
 
   let container =
     style([
-      maxWidth(`px(600)),
+      maxWidth(`px(340)),
       width(`percent(100.)),
       height(`percent(100.)),
       position(`relative),
@@ -18,20 +18,21 @@ module Styles = {
       width(`px(15)),
       height(`px(15)),
     ]);
-  let search =
+  let search = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
-      background(white),
-      borderRadius(`px(4)),
+      color(theme.textPrimary),
+      background(theme.secondaryBg),
+      borderRadius(`px(8)),
       padding4(~left=`px(15), ~right=Spacing.md, ~top=`px(10), ~bottom=`px(10)),
       boxShadows([
         Shadow.box(~x=`zero, ~y=`px(1), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.07))),
         Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(12), Css.rgba(0, 0, 0, `num(0.02))),
       ]),
       fontSize(`px(12)),
-      outline(`px(1), `none, white),
-      border(`px(1), `solid, white),
-      placeholder([color(Colors.blueGray3)]),
+      outline(`px(1), `none, theme.secondaryBg),
+      border(`px(1), `solid, theme.secondaryBg),
+      placeholder([color(theme.textSecondary)]),
     ]);
 
   let button =
@@ -40,7 +41,7 @@ module Styles = {
       right(`zero),
       width(`px(45)),
       height(`percent(100.)),
-      backgroundColor(Colors.blue1),
+      backgroundColor(`transparent),
       borderTopRightRadius(`px(4)),
       borderBottomRightRadius(`px(4)),
       fontSize(`px(14)),
@@ -60,7 +61,6 @@ module SearchResults = {
         left(`zero),
         right(`px(110)),
         top(`percent(90.)),
-        backgroundColor(white),
         borderRadius(`px(4)),
         boxShadows([
           Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.07))),
@@ -177,6 +177,8 @@ let make = () => {
   let ({searchTerm, resultState}, dispatch) =
     React.useReducer(reducer, {searchTerm: "", resultState: Hidden});
 
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.container>
     <input
       onFocus={_evt => dispatch(StartTyping)}
@@ -198,7 +200,7 @@ let make = () => {
         }
       }
       value=searchTerm
-      className=Styles.search
+      className={Styles.search(theme)}
       placeholder="Search Address / TXN Hash / Block"
     />
     {switch (resultState) {
@@ -211,7 +213,7 @@ let make = () => {
         Route.redirect(searchTerm |> Route.search);
         dispatch(ChangeSearchTerm(""));
       }}>
-      <img src=Images.searchIcon className=Styles.searchIcon />
+      <Icon name="far fa-search" color={theme.textPrimary} size=16 />
     </button>
   </div>;
 };
