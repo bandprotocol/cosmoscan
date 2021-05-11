@@ -24,6 +24,7 @@ type t = {
   inputColor: color_t,
   activeColor: color_t,
   dropdownHover: color_t,
+  tableRowBorderColor: color_t,
 };
 
 // Default Colors
@@ -58,9 +59,10 @@ let get: mode_t => t =
       textPrimary: hex("303030"),
       textSecondary: hex("7D7D7D"),
       mainBg: hex("ffffff"),
-      secondaryBg: hex("FCFCFC"),
+      secondaryBg: hex("ffffff"),
       inputColor: hex("2C2C2C"),
       dropdownHover: hex("EDEDED"),
+      tableRowBorderColor: hex("EDEDED"),
     }
   | Dark => {
       baseBlue,
@@ -80,4 +82,5 @@ let get: mode_t => t =
       secondaryBg: hex("1B1B1B"),
       inputColor: hex("ffffff"),
       dropdownHover: hex("0F0F0F"),
+      tableRowBorderColor: hex("353535"),
     };

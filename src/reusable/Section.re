@@ -10,10 +10,11 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~children, ~pt=24, ~pb=24, ~ptSm=pt, ~pbSm=pb, ~bg=Colors.bg, ~style="") => {
+let make = (~children, ~pt=60, ~pb=60, ~ptSm=pt, ~pbSm=pb, ~bg=?, ~style="") => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let css =
     Css.merge([
-      Styles.bgColor(bg),
+      Styles.bgColor(bg->Belt.Option.getWithDefault(theme.mainBg)),
       Styles.base(~pt, ~pb, ()),
       Styles.mobile(~ptSm, ~pbSm, ()),
       style,

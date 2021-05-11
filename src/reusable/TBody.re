@@ -1,20 +1,17 @@
 module Styles = {
   open Css;
 
-  let containerBase = (pv, ph) =>
+  let containerBase = (pv, ph, theme: Theme.t) =>
     style([
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(2), Css.rgba(0, 0, 0, `num(0.05))),
-      ),
-      backgroundColor(white),
-      marginBottom(`px(1)),
+      backgroundColor(theme.secondaryBg),
+      borderTop(`px(1), `solid, theme.tableRowBorderColor),
       padding2(~v=pv, ~h=ph),
       overflow(`hidden),
     ]);
-  let minHeight = height => style([minHeight(`px(height))]);
 };
 
 [@react.component]
-let make = (~children, ~paddingV=`px(15), ~paddingH=`zero) => {
-  <div className={Css.merge([Styles.containerBase(paddingV, paddingH)])}> children </div>;
+let make = (~children, ~paddingV=`px(20), ~paddingH=`zero) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  <div className={Css.merge([Styles.containerBase(paddingV, paddingH, theme)])}> children </div>;
 };

@@ -1,17 +1,20 @@
 module Styles = {
   open Css;
-  let cardContainer =
+  let cardContainer = (theme: Theme.t) =>
     style([
       position(`relative),
-      padding(`px(10)),
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
+      padding2(~v=`px(22), ~h=`zero),
+      selector(
+        "+ div",
+        [marginTop(`px(10)), borderTop(`px(1), `solid, theme.tableRowBorderColor)],
       ),
-      selector("+ div", [marginTop(`px(10))]),
     ]);
   let cardItem = (alignItems_, isOneColumn) =>
-    style([display(isOneColumn ? `block : `flex), alignItems(alignItems_), padding(`px(5))]);
+    style([
+      display(isOneColumn ? `block : `flex),
+      alignItems(alignItems_),
+      padding2(~v=`px(9), ~h=`zero),
+    ]);
   let cardItemHeading =
     style([
       display(`flex),
@@ -35,12 +38,10 @@ module Styles = {
       marginTop(`px(10)),
       cursor(`pointer),
     ]);
+
   let infoCardContainer =
-    style([
-      backgroundColor(Colors.profileBG),
-      padding(`px(10)),
-      selector("+ div", [marginTop(`px(10))]),
-    ]);
+    style([padding(`px(10)), selector("+ div", [marginTop(`px(10))])]);
+
   let infoCardContainerWrapper = show => {
     style([
       marginTop(show ? `px(16) : `zero),
@@ -81,7 +82,7 @@ module InnerPanel = {
                  switch (value) {
                  | InfoMobileCard.Nothing =>
                    <div className=Styles.cardItemHeadingLg>
-                     <Text key=each value=each size=Text.Sm weight=Text.Bold color=Colors.gray7 />
+                     <Text key=each value=each size=Text.Sm transform=Text.Uppercase />
                    </div>
                  | _ =>
                    <Text
@@ -89,7 +90,7 @@ module InnerPanel = {
                      value=each
                      size=Text.Sm
                      weight=Text.Semibold
-                     color=Colors.gray7
+                     transform=Text.Uppercase
                    />
                  }
                })
@@ -106,7 +107,9 @@ module InnerPanel = {
 [@react.component]
 let make = (~values, ~idx, ~status=?, ~requestStatus=?, ~styles="", ~panels=[]) => {
   let (show, setShow) = React.useState(_ => false);
-  <div className={Css.merge([Styles.cardContainer, styles])}>
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+  <div className={Css.merge([Styles.cardContainer(theme), styles])}>
     {switch (status) {
      | Some(success) => <img src={success ? Images.success : Images.fail} className=Styles.logo />
      | None => React.null

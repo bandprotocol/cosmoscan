@@ -1,8 +1,15 @@
 module Styles = {
   open Css;
 
-  let container = w =>
-    style([display(`flex), cursor(`pointer), width(w), alignItems(`center)]);
+  let container = (w, theme: Theme.t) =>
+    style([
+      display(`flex),
+      cursor(`pointer),
+      width(w),
+      alignItems(`center),
+      selector("> span:hover", [color(theme.baseBlue)]),
+      selector("> span", [transition(~duration=200, "all")]),
+    ]);
 };
 
 [@react.component]
@@ -11,14 +18,16 @@ let make =
       ~validatorAddress: Address.t,
       ~moniker: string,
       ~identity=?,
-      ~weight=Text.Regular,
+      ~weight=Text.Semibold,
       ~size=Text.Md,
       ~underline=false,
       ~width=`auto,
-      ~avatarWidth=25,
+      ~avatarWidth=20,
     ) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <Link
-    className={Styles.container(width)}
+    className={Styles.container(width, theme)}
     route={Route.ValidatorIndexPage(validatorAddress, Reports)}>
     {switch (identity) {
      | Some(identity') =>
@@ -27,10 +36,8 @@ let make =
      }}
     <Text
       value=moniker
-      color=Colors.gray7
-      code=true
+      color={theme.textPrimary}
       weight
-      spacing={Text.Em(0.02)}
       block=true
       size
       nowrap=true
