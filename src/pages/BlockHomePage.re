@@ -58,7 +58,7 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
           {switch (blockSub) {
            | Data({timestamp}) =>
              <Timestamp time=timestamp size=Text.Md weight=Text.Regular textAlign=Text.Right />
-           | _ => <> <LoadingCensorBar width=130 height=15 /> </>
+           | _ => <LoadingCensorBar width=130 height=15 />
            }}
         </div>
       </Col>
