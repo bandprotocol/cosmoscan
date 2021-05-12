@@ -28,6 +28,7 @@ let make = (~coins, ~pos=Msg) => {
          weight=Text.Semibold
          block=true
          nowrap=true
+         code=true
        />
      }}
     <HSpacing size=Spacing.sm />
