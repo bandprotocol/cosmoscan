@@ -198,6 +198,7 @@ a:not(:hover) {
 html,
 body {
   max-width: 100vw;
+  height: 100%;
 }
 
 body {

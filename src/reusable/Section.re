@@ -10,7 +10,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~children, ~pt=60, ~pb=60, ~ptSm=pt, ~pbSm=pb, ~bg=?, ~style="") => {
+let make = (~children, ~pt=60, ~pb=60, ~ptSm=32, ~pbSm=32, ~bg=?, ~style="") => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let css =
     Css.merge([

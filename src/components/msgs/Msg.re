@@ -93,7 +93,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 85)}>
+           <div className={Styles.withBg(Theme.baseBlue, 85)}>
              <Text
                value="CREATE CLIENT"
                size=Text.Xs
@@ -128,7 +128,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 85)}>
+           <div className={Styles.withBg(Theme.baseBlue, 85)}>
              <Text
                value="UPDATE CLIENT"
                size=Text.Xs
@@ -163,7 +163,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 85)}>
+           <div className={Styles.withBg(Theme.baseBlue, 85)}>
              <Text
                value="SUBMIT CLIENT MISBEHAVIOUR"
                size=Text.Xs
@@ -198,7 +198,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 140)}>
+           <div className={Styles.withBg(Theme.baseBlue, 140)}>
              <Text
                value="CONNECTION OPEN INIT"
                size=Text.Xs
@@ -233,7 +233,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 120)}>
+           <div className={Styles.withBg(Theme.baseBlue, 120)}>
              <Text
                value="CONNECTION OPEN TRY"
                size=Text.Xs
@@ -268,7 +268,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 130)}>
+           <div className={Styles.withBg(Theme.baseBlue, 130)}>
              <Text
                value="CONNECTION OPEN ACK"
                size=Text.Xs
@@ -303,7 +303,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 140)}>
+           <div className={Styles.withBg(Theme.baseBlue, 140)}>
              <Text
                value="CONNECTION OPEN CONFIRM"
                size=Text.Xs
@@ -338,7 +338,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 100)}>
+           <div className={Styles.withBg(Theme.baseBlue, 100)}>
              <Text
                value="CHANNEL OPEN INIT"
                size=Text.Xs
@@ -373,7 +373,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 100)}>
+           <div className={Styles.withBg(Theme.baseBlue, 100)}>
              <Text
                value="CHANNEL OPEN TRY"
                size=Text.Xs
@@ -408,7 +408,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 100)}>
+           <div className={Styles.withBg(Theme.baseBlue, 100)}>
              <Text
                value="CHANNEL OPEN ACK"
                size=Text.Xs
@@ -443,7 +443,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 130)}>
+           <div className={Styles.withBg(Theme.baseBlue, 130)}>
              <Text
                value="CHANNEL OPEN CONFIRM"
                size=Text.Xs
@@ -478,7 +478,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 85)}>
+           <div className={Styles.withBg(Theme.baseBlue, 85)}>
              <Text
                value="CHANNEL CLOSE INIT"
                size=Text.Xs
@@ -513,7 +513,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=signer /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 100)}>
+           <div className={Styles.withBg(Theme.baseBlue, 100)}>
              <Text
                value="CHANNEL CLOSE CONFIRM"
                size=Text.Xs
@@ -548,7 +548,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=sender /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 50)}>
+           <div className={Styles.withBg(Theme.baseBlue, 50)}>
              <Text
                value="PACKET"
                size=Text.Xs
@@ -587,7 +587,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
        <div className={Styles.rowWithWidth(width)}>
          <div className={Styles.withWidth(120)}> <AddressRender address=sender /> </div>
          <div className="labelContainer">
-           <div className={Styles.withBg(Colors.blue1, 85)}>
+           <div className={Styles.withBg(Theme.baseBlue, 85)}>
              <Text
                value="TIMEOUT"
                size=Text.Xs

@@ -62,8 +62,24 @@ module ComponentCreator = (RawID: ID.IDSig) => {
   };
 };
 
+module PlainLinkCreator = (RawID: ID.IDSig) => {
+  [@react.component]
+  let make = (~id, ~children, ~style="") => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Link className={Css.merge([Styles.link(theme), style])} route={id |> RawID.getRoute}>
+      children
+    </Link>;
+  };
+};
+
 module DataSource = ComponentCreator(ID.DataSource);
 module OracleScript = ComponentCreator(ID.OracleScript);
 module Request = ComponentCreator(ID.Request);
 module Block = ComponentCreator(ID.Block);
 module Proposal = ComponentCreator(ID.Proposal);
+
+module DataSourceLink = PlainLinkCreator(ID.DataSource);
+module OracleScriptLink = PlainLinkCreator(ID.OracleScript);
+module RequestLink = PlainLinkCreator(ID.Request);
+module BlockLink = PlainLinkCreator(ID.Block);
+module ProposalLink = PlainLinkCreator(ID.Proposal);

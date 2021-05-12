@@ -19,54 +19,45 @@ module Styles = {
       width(`px(165)),
     ]);
   };
-  let sortDropdownItem = isActive => {
+  let sortDropdownItem = (isActive, theme: Theme.t) => {
     style([
       backgroundColor(
         {
-          isActive ? Colors.blue1 : Colors.white;
+          isActive ? theme.dropdownHover : theme.secondaryBg;
         },
       ),
+      transition(~duration=200, "all"),
       cursor(`pointer),
-      display(`flex),
-      alignItems(`center),
       padding2(~v=`px(8), ~h=`px(10)),
-      selector("> img", [marginRight(`px(5))]),
     ]);
   };
   let sortDropdownTextItem = {
-    style([
-      paddingRight(`px(15)),
-      cursor(`pointer),
-      after([
-        contentRule(`text("")),
-        backgroundImage(`url(Images.sortDown)),
-        width(`px(8)),
-        height(`px(8)),
-        backgroundRepeat(`noRepeat),
-        backgroundSize(`contain),
-        display(`block),
-        position(`absolute),
-        top(`percent(50.)),
-        right(`zero),
-        transform(translateY(`percent(-50.))),
-      ]),
-    ]);
+    style([paddingRight(`px(15)), cursor(`pointer)]);
   };
+
+  let iconContainer =
+    style([
+      display(`block),
+      position(`absolute),
+      top(`percent(50.)),
+      right(`zero),
+      transform(translateY(`percent(-50.))),
+    ]);
 };
 
 [@react.component]
 let make = (~sortedBy, ~setSortedBy, ~sortList) => {
   let (show, setShow) = React.useState(_ => false);
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.sortDrowdownContainer>
     <div className=Styles.sortDropdownTextItem onClick={_ => setShow(prev => !prev)}>
-      <Text
-        block=true
-        value="Sort By"
-        size=Text.Md
-        weight=Text.Regular
-        color=Colors.gray6
-        align=Text.Right
-      />
+      <Text block=true value="Sort By" align=Text.Right />
+      <div className=Styles.iconContainer>
+        {show
+           ? <Icon name="far fa-angle-up" color={theme.textPrimary} size=14 />
+           : <Icon name="far fa-angle-down" color={theme.textPrimary} size=14 />}
+      </div>
     </div>
     <div className={Styles.sortDrowdownPanel(show)}>
       {sortList
@@ -74,18 +65,17 @@ let make = (~sortedBy, ~setSortedBy, ~sortList) => {
            let isActive = sortedBy == value;
            <div
              key={i |> string_of_int}
-             className={Styles.sortDropdownItem(isActive)}
+             className={Css.merge([
+               Styles.sortDropdownItem(isActive, theme),
+               CssHelper.flexBox(~justify=`spaceBetween, ()),
+             ])}
              onClick={_ => {
                setSortedBy(_ => value);
                setShow(_ => false);
              }}>
-             <Text
-               block=true
-               value=name
-               size=Text.Md
-               weight=Text.Regular
-               color={isActive ? Colors.blue7 : Colors.gray6}
-             />
+             <Text block=true value=name />
+             {isActive
+                ? <Icon name="far fa-check" color={theme.textPrimary} size=12 /> : React.null}
            </div>;
          })
        ->Array.of_list

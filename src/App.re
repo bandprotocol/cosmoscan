@@ -1,8 +1,13 @@
 module Styles = {
   open Css;
 
-  let container =
-    style([width(`percent(100.)), height(`percent(100.)), position(`relative)]);
+  let container = (theme: Theme.t) =>
+    style([
+      width(`percent(100.)),
+      height(`percent(100.)),
+      position(`relative),
+      backgroundColor(theme.mainBg),
+    ]);
 
   let routeContainer =
     style([
@@ -15,8 +20,9 @@ module Styles = {
 let make = () => {
   let currentRoute = ReasonReactRouter.useUrl() |> Route.fromUrl;
   let isMobile = Media.isMobile();
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-  <div className=Styles.container>
+  <div className={Styles.container(theme)}>
     <Header />
     {isMobile
        ? <Section pt=16 pb=16 bg={currentRoute == HomePage ? Colors.highlightBg : Colors.bg}>

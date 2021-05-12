@@ -26,16 +26,15 @@ let make = (~coins, ~pos=Msg) => {
        <Text
          value={coins |> Coin.getBandAmountFromCoins |> Format.fPretty}
          weight=Text.Semibold
-         code=true
          block=true
          nowrap=true
+         code=true
        />
      }}
     <HSpacing size=Spacing.sm />
     {switch (pos) {
-     | Msg => <Text value="BAND" weight=Text.Regular code=true nowrap=true block=true />
-     | TxIndex =>
-       <Text value="BAND" weight=Text.Thin code=true nowrap=true block=true size=Text.Lg />
+     | Msg => <Text value="BAND" weight=Text.Regular nowrap=true block=true />
+     | TxIndex => <Text value="BAND" weight=Text.Regular nowrap=true block=true />
      | Fee => React.null
      }}
   </div>;

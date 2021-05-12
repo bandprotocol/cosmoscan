@@ -21,14 +21,14 @@ module Styles = {
 };
 
 [@react.component]
-let make =
-    (~height=`px(300), ~display=true, ~backgroundColor=Colors.white, ~boxShadow=false, ~children) => {
+let make = (~height=`px(300), ~display=true, ~backgroundColor=?, ~boxShadow=false, ~children) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div
     className={Css.merge([
       Styles.emptyContainer,
       Styles.height(height),
       Styles.display(display),
-      Styles.backgroundColor(backgroundColor),
+      Styles.backgroundColor(backgroundColor->Belt.Option.getWithDefault(theme.secondaryBg)),
       boxShadow ? Styles.boxShadow : "",
     ])}>
     children

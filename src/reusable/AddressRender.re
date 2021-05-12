@@ -8,13 +8,14 @@ module Styles = {
 
   let container = style([display(`flex), cursor(`pointer), overflow(`hidden)]);
 
-  let clickable = isActive =>
+  let clickable = (isActive, theme: Theme.t) =>
     isActive
       ? style([
           pointerEvents(`auto),
-          color(Colors.bandBlue),
-          hover([color(Colors.bandBlue)]),
-          active([color(Colors.bandBlue)]),
+          transition(~duration=200, "all"),
+          color(theme.textPrimary),
+          hover([color(theme.baseBlue)]),
+          active([color(theme.baseBlue)]),
         ])
       : style([
           pointerEvents(`none),
@@ -28,19 +29,10 @@ module Styles = {
   let font =
     fun
     | Title =>
-      style([
-        fontSize(`px(18)),
-        lineHeight(`px(24)),
-        Media.mobile([fontSize(px(14)), lineHeight(`px(18))]),
-      ])
+      style([fontSize(`px(18)), lineHeight(`em(1.41)), Media.mobile([fontSize(px(14))])])
     | Subtitle =>
-      style([
-        fontSize(`px(14)),
-        lineHeight(`px(20)),
-        letterSpacing(`em(0.02)),
-        Media.mobile([fontSize(`px(12))]),
-      ])
-    | Text => style([fontSize(`px(12)), lineHeight(`px(16))]);
+      style([fontSize(`px(14)), lineHeight(`em(1.41)), Media.mobile([fontSize(`px(12))])])
+    | Text => style([fontSize(`px(12)), lineHeight(`em(1.41))]);
 
   let base =
     style([overflow(`hidden), textOverflow(`ellipsis), whiteSpace(`nowrap), display(`block)]);
@@ -55,7 +47,11 @@ module Styles = {
     | Title => style([Media.mobile([width(`percent(90.))])])
     | _ => "";
 
-  let mobileWidth = style([ width(`calc((`sub, `percent(100.), `px(45)))) ,Media.mobile([width(`calc((`sub, `percent(100.), `px(20))))])]);
+  let mobileWidth =
+    style([
+      width(`calc((`sub, `percent(100.), `px(45)))),
+      Media.mobile([width(`calc((`sub, `percent(100.), `px(20))))]),
+    ]);
 };
 
 [@react.component]
@@ -76,11 +72,14 @@ let make =
       ? address |> Address.toOperatorBech32 |> Js.String.sliceToEnd(~from=11)
       : address |> Address.toBech32 |> Js.String.sliceToEnd(~from=4);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <>
     <Link
       className={Css.merge([
         Styles.container,
-        Styles.clickable(clickable),
+        Styles.clickable(clickable, theme),
+        Text.Styles.code,
         Styles.setWidth(position),
         copy ? Styles.mobileWidth : "",
       ])}
@@ -92,7 +91,6 @@ let make =
       <span
         className={Css.merge([
           Styles.base,
-          Text.Styles.code,
           Styles.font(position),
           wordBreak ? Styles.wordBreak : "",
         ])}>

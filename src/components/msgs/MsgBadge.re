@@ -4,11 +4,11 @@ module Styles = {
     style([
       backgroundColor(
         switch (msgType) {
-        | TxSub.Msg.TokenMsg => Colors.bandBlue
-        | ValidatorMsg => Colors.blue12
-        | ProposalMsg => Colors.blue13
-        | DataMsg => Colors.blue14
-        | _ => Colors.bandBlue
+        | TxSub.Msg.TokenMsg => Theme.baseBlue
+        | ValidatorMsg => Theme.baseBlue
+        | ProposalMsg => Theme.baseBlue
+        | DataMsg => Theme.baseBlue
+        | _ => Theme.baseBlue
         },
       ),
       borderRadius(`px(50)),
@@ -25,6 +25,6 @@ let make = (~msgType: TxSub.Msg.msg_cat_t, ~name) => {
       Styles.msgBadge(msgType),
       CssHelper.flexBox(~wrap=`nowrap, ~justify=`center, ()),
     ])}>
-    <Text value=name size=Text.Xs color=Colors.white transform=Text.Uppercase align=Text.Center />
+    <Text value=name size=Text.Sm color=Theme.white transform=Text.Uppercase align=Text.Center />
   </div>;
 };

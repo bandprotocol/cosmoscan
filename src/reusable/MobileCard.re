@@ -23,7 +23,7 @@ module Styles = {
       flexShrink(0.),
       flexBasis(`percent(25.)),
     ]);
-  let logo = style([width(`px(20)), position(`absolute), top(`px(5)), right(`px(8))]);
+  let logo = style([width(`px(20)), position(`absolute), top(`px(25)), right(`zero)]);
   let cardItemHeadingLg = style([padding2(~v=`px(10), ~h=`zero)]);
   let infoContainer = isOneColumn =>
     style([

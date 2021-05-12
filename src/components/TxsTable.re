@@ -12,12 +12,13 @@ module RenderBody = {
         ~txSub: ApolloHooks.Subscription.variant(TxSub.t),
         ~msgTransform: TxSub.Msg.t => TxSub.Msg.t,
       ) => {
-    <TBody paddingH={`px(24)}>
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <TBody>
       <Row alignItems=Row.Start>
-        <Col col=Col.Two>
+        <Col col=Col.Three>
           {switch (txSub) {
-           | Data({txHash}) => <TxLink txHash width=140 />
-           | _ => <LoadingCensorBar width=140 height=15 />
+           | Data({txHash}) => <TxLink txHash width=200 />
+           | _ => <LoadingCensorBar width=200 height=15 />
            }}
         </Col>
         <Col col=Col.One>
@@ -36,19 +37,18 @@ module RenderBody = {
           </div>
         </Col>
         <Col col=Col.Two>
-          <div className={CssHelper.flexBox(~justify=`center, ())}>
-            {switch (txSub) {
-             | Data({gasFee}) =>
-               <Text
-                 block=true
-                 value={gasFee->Coin.getBandAmountFromCoins->Format.fPretty}
-                 align=Text.Center
-               />
-             | _ => <LoadingCensorBar width=65 height=15 />
-             }}
-          </div>
+          {switch (txSub) {
+           | Data({gasFee}) =>
+             <Text
+               block=true
+               value={gasFee->Coin.getBandAmountFromCoins->Format.fPretty}
+               weight=Text.Semibold
+               color={theme.textPrimary}
+             />
+           | _ => <LoadingCensorBar width=65 height=15 />
+           }}
         </Col>
-        <Col col=Col.Six>
+        <Col col=Col.Five>
           {switch (txSub) {
            | Data({messages, txHash, success, errMsg}) =>
              <div>

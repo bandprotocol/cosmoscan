@@ -1,28 +1,27 @@
 module Styles = {
   open Css;
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      position(`relative),
-      Media.mobile([padding(`px(16))]),
-    ]);
   let idContainer = {
     style([
       selector(
-        "> h4",
-        [marginLeft(`px(6)), Media.mobile([marginLeft(`zero), marginTop(`px(16))])],
+        "> h3",
+        [
+          marginLeft(`px(10)),
+          marginRight(`px(10)),
+          Media.mobile([marginLeft(`zero), marginTop(`px(8)), marginBottom(`px(8))]),
+        ],
       ),
     ]);
   };
-  let badgeContainer = {
-    style([Media.mobile([position(`absolute), right(`px(16)), top(`px(16))])]);
-  };
-
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+
+  let proposalLink = (theme: Theme.t) =>
+    style([
+      backgroundColor(theme.baseBlue),
+      borderRadius(`px(8)),
+      width(`px(32)),
+      height(`px(32)),
+      hover([backgroundColor(theme.darkBlue)]),
+    ]);
 };
 
 module ProposalCard = {
@@ -34,10 +33,12 @@ module ProposalCard = {
         ~turnoutRate,
       ) => {
     let isMobile = Media.isMobile();
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <Col key={reserveIndex |> string_of_int} mb=24 mbSm=16>
-      <div className=Styles.infoContainer>
+      <InfoContainer>
         <Row marginBottom=18>
-          <Col col=Col.Eight>
+          <Col col=Col.Eight colSm=Col.Eight>
             <div
               className={Css.merge([
                 CssHelper.flexBox(),
@@ -47,8 +48,13 @@ module ProposalCard = {
               {switch (proposalSub) {
                | Data({id, name}) =>
                  <>
-                   <TypeID.Proposal id position=TypeID.Subtitle />
-                   <Heading size=Heading.H4 value=name />
+                   <TypeID.Proposal id position=TypeID.Title />
+                   <Heading
+                     size=Heading.H3
+                     value=name
+                     color={theme.textSecondary}
+                     weight=Heading.Thin
+                   />
                  </>
                | _ =>
                  isMobile
@@ -58,17 +64,28 @@ module ProposalCard = {
                      </>
                    : <LoadingCensorBar width=270 height=15 />
                }}
+              <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+                {switch (proposalSub) {
+                 | Data({status}) => <ProposalBadge status />
+                 | _ => <LoadingCensorBar width=100 height=15 radius=50 />
+                 }}
+              </div>
             </div>
           </Col>
-          <Col col=Col.Four>
-            <div
-              className={Css.merge([
-                CssHelper.flexBox(~justify=`flexEnd, ()),
-                Styles.badgeContainer,
-              ])}>
+          <Col col=Col.Four colSm=Col.Four>
+            <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
               {switch (proposalSub) {
-               | Data({status}) => <ProposalBadge status />
-               | _ => <LoadingCensorBar width=100 height=15 radius=50 />
+               | Data({id}) =>
+                 <TypeID.ProposalLink id>
+                   <div
+                     className={Css.merge([
+                       Styles.proposalLink(theme),
+                       CssHelper.flexBox(~justify=`center, ()),
+                     ])}>
+                     <Icon name="far fa-arrow-right" color={theme.white} />
+                   </div>
+                 </TypeID.ProposalLink>
+               | _ => <LoadingCensorBar width=100 height=15 />
                }}
             </div>
           </Col>
@@ -81,9 +98,16 @@ module ProposalCard = {
              }}
           </Col>
         </Row>
+        <SeperatedLine />
         <Row>
           <Col col=Col.Four mbSm=16>
-            <Heading value="Proposer" size=Heading.H5 marginBottom=8 />
+            <Heading
+              value="Proposer"
+              size=Heading.H5
+              marginBottom=8
+              weight=Heading.Thin
+              color={theme.textSecondary}
+            />
             {switch (proposalSub) {
              | Data({proposerAddressOpt}) =>
                switch (proposerAddressOpt) {
@@ -109,6 +133,8 @@ module ProposalCard = {
                      }
                    }
                    size=Heading.H5
+                   weight=Heading.Thin
+                   color={theme.textSecondary}
                  />
                | _ => <LoadingCensorBar width=100 height=15 />
                }}
@@ -126,6 +152,7 @@ module ProposalCard = {
                    | Failed => votingEndTime
                    }
                  }
+                 color={theme.textPrimary}
                />
              | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
              }}
@@ -139,8 +166,18 @@ module ProposalCard = {
              | Rejected
              | Failed =>
                <Col col=Col.Four colSm=Col.Five>
-                 <Heading value="Turnout" size=Heading.H5 marginBottom=8 />
-                 <Text value={turnoutRate |> Format.fPercent(~digits=2)} size=Text.Lg />
+                 <Heading
+                   value="Turnout"
+                   size=Heading.H5
+                   marginBottom=8
+                   color={theme.textSecondary}
+                   weight=Heading.Thin
+                 />
+                 <Text
+                   value={turnoutRate |> Format.fPercent(~digits=2)}
+                   size=Text.Lg
+                   color={theme.textPrimary}
+                 />
                </Col>
              }
            | _ =>
@@ -150,7 +187,7 @@ module ProposalCard = {
              </Col>
            }}
         </Row>
-      </div>
+      </InfoContainer>
     </Col>;
   };
 };

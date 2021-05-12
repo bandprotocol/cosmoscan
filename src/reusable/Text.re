@@ -79,33 +79,31 @@ module Styles = {
       | Xs =>
         style([
           fontSize(`px(8)),
-          letterSpacing(`em(0.07)),
-          lineHeight(`em(1.14)),
+          lineHeight(`em(1.41)),
           Media.smallMobile([fontSize(`px(7))]),
         ])
       | Sm =>
         style([
           fontSize(`px(10)),
-          letterSpacing(`em(0.05)),
-          lineHeight(`em(1.14)),
+          lineHeight(`em(1.41)),
           Media.smallMobile([fontSize(`px(8))]),
         ])
       | Md =>
         style([
           fontSize(`px(12)),
-          lineHeight(`px(16)),
+          lineHeight(`em(1.41)),
           Media.smallMobile([fontSize(`px(10))]),
         ])
       | Lg =>
         style([
           fontSize(`px(14)),
-          lineHeight(`px(18)),
+          lineHeight(`em(1.41)),
           Media.smallMobile([fontSize(`px(12))]),
         ])
       | Xl =>
         style([
           fontSize(`px(16)),
-          lineHeight(`px(18)),
+          lineHeight(`em(1.41)),
           Media.smallMobile([fontSize(`px(14))]),
         ])
       | Xxl => style([fontSize(`px(18)), Media.smallMobile([fontSize(`px(16))])])
@@ -157,20 +155,7 @@ module Styles = {
       | Left => style([textAlign(`left)]),
     );
 
-  let code =
-    style([
-      fontFamilies([
-        `custom("IBM Plex Mono"),
-        `custom("cousine"),
-        `custom("sfmono-regular"),
-        `custom("Consolas"),
-        `custom("Menlo"),
-        `custom("liberation mono"),
-        `custom("ubuntu mono"),
-        `custom("Courier"),
-        `monospace,
-      ]),
-    ]);
+  let code = style([fontFamilies([`custom("Roboto Mono"), `monospace])]);
 
   let special = style([fontFamilies([`custom("Lexend Exa"), `monospace])]);
 

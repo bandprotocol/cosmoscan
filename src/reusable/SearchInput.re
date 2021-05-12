@@ -1,40 +1,28 @@
 module Styles = {
   open Css;
-  let searchContainer =
+  let searchContainer = style([display(`flex), alignItems(`center), position(`relative)]);
+  let iconContainer = style([position(`absolute), top(`percent(5.))]);
+  let searchBar = (theme: Theme.t) =>
     style([
-      display(`flex),
-      alignItems(`center),
-      position(`relative),
-      before([
-        backgroundImage(`url(Images.searchGray)),
-        contentRule(`text("")),
-        width(`px(15)),
-        height(`px(15)),
-        backgroundRepeat(`noRepeat),
-        display(`block),
-        backgroundPositions([`center, `center]),
-        position(`absolute),
-        top(`percent(5.)),
-      ]),
-    ]);
-  let searchBar =
-    style([
-      backgroundColor(Colors.transparent),
+      backgroundColor(`transparent),
       borderRadius(`zero),
-      border(`zero, `none, Colors.white),
-      borderBottom(`px(1), `solid, Colors.gray8),
-      placeholder([color(Colors.blueGray3)]),
+      border(`zero, `none, theme.textSecondary),
+      borderBottom(`px(1), `solid, theme.textSecondary),
+      placeholder([color(theme.textSecondary)]),
+      color(theme.textPrimary),
       paddingLeft(`px(20)),
       paddingBottom(`px(10)),
       focus([outlineStyle(`none)]),
       width(`percent(100.)),
-      maxWidth(`px(300)),
+      maxWidth(`px(240)),
+      fontSize(`px(12)),
     ]);
 };
 
 [@react.component]
 let make = (~placeholder, ~onChange, ~debounce=500) => {
   let (changeValue, setChangeValue) = React.useState(_ => "");
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect1(
     () => {
@@ -45,9 +33,12 @@ let make = (~placeholder, ~onChange, ~debounce=500) => {
   );
 
   <div className=Styles.searchContainer>
+    <div className=Styles.iconContainer>
+      <Icon name="far fa-search" color={theme.textPrimary} size=14 />
+    </div>
     <input
       type_="text"
-      className=Styles.searchBar
+      className={Styles.searchBar(theme)}
       placeholder
       onChange={event => {
         let newVal =

@@ -158,7 +158,7 @@ let make = (~info) => {
       width={`px(230)}
     />
   | PubKey(publicKey) => <PubKeyRender alignLeft=true pubKey=publicKey display=`block />
-  | TxHash(txHash, width) => <TxLink txHash width size=Text.Lg />
+  | TxHash(txHash, width) => <TxLink txHash width />
   | BlockHash(hash) =>
     <Text
       value={hash |> Hash.toHex(~upper=true)}

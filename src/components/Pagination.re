@@ -23,87 +23,78 @@ module Styles = {
       ]),
     ]);
 
-  let angle = isFlip =>
-    style([
-      width(`px(12)),
-      cursor(`pointer),
-      transform(`rotateZ(`deg(isFlip ? 0. : 180.))),
-    ]);
-
-  let clickable = active =>
+  let clickable = (active, theme: Theme.t, isDarkMode) =>
     style([
       cursor(`pointer),
+      width(`px(32)),
+      height(`px(32)),
+      borderRadius(`px(8)),
+      border(`px(1), `solid, active ? theme.textPrimary : theme.textSecondary),
       pointerEvents(active ? `auto : `none),
       opacity(active ? 1. : 0.5),
+      hover([
+        backgroundColor(theme.textPrimary),
+        selector("> i", [color(isDarkMode ? theme.black : theme.white)]),
+      ]),
     ]);
 
-  let flex = style([display(`flex)]);
+  let paginationBox =
+    style([margin2(~v=zero, ~h=`px(32)), selector("> * + *", [marginLeft(`px(20))])]);
 };
-
-module ClickableText = {
+module ClickableSymbol = {
   [@react.component]
-  let make = (~isFirst, ~active, ~onClick) => {
-    <div className={Css.merge([Styles.flex, Styles.clickable(active)])} onClick>
-      <Text value={isFirst ? "First" : "Last"} spacing={Text.Em(0.03)} />
+  let make = (~isPrevious, ~active, ~onClick) => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
+    <div
+      className={Css.merge([
+        Styles.clickable(active, theme, isDarkMode),
+        CssHelper.flexBox(~justify=`center, ()),
+      ])}
+      onClick>
+      {isPrevious
+         ? <Icon name="far fa-angle-left" color={theme.textPrimary} size=18 />
+         : <Icon name="far fa-angle-right" color={theme.textPrimary} size=18 />}
     </div>;
   };
 };
 
-module ClickableSymbol = {
-  [@react.component]
-  let make = (~isPrevious, ~active, ~onClick) => {
-    <img
-      src=Images.leftAngle
-      className={Css.merge([Styles.angle(isPrevious), Styles.clickable(active)])}
-      onClick
-    />;
-  };
-};
-
 [@react.component]
-let make = (~currentPage, ~pageCount, ~onPageChange: int => unit) =>
+let make = (~currentPage, ~pageCount, ~onPageChange: int => unit) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   if (pageCount > 1) {
     <div className=Styles.container>
       <div className=Styles.innerContainer>
-        <ClickableText isFirst=true onClick={_ => onPageChange(1)} active={currentPage != 1} />
-        <HSpacing size=Spacing.lg />
         <ClickableSymbol
           isPrevious=true
           active={currentPage != 1}
           onClick={_ => onPageChange(currentPage < 1 ? 1 : currentPage - 1)}
         />
-        <div className=Styles.flex>
-          <HSpacing size=Spacing.md />
-          <Text value="Page" spacing={Text.Em(0.03)} />
-          <HSpacing size=Spacing.sm />
+        <div
+          className={Css.merge([CssHelper.flexBox(~justify=`center, ()), Styles.paginationBox])}>
           <Text
             value={currentPage |> Format.iPretty}
-            spacing={Text.Em(0.03)}
+            size=Text.Lg
             weight=Text.Semibold
+            color={theme.textPrimary}
           />
-          <HSpacing size=Spacing.sm />
-          <Text value="of" spacing={Text.Em(0.03)} />
-          <HSpacing size=Spacing.sm />
+          <Text value="of" size=Text.Lg />
           <Text
             value={pageCount |> Format.iPretty}
-            spacing={Text.Em(0.03)}
             weight=Text.Semibold
+            size=Text.Lg
+            color={theme.textPrimary}
           />
-          <HSpacing size=Spacing.md />
         </div>
         <ClickableSymbol
           isPrevious=false
           active={currentPage != pageCount}
           onClick={_ => onPageChange(currentPage > pageCount ? pageCount : currentPage + 1)}
         />
-        <HSpacing size=Spacing.lg />
-        <ClickableText
-          isFirst=false
-          active={currentPage != pageCount}
-          onClick={_ => onPageChange(pageCount)}
-        />
       </div>
     </div>;
   } else {
     React.null;
   };
+};
