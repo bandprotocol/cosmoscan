@@ -1,8 +1,9 @@
 module Styles = {
   open Css;
-  let mostRequestCard =
+  let mostRequestCard = (theme: Theme.t) =>
     style([
-      backgroundColor(Colors.white),
+      backgroundColor(theme.secondaryBg),
+      borderRadius(`px(12)),
       boxShadow(
         Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
       ),
@@ -11,10 +12,20 @@ module Styles = {
       marginBottom(`px(24)),
     ]);
   let requestResponseBox = style([flexShrink(0.), flexGrow(0.), flexBasis(`percent(50.))]);
-  let descriptionBox = style([minHeight(`px(36)), margin2(~v=`px(16), ~h=`zero)]);
+  let descriptionBox =
+    style([minHeight(`px(36)), margin3(~top=`px(32), ~h=`zero, ~bottom=`px(16))]);
   let idBox = style([marginBottom(`px(4))]);
   let tbodyContainer = style([minHeight(`px(600))]);
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+
+  let oracleScriptLink = (theme: Theme.t) =>
+    style([
+      backgroundColor(theme.baseBlue),
+      borderRadius(`px(8)),
+      width(`px(32)),
+      height(`px(32)),
+      hover([backgroundColor(theme.darkBlue)]),
+    ]);
 };
 
 type sort_by_t =
@@ -52,233 +63,273 @@ let sorting = (oracleSctipts: array(OracleScriptSub.t), sortedBy) => {
   ->Belt.List.toArray;
 };
 
-let renderMostRequestedCard =
-    (
-      reserveIndex,
-      oracleScriptSub: ApolloHooks.Subscription.variant(OracleScriptSub.t),
-      statsSub: ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
-    ) => {
-  let allSub = Sub.all2(oracleScriptSub, statsSub);
+module RenderMostRequestedCard = {
+  [@react.component]
+  let make =
+      (
+        ~reserveIndex,
+        ~oracleScriptSub: ApolloHooks.Subscription.variant(OracleScriptSub.t),
+        ~statsSub:
+           ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
+      ) => {
+    let allSub = Sub.all2(oracleScriptSub, statsSub);
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-  <Col
-    key={
-      switch (oracleScriptSub) {
-      | Data({id}) => id |> ID.OracleScript.toString
-      | _ => reserveIndex |> string_of_int
+    <Col
+      key={
+        switch (oracleScriptSub) {
+        | Data({id}) => id |> ID.OracleScript.toString
+        | _ => reserveIndex |> string_of_int
+        }
       }
-    }
-    col=Col.Four>
-    <div
-      className={Css.merge([
-        Styles.mostRequestCard,
-        CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
-      ])}>
-      <div className=Styles.idBox>
-        {switch (oracleScriptSub) {
-         | Data({id}) => <TypeID.OracleScript id position=TypeID.Subtitle />
-         | _ => <LoadingCensorBar width=40 height=15 />
-         }}
-      </div>
-      {switch (oracleScriptSub) {
-       | Data({name}) => <Heading size=Heading.H4 value=name />
-       | _ => <LoadingCensorBar width=200 height=15 />
-       }}
-      <div className=Styles.descriptionBox>
-        {switch (oracleScriptSub) {
-         | Data({description}) =>
-           let text = Ellipsis.format(~text=description, ~limit=70, ());
-           <Text size=Text.Lg value=text weight=Text.Regular block=true />;
-         | _ => <LoadingCensorBar width=250 height=15 />
-         }}
-      </div>
-      <div className={CssHelper.flexBox()}>
-        <div className=Styles.requestResponseBox>
-          <Heading size=Heading.H5 value="Requests" marginBottom=8 />
-          {switch (oracleScriptSub) {
-           | Data({requestCount}) =>
-             <Text
-               size=Text.Lg
-               value={requestCount |> Format.iPretty}
-               weight=Text.Regular
-               block=true
-             />
-           | _ => <LoadingCensorBar width=100 height=15 />
-           }}
-        </div>
-        <div className=Styles.requestResponseBox>
-          <Heading size=Heading.H5 value="Response time" marginBottom=8 />
-          {switch (allSub) {
-           | Data(({id}, stats)) =>
-             let resultOpt = stats->Belt.Array.getBy(stat => id == stat.id);
-             switch (resultOpt) {
-             | Some({responseTime}) =>
-               <Text
-                 size=Text.Lg
-                 value={(responseTime |> Format.fPretty(~digits=2)) ++ " s"}
-                 weight=Text.Regular
-                 block=true
-               />
-             | None => <Text value="TBD" />
-             };
-           | _ => <LoadingCensorBar width=100 height=15 />
-           }}
-        </div>
-      </div>
-    </div>
-  </Col>;
-};
-
-let renderBody =
-    (
-      reserveIndex,
-      oracleScriptSub: ApolloHooks.Subscription.variant(OracleScriptSub.t),
-      statsSub: ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
-    ) => {
-  let allSub = Sub.all2(oracleScriptSub, statsSub);
-
-  <TBody
-    key={
-      switch (oracleScriptSub) {
-      | Data({id}) => id |> ID.OracleScript.toString
-      | _ => reserveIndex |> string_of_int
-      }
-    }
-    paddingH={`px(24)}>
-    <Row alignItems=Row.Center>
-      <Col col=Col.Five>
-        {switch (oracleScriptSub) {
-         | Data({id, name}) =>
-           <div className={CssHelper.flexBox()}>
-             <TypeID.OracleScript id />
-             <HSpacing size=Spacing.sm />
-             <Text value=name ellipsis=true />
-           </div>
-         | _ => <LoadingCensorBar width=300 height=15 />
-         }}
-      </Col>
-      <Col col=Col.Three>
-        {switch (oracleScriptSub) {
-         | Data({description}) =>
-           let text = Ellipsis.format(~text=description, ~limit=70, ());
-           <Text value=text block=true />;
-         | _ => <LoadingCensorBar width=270 height=15 />
-         }}
-      </Col>
-      <Col col=Col.Two>
+      col=Col.Four>
+      <div
+        className={Css.merge([
+          Styles.mostRequestCard(theme),
+          CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
+        ])}>
         <div
           className={CssHelper.flexBox(
-            ~justify=`flexStart,
-            ~align=`flexEnd,
-            ~direction=`column,
+            ~justify=`spaceBetween,
+            ~align=`flexStart,
+            ~wrap=`nowrap,
             (),
           )}>
-          {switch (allSub) {
-           | Data(({id, requestCount}, stats)) =>
-             let resultOpt = stats->Belt.Array.getBy(stat => id == stat.id);
-             <>
-               <div>
-                 <Text
-                   value={requestCount |> Format.iPretty}
-                   weight=Text.Medium
-                   block=true
-                   ellipsis=true
-                   align=Text.Right
-                 />
-               </div>
-               <div>
-                 <Text
-                   value={
-                     switch (resultOpt) {
-                     | Some({responseTime}) =>
-                       "(" ++ (responseTime |> Format.fPretty(~digits=2)) ++ " s)"
-                     | None => "(TBD)"
-                     }
-                   }
-                   weight=Text.Medium
-                   block=true
-                   color=Colors.gray6
-                   align=Text.Right
-                 />
-               </div>
-             </>;
-           | _ => <LoadingCensorBar width=70 height=15 />
-           }}
-        </div>
-      </Col>
-      <Col col=Col.Two>
-        <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+          <div>
+            <div className=Styles.idBox>
+              {switch (oracleScriptSub) {
+               | Data({id}) => <TypeID.OracleScript id position=TypeID.Title />
+               | _ => <LoadingCensorBar width=40 height=15 />
+               }}
+            </div>
+            {switch (oracleScriptSub) {
+             | Data({name}) => <Heading size=Heading.H4 value=name weight=Heading.Thin />
+             | _ => <LoadingCensorBar width=200 height=15 />
+             }}
+          </div>
           {switch (oracleScriptSub) {
-           | Data({timestamp: timestampOpt}) =>
-             switch (timestampOpt) {
-             | Some(timestamp') =>
-               <Timestamp.Grid
-                 time=timestamp'
-                 size=Text.Md
-                 weight=Text.Regular
-                 textAlign=Text.Right
-               />
-             | None => <Text value="Genesis" />
-             }
-           | _ =>
-             <>
-               <LoadingCensorBar width=70 height=15 />
-               <LoadingCensorBar width=80 height=15 mt=5 />
-             </>
+           | Data({id}) =>
+             <TypeID.OracleScriptLink id>
+               <div
+                 className={Css.merge([
+                   Styles.oracleScriptLink(theme),
+                   CssHelper.flexBox(~justify=`center, ()),
+                 ])}>
+                 <Icon name="far fa-arrow-right" color={theme.white} />
+               </div>
+             </TypeID.OracleScriptLink>
+           | _ => <LoadingCensorBar width=100 height=15 />
            }}
         </div>
-      </Col>
-    </Row>
-  </TBody>;
+        <div className=Styles.descriptionBox>
+          {switch (oracleScriptSub) {
+           | Data({description}) =>
+             let text = Ellipsis.format(~text=description, ~limit=70, ());
+             <Text value=text block=true />;
+           | _ => <LoadingCensorBar width=250 height=15 />
+           }}
+        </div>
+        <SeperatedLine />
+        <div className={CssHelper.flexBox()}>
+          <div className=Styles.requestResponseBox>
+            <Heading
+              size=Heading.H5
+              value="Requests"
+              marginBottom=8
+              weight=Heading.Thin
+              color={theme.textSecondary}
+            />
+            {switch (oracleScriptSub) {
+             | Data({requestCount}) =>
+               <Text value={requestCount |> Format.iPretty} block=true color={theme.textPrimary} />
+             | _ => <LoadingCensorBar width=100 height=15 />
+             }}
+          </div>
+          <div className=Styles.requestResponseBox>
+            <Heading
+              size=Heading.H5
+              value="Response time"
+              marginBottom=8
+              weight=Heading.Thin
+              color={theme.textSecondary}
+            />
+            {switch (allSub) {
+             | Data(({id}, stats)) =>
+               let resultOpt = stats->Belt.Array.getBy(stat => id == stat.id);
+               switch (resultOpt) {
+               | Some({responseTime}) =>
+                 <Text
+                   value={(responseTime |> Format.fPretty(~digits=2)) ++ " s"}
+                   block=true
+                   color={theme.textPrimary}
+                 />
+               | None => <Text value="TBD" />
+               };
+             | _ => <LoadingCensorBar width=100 height=15 />
+             }}
+          </div>
+        </div>
+      </div>
+    </Col>;
+  };
 };
 
-let renderBodyMobile =
-    (
-      reserveIndex,
-      oracleScriptSub: ApolloHooks.Subscription.variant(OracleScriptSub.t),
-      statsSub: ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
-    ) => {
-  switch (oracleScriptSub) {
-  | Data({id, timestamp: timestampOpt, description, name, requestCount}) =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Oracle Script", OracleScript(id, name)),
-        ("Description", Text(description)),
-        (
-          "Request&\nResponse time",
-          switch (statsSub) {
-          | Data(stats) =>
-            RequestResponse({
-              requestCount,
-              responseTime:
-                stats
-                ->Belt.Array.getBy(stat => id == stat.id)
-                ->Belt.Option.map(({responseTime}) => responseTime),
-            })
-          | _ => Loading(80)
-          },
-        ),
-        (
-          "Timestamp",
-          switch (timestampOpt) {
-          | Some(timestamp') => Timestamp(timestamp')
-          | None => Text("Genesis")
-          },
-        ),
-      ]
-      key={id |> ID.OracleScript.toString}
-      idx={id |> ID.OracleScript.toString}
-    />
-  | _ =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Oracle Script", Loading(200)),
-        ("Description", Loading(200)),
-        ("Request&\nResponse time", Loading(80)),
-        ("Timestamp", Loading(180)),
-      ]
-      key={reserveIndex |> string_of_int}
-      idx={reserveIndex |> string_of_int}
-    />
+module RenderBody = {
+  [@react.component]
+  let make =
+      (
+        ~reserveIndex,
+        ~oracleScriptSub: ApolloHooks.Subscription.variant(OracleScriptSub.t),
+        ~statsSub:
+           ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
+      ) => {
+    let allSub = Sub.all2(oracleScriptSub, statsSub);
+
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    <TBody
+      key={
+        switch (oracleScriptSub) {
+        | Data({id}) => id |> ID.OracleScript.toString
+        | _ => reserveIndex |> string_of_int
+        }
+      }>
+      <Row alignItems=Row.Center>
+        <Col col=Col.Four>
+          {switch (oracleScriptSub) {
+           | Data({id, name}) =>
+             <div className={CssHelper.flexBox()}>
+               <TypeID.OracleScript id />
+               <HSpacing size=Spacing.sm />
+               <Text value=name ellipsis=true color={theme.textPrimary} />
+             </div>
+           | _ => <LoadingCensorBar width=300 height=15 />
+           }}
+        </Col>
+        <Col col=Col.Four>
+          {switch (oracleScriptSub) {
+           | Data({description}) =>
+             let text = Ellipsis.format(~text=description, ~limit=70, ());
+             <Text value=text block=true />;
+           | _ => <LoadingCensorBar width=270 height=15 />
+           }}
+        </Col>
+        <Col col=Col.Two>
+          <div
+            className={CssHelper.flexBox(
+              ~justify=`flexStart,
+              ~align=`flexEnd,
+              ~direction=`column,
+              (),
+            )}>
+            {switch (allSub) {
+             | Data(({id, requestCount}, stats)) =>
+               let resultOpt = stats->Belt.Array.getBy(stat => id == stat.id);
+               <>
+                 <div>
+                   <Text
+                     value={requestCount |> Format.iPretty}
+                     weight=Text.Medium
+                     block=true
+                     ellipsis=true
+                     align=Text.Right
+                   />
+                 </div>
+                 <div>
+                   <Text
+                     value={
+                       switch (resultOpt) {
+                       | Some({responseTime}) =>
+                         "(" ++ (responseTime |> Format.fPretty(~digits=2)) ++ " s)"
+                       | None => "(TBD)"
+                       }
+                     }
+                     weight=Text.Medium
+                     block=true
+                     color=Colors.gray6
+                     align=Text.Right
+                   />
+                 </div>
+               </>;
+             | _ => <LoadingCensorBar width=70 height=15 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Two>
+          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+            {switch (oracleScriptSub) {
+             | Data({timestamp: timestampOpt}) =>
+               switch (timestampOpt) {
+               | Some(timestamp') =>
+                 <Timestamp
+                   time=timestamp'
+                   size=Text.Md
+                   weight=Text.Regular
+                   textAlign=Text.Right
+                 />
+               | None => <Text value="Genesis" />
+               }
+             | _ => <LoadingCensorBar width=80 height=15 />
+             }}
+          </div>
+        </Col>
+      </Row>
+    </TBody>;
+  };
+};
+
+module RenderBodyMobile = {
+  [@react.component]
+  let make =
+      (
+        ~reserveIndex,
+        ~oracleScriptSub: ApolloHooks.Subscription.variant(OracleScriptSub.t),
+        ~statsSub:
+           ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
+      ) => {
+    switch (oracleScriptSub) {
+    | Data({id, timestamp: timestampOpt, description, name, requestCount}) =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Oracle Script", OracleScript(id, name)),
+          ("Description", Text(description)),
+          (
+            "Request&\nResponse time",
+            switch (statsSub) {
+            | Data(stats) =>
+              RequestResponse({
+                requestCount,
+                responseTime:
+                  stats
+                  ->Belt.Array.getBy(stat => id == stat.id)
+                  ->Belt.Option.map(({responseTime}) => responseTime),
+              })
+            | _ => Loading(80)
+            },
+          ),
+          (
+            "Timestamp",
+            switch (timestampOpt) {
+            | Some(timestamp') => Timestamp(timestamp')
+            | None => Text("Genesis")
+            },
+          ),
+        ]
+        key={id |> ID.OracleScript.toString}
+        idx={id |> ID.OracleScript.toString}
+      />
+    | _ =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Oracle Script", Loading(200)),
+          ("Description", Loading(200)),
+          ("Request&\nResponse time", Loading(80)),
+          ("Timestamp", Loading(180)),
+        ]
+        key={reserveIndex |> string_of_int}
+        idx={reserveIndex |> string_of_int}
+      />
+    };
   };
 };
 
@@ -310,6 +361,8 @@ let make = () => {
 
   let allSub = Sub.all2(oracleScriptsSub, oracleScriptsCountSub);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <Section>
     <div className=CssHelper.container id="oraclescriptsSection">
       <div className=CssHelper.mobileSpacing>
@@ -318,11 +371,21 @@ let make = () => {
          | Data(oracleScripts) =>
            oracleScripts->Belt.Array.length > 0
              ? <>
-                 <Heading value="Most Requested" size=Heading.H4 marginBottom=16 />
+                 <Heading
+                   value="Most Requested"
+                   size=Heading.H3
+                   marginBottom=16
+                   color={theme.textSecondary}
+                 />
                  <Row>
                    {oracleScripts
                     ->Belt_Array.mapWithIndex((i, e) =>
-                        renderMostRequestedCard(i, Sub.resolve(e), statsSub)
+                        <RenderMostRequestedCard
+                          key={e.id |> ID.OracleScript.toString}
+                          reserveIndex=i
+                          oracleScriptSub={Sub.resolve(e)}
+                          statsSub
+                        />
                       )
                     ->React.array}
                  </Row>
@@ -333,7 +396,14 @@ let make = () => {
              <Heading value="Most Requested" size=Heading.H4 marginBottom=16 />
              <Row>
                {Belt_Array.make(mostRequestedPageSize, ApolloHooks.Subscription.NoData)
-                ->Belt_Array.mapWithIndex((i, e) => renderMostRequestedCard(i, e, NoData))
+                ->Belt_Array.mapWithIndex((i, e) =>
+                    <RenderMostRequestedCard
+                      key={i |> string_of_int}
+                      reserveIndex=i
+                      oracleScriptSub=NoData
+                      statsSub=NoData
+                    />
+                  )
                 ->React.array}
              </Row>
            </>
@@ -350,107 +420,141 @@ let make = () => {
              }}
           </Col>
         </Row>
-        <Row alignItems=Row.Center marginBottom=16>
-          <Col col=Col.Six colSm=Col.Eight>
-            <SearchInput placeholder="Search Oracle Script" onChange=setSearchTerm />
-          </Col>
-          <Col col=Col.Six colSm=Col.Four>
-            <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-              <SortableDropdown
-                sortedBy
-                setSortedBy
-                sortList=[
-                  (MostRequested, getName(MostRequested)),
-                  (LatestUpdate, getName(LatestUpdate)),
-                ]
-              />
-            </div>
-          </Col>
-        </Row>
-        {isMobile
-           ? React.null
-           : <THead>
-               <Row alignItems=Row.Center>
-                 <Col col=Col.Five>
-                   <div className=TElement.Styles.hashContainer>
+        <Table>
+          <Row alignItems=Row.Center marginTop=32 marginBottom=16>
+            <Col col=Col.Six colSm=Col.Eight>
+              <SearchInput placeholder="Search Oracle Script" onChange=setSearchTerm />
+            </Col>
+            <Col col=Col.Six colSm=Col.Four>
+              <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+                <SortableDropdown
+                  sortedBy
+                  setSortedBy
+                  sortList=[
+                    (MostRequested, getName(MostRequested)),
+                    (LatestUpdate, getName(LatestUpdate)),
+                  ]
+                />
+              </div>
+            </Col>
+          </Row>
+          {isMobile
+             ? React.null
+             : <THead>
+                 <Row alignItems=Row.Center>
+                   <Col col=Col.Four>
+                     <div className=TElement.Styles.hashContainer>
+                       <Text
+                         block=true
+                         value="Oracle Script"
+                         weight=Text.Semibold
+                         transform=Text.Uppercase
+                         size=Text.Sm
+                       />
+                     </div>
+                   </Col>
+                   <Col col=Col.Four>
                      <Text
                        block=true
-                       value="Oracle Script"
+                       value="Description"
                        weight=Text.Semibold
-                       color=Colors.gray7
+                       transform=Text.Uppercase
+                       size=Text.Sm
                      />
-                   </div>
-                 </Col>
-                 <Col col=Col.Three>
-                   <Text block=true value="Description" weight=Text.Semibold color=Colors.gray7 />
-                 </Col>
-                 <Col col=Col.Two>
-                   <Text
-                     block=true
-                     value="Request"
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                     align=Text.Right
-                   />
-                   <Text
-                     block=true
-                     value="& Response time"
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                     align=Text.Right
-                   />
-                 </Col>
-                 <Col col=Col.Two>
-                   <Text
-                     block=true
-                     value="Timestamp"
-                     weight=Text.Semibold
-                     color=Colors.gray7
-                     align=Text.Right
-                   />
-                 </Col>
-               </Row>
-             </THead>}
-        {switch (allSub) {
-         | Data((oracleScripts, oracleScriptsCount)) =>
-           let pageCount = Page.getPageCount(oracleScriptsCount, pageSize);
-           <div className=Styles.tbodyContainer>
-             {oracleScripts->Belt.Array.length > 0
-                ? oracleScripts
-                  ->sorting(sortedBy)
-                  ->Belt_Array.mapWithIndex((i, e) =>
-                      isMobile
-                        ? renderBodyMobile(i, Sub.resolve(e), statsSub)
-                        : renderBody(i, Sub.resolve(e), statsSub)
-                    )
-                  ->React.array
-                : <EmptyContainer>
-                    <img src=Images.noSource className=Styles.noDataImage />
-                    <Heading
-                      size=Heading.H4
-                      value="No Oracle Script"
-                      align=Heading.Center
-                      weight=Heading.Regular
-                      color=Colors.bandBlue
-                    />
-                  </EmptyContainer>}
-             {isMobile
-                ? React.null
-                : <Pagination
-                    currentPage=page
-                    pageCount
-                    onPageChange={newPage => setPage(_ => newPage)}
-                  />}
-           </div>;
-         | _ =>
-           <div className=Styles.tbodyContainer>
-             {Belt_Array.make(10, ApolloHooks.Subscription.NoData)
-              ->Belt_Array.mapWithIndex((i, e) =>
-                  isMobile ? renderBodyMobile(i, e, NoData) : renderBody(i, e, NoData)
-                )
-              ->React.array}
-           </div>
-         }}
+                   </Col>
+                   <Col col=Col.Two>
+                     <Text
+                       block=true
+                       value="Request"
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       align=Text.Right
+                     />
+                     <Text
+                       block=true
+                       value="& Response time"
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       align=Text.Right
+                     />
+                   </Col>
+                   <Col col=Col.Two>
+                     <Text
+                       block=true
+                       value="Timestamp"
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       align=Text.Right
+                     />
+                   </Col>
+                 </Row>
+               </THead>}
+          {switch (allSub) {
+           | Data((oracleScripts, oracleScriptsCount)) =>
+             let pageCount = Page.getPageCount(oracleScriptsCount, pageSize);
+             <div className=Styles.tbodyContainer>
+               {oracleScripts->Belt.Array.length > 0
+                  ? oracleScripts
+                    ->sorting(sortedBy)
+                    ->Belt_Array.mapWithIndex((i, e) =>
+                        isMobile
+                          ? <RenderBodyMobile
+                              key={e.id |> ID.OracleScript.toString}
+                              reserveIndex=i
+                              oracleScriptSub={Sub.resolve(e)}
+                              statsSub
+                            />
+                          : <RenderBody
+                              key={e.id |> ID.OracleScript.toString}
+                              reserveIndex=i
+                              oracleScriptSub={Sub.resolve(e)}
+                              statsSub
+                            />
+                      )
+                    ->React.array
+                  : <EmptyContainer>
+                      <img src=Images.noSource className=Styles.noDataImage />
+                      <Heading
+                        size=Heading.H4
+                        value="No Oracle Script"
+                        align=Heading.Center
+                        weight=Heading.Regular
+                        color=Colors.bandBlue
+                      />
+                    </EmptyContainer>}
+               {isMobile
+                  ? React.null
+                  : <Pagination
+                      currentPage=page
+                      pageCount
+                      onPageChange={newPage => setPage(_ => newPage)}
+                    />}
+             </div>;
+           | _ =>
+             <div className=Styles.tbodyContainer>
+               {Belt_Array.make(10, ApolloHooks.Subscription.NoData)
+                ->Belt_Array.mapWithIndex((i, e) =>
+                    isMobile
+                      ? <RenderBodyMobile
+                          key={i |> string_of_int}
+                          reserveIndex=i
+                          oracleScriptSub=NoData
+                          statsSub=NoData
+                        />
+                      : <RenderBody
+                          key={i |> string_of_int}
+                          reserveIndex=i
+                          oracleScriptSub=NoData
+                          statsSub=NoData
+                        />
+                  )
+                ->React.array}
+             </div>
+           }}
+        </Table>
       </div>
     </div>
   </Section>;

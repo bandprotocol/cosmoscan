@@ -81,7 +81,6 @@ let make = (~id) =>
                              weight=Text.Regular
                              code=true
                              size=Text.Md
-                             height={Text.Px(16)}
                            />
                          | None => <Text value="Genesis" weight=Text.Regular code=true />
                          }}

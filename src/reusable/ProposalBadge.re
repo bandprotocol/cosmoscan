@@ -16,10 +16,10 @@ let getBadgeText =
 let getBadgeColor =
   fun
   | ProposalSub.Deposit
-  | Voting => Colors.bandBlue
-  | Passed => Colors.green4
+  | Voting => Theme.baseBlue
+  | Passed => Theme.successColor
   | Rejected
-  | Failed => Colors.red4;
+  | Failed => Theme.failColor;
 
 [@react.component]
 let make = (~status) => {
@@ -28,6 +28,6 @@ let make = (~status) => {
       Styles.badge(getBadgeColor(status)),
       CssHelper.flexBox(~justify=`center, ()),
     ])}>
-    <Text value={getBadgeText(status)} color=Colors.white />
+    <Text value={getBadgeText(status)} size=Text.Sm transform=Text.Uppercase color=Theme.white />
   </div>;
 };

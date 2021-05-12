@@ -15,13 +15,23 @@ let make =
       ~spacing=Text.Unset,
       ~code=false,
       ~upper=false,
-      ~height=Text.Px(16),
       ~textAlign=Text.Left,
+      ~color=?,
     ) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.timeContainer>
     {prefix != ""
        ? <>
-           <Text value=prefix size weight spacing code nowrap=true />
+           <Text
+             value=prefix
+             size
+             weight
+             color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+             spacing
+             code
+             nowrap=true
+           />
            <HSpacing size=Spacing.sm />
          </>
        : React.null}
@@ -32,14 +42,22 @@ let make =
       spacing
       code
       nowrap=true
-      height
       block=true
       align=textAlign
+      color={color->Belt.Option.getWithDefault(theme.textSecondary)}
     />
     {suffix != ""
        ? <>
            <HSpacing size=Spacing.sm />
-           <Text value=suffix size weight spacing code nowrap=true />
+           <Text
+             value=suffix
+             size
+             weight
+             spacing
+             code
+             nowrap=true
+             color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+           />
          </>
        : React.null}
   </div>;
@@ -58,7 +76,6 @@ module Grid = {
         ~color=Colors.gray7,
         ~code=false,
         ~upper=false,
-        ~height=Text.Px(16),
         ~textAlign=Text.Left,
       ) => {
     <div>
@@ -77,7 +94,6 @@ module Grid = {
           color
           code
           nowrap=true
-          height
           block=true
           align=textAlign
         />
@@ -91,7 +107,6 @@ module Grid = {
           color=Colors.gray6
           code
           nowrap=true
-          height
           block=true
           align=textAlign
         />

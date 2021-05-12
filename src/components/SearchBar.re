@@ -33,6 +33,7 @@ module Styles = {
       outline(`px(1), `none, theme.secondaryBg),
       border(`px(1), `solid, theme.secondaryBg),
       placeholder([color(theme.textSecondary)]),
+      Media.mobile([fontSize(`px(10))]),
     ]);
 
   let button =
