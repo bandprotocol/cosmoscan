@@ -19,7 +19,7 @@ module Styles = {
         backgroundColor(colorBase),
         backgroundImage(
           `linearGradient((
-            `deg(90.),
+            `deg(270.),
             [
               (`percent(0.), colorBase),
               (`percent(25.), colorBase),
@@ -55,18 +55,30 @@ let make =
       ~width=100,
       ~height,
       ~fullWidth=false,
-      ~radius=4,
-      ~colorBase=Theme.lightenBlue,
-      ~colorLighter=Theme.white,
+      ~radius=50,
+      ~colorBase=?,
+      ~colorLighter=?,
       ~isRight=false,
       ~mt=0,
       ~mtSm=mt,
       ~mb=0,
       ~mbSm=mb,
     ) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div
     className={Css.merge([
-      Styles.main(~w=width, ~h=height, ~r=radius, ~colorBase, ~colorLighter, ()),
+      Styles.main(
+        ~w=width,
+        ~h=height,
+        ~r=radius,
+        ~colorBase={
+          colorBase->Belt.Option.getWithDefault(theme.loadingBaseColor);
+        },
+        ~colorLighter={
+          colorLighter->Belt.Option.getWithDefault(theme.loadingSecondaryColor);
+        },
+        (),
+      ),
       Styles.mt(~mt, ~mtSm, ()),
       Styles.mb(~mb, ~mbSm, ()),
       isRight ? Styles.alignRight : "",

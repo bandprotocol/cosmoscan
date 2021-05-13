@@ -229,6 +229,7 @@ let make =
             Styles.textAlign(align),
             Styles.letterSpacing(spacing),
             Styles.lineHeight(height),
+            Styles.textTransform(transform),
             Styles.textColor(color->Belt.Option.getWithDefault(theme.textSecondary)),
             nowrap ? Styles.noWrap : "",
             block ? Styles.block : "",

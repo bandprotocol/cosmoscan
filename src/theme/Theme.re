@@ -17,6 +17,7 @@ type t = {
   textPrimary: color_t,
   textSecondary: color_t,
   mainBg: color_t,
+  headerBg: color_t,
   secondaryBg: color_t,
   successColor: color_t,
   pendingColor: color_t,
@@ -25,6 +26,8 @@ type t = {
   activeColor: color_t,
   dropdownHover: color_t,
   tableRowBorderColor: color_t,
+  loadingBaseColor: color_t,
+  loadingSecondaryColor: color_t,
 };
 
 // Default Colors
@@ -59,10 +62,13 @@ let get: mode_t => t =
       textPrimary: hex("303030"),
       textSecondary: hex("7D7D7D"),
       mainBg: hex("ffffff"),
+      headerBg: hex("f5f5f5"),
       secondaryBg: hex("ffffff"),
       inputColor: hex("2C2C2C"),
       dropdownHover: hex("EDEDED"),
       tableRowBorderColor: hex("EDEDED"),
+      loadingBaseColor: hex("F5F5F5"),
+      loadingSecondaryColor: hex("B2B2B2"),
     }
   | Dark => {
       baseBlue,
@@ -79,8 +85,11 @@ let get: mode_t => t =
       textPrimary: hex("ffffff"),
       textSecondary: hex("9A9A9A"),
       mainBg: hex("000000"),
+      headerBg: hex("1B1B1B"),
       secondaryBg: hex("1B1B1B"),
       inputColor: hex("ffffff"),
       dropdownHover: hex("0F0F0F"),
       tableRowBorderColor: hex("353535"),
+      loadingBaseColor: hex("303030"),
+      loadingSecondaryColor: hex("808080"),
     };

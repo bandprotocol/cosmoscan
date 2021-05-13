@@ -201,6 +201,8 @@ let make = () => {
 
   let allSub = Sub.all3(proposalsSub, bondedTokenCountSub, voteStatSub);
 
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   <Section>
     <div className=CssHelper.container id="proposalsSection">
       <Row alignItems=Row.Center marginBottom=40 marginBottomSm=24>
@@ -228,13 +230,16 @@ let make = () => {
                  })
                ->React.array
              : <EmptyContainer>
-                 <img src=Images.noSource className=Styles.noDataImage />
+                 <img
+                   src={isDarkMode ? Images.noTxDark : Images.noTxLight}
+                   className=Styles.noDataImage
+                 />
                  <Heading
                    size=Heading.H4
                    value="No Proposal"
                    align=Heading.Center
                    weight=Heading.Regular
-                   color=Colors.bandBlue
+                   color={theme.textSecondary}
                  />
                </EmptyContainer>
          | _ =>

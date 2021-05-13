@@ -16,139 +16,163 @@ module Styles = {
   let logo = style([width(`px(20))]);
 };
 
-let renderBody =
-    (rank, validatorSub: ApolloHooks.Subscription.variant(ValidatorSub.t), votingPower) => {
-  <TBody
-    key={
-      switch (validatorSub) {
-      | Data({operatorAddress}) => operatorAddress |> Address.toOperatorBech32
-      | _ => rank |> string_of_int
-      }
-    }
-    paddingH={`px(24)}>
-    <Row alignItems=Row.Center>
-      <Col col=Col.One>
-        {switch (validatorSub) {
-         | Data(_) => <Text value={rank |> string_of_int} color=Colors.gray7 block=true />
-         | _ => <LoadingCensorBar width=20 height=15 />
-         }}
-      </Col>
-      <Col col=Col.Two>
-        {switch (validatorSub) {
-         | Data({operatorAddress, moniker, identity}) =>
-           <ValidatorMonikerLink
-             validatorAddress=operatorAddress
-             moniker
-             identity
-             width={`px(180)}
-           />
-         | _ => <LoadingCensorBar width=150 height=15 />
-         }}
-      </Col>
-      <Col col=Col.Two>
-        {switch (validatorSub) {
-         | Data({tokens}) =>
-           <div>
-             <Text
-               value={tokens |> Coin.getBandAmountFromCoin |> Format.fPretty(~digits=0)}
-               color=Colors.gray7
-               block=true
-               align=Text.Right
+module RenderBody = {
+  [@react.component]
+  let make =
+      (
+        ~rank,
+        ~validatorSub: ApolloHooks.Subscription.variant(ValidatorSub.t),
+        ~votingPower,
+        ~accountOpt: option(AccountContext.t),
+        ~dispatchModal: ModalContext.a => unit,
+      ) => {
+    <TBody
+      key={
+        switch (validatorSub) {
+        | Data({operatorAddress}) => operatorAddress |> Address.toOperatorBech32
+        | _ => rank |> string_of_int
+        }
+      }>
+      <Row alignItems=Row.Center>
+        <Col col=Col.One>
+          {switch (validatorSub) {
+           | Data(_) => <Text value={rank |> string_of_int} block=true />
+           | _ => <LoadingCensorBar width=20 height=15 />
+           }}
+        </Col>
+        <Col col=Col.Two>
+          {switch (validatorSub) {
+           | Data({operatorAddress, moniker, identity}) =>
+             <ValidatorMonikerLink
+               validatorAddress=operatorAddress
+               moniker
+               identity
+               width={`px(180)}
              />
-             <VSpacing size=Spacing.sm />
-             <Text
-               value={"(" ++ (votingPower |> Format.fPercent(~digits=2)) ++ ")"}
-               color=Colors.gray6
-               block=true
-               align=Text.Right
-             />
-           </div>
-         | _ =>
-           <>
-             <LoadingCensorBar width=100 height=15 isRight=true />
-             <VSpacing size=Spacing.sm />
-             <LoadingCensorBar width=40 height=15 isRight=true />
-           </>
-         }}
-      </Col>
-      <Col col=Col.Two>
-        {switch (validatorSub) {
-         | Data({commission}) =>
-           <Text
-             value={commission |> Format.fPercent(~digits=2)}
-             color=Colors.gray7
-             block=true
-             align=Text.Right
-           />
-         | _ => <LoadingCensorBar width=70 height=15 isRight=true />
-         }}
-      </Col>
-      <Col col=Col.Three>
-        {switch (validatorSub) {
-         | Data({uptime}) =>
-           switch (uptime) {
-           | Some(uptime') =>
-             <>
+           | _ => <LoadingCensorBar width=150 height=15 />
+           }}
+        </Col>
+        <Col col=Col.Two>
+          {switch (validatorSub) {
+           | Data({tokens}) =>
+             <div>
                <Text
-                 value={uptime' |> Format.fPercent(~digits=2)}
-                 color=Colors.gray7
+                 value={tokens |> Coin.getBandAmountFromCoin |> Format.fPretty(~digits=0)}
                  block=true
+                 align=Text.Right
                />
                <VSpacing size=Spacing.sm />
-               <ProgressBar.Uptime percent=uptime' />
+               <Text
+                 value={"(" ++ (votingPower |> Format.fPercent(~digits=2)) ++ ")"}
+                 color=Colors.gray6
+                 block=true
+                 align=Text.Right
+               />
+             </div>
+           | _ =>
+             <>
+               <LoadingCensorBar width=100 height=15 isRight=true />
+               <VSpacing size=Spacing.sm />
+               <LoadingCensorBar width=40 height=15 isRight=true />
              </>
-           | None => <Text value="N/A" color=Colors.gray7 block=true />
-           }
-         | _ =>
-           <>
-             <LoadingCensorBar width=50 height=15 />
-             <VSpacing size=Spacing.sm />
-             <LoadingCensorBar width=130 height=15 />
-           </>
-         }}
-      </Col>
-      <Col col=Col.Two>
-        <div className=Styles.oracleStatus>
-          {switch (validatorSub) {
-           | Data({oracleStatus}) =>
-             <img src={oracleStatus ? Images.success : Images.fail} className=Styles.logo />
-           | _ => <LoadingCensorBar width=20 height=20 radius=50 />
            }}
-        </div>
-      </Col>
-    </Row>
-  </TBody>;
+        </Col>
+        <Col col=Col.Two>
+          {switch (validatorSub) {
+           | Data({commission}) =>
+             <Text value={commission |> Format.fPercent(~digits=2)} block=true align=Text.Right />
+           | _ => <LoadingCensorBar width=70 height=15 isRight=true />
+           }}
+        </Col>
+        <Col col={accountOpt |> Belt.Option.isNone ? Col.Three : Two}>
+          {switch (validatorSub) {
+           | Data({uptime}) =>
+             switch (uptime) {
+             | Some(uptime') =>
+               <>
+                 <Text value={uptime' |> Format.fPercent(~digits=2)} block=true />
+                 <VSpacing size=Spacing.sm />
+                 <ProgressBar.Uptime percent=uptime' />
+               </>
+             | None => <Text value="N/A" block=true />
+             }
+           | _ =>
+             <>
+               <LoadingCensorBar width=50 height=15 />
+               <VSpacing size=Spacing.sm />
+               <LoadingCensorBar width=130 height=15 />
+             </>
+           }}
+        </Col>
+        <Col col={accountOpt |> Belt.Option.isNone ? Col.Two : Three}>
+          <div
+            className={CssHelper.flexBox(
+              ~justify=accountOpt |> Belt.Option.isNone ? `center : `spaceBetween,
+              (),
+            )}>
+            <div className=Styles.oracleStatus>
+              {switch (validatorSub) {
+               | Data({oracleStatus}) =>
+                 <img src={oracleStatus ? Images.success : Images.fail} className=Styles.logo />
+               | _ => <LoadingCensorBar width=20 height=20 radius=50 />
+               }}
+            </div>
+            {switch (accountOpt) {
+             | Some(_) =>
+               <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+                 {switch (validatorSub) {
+                  | Data({operatorAddress}) =>
+                    let delegate = () =>
+                      operatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
+
+                    <Button variant=Button.Outline onClick={_ => delegate()}>
+                      {"Delegate" |> React.string}
+                    </Button>;
+
+                  | _ => <LoadingCensorBar width=20 height=20 radius=50 />
+                  }}
+               </div>
+             | None => React.null
+             }}
+          </div>
+        </Col>
+      </Row>
+    </TBody>;
+  };
 };
 
-let renderBodyMobile =
-    (rank, validatorSub: ApolloHooks.Subscription.variant(ValidatorSub.t), votingPower) => {
-  switch (validatorSub) {
-  | Data({operatorAddress, moniker, identity, tokens, commission, uptime, oracleStatus}) =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Rank", Count(rank)),
-        ("Validator", Validator(operatorAddress, moniker, identity)),
-        ("Voting\nPower", VotingPower(tokens, votingPower)),
-        ("Commission", Float(commission, Some(2))),
-        ("Uptime (%)", Uptime(uptime)),
-        ("Oracle Status", Status(oracleStatus)),
-      ]
-      key={rank |> string_of_int}
-      idx={rank |> string_of_int}
-    />
-  | _ =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Rank", Loading(70)),
-        ("Validator", Loading(166)),
-        ("Voting\nPower", Loading(166)),
-        ("Commission", Loading(136)),
-        ("Uptime (%)", Loading(200)),
-        ("Oracle Status", Loading(20)),
-      ]
-      key={rank |> string_of_int}
-      idx={rank |> string_of_int}
-    />
+module RenderBodyMobile = {
+  [@react.component]
+  let make =
+      (~rank, ~validatorSub: ApolloHooks.Subscription.variant(ValidatorSub.t), ~votingPower) => {
+    switch (validatorSub) {
+    | Data({operatorAddress, moniker, identity, tokens, commission, uptime, oracleStatus}) =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Rank", Count(rank)),
+          ("Validator", Validator(operatorAddress, moniker, identity)),
+          ("Voting\nPower", VotingPower(tokens, votingPower)),
+          ("Commission", Float(commission, Some(2))),
+          ("Uptime (%)", Uptime(uptime)),
+          ("Oracle Status", Status(oracleStatus)),
+        ]
+        key={rank |> string_of_int}
+        idx={rank |> string_of_int}
+      />
+    | _ =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Rank", Loading(70)),
+          ("Validator", Loading(166)),
+          ("Voting\nPower", Loading(166)),
+          ("Commission", Loading(136)),
+          ("Uptime (%)", Loading(200)),
+          ("Oracle Status", Loading(20)),
+        ]
+        key={rank |> string_of_int}
+        idx={rank |> string_of_int}
+      />
+    };
   };
 };
 
@@ -279,23 +303,25 @@ module SortableTHead = {
         ~tooltipItem=?,
         ~tooltipPlacement=Text.AlignBottomStart,
       ) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <div className={Styles.sortableTHead(isRight)} onClick={_ => toggle(asc, desc)}>
       <Text
         block=true
         value=title
-        size=Text.Md
+        size=Text.Sm
         weight=Text.Semibold
-        color=Colors.gray7
+        transform=Text.Uppercase
         tooltipItem={tooltipItem->Belt_Option.mapWithDefault(React.null, React.string)}
         tooltipPlacement
       />
       <HSpacing size=Spacing.xs />
       {if (sortedBy == asc) {
-         <Icon name="fas fa-caret-down" color=Colors.black />;
+         <Icon name="fas fa-caret-down" color={theme.textSecondary} />;
        } else if (sortedBy == desc) {
-         <Icon name="fas fa-caret-up" color=Colors.black />;
+         <Icon name="fas fa-caret-up" color={theme.textSecondary} />;
        } else {
-         <Icon name="fas fa-sort" color=Colors.black />;
+         <Icon name="fas fa-sort" color={theme.textSecondary} />;
        }}
     </div>;
   };
@@ -312,13 +338,22 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
       setSortedBy(_ => sortedByDesc);
     };
 
+  let (accountOpt, _) = React.useContext(AccountContext.context);
+  let (_, dispatchModal) = React.useContext(ModalContext.context);
+  let ({ThemeContext.isDarkMode, theme}, _) = React.useContext(ThemeContext.context);
   <>
     {isMobile
        ? React.null
        : <THead>
            <Row alignItems=Row.Center>
              <Col col=Col.One>
-               <Text block=true value="Rank" weight=Text.Semibold color=Colors.gray7 />
+               <Text
+                 block=true
+                 value="Rank"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+                 size=Text.Sm
+               />
              </Col>
              <Col col=Col.Two>
                <SortableTHead
@@ -350,7 +385,7 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
                  tooltipItem="Validator service fees charged to delegators"
                />
              </Col>
-             <Col col=Col.Three>
+             <Col col={accountOpt |> Belt.Option.isNone ? Col.Three : Two}>
                <SortableTHead
                  title="Uptime (%)"
                  asc=UptimeAsc
@@ -364,10 +399,11 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
              <Col col=Col.Two>
                <Text
                  block=true
-                 color=Colors.gray7
+                 transform=Text.Uppercase
+                 size=Text.Sm
                  weight=Text.Semibold
+                 align={accountOpt |> Belt.Option.isNone ? Text.Center : Left}
                  value="Oracle Status"
-                 align=Text.Center
                  tooltipItem={"The validator's Oracle status" |> React.string}
                />
              </Col>
@@ -393,25 +429,54 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
               ->Belt_Array.map(e => {
                   let votingPower = e.votingPower /. bondedTokenCount.amount *. 100.;
                   isMobile
-                    ? renderBodyMobile(e.rank, Sub.resolve(e), votingPower)
-                    : renderBody(e.rank, Sub.resolve(e), votingPower);
+                    ? <RenderBodyMobile
+                        key={e.rank |> string_of_int}
+                        rank={e.rank}
+                        validatorSub={Sub.resolve(e)}
+                        votingPower
+                      />
+                    : <RenderBody
+                        key={e.rank |> string_of_int}
+                        rank={e.rank}
+                        validatorSub={Sub.resolve(e)}
+                        votingPower
+                        accountOpt
+                        dispatchModal
+                      />;
                 })
               ->React.array
             : <EmptyContainer>
-                <img src=Images.noSource className=Styles.noDataImage />
+                <img
+                  src={isDarkMode ? Images.noDelegatorDark : Images.noDelegatorLight}
+                  className=Styles.noDataImage
+                />
                 <Heading
                   size=Heading.H4
                   value="No Validator"
                   align=Heading.Center
                   weight=Heading.Regular
-                  color=Colors.bandBlue
+                  color={theme.textSecondary}
                 />
               </EmptyContainer>}
        </>;
      | _ =>
        Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
-           isMobile ? renderBodyMobile(i, noData, 1.0) : renderBody(i, noData, 1.0)
+           isMobile
+             ? <RenderBodyMobile
+                 key={i |> string_of_int}
+                 rank=i
+                 validatorSub=noData
+                 votingPower=1.0
+               />
+             : <RenderBody
+                 key={i |> string_of_int}
+                 rank=i
+                 validatorSub=noData
+                 votingPower=1.0
+                 accountOpt=None
+                 dispatchModal={_ => ()}
+               />
          )
        ->React.array
      }}

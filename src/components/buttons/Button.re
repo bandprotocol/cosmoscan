@@ -22,8 +22,9 @@ module Styles = {
         display(`block),
         padding2(~v=`px(py), ~h=`px(px)),
         transition(~duration=200, "all"),
-        borderRadius(`px(4)),
+        borderRadius(`px(8)),
         fontSize(`px(fsize)),
+        fontWeight(`num(600)),
         cursor(`pointer),
         outlineStyle(`none),
         borderStyle(`none),
@@ -54,7 +55,7 @@ module Styles = {
           border(`px(1), `solid, theme.textPrimary),
           hover([
             backgroundColor(theme.textPrimary),
-            color(isDarkMode ? Colors.black : Colors.white),
+            color(isDarkMode ? Theme.black : Theme.white),
           ]),
           active([backgroundColor(Colors.buttonOutlineActive)]),
           disabled([
@@ -73,8 +74,8 @@ let make =
     (
       ~variant=Primary,
       ~children,
-      ~py=5,
-      ~px=10,
+      ~py=8,
+      ~px=16,
       ~fsize=12,
       ~pySm=py,
       ~pxSm=px,

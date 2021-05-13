@@ -121,6 +121,8 @@ let make =
       ~msgTransform: TxSub.Msg.t => TxSub.Msg.t=x => x,
     ) => {
   let isMobile = Media.isMobile();
+
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
   <>
     {switch (txsSub) {
      | Data(txs) =>
@@ -138,13 +140,16 @@ let make =
              )
            ->React.array
          : <EmptyContainer>
-             <img src=Images.noBlock className=Styles.noDataImage />
+             <img
+               src={isDarkMode ? Images.noTxDark : Images.noTxLight}
+               className=Styles.noDataImage
+             />
              <Heading
                size=Heading.H4
                value="No Transaction"
                align=Heading.Center
                weight=Heading.Regular
-               color=Colors.bandBlue
+               color={theme.textSecondary}
              />
            </EmptyContainer>
      | _ =>

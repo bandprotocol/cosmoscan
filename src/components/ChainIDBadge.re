@@ -18,19 +18,6 @@ module Styles = {
       Media.smallMobile([minWidth(`px(90))]),
     ]);
 
-  let versionLoading = (theme: Theme.t) =>
-    style([
-      display(`flex),
-      borderRadius(`px(8)),
-      backgroundColor(theme.lightenBlue),
-      overflow(`hidden),
-      minWidth(`px(153)),
-      justifyContent(`center),
-      alignItems(`center),
-      marginLeft(Spacing.xs),
-      marginTop(`px(1)),
-    ]);
-
   let dropdown = (show, theme: Theme.t, isDarkMode) =>
     style([
       position(`absolute),
@@ -118,10 +105,10 @@ let make = () =>
   {
     let (show, setShow) = React.useState(_ => false);
     let trackingSub = TrackingSub.use();
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
     let%Sub tracking = trackingSub;
     let currentChainID = tracking.chainID->parseChainID;
-
-    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <div
       className={Styles.version(theme, isDarkMode)}
@@ -162,14 +149,6 @@ let make = () =>
        _,
        {
          let width = Media.isSmallMobile() ? 80 : 153;
-         let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-         <div className={Styles.versionLoading(theme)}>
-           <LoadingCensorBar
-             width
-             height=30
-             colorBase={theme.lightenBlue}
-             colorLighter=Colors.white
-           />
-         </div>;
+         <LoadingCensorBar width height=30 />;
        },
      );
