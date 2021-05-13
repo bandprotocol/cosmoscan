@@ -4,7 +4,7 @@ module RenderDesktop = {
 
     let nav = (isActive, theme: Theme.t) =>
       style([
-        padding2(~v=`px(16), ~h=`zero),
+        padding3(~top=`px(16), ~h=`zero, ~bottom=`px(12)),
         cursor(`pointer),
         fontSize(`px(12)),
         hover([color(theme.textPrimary)]),
