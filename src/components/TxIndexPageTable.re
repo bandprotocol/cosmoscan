@@ -59,7 +59,7 @@ module Styles = {
   let infoHeader =
     style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
 
-  let msgContainer = style([selector("+ div", [marginTop(`px(24))])]);
+  let msgContainer = style([selector("> div + div", [marginTop(`px(24))])]);
 };
 
 let renderCreateClient = (_: TxSub.Msg.CreateClient.t) => {
@@ -371,43 +371,31 @@ let renderBody = (msg: TxSub.Msg.t) =>
 
 [@react.component]
 let make = (~messages: list(TxSub.Msg.t)) => {
-  <>
+  <div className=Styles.msgContainer>
     {messages
      ->Belt.List.mapWithIndex((index, msg) => {
          let theme = msg |> TxSub.Msg.getBadgeTheme;
-         <div
-           className={Css.merge([CssHelper.infoContainer, Styles.msgContainer])}
-           key={(index |> string_of_int) ++ theme.name}>
-           <div
-             className={Css.merge([
-               CssHelper.flexBox(),
-               Styles.infoHeader,
-               CssHelper.mb(~size=21, ()),
-               CssHelper.mbSm(~size=16, ()),
-             ])}>
+         <InfoContainer key={(index |> string_of_int) ++ theme.name}>
+           <div className={CssHelper.flexBox()}>
              <IndexMsgIcon category={theme.category} />
              <HSpacing size=Spacing.sm />
              <Heading value={theme.name} size=Heading.H4 />
            </div>
+           <SeperatedLine mt=32 mb=24 />
            {renderBody(msg)}
-         </div>;
+         </InfoContainer>;
        })
      ->Array.of_list
      ->React.array}
-  </>;
+  </div>;
 };
 
 module Loading = {
   [@react.component]
   let make = () => {
-    <div className=CssHelper.infoContainer>
-      <div
-        className={Css.merge([
-          CssHelper.flexBox(),
-          Styles.infoHeader,
-          CssHelper.mb(~size=21, ()),
-          CssHelper.mbSm(~size=16, ()),
-        ])}>
+    <InfoContainer>
+      <div className={CssHelper.flexBox()}>
+        <SeperatedLine mt=32 mb=24 />
         <LoadingCensorBar width=24 height=24 radius=24 />
         <HSpacing size=Spacing.sm />
         <LoadingCensorBar width=75 height=15 />
@@ -426,6 +414,6 @@ module Loading = {
           <LoadingCensorBar width=150 height=15 />
         </Col>
       </Row>
-    </div>;
+    </InfoContainer>;
   };
 };

@@ -47,6 +47,9 @@ module Styles = {
   let mb = (~mb, ~mbSm, ()) => {
     style([marginBottom(`px(mb)), Media.mobile([marginBottom(`px(mbSm))])]);
   };
+  let mt = (~mt, ~mtSm, ()) => {
+    style([marginTop(`px(mt)), Media.mobile([marginTop(`px(mtSm))])]);
+  };
 };
 
 [@react.component]
@@ -56,6 +59,8 @@ let make =
       ~align=Left,
       ~weight=Semibold,
       ~size=H1,
+      ~marginTop=0,
+      ~marginTopSm=marginTop,
       ~marginBottom=0,
       ~marginBottomSm=marginBottom,
       ~style="",
@@ -74,6 +79,7 @@ let make =
         textAlign(align),
         lineHeight,
         mb(~mb=marginBottom, ~mbSm=marginBottomSm, ()),
+        mt(~mt=marginTop, ~mtSm=marginTopSm, ()),
         style,
       ],
     );

@@ -1,24 +1,25 @@
 module Styles = {
   open Css;
 
-  let copy = w => style([width(`px(w)), cursor(`pointer), position(`relative), zIndex(2)]);
-  let tick = w => style([width(`px(w))]);
+  let copy = style([cursor(`pointer), position(`relative), zIndex(2)]);
 };
 
 [@react.component]
 let make = (~width, ~message) => {
   let (copied, setCopy) = React.useState(_ => false);
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   copied
-    ? <img src=Images.tickIcon className={Styles.tick(width)} />
-    : <img
-        src=Images.copy
-        className={Styles.copy(width)}
+    ? <div className=Styles.copy>
+        <Icon name="fal fa-check" color={theme.textPrimary} size=width />
+      </div>
+    : <div
         onClick={_ => {
           Copy.copy(message);
           setCopy(_ => true);
           let _ = Js.Global.setTimeout(() => setCopy(_ => false), 700);
           ();
-        }}
-      />;
+        }}>
+        <Icon name="far fa-clone" color={theme.textPrimary} size=width />
+      </div>;
 };

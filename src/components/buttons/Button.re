@@ -53,9 +53,11 @@ module Styles = {
           backgroundColor(`transparent),
           color(theme.textPrimary),
           border(`px(1), `solid, theme.textPrimary),
+          selector("i", [color(theme.textPrimary)]),
           hover([
             backgroundColor(theme.textPrimary),
             color(isDarkMode ? Theme.black : Theme.white),
+            selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
           ]),
           active([backgroundColor(Colors.buttonOutlineActive)]),
           disabled([

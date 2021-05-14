@@ -30,7 +30,6 @@ let make =
              color={color->Belt.Option.getWithDefault(theme.textSecondary)}
              spacing
              code
-             nowrap=true
            />
            <HSpacing size=Spacing.sm />
          </>
@@ -41,7 +40,6 @@ let make =
       weight
       spacing
       code
-      nowrap=true
       block=true
       align=textAlign
       color={color->Belt.Option.getWithDefault(theme.textSecondary)}
@@ -55,7 +53,6 @@ let make =
              weight
              spacing
              code
-             nowrap=true
              color={color->Belt.Option.getWithDefault(theme.textSecondary)}
            />
          </>

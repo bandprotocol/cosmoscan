@@ -9,6 +9,7 @@ module Styles = {
 [@react.component]
 let make = (~data, ~title, ~width=105, ~py=5, ~px=10, ~pySm=py, ~pxSm=px) => {
   let (copied, setCopy) = React.useState(_ => false);
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <Button
     variant=Button.Outline
     onClick={_ => {
@@ -22,11 +23,9 @@ let make = (~data, ~title, ~width=105, ~py=5, ~px=10, ~pySm=py, ~pxSm=px) => {
     pySm
     pxSm>
     <div className={CssHelper.flexBox(~align=`center, ~justify=`center, ())}>
-      {copied
-         ? <img src=Images.tickIcon className=Styles.logo />
-         : <img src=Images.copy className=Styles.logo />}
+      {copied ? <Icon name="fal fa-check" size=12 /> : <Icon name="far fa-clone" size=12 />}
       <HSpacing size=Spacing.sm />
-      <Text value=title size=Text.Md block=true color=Colors.bandBlue nowrap=true />
+      {title |> React.string}
     </div>
   </Button>;
 };

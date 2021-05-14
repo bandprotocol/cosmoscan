@@ -4,9 +4,7 @@ module Styles = {
     style([
       backgroundColor(theme.secondaryBg),
       borderRadius(`px(12)),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
+      boxShadow(Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       padding3(~top=`px(24), ~h=`px(24), ~bottom=`px(16)),
       height(`calc((`sub, `percent(100.), `px(24)))),
       marginBottom(`px(24)),

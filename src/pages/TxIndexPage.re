@@ -1,23 +1,6 @@
 module Styles = {
   open Css;
 
-  let titleContainer =
-    style([
-      Media.mobile([
-        flexDirection(`columnReverse),
-        alignItems(`flexStart),
-        minHeight(`px(80)),
-      ]),
-    ]);
-
-  let separatorLine =
-    style([
-      borderStyle(`none),
-      backgroundColor(Colors.gray9),
-      height(`px(1)),
-      margin2(~v=`px(24), ~h=`auto),
-    ]);
-
   let successLogo = style([width(`px(20)), marginRight(`px(10))]);
 
   let notfoundContainer =
@@ -35,17 +18,6 @@ module Styles = {
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), rgba(0, 0, 0, `num(0.1)))),
     ]);
   let notfoundLogo = style([width(`px(180)), marginRight(`px(10))]);
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      Media.mobile([padding(`px(16))]),
-    ]);
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
 };
 
 module TxNotFound = {
@@ -135,6 +107,8 @@ let make = (~txHash) => {
   let isMobile = Media.isMobile();
   let txSub = TxSub.get(txHash);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   switch (txSub) {
   | Loading
   | Data(_) =>
@@ -142,64 +116,63 @@ let make = (~txHash) => {
       <div className=CssHelper.container>
         <Row marginBottom=40 marginBottomSm=16>
           <Col>
-            <Heading value="Transaction" size=Heading.H4 marginBottom=40 marginBottomSm=24 />
-            <div
-              className={Css.merge([
-                CssHelper.flexBox(~justify=`spaceBetween, ()),
-                Styles.titleContainer,
-              ])}>
-              <div className={CssHelper.flexBox()}>
-                {switch (txSub) {
-                 | Data(_) =>
-                   isMobile
-                     ? <Text
-                         value={txHash |> Hash.toHex(~upper=true)}
-                         size=Text.Lg
-                         weight=Text.Bold
-                         nowrap=false
-                         breakAll=true
-                         code=true
-                         color=Colors.gray7
-                       />
-                     : <>
-                         <Text
-                           value={txHash |> Hash.toHex(~upper=true)}
-                           size=Text.Xxl
-                           weight=Text.Bold
-                           nowrap=true
-                           code=true
-                           color=Colors.gray7
-                         />
-                         <HSpacing size=Spacing.sm />
-                         <CopyRender width=15 message={txHash |> Hash.toHex(~upper=true)} />
-                       </>
-                 | _ => <LoadingCensorBar width=270 height=15 />
-                 }}
-              </div>
-              <div className={CssHelper.flexBox()}>
-                {switch (txSub) {
-                 | Data({success}) =>
-                   <>
-                     <img
-                       src={success ? Images.success : Images.fail}
-                       className=Styles.successLogo
-                     />
-                     <Text
-                       value={success ? "Success" : "Failed"}
-                       nowrap=true
+            <Heading
+              value="Transaction Details"
+              size=Heading.H2
+              marginBottom=32
+              marginBottomSm=8
+            />
+            <div className={CssHelper.flexBox()}>
+              {switch (txSub) {
+               | Data(_) =>
+                 isMobile
+                   ? <Text
+                       value={txHash |> Hash.toHex(~upper=true)}
                        size=Text.Lg
-                       color=Colors.gray7
-                       block=true
+                       weight=Text.Bold
+                       nowrap=false
+                       breakAll=true
+                       code=true
+                       color={theme.textPrimary}
                      />
-                   </>
-                 | _ =>
-                   <>
-                     <LoadingCensorBar width=20 height=20 radius=20 />
-                     <HSpacing size=Spacing.sm />
-                     <LoadingCensorBar width=60 height=15 />
-                   </>
-                 }}
-              </div>
+                   : <>
+                       <Text
+                         value={txHash |> Hash.toHex(~upper=true)}
+                         size=Text.Xxl
+                         nowrap=true
+                         code=true
+                         color={theme.textPrimary}
+                       />
+                       <HSpacing size=Spacing.sm />
+                       <CopyRender width=15 message={txHash |> Hash.toHex(~upper=true)} />
+                     </>
+               | _ => <LoadingCensorBar width=270 height=15 />
+               }}
+            </div>
+            <div className={Css.merge([CssHelper.flexBox(), CssHelper.mt(~size=16, ())])}>
+              {switch (txSub) {
+               | Data({success}) =>
+                 <>
+                   <img
+                     src={success ? Images.success : Images.fail}
+                     className=Styles.successLogo
+                   />
+                   <Text
+                     value={success ? "Success" : "Failed"}
+                     nowrap=true
+                     size=Text.Sm
+                     transform=Text.Uppercase
+                     block=true
+                     color={theme.textPrimary}
+                   />
+                 </>
+               | _ =>
+                 <>
+                   <LoadingCensorBar width=20 height=20 radius=20 />
+                   <HSpacing size=Spacing.sm />
+                   <LoadingCensorBar width=60 height=15 />
+                 </>
+               }}
             </div>
           </Col>
         </Row>
@@ -210,32 +183,53 @@ let make = (~txHash) => {
          }}
         <Row marginBottom=24>
           <Col>
-            <div className=Styles.infoContainer>
-              <Heading
-                value="Information"
-                size=Heading.H4
-                style=Styles.infoHeader
-                marginBottom=24
-              />
-              <Row>
-                <Col col=Col.Six mb=24 mbSm=24>
-                  <Heading value="Block" size=Heading.H5 marginBottom=8 />
+            <InfoContainer>
+              <Heading value="Information" size=Heading.H4 />
+              <SeperatedLine mt=32 mb=24 />
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Block"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({blockHeight}) =>
                      <TypeID.Block id=blockHeight position=TypeID.Subtitle />
                    | _ => <LoadingCensorBar width=75 height=15 />
                    }}
                 </Col>
-                <Col col=Col.Six mb=24 mbSm=24>
-                  <Heading value="Sender" size=Heading.H5 marginBottom=8 />
+              </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Sender"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({sender}) =>
                      <AddressRender address=sender position=AddressRender.Subtitle />
                    | _ => <LoadingCensorBar width=280 height=15 />
                    }}
                 </Col>
-                <Col col=Col.Six mb=24 mbSm=24>
-                  <Heading value="Timestamp" size=Heading.H5 marginBottom=8 />
+              </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Timestamp"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({timestamp}) =>
                      <div className={CssHelper.flexBox()}>
@@ -253,41 +247,67 @@ let make = (~txHash) => {
                    | _ => <LoadingCensorBar width=280 height=15 />
                    }}
                 </Col>
-                <Col>
-                  <Heading value="Memo" size=Heading.H5 marginBottom=8 />
+              </Row>
+              <Row alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Memo"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({memo}) =>
-                     <p>
-                       <Text
-                         value=memo
-                         weight=Text.Regular
-                         size=Text.Lg
-                         color=Colors.gray7
-                         block=true
-                       />
-                     </p>
+                     <Text value=memo weight=Text.Regular size=Text.Lg block=true />
                    | _ => <LoadingCensorBar width=280 height=15 />
                    }}
                 </Col>
               </Row>
-              <hr className=Styles.separatorLine />
-              <Row>
-                <Col col=Col.Three colSm=Col.Six mbSm=24>
-                  <Heading value="Gas Used" size=Heading.H5 marginBottom=8 />
+              <SeperatedLine mt=32 mb=24 />
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Gas Used"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({gasUsed}) => <Text value={gasUsed |> Format.iPretty} size=Text.Lg />
                    | _ => <LoadingCensorBar width=75 height=15 />
                    }}
                 </Col>
-                <Col col=Col.Three colSm=Col.Six mbSm=24>
-                  <Heading value="Gas Limit" size=Heading.H5 marginBottom=8 />
+              </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Gas Limit"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({gasLimit}) => <Text value={gasLimit |> Format.iPretty} size=Text.Lg />
                    | _ => <LoadingCensorBar width=75 height=15 />
                    }}
                 </Col>
-                <Col col=Col.Three colSm=Col.Six>
-                  <Heading value="Gas Price (UBAND)" size=Heading.H5 marginBottom=8 />
+              </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Gas Price (UBAND)"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({gasFee, gasLimit}) =>
                      <Text
@@ -302,8 +322,17 @@ let make = (~txHash) => {
                    | _ => <LoadingCensorBar width=75 height=15 />
                    }}
                 </Col>
-                <Col col=Col.Three colSm=Col.Six>
-                  <Heading value="Fee (BAND)" size=Heading.H5 marginBottom=8 />
+              </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Fee (BAND)"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (txSub) {
                    | Data({gasFee}) =>
                      <Text
@@ -314,7 +343,7 @@ let make = (~txHash) => {
                    }}
                 </Col>
               </Row>
-            </div>
+            </InfoContainer>
           </Col>
         </Row>
         <Row marginBottom=24>
@@ -323,9 +352,9 @@ let make = (~txHash) => {
              | Data({messages}) =>
                let msgCount = messages |> Belt.List.length;
                <div className={CssHelper.flexBox()}>
-                 <Text value={msgCount |> string_of_int} size=Text.Lg />
+                 <Text value={msgCount |> string_of_int} size=Text.Xxl />
                  <HSpacing size=Spacing.md />
-                 <Text value={msgCount > 1 ? "messages" : "message"} size=Text.Lg />
+                 <Text value={msgCount > 1 ? "Messages" : "Message"} size=Text.Xxl />
                </div>;
              | _ => <LoadingCensorBar width=100 height=20 />
              }}

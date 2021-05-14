@@ -11,29 +11,28 @@ module Styles = {
 
   let listContainer = style([marginBottom(`px(25))]);
 
-  let input =
+  let input = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
-      background(white),
       paddingLeft(`px(20)),
       fontSize(`px(12)),
       fontWeight(`num(500)),
       outline(`px(1), `none, white),
       height(`px(37)),
       borderRadius(`px(4)),
-      border(`px(1), `solid, Colors.gray9),
-      placeholder([color(Colors.blueGray3)]),
+      backgroundColor(`transparent),
+      border(`px(1), `solid, theme.textSecondary),
+      placeholder([color(theme.textSecondary)]),
+      color(theme.textPrimary),
     ]);
 
   let button = isLoading =>
     style([
-      backgroundColor(isLoading ? Colors.blueGray3 : Colors.bandBlue),
+      backgroundColor(isLoading ? Theme.lightenBlue : Theme.baseBlue),
       fontWeight(`num(600)),
-      color(isLoading ? Colors.blueGray7 : Colors.white),
+      opacity(isLoading ? 0.8 : 1.),
       cursor(isLoading ? `auto : `pointer),
-      outline(`zero, `none, white),
       marginTop(`px(16)),
-      border(`zero, `solid, Colors.white),
     ]);
 
   let withWH = (w, h) =>
@@ -45,11 +44,10 @@ module Styles = {
       alignItems(`center),
     ]);
 
-  let resultContainer =
+  let resultContainer = (theme: Theme.t) =>
     style([
-      backgroundColor(Colors.white),
       margin2(~v=`px(20), ~h=`zero),
-      selector("> div + div", [borderTop(`px(1), `solid, Colors.gray9)]),
+      selector("> div + div", [borderTop(`px(1), `solid, theme.tableRowBorderColor)]),
     ]);
   let resultBox = style([padding(`px(20))]);
   let labelWrapper =
@@ -68,19 +66,14 @@ module Styles = {
     ]);
 };
 
-let parameterInput = (name, index, setCalldataList) => {
+let parameterInput = (name, index, setCalldataList, theme: Theme.t) => {
   let name = Js.String.replaceByRe([%re "/[_]/g"], " ", name);
+
   <div className=Styles.listContainer key=name>
-    <Text
-      value=name
-      size=Text.Md
-      color=Colors.gray7
-      weight=Text.Semibold
-      transform=Text.Capitalize
-    />
+    <Text value=name size=Text.Md weight=Text.Semibold transform=Text.Capitalize />
     <VSpacing size=Spacing.sm />
     <input
-      className=Styles.input
+      className={Styles.input(theme)}
       type_="text"
       // TODO: Think about placeholder later
       // placeholder="Value"
@@ -125,28 +118,26 @@ let resultRender = result => {
       <div className=Styles.resultWrapper> <Text value=err breakAll=true /> </div>
     </>
   | Success({returncode, stdout, stderr}) =>
-    <div className=Styles.resultContainer>
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    <div className={Styles.resultContainer(theme)}>
       <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
         <div className=Styles.labelWrapper>
-          <Text value="Exit Status" color=Colors.gray6 weight=Text.Semibold />
+          <Text value="Exit Status" weight=Text.Semibold />
         </div>
         <div className=Styles.resultWrapper> <Text value={returncode |> string_of_int} /> </div>
       </div>
       <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-        <div className=Styles.labelWrapper>
-          <Text value="Output" color=Colors.gray6 weight=Text.Semibold />
-        </div>
+        <div className=Styles.labelWrapper> <Text value="Output" weight=Text.Semibold /> </div>
         <div className=Styles.resultWrapper> <Text value=stdout /> </div>
       </div>
       <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-        <div className=Styles.labelWrapper>
-          <Text value="Error" color=Colors.gray6 weight=Text.Semibold />
-        </div>
+        <div className=Styles.labelWrapper> <Text value="Error" weight=Text.Semibold /> </div>
         <div className=Styles.resultWrapper>
           <Text value=stderr code=true weight=Text.Semibold />
         </div>
       </div>
-    </div>
+    </div>;
   };
 };
 
@@ -160,6 +151,8 @@ let make = (~executable: JsBuffer.t) => {
 
   let (result, setResult) = React.useState(_ => Nothing);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <Row>
     <Col>
       <div className=Styles.container>
@@ -169,7 +162,6 @@ let make = (~executable: JsBuffer.t) => {
               "Test data source execution"
               ++ (numParams == 0 ? "" : " with" ++ (numParams == 1 ? " a " : " ") ++ "following")
             }
-            color=Colors.gray7
             size=Text.Lg
           />
           <HSpacing size=Spacing.sm />
@@ -177,7 +169,6 @@ let make = (~executable: JsBuffer.t) => {
              ? React.null
              : <Text
                  value={numParams > 1 ? "parameters" : "parameter"}
-                 color=Colors.gray7
                  weight=Text.Bold
                  size=Text.Lg
                />}
@@ -185,18 +176,20 @@ let make = (~executable: JsBuffer.t) => {
         {numParams > 0
            ? <>
                {params
-                ->Belt_List.mapWithIndex((i, param) => parameterInput(param, i, setCalldataList))
+                ->Belt_List.mapWithIndex((i, param) =>
+                    parameterInput(param, i, setCalldataList, theme)
+                  )
                 ->Belt_List.toArray
                 ->React.array}
              </>
            : React.null}
         <div className="buttonContainer">
           <div className={CssHelper.flexBox()}>
-            <Text value="Click" color=Colors.gray7 />
+            <Text value="Click" />
             <HSpacing size=Spacing.sm />
-            <Text value=" Test Execution " color=Colors.gray7 weight=Text.Bold />
+            <Text value=" Test Execution " weight=Text.Bold />
             <HSpacing size=Spacing.sm />
-            <Text value="to test the data source." color=Colors.gray7 />
+            <Text value="to test the data source." />
           </div>
           <Button
             fsize=14
