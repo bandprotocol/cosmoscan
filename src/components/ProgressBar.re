@@ -7,23 +7,23 @@ module Styles = {
       paddingTop(`px(20)),
       Media.mobile([display(`flex), alignItems(`center), paddingTop(`zero)]),
     ]);
-  let progressOuter =
+  let progressOuter = (theme: Theme.t) =>
     style([
       position(`relative),
       width(`percent(100.)),
       height(`px(12)),
       borderRadius(`px(7)),
-      border(`px(1), `solid, Colors.gray9),
+      border(`px(1), `solid, theme.tableRowBorderColor),
       padding(`px(1)),
       overflow(`hidden),
     ]);
-  let progressInner = (p, success) =>
+  let progressInner = (p, success, theme: Theme.t) =>
     style([
       width(`percent(p)),
       height(`percent(100.)),
       borderRadius(`px(7)),
       transition(~duration=200, "all"),
-      background(success ? Colors.bandBlue : Colors.red4),
+      background(success ? theme.baseBlue : theme.failColor),
     ]);
   let leftText =
     style([
@@ -70,19 +70,30 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
     (reportedValidators * 100 |> float_of_int) /. (requestValidators |> float_of_int);
   let success = reportedValidators >= minimumValidators;
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.barContainer>
     <div className=Styles.leftText>
-      <Text value={"Min " ++ (minimumValidators |> Format.iPretty)} color=Colors.gray7 />
+      <Text
+        value={"Min " ++ (minimumValidators |> Format.iPretty)}
+        transform=Text.Uppercase
+        weight=Text.Semibold
+        size=Text.Sm
+        color={theme.textPrimary}
+      />
     </div>
-    <div className=Styles.progressOuter>
-      <div className={Styles.progressInner(progressPercentage, success)} />
+    <div className={Styles.progressOuter(theme)}>
+      <div className={Styles.progressInner(progressPercentage, success, theme)} />
     </div>
     <div className=Styles.rightText>
       <Text
         value={
           (reportedValidators |> Format.iPretty) ++ " of " ++ (requestValidators |> Format.iPretty)
         }
-        color=Colors.gray7
+        size=Text.Sm
+        transform=Text.Uppercase
+        weight=Text.Semibold
+        color={theme.textPrimary}
       />
     </div>
   </div>;
@@ -93,14 +104,15 @@ module Uptime = {
   let make = (~percent) => {
     let color =
       if (percent == 100.) {
-        Colors.bandBlue;
+        Theme.baseBlue;
       } else if (percent < 100. && percent >= 79.) {
-        Colors.blue11;
+        Theme.lightBlue;
       } else {
-        Colors.red4;
+        Theme.failColor;
       };
 
-    <div className=Styles.progressOuter>
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <div className={Styles.progressOuter(theme)}>
       <div className={Styles.progressUptimeInner(percent, color)} />
     </div>;
   };
@@ -116,6 +128,8 @@ module Deposit = {
     let formatedMinDeposit = minDeposit |> Format.fPretty(~digits=0);
     let formatedTotalDeposit = totalDeposit_ |> Format.fPretty(~digits=0);
 
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <div>
       <div
         className={Css.merge([
@@ -129,7 +143,7 @@ module Deposit = {
           size=Text.Lg
         />
       </div>
-      <div className=Styles.progressOuter>
+      <div className={Styles.progressOuter(theme)}>
         <div className={Styles.progressUptimeInner(percent, Colors.bandBlue)} />
       </div>
     </div>;
@@ -140,6 +154,7 @@ module Voting = {
   [@react.component]
   let make = (~percent, ~label, ~amount) => {
     let isMobile = Media.isMobile();
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div>
       <div
         className={Css.merge([
@@ -162,8 +177,8 @@ module Voting = {
                </>}
         </div>
       </div>
-      <div className=Styles.progressOuter>
-        <div className={Styles.progressInner(percent, true)} />
+      <div className={Styles.progressOuter(theme)}>
+        <div className={Styles.progressInner(percent, true, theme)} />
       </div>
     </div>;
   };

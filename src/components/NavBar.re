@@ -4,11 +4,11 @@ module RenderDesktop = {
 
     let nav = (isActive, theme: Theme.t) =>
       style([
-        padding2(~v=`px(16), ~h=`zero),
+        padding3(~top=`px(16), ~h=`zero, ~bottom=`px(12)),
         cursor(`pointer),
         fontSize(`px(12)),
-        hover([color(Colors.gray6)]),
-        active([color(Colors.gray6)]),
+        hover([color(theme.textPrimary)]),
+        active([color(theme.textPrimary)]),
         transition(~duration=400, "all"),
         color(isActive ? theme.textPrimary : theme.textSecondary),
         borderBottom(`px(4), `solid, isActive ? theme.baseBlue : `transparent),
@@ -40,7 +40,7 @@ module RenderMobile = {
   module Styles = {
     open Css;
 
-    let navContainer = show =>
+    let navContainer = (show, theme: Theme.t) =>
       style([
         display(`flex),
         flexDirection(`column),
@@ -53,16 +53,24 @@ module RenderMobile = {
         left(`zero),
         right(`zero),
         transition(~duration=400, "all"),
-        backgroundColor(Colors.white),
+        backgroundColor(theme.secondaryBg),
         padding4(~top=`zero, ~left=`px(24), ~right=`px(24), ~bottom=`px(24)),
         boxShadow(
           Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
         ),
       ]);
 
-    let nav = style([color(Colors.gray8), padding2(~v=`px(16), ~h=`zero)]);
+    let nav = (theme: Theme.t) =>
+      style([color(theme.textPrimary), padding2(~v=`px(16), ~h=`zero)]);
     let menuContainer =
-      style([padding4(~top=`px(10), ~bottom=`px(10), ~left=`px(10), ~right=`px(5))]);
+      style([
+        marginLeft(`px(10)),
+        flexBasis(`px(24)),
+        flexGrow(0.),
+        flexShrink(0.),
+        height(`px(24)),
+        textAlign(`center),
+      ]);
     let menu = style([width(`px(20)), display(`block)]);
     let cmcLogo = style([width(`px(19)), height(`px(19))]);
     let socialContainer = style([display(`flex), flexDirection(`row), marginTop(`px(10))]);
@@ -95,12 +103,14 @@ module RenderMobile = {
 
     <>
       <div className=Styles.menuContainer onClick={_ => setShow(prev => !prev)}>
-        <img src={show ? Images.close : Images.menu} className=Styles.menu />
+        {show
+           ? <Icon name="fal fa-times" color={theme.textPrimary} size=24 />
+           : <Icon name="fal fa-bars" color={theme.textPrimary} size=24 />}
       </div>
-      <div className={Styles.navContainer(show)}>
+      <div className={Styles.navContainer(show, theme)}>
         {routes
          ->Belt.List.map(((v, route)) =>
-             <Link key=v className=Styles.nav route onClick={_ => setShow(_ => false)}>
+             <Link key=v className={Styles.nav(theme)} route onClick={_ => setShow(_ => false)}>
                <Text value=v size=Text.Lg />
              </Link>
            )

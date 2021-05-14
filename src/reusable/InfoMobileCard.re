@@ -98,7 +98,6 @@ let make = (~info) => {
           }
         }
         block=true
-        color=Colors.gray6
       />
     </div>
   | ProgressBar({reportedValidators, minimumValidators, requestValidators}) =>
@@ -175,13 +174,11 @@ let make = (~info) => {
     <div className=Styles.vFlex>
       <Text
         value={tokens |> Coin.getBandAmountFromCoin |> Format.fPretty(~digits=0)}
-        color=Colors.gray7
         block=true
       />
       <HSpacing size=Spacing.sm />
       <Text
         value={"(" ++ (votingPercent |> Format.fPercent(~digits=2)) ++ ")"}
-        color=Colors.gray6
         weight=Text.Thin
         block=true
       />

@@ -361,7 +361,7 @@ let make = () => {
 
   let allSub = Sub.all2(oracleScriptsSub, oracleScriptsCountSub);
 
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <Section>
     <div className=CssHelper.container id="oraclescriptsSection">
@@ -516,13 +516,16 @@ let make = () => {
                       )
                     ->React.array
                   : <EmptyContainer>
-                      <img src=Images.noSource className=Styles.noDataImage />
+                      <img
+                        src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
+                        className=Styles.noDataImage
+                      />
                       <Heading
                         size=Heading.H4
                         value="No Oracle Script"
                         align=Heading.Center
                         weight=Heading.Regular
-                        color=Colors.bandBlue
+                        color={theme.textSecondary}
                       />
                     </EmptyContainer>}
                {isMobile

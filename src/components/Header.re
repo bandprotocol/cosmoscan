@@ -157,7 +157,7 @@ module DesktopRender = {
           </Col>
         </Row>
       </div>
-      <Section bg={theme.secondaryBg} pt=0 pb=0 style=Styles.boxShadow>
+      <Section bg={theme.headerBg} pt=0 pb=0 style=Styles.boxShadow>
         <div className=CssHelper.container>
           <Row alignItems=Row.Center>
             <Col col=Col.Eight> <NavBar /> </Col>
