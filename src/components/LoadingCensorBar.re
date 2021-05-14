@@ -71,12 +71,8 @@ let make =
         ~w=width,
         ~h=height,
         ~r=radius,
-        ~colorBase={
-          colorBase->Belt.Option.getWithDefault(theme.loadingBaseColor);
-        },
-        ~colorLighter={
-          colorLighter->Belt.Option.getWithDefault(theme.loadingSecondaryColor);
-        },
+        ~colorBase=colorBase->Belt.Option.getWithDefault(theme.loadingBaseColor),
+        ~colorLighter=colorLighter->Belt.Option.getWithDefault(theme.loadingSecondaryColor),
         (),
       ),
       Styles.mt(~mt, ~mtSm, ()),

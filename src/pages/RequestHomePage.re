@@ -6,16 +6,10 @@ module Styles = {
 
 module RenderBody = {
   [@react.component]
-  let make = (~reserveIndex, ~requestsSub: ApolloHooks.Subscription.variant(RequestSub.t)) => {
+  let make = (~requestsSub: ApolloHooks.Subscription.variant(RequestSub.t)) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-    <TBody
-      key={
-        switch (requestsSub) {
-        | Data({id}) => id |> ID.Request.toString
-        | _ => reserveIndex |> string_of_int
-        }
-      }>
+    <TBody>
       <Row alignItems=Row.Center>
         <Col col=Col.Two>
           {switch (requestsSub) {
@@ -216,7 +210,6 @@ let make = () => {
                             requestsSub={Sub.resolve(e)}
                           />
                         : <RenderBody
-                            reserveIndex=i
                             key={e.id |> ID.Request.toString}
                             requestsSub={Sub.resolve(e)}
                           />
@@ -248,7 +241,7 @@ let make = () => {
            ->Belt_Array.mapWithIndex((i, noData) =>
                isMobile
                  ? <RenderBodyMobile reserveIndex=i key={i |> string_of_int} requestsSub=noData />
-                 : <RenderBody reserveIndex=i key={i |> string_of_int} requestsSub=noData />
+                 : <RenderBody key={i |> string_of_int} requestsSub=noData />
              )
            ->React.array
          }}
