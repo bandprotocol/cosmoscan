@@ -26,13 +26,7 @@ module RenderBody = {
         ~accountOpt: option(AccountContext.t),
         ~dispatchModal: ModalContext.a => unit,
       ) => {
-    <TBody
-      key={
-        switch (validatorSub) {
-        | Data({operatorAddress}) => operatorAddress |> Address.toOperatorBech32
-        | _ => rank |> string_of_int
-        }
-      }>
+    <TBody>
       <Row alignItems=Row.Center>
         <Col col=Col.One>
           {switch (validatorSub) {
