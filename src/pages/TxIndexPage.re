@@ -346,7 +346,7 @@ let make = (~txHash) => {
             </InfoContainer>
           </Col>
         </Row>
-        <Row marginBottom=24>
+        <Row marginBottom=40 marginTop=40>
           <Col>
             {switch (txSub) {
              | Data({messages}) =>

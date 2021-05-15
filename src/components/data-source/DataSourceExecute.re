@@ -66,25 +66,29 @@ module Styles = {
     ]);
 };
 
-let parameterInput = (name, index, setCalldataList, theme: Theme.t) => {
-  let name = Js.String.replaceByRe([%re "/[_]/g"], " ", name);
+module ParameterInput = {
+  [@react.component]
+  let make = (~name, ~index, ~setCalldataList) => {
+    let name = Js.String.replaceByRe([%re "/[_]/g"], " ", name);
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-  <div className=Styles.listContainer key=name>
-    <Text value=name size=Text.Md weight=Text.Semibold transform=Text.Capitalize />
-    <VSpacing size=Spacing.sm />
-    <input
-      className={Styles.input(theme)}
-      type_="text"
-      // TODO: Think about placeholder later
-      // placeholder="Value"
-      onChange={event => {
-        let newVal = ReactEvent.Form.target(event)##value;
-        setCalldataList(prev => {
-          prev->Belt_List.mapWithIndex((i, value) => {index == i ? newVal : value})
-        });
-      }}
-    />
-  </div>;
+    <div className=Styles.listContainer>
+      <Text value=name size=Text.Md weight=Text.Semibold transform=Text.Capitalize />
+      <VSpacing size=Spacing.sm />
+      <input
+        className={Styles.input(theme)}
+        type_="text"
+        // TODO: Think about placeholder later
+        // placeholder="Value"
+        onChange={event => {
+          let newVal = ReactEvent.Form.target(event)##value;
+          setCalldataList(prev => {
+            prev->Belt_List.mapWithIndex((i, value) => {index == i ? newVal : value})
+          });
+        }}
+      />
+    </div>;
+  };
 };
 
 type result_data_t = {
@@ -103,41 +107,43 @@ let loadingRender = (wDiv, wImg, h) => {
   <div className={Styles.withWH(wDiv, h)}> <Loading width=wImg /> </div>;
 };
 
-let resultRender = result => {
-  switch (result) {
-  | Nothing => React.null
-  | Loading =>
-    <>
-      <VSpacing size=Spacing.xl />
-      {loadingRender(`percent(100.), `px(104), `px(30))}
-      <VSpacing size=Spacing.lg />
-    </>
-  | Error(err) =>
-    <>
-      <VSpacing size=Spacing.lg />
-      <div className=Styles.resultWrapper> <Text value=err breakAll=true /> </div>
-    </>
-  | Success({returncode, stdout, stderr}) =>
+module ResultRender = {
+  [@react.component]
+  let make = (~result) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-    <div className={Styles.resultContainer(theme)}>
-      <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-        <div className=Styles.labelWrapper>
-          <Text value="Exit Status" weight=Text.Semibold />
+    switch (result) {
+    | Nothing => React.null
+    | Loading =>
+      <>
+        <VSpacing size=Spacing.xl />
+        {loadingRender(`percent(100.), `px(104), `px(30))}
+        <VSpacing size=Spacing.lg />
+      </>
+    | Error(err) =>
+      <>
+        <VSpacing size=Spacing.lg />
+        <div className=Styles.resultWrapper> <Text value=err breakAll=true /> </div>
+      </>
+    | Success({returncode, stdout, stderr}) =>
+      <div className={Styles.resultContainer(theme)}>
+        <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+          <div className=Styles.labelWrapper>
+            <Text value="Exit Status" weight=Text.Semibold />
+          </div>
+          <div className=Styles.resultWrapper> <Text value={returncode |> string_of_int} /> </div>
         </div>
-        <div className=Styles.resultWrapper> <Text value={returncode |> string_of_int} /> </div>
-      </div>
-      <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-        <div className=Styles.labelWrapper> <Text value="Output" weight=Text.Semibold /> </div>
-        <div className=Styles.resultWrapper> <Text value=stdout /> </div>
-      </div>
-      <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-        <div className=Styles.labelWrapper> <Text value="Error" weight=Text.Semibold /> </div>
-        <div className=Styles.resultWrapper>
-          <Text value=stderr code=true weight=Text.Semibold />
+        <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+          <div className=Styles.labelWrapper> <Text value="Output" weight=Text.Semibold /> </div>
+          <div className=Styles.resultWrapper> <Text value=stdout /> </div>
+        </div>
+        <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+          <div className=Styles.labelWrapper> <Text value="Error" weight=Text.Semibold /> </div>
+          <div className=Styles.resultWrapper>
+            <Text value=stderr code=true weight=Text.Semibold />
+          </div>
         </div>
       </div>
-    </div>;
+    };
   };
 };
 
@@ -150,8 +156,6 @@ let make = (~executable: JsBuffer.t) => {
   let (callDataList, setCalldataList) = React.useState(_ => Belt_List.make(numParams, ""));
 
   let (result, setResult) = React.useState(_ => Nothing);
-
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <Row>
     <Col>
@@ -177,7 +181,7 @@ let make = (~executable: JsBuffer.t) => {
            ? <>
                {params
                 ->Belt_List.mapWithIndex((i, param) =>
-                    parameterInput(param, i, setCalldataList, theme)
+                    <ParameterInput key=param name=param index=i setCalldataList />
                   )
                 ->Belt_List.toArray
                 ->React.array}
@@ -233,7 +237,7 @@ let make = (~executable: JsBuffer.t) => {
             {(result == Loading ? "Executing ... " : "Test Execution") |> React.string}
           </Button>
         </div>
-        {resultRender(result)}
+        <ResultRender result />
       </div>
     </Col>
   </Row>;

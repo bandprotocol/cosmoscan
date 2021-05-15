@@ -10,10 +10,9 @@ let make = (~width, ~message) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   copied
-    ? <div className=Styles.copy>
-        <Icon name="fal fa-check" color={theme.textPrimary} size=width />
-      </div>
+    ? <div> <Icon name="fal fa-check" color={theme.textPrimary} size=width /> </div>
     : <div
+        className=Styles.copy
         onClick={_ => {
           Copy.copy(message);
           setCopy(_ => true);
