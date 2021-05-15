@@ -16,17 +16,22 @@ let make = () => {
   let latest11BlocksSub = BlockSub.getList(~pageSize, ~page=1, ());
   let latestBlockSub = latest11BlocksSub->Sub.map(blocks => blocks->Belt_Array.getExn(0));
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let isMobile = Media.isMobile();
 
   <>
     <Section pt=80 pb=80 ptSm=24 pbSm=24 bg={theme.mainBg} style=Styles.root>
-      <img
-        src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
-        className={Css.merge([Styles.baseBg, Styles.left])}
-      />
-      <img
-        src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
-        className={Css.merge([Styles.baseBg, Styles.right])}
-      />
+      {!isMobile
+         ? <>
+             <img
+               src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
+               className={Css.merge([Styles.baseBg, Styles.left])}
+             />
+             <img
+               src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
+               className={Css.merge([Styles.baseBg, Styles.right])}
+             />
+           </>
+         : React.null}
       <div className={Css.merge([CssHelper.container, Styles.content])}>
         <ChainInfoHighlights latestBlockSub />
         <Row marginTop=24>
