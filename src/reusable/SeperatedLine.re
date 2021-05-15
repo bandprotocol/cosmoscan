@@ -8,6 +8,7 @@ module Styles = {
       marginBottom(`px(mb)),
       height(`px(1)),
       backgroundColor(theme.tableRowBorderColor),
+      Media.mobile([marginTop(`px(15))]),
     ]);
   };
 };

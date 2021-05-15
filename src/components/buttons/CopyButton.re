@@ -2,8 +2,6 @@ module Styles = {
   open Css;
 
   let logo = style([width(`px(12))]);
-
-  let clickable = style([cursor(`pointer)]);
 };
 
 [@react.component]
@@ -22,11 +20,9 @@ let make = (~data, ~title, ~width=105, ~py=5, ~px=10, ~pySm=py, ~pxSm=px) => {
     pySm
     pxSm>
     <div className={CssHelper.flexBox(~align=`center, ~justify=`center, ())}>
-      {copied
-         ? <img src=Images.tickIcon className=Styles.logo />
-         : <img src=Images.copy className=Styles.logo />}
+      {copied ? <Icon name="fal fa-check" size=12 /> : <Icon name="far fa-clone" size=12 />}
       <HSpacing size=Spacing.sm />
-      <Text value=title size=Text.Md block=true color=Colors.bandBlue nowrap=true />
+      {title |> React.string}
     </div>
   </Button>;
 };

@@ -8,10 +8,11 @@ type field_t =
 
 module Styles = {
   open Css;
-  let tabletContainer =
+  let tabletContainer = (theme: Theme.t) =>
     style([
       padding2(~v=`px(8), ~h=`px(24)),
-      backgroundColor(Colors.profileBG),
+      border(`px(1), `solid, theme.tableRowBorderColor),
+      borderRadius(`px(8)),
       Media.mobile([padding2(~v=`px(8), ~h=`px(12))]),
     ]);
 
@@ -82,13 +83,16 @@ let renderField = (field, maxWidth) => {
 let make = (~headers=["Key", "Value"], ~rows) => {
   let columnSize = headers |> Belt_List.length > 2 ? Col.Four : Col.Six;
   let valueWidth = Media.isMobile() ? 70 : 480;
-  <div className=Styles.tabletContainer>
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+  <div className={Styles.tabletContainer(theme)}>
     <div className=Styles.tableSpacing>
       <Row>
         {headers
          ->Belt_List.mapWithIndex((i, header) => {
              <Col key={header ++ (i |> string_of_int)} col=columnSize colSm=columnSize>
-               <Text value=header weight=Text.Semibold height={Text.Px(18)} color=Colors.gray7 />
+               <Text value=header weight=Text.Semibold height={Text.Px(18)} />
              </Col>
            })
          ->Belt_List.toArray

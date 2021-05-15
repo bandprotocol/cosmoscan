@@ -1,14 +1,5 @@
 module Styles = {
   open Css;
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      Media.mobile([padding(`px(16))]),
-    ]);
   let infoHeader =
     style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
 };
@@ -21,17 +12,19 @@ module Content = {
         ~dataSourceID,
         ~hashtag,
       ) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <Section pbSm=0>
       <div className=CssHelper.container>
         <Row marginBottom=40 marginBottomSm=16>
           <Col>
-            <Heading value="Data Source" size=Heading.H4 marginBottom=40 marginBottomSm=24 />
+            <Heading value="Data Source" size=Heading.H2 marginBottom=32 marginBottomSm=8 />
             {switch (dataSourceSub) {
              | Data({id, name}) =>
                <div className={CssHelper.flexBox()}>
                  <TypeID.DataSource id position=TypeID.Title />
                  <HSpacing size=Spacing.sm />
-                 <Heading size=Heading.H3 value=name />
+                 <Heading size=Heading.H3 value=name weight=Heading.Thin />
                </div>
              | _ => <LoadingCensorBar width=270 height=15 />
              }}
@@ -39,78 +32,88 @@ module Content = {
         </Row>
         <Row marginBottom=24>
           <Col>
-            <div className=Styles.infoContainer>
-              <Heading
-                value="Information"
-                size=Heading.H4
-                style=Styles.infoHeader
-                marginBottom=24
-              />
-              <div className={CssHelper.flexBox()}>
-                <Heading value="Owner" size=Heading.H5 />
-                <HSpacing size=Spacing.xs />
-                <CTooltip tooltipText="The owner of the data source">
-                  <Icon name="fal fa-info-circle" size=10 />
-                </CTooltip>
-              </div>
-              <VSpacing size=Spacing.sm />
-              {switch (dataSourceSub) {
-               | Data({owner}) => <AddressRender address=owner position=AddressRender.Subtitle />
-               | _ => <LoadingCensorBar width=284 height=15 />
-               }}
-              <VSpacing size=Spacing.lg />
-              <Heading value="Description" size=Heading.H5 marginBottom=16 />
-              {switch (dataSourceSub) {
-               | Data({description}) =>
-                 <p>
-                   <Text
-                     value=description
-                     weight=Text.Regular
-                     size=Text.Lg
-                     color=Colors.gray7
-                     block=true
-                   />
-                 </p>
-               | _ => <LoadingCensorBar width=284 height=15 />
-               }}
-            </div>
+            <InfoContainer>
+              <Heading value="Information" size=Heading.H4 />
+              <SeperatedLine mt=32 mb=24 />
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <div className={CssHelper.flexBox()}>
+                    <Heading
+                      value="Owner"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                    <HSpacing size=Spacing.xs />
+                    <CTooltip tooltipText="The owner of the data source">
+                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                    </CTooltip>
+                  </div>
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (dataSourceSub) {
+                   | Data({owner}) =>
+                     <AddressRender address=owner position=AddressRender.Subtitle />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
+              <Row alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Description"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (dataSourceSub) {
+                   | Data({description}) => <Text size=Text.Lg value=description />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
+            </InfoContainer>
           </Col>
         </Row>
-        <Tab
-          tabs=[|
-            {
-              name: "Requests",
-              route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRequests),
-            },
-            {
-              name: "Code",
-              route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceCode),
-            },
-            {
-              name: "Test Execution",
-              route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceExecute),
-            },
-            // {
-            //   name: "Revisions",
-            //   route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRevisions),
-            // },
-          |]
-          currentRoute={dataSourceID |> ID.DataSource.getRouteWithTab(_, hashtag)}>
-          {switch (hashtag) {
-           | DataSourceExecute =>
-             switch (dataSourceSub) {
-             | Data({executable}) => <DataSourceExecute executable />
-             | _ => <LoadingCensorBar fullWidth=true height=400 />
-             }
-           | DataSourceCode =>
-             switch (dataSourceSub) {
-             | Data({executable}) => <DataSourceCode executable />
-             | _ => <LoadingCensorBar fullWidth=true height=300 />
-             }
-           | DataSourceRequests => <DataSourceRequestTable dataSourceID />
-           | DataSourceRevisions => <DataSourceRevisionTable id=dataSourceID />
-           }}
-        </Tab>
+        <Table>
+          <Tab
+            tabs=[|
+              {
+                name: "Requests",
+                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRequests),
+              },
+              {
+                name: "Code",
+                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceCode),
+              },
+              {
+                name: "Test Execution",
+                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceExecute),
+              },
+              // {
+              //   name: "Revisions",
+              //   route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRevisions),
+              // },
+            |]
+            currentRoute={dataSourceID |> ID.DataSource.getRouteWithTab(_, hashtag)}>
+            {switch (hashtag) {
+             | DataSourceExecute =>
+               switch (dataSourceSub) {
+               | Data({executable}) => <DataSourceExecute executable />
+               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               }
+             | DataSourceCode =>
+               switch (dataSourceSub) {
+               | Data({executable}) => <DataSourceCode executable />
+               | _ => <LoadingCensorBar fullWidth=true height=300 />
+               }
+             | DataSourceRequests => <DataSourceRequestTable dataSourceID />
+             | DataSourceRevisions => <DataSourceRevisionTable id=dataSourceID />
+             }}
+          </Tab>
+        </Table>
       </div>
     </Section>;
   };

@@ -195,7 +195,7 @@ module RequestFailMsg = {
       <Col mb=24>
         <Heading value="Calldata" size=Heading.H5 marginBottom=8 />
         <div className={CssHelper.flexBox()}>
-          <Text value={request.calldata |> JsBuffer.toHex} color=Colors.gray7 size=Text.Lg />
+          <Text value={request.calldata |> JsBuffer.toHex} size=Text.Lg />
           <HSpacing size=Spacing.sm />
           <CopyRender width=14 message={request.calldata |> JsBuffer.toHex} />
         </div>
