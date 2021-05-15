@@ -1,3 +1,13 @@
+module Styles = {
+  open Css;
+
+  let root = style([position(`relative)]);
+  let content = style([position(`relative), zIndex(1)]);
+  let baseBg = style([position(`absolute), top(`px(40))]);
+  let left = style([left(`zero)]);
+  let right = style([right(`zero), transform(rotateZ(`deg(180.)))]);
+};
+
 [@react.component]
 let make = () => {
   // Subscribe for latest 11 blocks here so both "LatestBlocks" and "ChainInfoHighLights"
@@ -5,21 +15,25 @@ let make = () => {
   let pageSize = Media.isMobile() ? 7 : 11;
   let latest11BlocksSub = BlockSub.getList(~pageSize, ~page=1, ());
   let latestBlockSub = latest11BlocksSub->Sub.map(blocks => blocks->Belt_Array.getExn(0));
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <>
-    <Section pt=40 pb=40 ptSm=24 pbSm=24 bg={theme.mainBg}>
-      <div className=CssHelper.container>
+    <Section pt=80 pb=80 ptSm=24 pbSm=24 bg={theme.mainBg} style=Styles.root>
+      <img
+        src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
+        className={Css.merge([Styles.baseBg, Styles.left])}
+      />
+      <img
+        src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
+        className={Css.merge([Styles.baseBg, Styles.right])}
+      />
+      <div className={Css.merge([CssHelper.container, Styles.content])}>
         <ChainInfoHighlights latestBlockSub />
-        <Row>
+        <Row marginTop=24>
           <Col col=Col.Six mbSm=24> <TotalRequestsGraph /> </Col>
           <Col col=Col.Six> <LatestRequests /> </Col>
         </Row>
-      </div>
-    </Section>
-    <Section pt=40 pb=80 pbSm=40 bg=Colors.white>
-      <div className=CssHelper.container>
-        <Row>
+        <Row marginTop=24>
           <Col col=Col.Four> <LatestBlocks blocksSub=latest11BlocksSub /> </Col>
           <Col col=Col.Eight> <LatestTxTable /> </Col>
         </Row>
