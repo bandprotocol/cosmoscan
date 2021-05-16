@@ -1,50 +1,18 @@
 module Styles = {
   open Css;
 
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      Media.mobile([padding(`px(16))]),
-    ]);
-
-  let setPaddingBottom = (~pb, ~pbSm, ()) =>
-    style([paddingBottom(`px(pb)), Media.mobile([paddingBottom(`px(pbSm))])]);
-
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-  let infoIcon = style([width(`px(12)), height(`px(12)), display(`block)]);
-
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
-
   let kvTableContainer = style([padding(`px(1))]);
-
   let kvTableHeader =
     style([
       padding4(~top=`px(16), ~left=`px(24), ~right=`px(24), ~bottom=`px(12)),
       Media.mobile([padding2(~v=`px(14), ~h=`px(12))]),
     ]);
 
-  let kvTableMobile =
-    style([
-      margin4(~top=`zero, ~left=`px(12), ~right=`px(12), ~bottom=`px(12)),
-      boxShadow(`none),
-    ]);
-
-  let seperatedLine =
-    style([
-      width(`percent(100.)),
-      height(`px(1)),
-      backgroundColor(Colors.gray9),
-      margin2(~v=`px(24), ~h=`zero),
-    ]);
-
+  let kvTableMobile = style([margin(`zero), boxShadow(`none)]);
   let addressContainer = style([Media.mobile([width(`px(260))])]);
-
   let validatorReportStatus = style([marginBottom(`px(13))]);
+  let noPaddingBottom = style([paddingBottom(`zero), Media.mobile([paddingBottom(`zero)])]);
 };
 
 module ValidatorReportStatus = {
@@ -373,7 +341,7 @@ let make = (~reqID) => {
       // Calldata
       <Row marginBottom=24>
         <Col>
-          <InfoContainer>
+          <InfoContainer style=Styles.noPaddingBottom>
             <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
               <Heading value="Calldata" size=Heading.H4 />
               {switch (requestSub) {
@@ -401,7 +369,7 @@ let make = (~reqID) => {
       // Result
       <Row marginBottom=24>
         <Col>
-          <InfoContainer>
+          <InfoContainer style=Styles.noPaddingBottom>
             <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
               <Heading value="Result" size=Heading.H4 />
               {switch (requestSub) {
@@ -460,11 +428,11 @@ let make = (~reqID) => {
             <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
               <Heading value="Proof of validity" size=Heading.H4 />
               <a href="https://docs.bandchain.org/" target="_blank" rel="noopener">
-                <Row alignItems=Row.Center>
+                <div className={CssHelper.flexBox()}>
                   <Heading value="What is proof ?" size=Heading.H5 />
                   <HSpacing size=Spacing.sm />
                   <Icon name="far fa-external-link-alt" color={theme.textPrimary} />
-                </Row>
+                </div>
               </a>
             </div>
             <SeperatedLine mt=32 />
@@ -503,7 +471,7 @@ let make = (~reqID) => {
       // External Data Table
       <Row marginBottom=24>
         <Col>
-          <InfoContainer>
+          <InfoContainer style=Styles.noPaddingBottom>
             <Heading value="External Data" size=Heading.H4 />
             <SeperatedLine mt=32 />
             <div className=Styles.kvTableContainer>

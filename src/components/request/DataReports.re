@@ -1,7 +1,7 @@
 module Styles = {
   open Css;
 
-  let reportCard = style([Media.mobile([padding2(~v=`px(24), ~h=`px(16))])]);
+  let reportCard = style([Media.mobile([padding2(~v=`px(8), ~h=`zero)])]);
 
   let reportsTable = (theme: Theme.t) =>
     style([
@@ -11,11 +11,10 @@ module Styles = {
       backgroundColor(theme.secondaryTableBg),
       transition(~duration=200, "all"),
       height(`auto),
-      Media.mobile([padding(`zero), backgroundColor(Colors.white)]),
+      Media.mobile([paddingTop(`zero), paddingBottom(`zero)]),
     ]);
 
-  let mobileCard =
-    style([backgroundColor(Colors.profileBG), boxShadow(`none), marginTop(`px(8))]);
+  let mobileCard = style([boxShadow(`none), marginTop(`px(8))]);
 
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
@@ -23,8 +22,7 @@ module Styles = {
 [@react.component]
 let make = (~reports: array(RequestSub.report_t)) => {
   let isMobile = Media.isMobile();
-
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   reports->Belt.Array.size > 0
     ? reports
@@ -115,14 +113,14 @@ let make = (~reports: array(RequestSub.report_t)) => {
           </div>
         })
       ->React.array
-    : <EmptyContainer height={`px(250)} backgroundColor={theme.lightBlue}>
-        <img src=Images.noSource className=Styles.noDataImage />
+    : <EmptyContainer>
+        <img src={isDarkMode ? Images.noTxDark : Images.noTxLight} className=Styles.noDataImage />
         <Heading
           size=Heading.H4
           value="No Report"
           align=Heading.Center
           weight=Heading.Regular
-          color=Colors.bandBlue
+          color={theme.textSecondary}
         />
       </EmptyContainer>;
 };

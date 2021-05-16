@@ -40,6 +40,7 @@ let make = (~request: RequestSub.t) => {
   let (proofOpt, reload) = ProofHook.get(request.id);
   let (showProof, setShowProof) = React.useState(_ => false);
   let isMobile = Media.isMobile();
+  let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect1(
     () => {
@@ -90,14 +91,13 @@ let make = (~request: RequestSub.t) => {
          : React.null}
     </>
   | None =>
-    <EmptyContainer height={`px(130)} backgroundColor=Colors.blueGray1>
+    <EmptyContainer height={`px(130)} backgroundColor={theme.secondaryTableBg}>
       <Loading marginBottom={`px(16)} />
       <Heading
         size=Heading.H4
         value="Waiting for proof"
         align=Heading.Center
         weight=Heading.Regular
-        color=Colors.bandBlue
       />
     </EmptyContainer>
   };

@@ -68,7 +68,7 @@ let get: mode_t => t =
       inputColor: hex("2C2C2C"),
       dropdownHover: hex("EDEDED"),
       tableRowBorderColor: hex("EDEDED"),
-      secondaryTableBg: hex("F8FAFF"),
+      secondaryTableBg: hex("F5F5F5"),
       loadingBaseColor: hex("F5F5F5"),
       loadingSecondaryColor: hex("B2B2B2"),
     }
