@@ -95,7 +95,7 @@ module KVTableContainer = {
   [@react.component]
   let make = (~decodesOpt) => {
     let isMobile = Media.isMobile();
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     switch (decodesOpt) {
     | Some(decodes) =>
@@ -133,14 +133,17 @@ module KVTableContainer = {
              ->React.array}
           </>
     | None =>
-      <EmptyContainer height={`px(200)} backgroundColor=Colors.blueGray1>
-        <img src=Images.noSource className=Styles.noDataImage />
+      <EmptyContainer height={`px(200)}>
+        <img
+          src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+          className=Styles.noDataImage
+        />
         <Heading
           size=Heading.H4
           value="Schema not found"
           align=Heading.Center
           weight=Heading.Regular
-          color=Colors.bandBlue
+          color={theme.textSecondary}
         />
       </EmptyContainer>
     };
@@ -152,7 +155,7 @@ let make = (~reqID) => {
   let requestSub = RequestSub.get(reqID);
   let isMobile = Media.isMobile();
 
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <Section>
     <div className=CssHelper.container>
@@ -394,25 +397,28 @@ let make = (~reqID) => {
                  let decodesOpt = Obi.decode(schema, "output", result);
                  <KVTableContainer decodesOpt />;
                | (Pending, _) =>
-                 <EmptyContainer height={`px(200)} backgroundColor=Colors.blueGray1>
+                 <EmptyContainer height={`px(200)}>
                    <Loading marginBottom={`px(16)} />
                    <Heading
                      size=Heading.H4
                      value="Waiting for result"
                      align=Heading.Center
                      weight=Heading.Regular
-                     color=Colors.bandBlue
+                     color={theme.textSecondary}
                    />
                  </EmptyContainer>
                | (_, _) =>
-                 <EmptyContainer height={`px(200)} backgroundColor=Colors.blueGray1>
-                   <img src=Images.noSource className=Styles.noDataImage />
+                 <EmptyContainer height={`px(200)}>
+                   <img
+                     src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+                     className=Styles.noDataImage
+                   />
                    <Heading
                      size=Heading.H4
                      value="This request hasn't resolved"
                      align=Heading.Center
                      weight=Heading.Regular
-                     color=Colors.bandBlue
+                     color={theme.textSecondary}
                    />
                  </EmptyContainer>
                }
@@ -441,25 +447,28 @@ let make = (~reqID) => {
                switch (request.resolveStatus) {
                | Success => <RequestProof request />
                | Pending =>
-                 <EmptyContainer height={`px(200)} backgroundColor=Colors.blueGray1>
+                 <EmptyContainer height={`px(200)}>
                    <Loading marginBottom={`px(16)} />
                    <Heading
                      size=Heading.H4
                      value="Waiting for result"
                      align=Heading.Center
                      weight=Heading.Regular
-                     color=Colors.bandBlue
+                     color={theme.textSecondary}
                    />
                  </EmptyContainer>
                | _ =>
-                 <EmptyContainer height={`px(200)} backgroundColor=Colors.blueGray1>
-                   <img src=Images.noSource className=Styles.noDataImage />
+                 <EmptyContainer height={`px(200)}>
+                   <img
+                     src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+                     className=Styles.noDataImage
+                   />
                    <Heading
                      size=Heading.H4
                      value="This request hasn't resolved"
                      align=Heading.Center
                      weight=Heading.Regular
-                     color=Colors.bandBlue
+                     color={theme.textSecondary}
                    />
                  </EmptyContainer>
                }
