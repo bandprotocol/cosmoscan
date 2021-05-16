@@ -1,11 +1,10 @@
 module Styles = {
   open Css;
 
-  let resultContainer =
+  let resultContainer = (theme: Theme.t) =>
     style([
-      backgroundColor(Colors.white),
       margin2(~v=`px(20), ~h=`zero),
-      selector("> div + div", [borderTop(`px(1), `solid, Colors.gray9)]),
+      selector("> div + div", [borderTop(`px(1), `solid, theme.tableRowBorderColor)]),
     ]);
   let resultBox = style([padding(`px(20))]);
   let labelWrapper = style([flexShrink(0.), flexGrow(0.), flexBasis(`px(220))]);
@@ -20,12 +19,13 @@ module Styles = {
 [@react.component]
 let make = (~txResponse: TxCreator.tx_response_t, ~schema: string) =>
   {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let requestsByTxHashSub = RequestSub.Mini.getListByTxHash(txResponse.txHash);
     let%Sub requestsByTxHash = requestsByTxHashSub;
     let requestOpt = requestsByTxHash->Belt_Array.get(0);
 
     <>
-      <div className=Styles.resultContainer>
+      <div className={Styles.resultContainer(theme)}>
         <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
           <div className=Styles.labelWrapper>
             <Text value="Exit Status" color=Colors.gray6 weight=Text.Regular />

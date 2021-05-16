@@ -9,33 +9,52 @@ module Styles = {
 
   let upperTextCotainer = style([marginBottom(`px(24))]);
 
-  let paramsContainer = style([display(`flex), flexDirection(`column)]);
+  let paramsContainer = (theme: Theme.t) =>
+    style([
+      display(`flex),
+      flexDirection(`column),
+      selector(
+        "input",
+        [
+          width(`percent(100.)),
+          backgroundColor(`transparent),
+          padding2(~v=`zero, ~h=`px(16)),
+          fontSize(`px(12)),
+          fontWeight(`num(500)),
+          outline(`px(1), `none, `transparent),
+          height(`px(37)),
+          borderRadius(`px(4)),
+          border(`px(1), `solid, theme.inputColor),
+          color(theme.textPrimary),
+          placeholder([color(theme.textPrimary)]),
+        ],
+      ),
+    ]);
 
   let listContainer = style([marginBottom(`px(25))]);
 
-  let input =
+  let input = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
-      background(white),
+      backgroundColor(`transparent),
       padding2(~v=`zero, ~h=`px(16)),
       fontSize(`px(12)),
       fontWeight(`num(500)),
-      outline(`px(1), `none, white),
+      outline(`px(1), `none, `transparent),
       height(`px(37)),
       borderRadius(`px(4)),
-      border(`px(1), `solid, Colors.gray9),
-      placeholder([color(Colors.blueGray3)]),
+      border(`px(1), `solid, theme.inputColor),
+      color(theme.textPrimary),
+      placeholder([color(theme.textPrimary)]),
     ]);
 
   let button = isLoading =>
     style([
-      backgroundColor(isLoading ? Colors.blueGray3 : Colors.bandBlue),
+      backgroundColor(isLoading ? Theme.lightenBlue : Theme.baseBlue),
       fontWeight(`num(600)),
-      color(isLoading ? Colors.blueGray7 : Colors.white),
+      opacity(isLoading ? 0.8 : 1.),
       cursor(isLoading ? `auto : `pointer),
-      outline(`zero, `none, white),
       marginTop(`px(16)),
-      border(`zero, `solid, Colors.white),
     ]);
 
   let withWH = (w, h) =>
@@ -55,23 +74,14 @@ module Styles = {
       flexDirection(`column),
       padding2(~v=paddingV, ~h=`zero),
       justifyContent(`center),
-      backgroundColor(Colors.white),
       borderRadius(`px(4)),
       overflow(overflowChioce),
     ]);
 
-  let separatorLine =
-    style([
-      borderStyle(`none),
-      backgroundColor(Colors.gray9),
-      height(`px(1)),
-      margin3(~top=`px(10), ~h=`zero, ~bottom=`px(20)),
-    ]);
   let titleSpacing = style([marginBottom(`px(8))]);
   let mobileBlockContainer = style([padding2(~v=`px(24), ~h=`zero)]);
   let mobileBlock =
     style([
-      backgroundColor(Colors.connectBG),
       borderRadius(`px(4)),
       minHeight(`px(164)),
       selector("> i", [marginBottom(`px(16))]),
@@ -81,24 +91,31 @@ module Styles = {
 module ConnectPanel = {
   module Styles = {
     open Css;
-    let connectContainer =
-      style([backgroundColor(Colors.connectBG), borderRadius(`px(4)), padding(`px(24))]);
+    let connectContainer = (theme: Theme.t) =>
+      style([
+        backgroundColor(theme.secondaryBg),
+        borderRadius(`px(8)),
+        padding(`px(24)),
+        border(`px(1), `solid, theme.tableRowBorderColor),
+      ]);
     let connectInnerContainer = style([width(`percent(100.)), maxWidth(`px(370))]);
   };
   [@react.component]
   let make = (~connect) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div
-      className={Css.merge([Styles.connectContainer, CssHelper.flexBox(~justify=`center, ())])}>
+      className={Css.merge([
+        Styles.connectContainer(theme),
+        CssHelper.flexBox(~justify=`center, ()),
+      ])}>
       <div
         className={Css.merge([
           Styles.connectInnerContainer,
           CssHelper.flexBox(~justify=`spaceBetween, ()),
         ])}>
-        <Icon name="fal fa-link" size=32 color=Colors.bandBlue />
+        <Icon name="fal fa-link" size=32 color={theme.textPrimary} />
         <Text value="Please connect to make request" size=Text.Lg nowrap=true block=true />
-        <Button px=20 py=5 onClick={_ => {connect()}}>
-          <Text value="Connect" weight=Text.Medium nowrap=true block=true />
-        </Button>
+        <Button px=20 py=5 onClick={_ => {connect()}}> {"Connect" |> React.string} </Button>
       </div>
     </div>;
   };
@@ -108,13 +125,13 @@ let parameterInput = (Obi.{fieldName, fieldType}, index, setCalldataArr) => {
   let fieldName = Js.String.replaceByRe([%re "/[_]/g"], " ", fieldName);
   <div className=Styles.listContainer key=fieldName>
     <div className={CssHelper.flexBox()}>
-      <Text value=fieldName color=Colors.gray7 weight=Text.Semibold transform=Text.Capitalize />
+      <Text value=fieldName weight=Text.Semibold transform=Text.Capitalize />
       <HSpacing size=Spacing.xs />
-      <Text value={j|($fieldType)|j} color=Colors.gray7 weight=Text.Semibold />
+      <Text value={j|($fieldType)|j} weight=Text.Semibold />
     </div>
     <VSpacing size=Spacing.sm />
     <input
-      className=Styles.input
+      // className=Styles.input
       type_="text"
       onChange={event => {
         let newVal = ReactEvent.Form.target(event)##value;
@@ -129,15 +146,12 @@ let parameterInput = (Obi.{fieldName, fieldType}, index, setCalldataArr) => {
 module CountInputs = {
   [@react.component]
   let make = (~askCount, ~setAskCount, ~setMinCount, ~validatorCount) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <Row marginBottom=24>
       <Col col=Col.Two colSm=Col.Six>
         <div className={Css.merge([CssHelper.flexBox(), Styles.titleSpacing])}>
-          <Text
-            value="Ask Count"
-            color=Colors.gray7
-            weight=Text.Semibold
-            transform=Text.Capitalize
-          />
+          <Text value="Ask Count" weight=Text.Semibold transform=Text.Capitalize />
           <HSpacing size=Spacing.xs />
           <CTooltip
             tooltipPlacementSm=CTooltip.BottomLeft
@@ -147,7 +161,7 @@ module CountInputs = {
         </div>
         <div className={CssHelper.selectWrapper()}>
           <select
-            className=Styles.input
+            className={Styles.input(theme)}
             onChange={event => {
               let newVal = ReactEvent.Form.target(event)##value;
               setAskCount(_ => newVal);
@@ -165,12 +179,7 @@ module CountInputs = {
       </Col>
       <Col col=Col.Two colSm=Col.Six>
         <div className={Css.merge([CssHelper.flexBox(), Styles.titleSpacing])}>
-          <Text
-            value="Min Count"
-            color=Colors.gray7
-            weight=Text.Semibold
-            transform=Text.Capitalize
-          />
+          <Text value="Min Count" weight=Text.Semibold transform=Text.Capitalize />
           <HSpacing size=Spacing.xs />
           <CTooltip
             tooltipPlacementSm=CTooltip.BottomLeft
@@ -180,7 +189,7 @@ module CountInputs = {
         </div>
         <div className={CssHelper.selectWrapper()}>
           <select
-            className=Styles.input
+            className={Styles.input(theme)}
             onChange={event => {
               let newVal = ReactEvent.Form.target(event)##value;
               setMinCount(_ => newVal);
@@ -200,24 +209,28 @@ module CountInputs = {
   };
 };
 
-let clientIDInput = (clientID, setClientID) => {
-  <div className=Styles.listContainer>
-    <div className={CssHelper.flexBox()}>
-      <Text value="Client ID" color=Colors.gray7 weight=Text.Semibold transform=Text.Capitalize />
-      <HSpacing size=Spacing.xs />
-      <Text value="(default value is from_scan)" color=Colors.gray7 weight=Text.Semibold />
-    </div>
-    <VSpacing size=Spacing.sm />
-    <input
-      className=Styles.input
-      type_="text"
-      onChange={event => {
-        let newVal = ReactEvent.Form.target(event)##value;
-        setClientID(_ => newVal);
-      }}
-      value=clientID
-    />
-  </div>;
+module ClientIDInput = {
+  [@react.component]
+  let make = (~clientID, ~setClientID) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <div className=Styles.listContainer>
+      <div className={CssHelper.flexBox()}>
+        <Text value="Client ID" weight=Text.Semibold transform=Text.Capitalize />
+        <HSpacing size=Spacing.xs />
+        <Text value="(default value is from_scan)" weight=Text.Semibold />
+      </div>
+      <VSpacing size=Spacing.sm />
+      <input
+        className={Styles.input(theme)}
+        type_="text"
+        onChange={event => {
+          let newVal = ReactEvent.Form.target(event)##value;
+          setClientID(_ => newVal);
+        }}
+        value=clientID
+      />
+    </div>;
+  };
 };
 
 type result_t =
@@ -250,10 +263,28 @@ let resultRender = (result, schema) => {
   };
 };
 
+module MobileBlock = {
+  [@react.component]
+  let make = (~children) => {
+    <div className=Styles.mobileBlockContainer>
+      <div
+        className={Css.merge([
+          Styles.mobileBlock,
+          CssHelper.flexBox(~justify=`center, ~direction=`column, ()),
+        ])}>
+        children
+      </div>
+    </div>;
+  };
+};
+
 module ExecutionPart = {
   [@react.component]
   let make = (~id: ID.OracleScript.t, ~schema: string, ~paramsInput: array(Obi.field_key_type_t)) => {
     let isMobile = Media.isMobile();
+
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     let (accountOpt, dispatch) = React.useContext(AccountContext.context);
     let (_, dispatchModal) = React.useContext(ModalContext.context);
     let trackingSub = TrackingSub.use();
@@ -307,29 +338,11 @@ module ExecutionPart = {
         ();
       });
     isMobile
-      ? <div className=Styles.mobileBlockContainer>
-          <div
-            className={Css.merge([
-              Styles.mobileBlock,
-              CssHelper.flexBox(~justify=`center, ~direction=`column, ()),
-            ])}>
-            <Icon name="fal fa-exclamation-circle" size=32 color=Colors.bandBlue />
-            <Text
-              value="Oracle request"
-              color=Colors.gray7
-              size=Text.Lg
-              align=Text.Center
-              block=true
-            />
-            <Text
-              value="not available on mobile"
-              color=Colors.gray7
-              size=Text.Lg
-              align=Text.Center
-              block=true
-            />
-          </div>
-        </div>
+      ? <MobileBlock>
+          <Icon name="fal fa-exclamation-circle" size=32 color={theme.textPrimary} />
+          <Text value="Oracle request" size=Text.Lg align=Text.Center block=true />
+          <Text value="not available on mobile" size=Text.Lg align=Text.Center block=true />
+        </MobileBlock>
       : <Row>
           <Col>
             <div className=Styles.container>
@@ -337,23 +350,18 @@ module ExecutionPart = {
                  ? React.null
                  : <div>
                      <div className={Css.merge([CssHelper.flexBox(), Styles.upperTextCotainer])}>
-                       <Text
-                         value="This oracle script requires the following"
-                         color=Colors.gray7
-                         size=Text.Lg
-                       />
+                       <Text value="This oracle script requires the following" size=Text.Lg />
                        <HSpacing size=Spacing.sm />
                        {numParams == 0
                           ? React.null
                           : <Text
                               value={numParams > 1 ? "parameters" : "parameter"}
-                              color=Colors.gray7
                               weight=Text.Bold
                               size=Text.Lg
                             />}
                      </div>
                      <VSpacing size=Spacing.lg />
-                     <div className=Styles.paramsContainer>
+                     <div className={Styles.paramsContainer(theme)}>
                        {paramsInput
                         ->Belt_Array.mapWithIndex((i, param) =>
                             parameterInput(param, i, setCallDataArr)
@@ -361,8 +369,8 @@ module ExecutionPart = {
                         ->React.array}
                      </div>
                    </div>}
-              <div> {clientIDInput(clientID, setClientID)} </div>
-              <hr className=Styles.separatorLine />
+              <ClientIDInput clientID setClientID />
+              <SeperatedLine />
               {switch (validatorCount) {
                | Data(count) =>
                  let limitCount = count > 16 ? 16 : count;
@@ -445,14 +453,8 @@ let make = (~id: ID.OracleScript.t, ~schema: string) =>
   }
   |> Belt.Option.getWithDefault(
        _,
-       <div className=Styles.mobileBlockContainer>
-         <div
-           className={Css.merge([
-             Styles.mobileBlock,
-             CssHelper.flexBox(~justify=`center, ~direction=`column, ()),
-           ])}>
-           <Icon name="fal fa-exclamation-circle" size=32 color=Colors.bandBlue />
-           <Text value="Schema not found" color=Colors.gray7 />
-         </div>
-       </div>,
+       <MobileBlock>
+         <Icon name="fal fa-exclamation-circle" size=32 />
+         <Text value="Schema not found" />
+       </MobileBlock>,
      );

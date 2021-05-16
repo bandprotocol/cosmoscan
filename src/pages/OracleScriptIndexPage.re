@@ -1,18 +1,14 @@
 module Styles = {
   open Css;
-
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
-      padding(`px(24)),
-      Media.mobile([padding(`px(16))]),
-    ]);
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-  let titleSpacing = style([marginBottom(`px(8))]);
+  let titleSpacing = style([marginBottom(`px(26))]);
   let idCointainer = style([marginBottom(`px(16))]);
   let containerSpacingSm = style([Media.mobile([marginTop(`px(16))])]);
+
+  let relatedDSContainer =
+    style([
+      selector("> div + div", [marginTop(`px(16))]),
+      selector("> div > a", [marginRight(`px(8))]),
+    ]);
 };
 
 module Content = {
@@ -25,137 +21,143 @@ module Content = {
       ) => {
     let statSub = OracleScriptSub.getResponseTime(oracleScriptID);
 
-    <Section pbSm=0>
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    <Section>
       <div className=CssHelper.container>
-        <Heading value="Oracle Script" size=Heading.H4 marginBottom=40 marginBottomSm=24 />
+        <Heading value="Oracle Script" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
         <Row marginBottom=40 marginBottomSm=16 alignItems=Row.Center>
-          <Col col=Col.Eight>
+          <Col col=Col.Six>
             <div className={Css.merge([CssHelper.flexBox(), Styles.idCointainer])}>
               {switch (oracleScriptSub) {
                | Data({id, name}) =>
                  <>
                    <TypeID.OracleScript id position=TypeID.Title />
                    <HSpacing size=Spacing.sm />
-                   <Heading size=Heading.H3 value=name />
+                   <Heading size=Heading.H3 value=name weight=Heading.Thin />
                  </>
                | _ => <LoadingCensorBar width=270 height=15 />
                }}
             </div>
           </Col>
-          <Col col=Col.Four>
-            <div className=Styles.infoContainer>
-              <Row>
-                <Col col=Col.Six colSm=Col.Six>
-                  <div className={CssHelper.flexBox(~direction=`column, ())}>
-                    <Heading
-                      value="Requests"
-                      size=Heading.H4
-                      marginBottom=8
-                      align=Heading.Center
-                    />
-                    {switch (oracleScriptSub) {
-                     | Data({requestCount}) =>
-                       <Text
-                         value={requestCount |> Format.iPretty}
-                         size=Text.Xxl
-                         align=Text.Center
-                         block=true
-                       />
-                     | _ => <LoadingCensorBar width=100 height=15 />
-                     }}
-                  </div>
-                </Col>
-                <Col col=Col.Six colSm=Col.Six>
-                  <div className={CssHelper.flexBox(~direction=`column, ())}>
-                    <div
-                      className={Css.merge([
-                        CssHelper.flexBox(~justify=`center, ()),
-                        Styles.titleSpacing,
-                      ])}>
-                      <Heading value="Response time" size=Heading.H4 align=Heading.Center />
-                      <HSpacing size=Spacing.xs />
-                      <CTooltip
-                        tooltipPlacementSm=CTooltip.BottomRight
-                        tooltipText="The average time requests to this oracle script takes to resolve">
-                        <Icon name="fal fa-info-circle" size=12 />
-                      </CTooltip>
-                    </div>
-                    {switch (statSub) {
-                     | Data(statOpt) =>
-                       <Text
-                         value={
-                           switch (statOpt) {
-                           | Some({responseTime}) => responseTime |> Format.fPretty(~digits=2)
-                           | None => "TBD"
-                           }
-                         }
-                         size=Text.Xxl
-                         align=Text.Center
-                         block=true
-                       />
-                     | _ => <LoadingCensorBar width=100 height=15 />
-                     }}
-                  </div>
-                </Col>
-              </Row>
-            </div>
+          <Col col=Col.Three colSm=Col.Six>
+            <InfoContainer>
+              <Heading
+                value="Requests"
+                size=Heading.H4
+                weight=Heading.Thin
+                color={theme.textSecondary}
+                marginBottom=26
+              />
+              {switch (oracleScriptSub) {
+               | Data({requestCount}) =>
+                 <Text
+                   value={requestCount |> Format.iPretty}
+                   size=Text.Xxxl
+                   block=true
+                   weight=Text.Bold
+                   color={theme.textPrimary}
+                 />
+               | _ => <LoadingCensorBar width=100 height=15 />
+               }}
+            </InfoContainer>
+          </Col>
+          <Col col=Col.Three colSm=Col.Six>
+            <InfoContainer>
+              <div className={Css.merge([CssHelper.flexBox(), Styles.titleSpacing])}>
+                <Heading
+                  value="Response time"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+                <HSpacing size=Spacing.xs />
+                <CTooltip
+                  tooltipPlacementSm=CTooltip.BottomRight
+                  tooltipText="The average time requests to this oracle script takes to resolve">
+                  <Icon name="fal fa-info-circle" size=12 color={theme.textSecondary} />
+                </CTooltip>
+              </div>
+              {switch (statSub) {
+               | Data(statOpt) =>
+                 <Text
+                   value={
+                     switch (statOpt) {
+                     | Some({responseTime}) => responseTime |> Format.fPretty(~digits=2)
+                     | None => "TBD"
+                     }
+                   }
+                   size=Text.Xxxl
+                   weight=Text.Bold
+                   block=true
+                   color={theme.textPrimary}
+                 />
+               | _ => <LoadingCensorBar width=100 height=15 />
+               }}
+            </InfoContainer>
           </Col>
         </Row>
         <Row marginBottom=24>
           <Col>
-            <div className=Styles.infoContainer>
-              <Heading
-                value="Information"
-                size=Heading.H4
-                style=Styles.infoHeader
-                marginBottom=24
-              />
-              <Row marginBottom=24>
-                <Col col=Col.Six>
+            <InfoContainer>
+              <Heading value="Information" size=Heading.H4 />
+              <SeperatedLine mt=32 mb=24 />
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
                   <div className={CssHelper.flexBox()}>
-                    <Heading value="Owner" size=Heading.H5 />
+                    <Heading
+                      value="Owner"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
                     <HSpacing size=Spacing.xs />
                     <CTooltip tooltipText="The owner of the oracle script">
-                      <Icon name="fal fa-info-circle" size=10 />
+                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
                     </CTooltip>
                   </div>
-                  <VSpacing size=Spacing.sm />
+                </Col>
+                <Col col=Col.Eight>
                   {switch (oracleScriptSub) {
                    | Data({owner}) =>
                      <AddressRender address=owner position=AddressRender.Subtitle />
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
-                <Col col=Col.Six>
+              </Row>
+              <Row marginBottom=24>
+                <Col col=Col.Four mbSm=8>
                   <div className={Css.merge([CssHelper.flexBox(), Styles.containerSpacingSm])}>
-                    <Heading value="Data Sources" size=Heading.H5 />
+                    <Heading
+                      value="Data Sources"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
                     <HSpacing size=Spacing.xs />
                     <CTooltip tooltipText="The data sources used in this oracle script">
-                      <Icon name="fal fa-info-circle" size=10 />
+                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
                     </CTooltip>
                   </div>
-                  <VSpacing size=Spacing.sm />
-                  <div className={CssHelper.flexBox()}>
+                </Col>
+                <Col col=Col.Eight>
+                  <div className=Styles.relatedDSContainer>
                     {switch (oracleScriptSub) {
                      | Data({relatedDataSources}) =>
                        relatedDataSources->Belt.List.size > 0
                          ? relatedDataSources
                            ->Belt.List.map(({dataSourceName, dataSourceID}) =>
-                               <>
-                                 <div key={dataSourceID |> ID.DataSource.toString}>
-                                   <CTooltip
-                                     mobile=false
-                                     align=`center
-                                     tooltipText={Ellipsis.format(
-                                       ~text=dataSourceName,
-                                       ~limit=40,
-                                       (),
-                                     )}>
-                                     <TypeID.DataSource id=dataSourceID position=TypeID.Subtitle />
-                                   </CTooltip>
-                                 </div>
-                                 <HSpacing size=Spacing.xs />
-                               </>
+                               <div
+                                 key={dataSourceID |> ID.DataSource.toString}
+                                 className={CssHelper.flexBox()}>
+                                 <TypeID.DataSource id=dataSourceID position=TypeID.Subtitle />
+                                 <Text
+                                   value=dataSourceName
+                                   size=Text.Lg
+                                   block=true
+                                   color={theme.textPrimary}
+                                 />
+                               </div>
                              )
                            ->Belt.List.toArray
                            ->React.array
@@ -166,65 +168,79 @@ module Content = {
                   </div>
                 </Col>
               </Row>
-              <Heading value="Description" size=Heading.H5 marginBottom=16 />
-              {switch (oracleScriptSub) {
-               | Data({description}) =>
-                 <p> <Text value=description size=Text.Lg color=Colors.gray7 block=true /> </p>
-               | _ => <LoadingCensorBar width=284 height=15 />
-               }}
-            </div>
+              <Row>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Description"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (oracleScriptSub) {
+                   | Data({description}) => <Text value=description size=Text.Lg block=true />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
+            </InfoContainer>
           </Col>
         </Row>
-        <Tab
-          tabs=[|
-            {
-              name: "Requests",
-              route:
-                oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptRequests),
-            },
-            {
-              name: "OWASM Code",
-              route: oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptCode),
-            },
-            {
-              name: "Bridge Code",
-              route:
-                oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptBridgeCode),
-            },
-            {
-              name: "Make New Request",
-              route:
-                oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptExecute),
-            },
-            // {
-            //   name: "Revisions",
-            //   route:
-            //     oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptRevisions),
-            // },
-          |]
-          currentRoute={oracleScriptID |> ID.OracleScript.getRouteWithTab(_, hashtag)}>
-          {switch (hashtag) {
-           | OracleScriptExecute =>
-             switch (oracleScriptSub) {
-             | Data({schema}) => <OracleScriptExecute id=oracleScriptID schema />
-             | _ => <LoadingCensorBar fullWidth=true height=400 />
-             }
+        <Table>
+          <Tab
+            tabs=[|
+              {
+                name: "Requests",
+                route:
+                  oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptRequests),
+              },
+              {
+                name: "OWASM Code",
+                route:
+                  oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptCode),
+              },
+              {
+                name: "Bridge Code",
+                route:
+                  oracleScriptID
+                  |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptBridgeCode),
+              },
+              {
+                name: "Make New Request",
+                route:
+                  oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptExecute),
+              },
+              // {
+              //   name: "Revisions",
+              //   route:
+              //     oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptRevisions),
+              // },
+            |]
+            currentRoute={oracleScriptID |> ID.OracleScript.getRouteWithTab(_, hashtag)}>
+            {switch (hashtag) {
+             | OracleScriptExecute =>
+               switch (oracleScriptSub) {
+               | Data({schema}) => <OracleScriptExecute id=oracleScriptID schema />
+               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               }
 
-           | OracleScriptCode =>
-             switch (oracleScriptSub) {
-             | Data({sourceCodeURL}) => <OracleScriptCode url=sourceCodeURL />
-             | _ => <LoadingCensorBar fullWidth=true height=400 />
-             }
+             | OracleScriptCode =>
+               switch (oracleScriptSub) {
+               | Data({sourceCodeURL}) => <OracleScriptCode url=sourceCodeURL />
+               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               }
 
-           | OracleScriptBridgeCode =>
-             switch (oracleScriptSub) {
-             | Data({schema}) => <OracleScriptBridgeCode schema />
-             | _ => <LoadingCensorBar fullWidth=true height=400 />
-             }
-           | OracleScriptRequests => <OracleScriptRequestTable oracleScriptID />
-           | OracleScriptRevisions => <OracleScriptRevisionTable id=oracleScriptID />
-           }}
-        </Tab>
+             | OracleScriptBridgeCode =>
+               switch (oracleScriptSub) {
+               | Data({schema}) => <OracleScriptBridgeCode schema />
+               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               }
+             | OracleScriptRequests => <OracleScriptRequestTable oracleScriptID />
+             | OracleScriptRevisions => <OracleScriptRevisionTable id=oracleScriptID />
+             }}
+          </Tab>
+        </Table>
       </div>
     </Section>;
   };

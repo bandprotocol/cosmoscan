@@ -11,25 +11,15 @@ module Styles = {
     style([
       fontSize(`px(12)),
       lineHeight(`px(20)),
-      fontFamilies([
-        `custom("IBM Plex Mono"),
-        `custom("cousine"),
-        `custom("sfmono-regular"),
-        `custom("Consolas"),
-        `custom("Menlo"),
-        `custom("liberation mono"),
-        `custom("ubuntu mono"),
-        `custom("Courier"),
-        `monospace,
-      ]),
+      fontFamilies([`custom("Roboto Mono"), `monospace]),
     ]);
 
   let padding = style([padding(`px(20))]);
 
-  let selectWrapper =
+  let selectWrapper = (theme: Theme.t) =>
     style([
-      backgroundColor(Colors.white),
-      border(`px(1), `solid, Colors.gray9),
+      backgroundColor(theme.white),
+      border(`px(1), `solid, theme.tableRowBorderColor),
       borderRadius(`px(4)),
       display(`flex),
       flexDirection(`row),
@@ -42,22 +32,13 @@ module Styles = {
 
   let selectContent =
     style([
-      backgroundColor(Colors.transparent),
+      backgroundColor(`transparent),
       borderStyle(`none),
-      color(Colors.gray7),
       width(`percent(100.)),
       outlineStyle(`none),
     ]);
 
   let iconBody = style([width(`px(20)), height(`px(20))]);
-  let copyContainer =
-    style([
-      position(`absolute),
-      top(`px(10)),
-      right(`px(10)),
-      zIndex(2),
-      Media.mobile([right(`zero), top(`px(-35))]),
-    ]);
 };
 
 let renderCode = content => {
@@ -171,6 +152,7 @@ module GenerateDecodeCode = {
   [@react.component]
   let make = (~language, ~schema, ~dataType) => {
     let codeOpt = getCodeFromSchema(~schema, ~language, ~dataType);
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let code =
       switch (codeOpt) {
       | Some(code) => code
@@ -179,23 +161,22 @@ module GenerateDecodeCode = {
     <>
       <Row marginBottom=24 marginTop=24 marginTopSm=12 marginBottomSm=12>
         <Col>
-          <div className={CssHelper.flexBox()}>
-            <Icon name="fal fa-file" size=16 />
-            <HSpacing size=Spacing.sm />
-            <Text
-              value={getFileNameFromLanguage(~language, ~dataType)}
-              weight=Text.Semibold
-              size=Text.Lg
-              block=true
-              color=Colors.gray7
-            />
+          <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+            <div className={CssHelper.flexBox()}>
+              <Icon name="fal fa-file" size=16 color={theme.textSecondary} />
+              <HSpacing size=Spacing.sm />
+              <Text
+                value={getFileNameFromLanguage(~language, ~dataType)}
+                weight=Text.Semibold
+                size=Text.Lg
+                block=true
+              />
+            </div>
+            <CopyButton data=code title="Copy Code" />
           </div>
         </Col>
       </Row>
-      <div className=Styles.tableLowerContainer>
-        <div className=Styles.copyContainer> <CopyButton data=code title="Copy Code" /> </div>
-        {code |> renderCode}
-      </div>
+      <div className=Styles.tableLowerContainer> {code |> renderCode} </div>
     </>;
   };
 };
@@ -204,6 +185,9 @@ module GenerateDecodeCode = {
 let make = (~schema) => {
   let (targetPlatform, setTargetPlatform) = React.useState(_ => Ethereum);
   let (language, setLanguage) = React.useState(_ => Solidity);
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.tableWrapper>
     <Row marginBottom=24>
       <Col col=Col.Three colSm=Col.Six>
@@ -213,10 +197,10 @@ let make = (~schema) => {
           <CTooltip
             tooltipPlacementSm=CTooltip.BottomLeft
             tooltipText="The target platform to which to generate the code for">
-            <Icon name="fal fa-info-circle" size=10 />
+            <Icon name="fal fa-info-circle" size=10 color={theme.textPrimary} />
           </CTooltip>
         </div>
-        <div className=Styles.selectWrapper>
+        <div className={Styles.selectWrapper(theme)}>
           <TargetPlatformIcon icon=targetPlatform />
           <div className={CssHelper.selectWrapper(~pRight=0, ())}>
             <select
@@ -230,7 +214,7 @@ let make = (~schema) => {
               }}>
               {[|Ethereum|]
                ->Belt_Array.map(symbol =>
-                   <option value={symbol |> toPlatformString}>
+                   <option key={symbol |> toPlatformString} value={symbol |> toPlatformString}>
                      {symbol |> toPlatformString |> React.string}
                    </option>
                  )
@@ -244,10 +228,10 @@ let make = (~schema) => {
           <Heading size=Heading.H5 value="Language" />
           <HSpacing size=Spacing.xs />
           <CTooltip tooltipText="The programming language">
-            <Icon name="fal fa-info-circle" size=10 />
+            <Icon name="fal fa-info-circle" size=10 color={theme.textPrimary} />
           </CTooltip>
         </div>
-        <div className=Styles.selectWrapper>
+        <div className={Styles.selectWrapper(theme)}>
           <LanguageIcon icon=language />
           <div className={CssHelper.selectWrapper(~pRight=0, ())}>
             <select
@@ -259,7 +243,7 @@ let make = (~schema) => {
               {targetPlatform
                |> getLanguagesByPlatform
                |> Belt.Array.map(_, symbol =>
-                    <option value={symbol |> toLanguageString}>
+                    <option key={symbol |> toLanguageString} value={symbol |> toLanguageString}>
                       {symbol |> toLanguageString |> React.string}
                     </option>
                   )
@@ -271,23 +255,17 @@ let make = (~schema) => {
     </Row>
     <Row marginBottom=24 marginBottomSm=12>
       <Col>
-        <div className={CssHelper.flexBox()}>
-          <Icon name="fal fa-file" size=16 />
-          <HSpacing size=Spacing.sm />
-          <Text
-            value="Oracle Script Schema"
-            weight=Text.Semibold
-            size=Text.Lg
-            block=true
-            color=Colors.gray7
-          />
+        <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+          <div className={CssHelper.flexBox()}>
+            <Icon name="fal fa-file" size=16 color={theme.textSecondary} />
+            <HSpacing size=Spacing.sm />
+            <Text value="Oracle Script Schema" weight=Text.Semibold size=Text.Lg block=true />
+          </div>
+          <CopyButton data=schema title="Copy Code" />
         </div>
       </Col>
     </Row>
-    <div className=Styles.tableLowerContainer>
-      <div className=Styles.copyContainer> <CopyButton data=schema title="Copy Code" /> </div>
-      {schema |> renderCode}
-    </div>
+    <div className=Styles.tableLowerContainer> {schema |> renderCode} </div>
     <GenerateDecodeCode language schema dataType=Obi.Params />
   </div>;
 };
