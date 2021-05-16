@@ -2,12 +2,20 @@ module Styles = {
   open Css;
 
   let statusImg = style([width(`px(20)), marginTop(`px(-3))]);
+  let allTxLink = (theme: Theme.t) =>
+    style([
+      backgroundColor(theme.baseBlue),
+      borderRadius(`px(8)),
+      width(`px(32)),
+      height(`px(32)),
+      hover([backgroundColor(theme.darkBlue)]),
+    ]);
 };
 
 module RenderBody = {
   [@react.component]
   let make = (~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
-    <TBody paddingH={`px(24)}>
+    <TBody>
       <Row alignItems=Row.Start>
         <Col col=Col.Two>
           {switch (txSub) {
@@ -85,19 +93,12 @@ let make = () => {
   let isMobile = Media.isMobile();
   let txCount = isMobile ? 5 : 10;
   let txsSub = TxSub.getList(~page=1, ~pageSize=txCount, ());
+  let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
 
-  <>
-    <div
-      className={CssHelper.flexBox(~justify=`spaceBetween, ~align=`flexEnd, ())}
-      id="latestTransactionsSectionHeader">
-      <div>
-        <Text
-          value="Latest Transactions"
-          size=Text.Lg
-          block=true
-          color=Colors.gray7
-          weight=Text.Medium
-        />
+  <Table>
+    <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading value="Latest Transactions" size=Heading.H4 />
         <VSpacing size={`px(4)} />
         {switch (txsSub) {
          | ApolloHooks.Subscription.Data(txs) =>
@@ -109,42 +110,44 @@ let make = () => {
                ->Format.iPretty
              }
              size=Text.Lg
-             color=Colors.gray7
              weight=Text.Medium
            />
          | _ => <LoadingCensorBar width=90 height=18 />
          }}
-      </div>
-      <Link className={CssHelper.flexBox(~align=`center, ())} route=Route.TxHomePage>
-        <Text value="All Transactions" color=Colors.bandBlue weight=Text.Medium />
-        <HSpacing size=Spacing.md />
-        <Icon name="fal fa-angle-right" color=Colors.bandBlue />
-      </Link>
-    </div>
-    <VSpacing size={`px(16)} />
+      </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+          <Heading value="Most Transactions" size=Heading.H4 />
+          <HSpacing size=Spacing.md />
+          <Link className={CssHelper.flexBox(~align=`center, ())} route=Route.TxHomePage>
+            <div
+              className={Css.merge([
+                Styles.allTxLink(theme),
+                CssHelper.flexBox(~justify=`center, ()),
+              ])}>
+              <Icon name="far fa-arrow-right" color={theme.white} />
+            </div>
+          </Link>
+        </div>
+      </Col>
+    </Row>
     {isMobile
        ? React.null
        : <THead height=30>
            <Row alignItems=Row.Center>
              <Col col=Col.Two>
-               <div className={CssHelper.flexBox()}>
-                 <Text value="TX Hash" size=Text.Sm weight=Text.Semibold color=Colors.gray7 />
-               </div>
+               <div className={CssHelper.flexBox()}> <Text value="TX HASH" size=Text.Sm /> </div>
              </Col>
              <Col col=Col.Two>
-               <div className={CssHelper.flexBox()}>
-                 <Text value="Block" size=Text.Sm weight=Text.Semibold color=Colors.gray7 />
-               </div>
+               <div className={CssHelper.flexBox()}> <Text value="BLOCK" size=Text.Sm /> </div>
              </Col>
              <Col col=Col.One>
                <div className={CssHelper.flexBox(~justify=`center, ~align=`center, ())}>
-                 <Text value="Status" size=Text.Sm weight=Text.Semibold color=Colors.gray7 />
+                 <Text value="STATUS" size=Text.Sm />
                </div>
              </Col>
              <Col col=Col.Seven>
-               <div className={CssHelper.flexBox()}>
-                 <Text value="Actions" size=Text.Sm weight=Text.Semibold color=Colors.gray7 />
-               </div>
+               <div className={CssHelper.flexBox()}> <Text value="ACTIONS" size=Text.Sm /> </div>
              </Col>
            </Row>
          </THead>}
@@ -170,5 +173,5 @@ let make = () => {
          )
        ->React.array
      }}
-  </>;
+  </Table>;
 };
