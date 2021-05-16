@@ -111,7 +111,7 @@ let make = () => {
   let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
 
   <Table>
-    <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0 alignItems=Row.Start>
+    <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0>
       <Col col=Col.Six colSm=Col.Six>
         {isMobile
            ? <>
@@ -127,7 +127,6 @@ let make = () => {
                       ->Format.iPretty
                     }
                     size=Text.Lg
-                    color=Colors.gray7
                     weight=Text.Medium
                   />
                 | _ => <LoadingCensorBar width=90 height=18 />
@@ -159,30 +158,17 @@ let make = () => {
        : <THead height=30>
            <Row alignItems=Row.Center>
              <Col col=Col.Three>
-               <Text
-                 block=true
-                 value="Request ID"
-                 size=Text.Sm
-                 weight=Text.Semibold
-                 color=Colors.gray7
-               />
+               <Text block=true value="REQUEST ID" size=Text.Sm weight=Text.Semibold />
              </Col>
              <Col col=Col.Six>
-               <Text
-                 block=true
-                 value="Oracle Script"
-                 size=Text.Sm
-                 weight=Text.Semibold
-                 color=Colors.gray7
-               />
+               <Text block=true value="ORACLE SCRIPT" size=Text.Sm weight=Text.Semibold />
              </Col>
              <Col col=Col.Three>
                <Text
                  block=true
-                 value="Report Status"
+                 value="REPORT STATUS"
                  size=Text.Sm
                  weight=Text.Semibold
-                 color=Colors.gray7
                  align=Text.Right
                />
              </Col>
@@ -205,7 +191,6 @@ let make = () => {
                value="No Request"
                align=Heading.Center
                weight=Heading.Regular
-               color=Colors.bandBlue
              />
            </EmptyContainer>
      | _ =>
