@@ -91,7 +91,7 @@ module RenderBodyMobile = {
 [@react.component]
 let make = () => {
   let isMobile = Media.isMobile();
-  let txCount = isMobile ? 5 : 10;
+  let txCount = 5;
   let txsSub = TxSub.getList(~page=1, ~pageSize=txCount, ());
   let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
 

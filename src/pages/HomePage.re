@@ -10,9 +10,9 @@ module Styles = {
 
 [@react.component]
 let make = () => {
-  // Subscribe for latest 11 blocks here so both "LatestBlocks" and "ChainInfoHighLights"
+  // Subscribe for latest 5 blocks here so both "LatestBlocks" and "ChainInfoHighLights"
   // share the same infomation.
-  let pageSize = Media.isMobile() ? 7 : 11;
+  let pageSize = 5;
   let latest11BlocksSub = BlockSub.getList(~pageSize, ~page=1, ());
   let latestBlockSub = latest11BlocksSub->Sub.map(blocks => blocks->Belt_Array.getExn(0));
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
