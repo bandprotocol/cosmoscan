@@ -214,14 +214,14 @@ let make = () => {
        <div className=Styles.innerCard>
          <canvas id="historicalRequest" className={Styles.chart(show)} />
          <EmptyContainer display={!show} height={`percent(100.)}>
-           <Icon name="fal fa-clock" size=40 color=Colors.bandBlue />
+           <Icon name="fal fa-clock" size=40 color={isDarkMode ? theme.white : theme.black} />
            <VSpacing size={`px(16)} />
            <Heading
              size=Heading.H4
              value="Insufficient data to visualize"
              align=Heading.Center
              weight=Heading.Regular
-             color=Colors.bandBlue
+             color={theme.textSecondary}
            />
          </EmptyContainer>
        </div>;
