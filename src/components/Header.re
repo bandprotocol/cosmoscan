@@ -37,6 +37,7 @@ module Styles = {
         Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
       ),
       position(`relative),
+      zIndex(4),
     ]);
 };
 
