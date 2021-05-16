@@ -178,7 +178,7 @@ let make = () => {
   let ({searchTerm, resultState}, dispatch) =
     React.useReducer(reducer, {searchTerm: "", resultState: Hidden});
 
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.container>
     <input

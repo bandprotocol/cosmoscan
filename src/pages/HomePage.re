@@ -18,31 +18,29 @@ let make = () => {
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
   let isMobile = Media.isMobile();
 
-  <>
-    <Section pt=80 pb=80 ptSm=24 pbSm=24 bg={theme.mainBg} style=Styles.root>
-      {!isMobile
-         ? <>
-             <img
-               src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
-               className={Css.merge([Styles.baseBg, Styles.left])}
-             />
-             <img
-               src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
-               className={Css.merge([Styles.baseBg, Styles.right])}
-             />
-           </>
-         : React.null}
-      <div className={Css.merge([CssHelper.container, Styles.content])}>
-        <ChainInfoHighlights latestBlockSub />
-        <Row marginTop=24>
-          <Col col=Col.Six mbSm=24> <TotalRequestsGraph /> </Col>
-          <Col col=Col.Six> <LatestRequests /> </Col>
-        </Row>
-        <Row marginTop=24>
-          <Col col=Col.Four> <LatestBlocks blocksSub=latest11BlocksSub /> </Col>
-          <Col col=Col.Eight> <LatestTxTable /> </Col>
-        </Row>
-      </div>
-    </Section>
-  </>;
+  <Section pt=80 pb=80 ptSm=0 pbSm=24 bg={theme.mainBg} style=Styles.root>
+    {!isMobile
+       ? <>
+           <img
+             src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
+             className={Css.merge([Styles.baseBg, Styles.left])}
+           />
+           <img
+             src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
+             className={Css.merge([Styles.baseBg, Styles.right])}
+           />
+         </>
+       : React.null}
+    <div className={Css.merge([CssHelper.container, Styles.content])}>
+      <ChainInfoHighlights latestBlockSub />
+      <Row marginTop=24>
+        <Col col=Col.Six mbSm=24> <TotalRequestsGraph /> </Col>
+        <Col col=Col.Six> <LatestRequests /> </Col>
+      </Row>
+      <Row marginTop=24>
+        <Col col=Col.Four> <LatestBlocks blocksSub=latest11BlocksSub /> </Col>
+        <Col col=Col.Eight> <LatestTxTable /> </Col>
+      </Row>
+    </div>
+  </Section>;
 };

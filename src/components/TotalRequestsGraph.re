@@ -8,7 +8,7 @@ module Styles = {
       borderRadius(`px(4)),
       padding4(~top=`px(31), ~left=`px(32), ~right=`px(32), ~bottom=`px(10)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
-      Media.mobile([padding(`px(10))]),
+      Media.mobile([padding2(~v=`px(24), ~h=`px(16))]),
     ]);
 
   let innerCard =
