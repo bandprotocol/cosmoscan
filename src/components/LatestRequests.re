@@ -116,7 +116,7 @@ let make = () => {
         {isMobile
            ? <>
                <Heading value="Total Request" size=Heading.H4 />
-               <VSpacing size=Spacing.md />
+               <VSpacing size={`px(4)} />
                {switch (requestsSub) {
                 | ApolloHooks.Subscription.Data(requests) =>
                   <Text
@@ -134,12 +134,12 @@ let make = () => {
              </>
            : <>
                <Heading value="Latest" size=Heading.H4 />
-               <Heading value="Request" size=Heading.H4 />
+               <Heading value="Requests" size=Heading.H4 />
              </>}
       </Col>
       <Col col=Col.Six colSm=Col.Six>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          <Heading value="Most Requests" size=Heading.H4 />
+          {isMobile ? React.null : <Heading value="More Requests" size=Heading.H4 />}
           <HSpacing size=Spacing.md />
           <Link className={CssHelper.flexBox(~align=`center, ())} route=Route.RequestHomePage>
             <div

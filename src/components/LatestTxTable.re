@@ -117,7 +117,7 @@ let make = () => {
       </Col>
       <Col col=Col.Six colSm=Col.Six>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          <Heading value="Most Transactions" size=Heading.H4 />
+          {isMobile ? React.null : <Heading value="More Transactions" size=Heading.H4 />}
           <HSpacing size=Spacing.md />
           <Link className={CssHelper.flexBox(~align=`center, ())} route=Route.TxHomePage>
             <div
