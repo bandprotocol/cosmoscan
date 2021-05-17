@@ -53,8 +53,13 @@
 [@bs.module] external noOracleDark: string = "./no-oracle-dark.png";
 [@bs.module] external noDataDark: string = "./no-data-dark.png";
 
-[@bs.module] external noBlockDark: string = "./no-block-light.png";
+[@bs.module] external noBlockLight: string = "./no-block-light.png";
 [@bs.module] external noTxLight: string = "./no-tx-light.png";
 [@bs.module] external noDelegatorLight: string = "./no-delegator-light.png";
 [@bs.module] external noOracleLight: string = "./no-oracle-light.png";
 [@bs.module] external noDataLight: string = "./no-data-light.png";
+
+// HomePage
+[@bs.module] external bandToken: string = "./band-token.svg";
+[@bs.module] external bgLeftLight: string = "./bgleft-light.png";
+[@bs.module] external bgLeftDark: string = "./bgleft-dark.png";
