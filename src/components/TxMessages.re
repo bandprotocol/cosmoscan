@@ -3,7 +3,7 @@ module Styles = {
   let msgContainer = overflowed =>
     style([
       position(`relative),
-      height(overflowed ? `px(45) : `auto),
+      height(overflowed ? `px(53) : `auto),
       overflow(overflowed ? `hidden : `visible),
       selector("> div + div", [marginTop(`px(10))]),
     ]);

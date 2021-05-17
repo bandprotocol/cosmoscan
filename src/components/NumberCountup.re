@@ -1,5 +1,6 @@
 [@react.component]
-let make = (~value, ~size, ~weight, ~spacing, ~color=Colors.gray7, ~code=true, ~smallNumber=false) => {
+let make = (~value, ~size, ~weight, ~spacing, ~color=?, ~code=true, ~smallNumber=false) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let countup =
     Countup.context(
       Countup.props(
@@ -21,6 +22,8 @@ let make = (~value, ~size, ~weight, ~spacing, ~color=Colors.gray7, ~code=true, ~
     [|value|],
   );
   let newVal = Countup.countUpGet(countup) |> Js.Float.toString;
+  let _color = color->Belt.Option.getWithDefault(theme.textPrimary);
+
   smallNumber
     ? {
       let adjustedText = newVal->Js.String2.split(".");
@@ -32,7 +35,7 @@ let make = (~value, ~size, ~weight, ~spacing, ~color=Colors.gray7, ~code=true, ~
           spacing
           code
           nowrap=true
-          color
+          color=_color
         />
         <Text
           value={"." ++ adjustedText->Belt.Array.get(1)->Belt.Option.getWithDefault("0")}
@@ -41,9 +44,9 @@ let make = (~value, ~size, ~weight, ~spacing, ~color=Colors.gray7, ~code=true, ~
           spacing
           code
           nowrap=true
-          color
+          color=_color
         />
       </div>;
     }
-    : <Text value=newVal size weight spacing code nowrap=true color />;
+    : <Text value=newVal size weight spacing code nowrap=true color=_color />;
 };

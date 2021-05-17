@@ -5,134 +5,121 @@ module Styles = {
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
-let renderBody =
-    (
-      reserveIndex,
-      redelegateListSub: ApolloHooks.Subscription.variant(RedelegateSub.redelegate_list_t),
-    ) => {
-  <TBody
-    key={
-      switch (redelegateListSub) {
-      | Data({
-          srcValidator: {operatorAddress: srcAddress},
-          dstValidator: {operatorAddress: dstAddress},
-          completionTime,
-          amount,
-        }) =>
+module RenderBody = {
+  [@react.component]
+  let make =
+      (~redelegateListSub: ApolloHooks.Subscription.variant(RedelegateSub.redelegate_list_t)) => {
+    <TBody>
+      <Row alignItems=Row.Center>
+        <Col col=Col.Three>
+          {switch (redelegateListSub) {
+           | Data({
+               srcValidator: {
+                 operatorAddress: srcAddress,
+                 moniker: srcMoniker,
+                 identity: srcIdentity,
+               },
+             }) =>
+             <ValidatorMonikerLink
+               validatorAddress=srcAddress
+               moniker=srcMoniker
+               identity=srcIdentity
+               width={`px(200)}
+             />
+           | _ => <LoadingCensorBar width=200 height=20 />
+           }}
+        </Col>
+        <Col col=Col.Three>
+          <div className={CssHelper.flexBox()}>
+            {switch (redelegateListSub) {
+             | Data({
+                 dstValidator: {
+                   operatorAddress: dstAddress,
+                   moniker: dstMoniker,
+                   identity: dstIdentity,
+                 },
+               }) =>
+               <ValidatorMonikerLink
+                 validatorAddress=dstAddress
+                 moniker=dstMoniker
+                 identity=dstIdentity
+                 width={`px(200)}
+               />
+
+             | _ => <LoadingCensorBar width=200 height=20 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Three>
+          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+            {switch (redelegateListSub) {
+             | Data({amount}) =>
+               <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+             | _ => <LoadingCensorBar width=145 height=20 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Three>
+          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+            {switch (redelegateListSub) {
+             | Data({completionTime}) =>
+               <Timestamp.Grid
+                 time=completionTime
+                 size=Text.Md
+                 weight=Text.Regular
+                 textAlign=Text.Right
+               />
+             | _ => <LoadingCensorBar width=200 height=20 />
+             }}
+          </div>
+        </Col>
+      </Row>
+    </TBody>;
+  };
+};
+
+module RenderBodyMobile = {
+  [@react.component]
+  let make =
+      (
+        ~reserveIndex,
+        ~redelegateListSub: ApolloHooks.Subscription.variant(RedelegateSub.redelegate_list_t),
+      ) => {
+    switch (redelegateListSub) {
+    | Data({
+        srcValidator: {operatorAddress: srcAddress, moniker: srcMoniker, identity: srcIdentity},
+        dstValidator: {operatorAddress: dstAddress, moniker: dstMoniker, identity: dstIdentity},
+        completionTime,
+        amount,
+      }) =>
+      let key_ =
         (srcAddress |> Address.toBech32)
         ++ (dstAddress |> Address.toBech32)
         ++ (completionTime |> MomentRe.Moment.toISOString)
         ++ (amount |> Coin.getBandAmountFromCoin |> Js.Float.toString)
-      | _ => reserveIndex |> string_of_int
-      }
-    }
-    paddingH={`px(24)}>
-    <Row alignItems=Row.Center>
-      <Col col=Col.Three>
-        {switch (redelegateListSub) {
-         | Data({
-             srcValidator: {
-               operatorAddress: srcAddress,
-               moniker: srcMoniker,
-               identity: srcIdentity,
-             },
-           }) =>
-           <ValidatorMonikerLink
-             validatorAddress=srcAddress
-             moniker=srcMoniker
-             identity=srcIdentity
-             width={`px(200)}
-           />
-         | _ => <LoadingCensorBar width=200 height=20 />
-         }}
-      </Col>
-      <Col col=Col.Three>
-        <div className={CssHelper.flexBox()}>
-          {switch (redelegateListSub) {
-           | Data({
-               dstValidator: {
-                 operatorAddress: dstAddress,
-                 moniker: dstMoniker,
-                 identity: dstIdentity,
-               },
-             }) =>
-             <ValidatorMonikerLink
-               validatorAddress=dstAddress
-               moniker=dstMoniker
-               identity=dstIdentity
-               width={`px(200)}
-             />
-
-           | _ => <LoadingCensorBar width=200 height=20 />
-           }}
-        </div>
-      </Col>
-      <Col col=Col.Three>
-        <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          {switch (redelegateListSub) {
-           | Data({amount}) =>
-             <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
-           | _ => <LoadingCensorBar width=145 height=20 />
-           }}
-        </div>
-      </Col>
-      <Col col=Col.Three>
-        <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          {switch (redelegateListSub) {
-           | Data({completionTime}) =>
-             <Timestamp.Grid
-               time=completionTime
-               size=Text.Md
-               weight=Text.Regular
-               textAlign=Text.Right
-             />
-           | _ => <LoadingCensorBar width=200 height=20 />
-           }}
-        </div>
-      </Col>
-    </Row>
-  </TBody>;
-};
-
-let renderBodyMobile =
-    (
-      reserveIndex,
-      redelegateListSub: ApolloHooks.Subscription.variant(RedelegateSub.redelegate_list_t),
-    ) => {
-  switch (redelegateListSub) {
-  | Data({
-      srcValidator: {operatorAddress: srcAddress, moniker: srcMoniker, identity: srcIdentity},
-      dstValidator: {operatorAddress: dstAddress, moniker: dstMoniker, identity: dstIdentity},
-      completionTime,
-      amount,
-    }) =>
-    let key_ =
-      (srcAddress |> Address.toBech32)
-      ++ (dstAddress |> Address.toBech32)
-      ++ (completionTime |> MomentRe.Moment.toISOString)
-      ++ (amount |> Coin.getBandAmountFromCoin |> Js.Float.toString)
-      ++ (reserveIndex |> string_of_int);
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Source\nValidator", Validator(srcAddress, srcMoniker, srcIdentity)),
-        ("Destination\nValidator", Validator(dstAddress, dstMoniker, dstIdentity)),
-        ("Amount\n(BAND)", Coin({value: [amount], hasDenom: false})),
-        ("Redelegate\nComplete At", Timestamp(completionTime)),
-      ]
-      key=key_
-      idx=key_
-    />;
-  | _ =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Source\nValidator", Loading(230)),
-        ("Destination\nValidator", Loading(100)),
-        ("Amount\n(BAND)", Loading(100)),
-        ("Redelegate\nComplete At", Loading(230)),
-      ]
-      key={reserveIndex |> string_of_int}
-      idx={reserveIndex |> string_of_int}
-    />
+        ++ (reserveIndex |> string_of_int);
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Source\nValidator", Validator(srcAddress, srcMoniker, srcIdentity)),
+          ("Destination\nValidator", Validator(dstAddress, dstMoniker, dstIdentity)),
+          ("Amount\n(BAND)", Coin({value: [amount], hasDenom: false})),
+          ("Redelegate\nComplete At", Timestamp(completionTime)),
+        ]
+        key=key_
+        idx=key_
+      />;
+    | _ =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Source\nValidator", Loading(230)),
+          ("Destination\nValidator", Loading(100)),
+          ("Amount\n(BAND)", Loading(100)),
+          ("Redelegate\nComplete At", Loading(230)),
+        ]
+        key={reserveIndex |> string_of_int}
+        idx={reserveIndex |> string_of_int}
+      />
+    };
   };
 };
 
@@ -149,6 +136,8 @@ let make = (~address) => {
   let redelegateListSub =
     RedelegateSub.getRedelegationByDelegator(address, currentTime, ~pageSize, ~page, ());
 
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.tableWrapper>
     {isMobile
        ? <Row marginBottom=16>
@@ -160,14 +149,16 @@ let make = (~address) => {
                     block=true
                     value={redelegateCount |> string_of_int}
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    size=Text.Sm
+                    transform=Text.Uppercase
                   />
                   <HSpacing size=Spacing.xs />
                   <Text
                     block=true
                     value="Redelegate Entries"
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    size=Text.Sm
+                    transform=Text.Uppercase
                   />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
@@ -184,14 +175,16 @@ let make = (~address) => {
                       block=true
                       value={redelegateCount |> string_of_int}
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      size=Text.Sm
+                      transform=Text.Uppercase
                     />
                     <HSpacing size=Spacing.xs />
                     <Text
                       block=true
                       value="Redelegate Entries"
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      size=Text.Sm
+                      transform=Text.Uppercase
                     />
                   </div>
                 | _ => <LoadingCensorBar width=100 height=15 />
@@ -202,7 +195,8 @@ let make = (~address) => {
                  block=true
                  value="Desination Validator"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 size=Text.Sm
+                 transform=Text.Uppercase
                />
              </Col>
              <Col col=Col.Three>
@@ -210,7 +204,8 @@ let make = (~address) => {
                  block=true
                  value="Amount (BAND)"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 size=Text.Sm
+                 transform=Text.Uppercase
                  align=Text.Right
                />
              </Col>
@@ -219,7 +214,8 @@ let make = (~address) => {
                  block=true
                  value="Redelegate Complete At"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 size=Text.Sm
+                 transform=Text.Uppercase
                  align=Text.Right
                />
              </Col>
@@ -230,23 +226,45 @@ let make = (~address) => {
        redelegateList->Belt.Array.size > 0
          ? redelegateList
            ->Belt_Array.mapWithIndex((i, e) =>
-               isMobile ? renderBodyMobile(i, Sub.resolve(e)) : renderBody(i, Sub.resolve(e))
+               isMobile
+                 ? <RenderBodyMobile
+                     redelegateListSub={Sub.resolve(e)}
+                     reserveIndex=i
+                     key={
+                       (e.completionTime |> MomentRe.Moment.toISOString) ++ (i |> string_of_int)
+                     }
+                   />
+                 : <RenderBody
+                     redelegateListSub={Sub.resolve(e)}
+                     key={
+                       (e.completionTime |> MomentRe.Moment.toISOString) ++ (i |> string_of_int)
+                     }
+                   />
              )
            ->React.array
          : <EmptyContainer>
-             <img src=Images.noBlock className=Styles.noDataImage />
+             <img
+               src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+               className=Styles.noDataImage
+             />
              <Heading
                size=Heading.H4
                value="No redelegation"
                align=Heading.Center
                weight=Heading.Regular
-               color=Colors.bandBlue
+               color={theme.textSecondary}
              />
            </EmptyContainer>
      | _ =>
        Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
-           isMobile ? renderBodyMobile(i, noData) : renderBody(i, noData)
+           isMobile
+             ? <RenderBodyMobile
+                 redelegateListSub=noData
+                 reserveIndex=i
+                 key={i |> string_of_int}
+               />
+             : <RenderBody redelegateListSub=noData key={i |> string_of_int} />
          )
        ->React.array
      }}

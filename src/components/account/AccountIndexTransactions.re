@@ -34,10 +34,16 @@ let make = (~accountAddress: Address.t) => {
                     block=true
                     value={txsCount |> string_of_int}
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    size=Text.Sm
                   />
                   <HSpacing size=Spacing.xs />
-                  <Text block=true value="Transactions" weight=Text.Semibold color=Colors.gray7 />
+                  <Text
+                    block=true
+                    value="Transactions"
+                    weight=Text.Semibold
+                    size=Text.Sm
+                    transform=Text.Uppercase
+                  />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
               }}
@@ -45,37 +51,39 @@ let make = (~accountAddress: Address.t) => {
          </Row>
        : <THead>
            <Row alignItems=Row.Center>
-             <Col col=Col.Two>
+             <Col col=Col.Three>
                {switch (txsCountSub) {
                 | Data(txsCount) =>
                   <div className={CssHelper.flexBox()}>
-                    <Text
-                      block=true
-                      value={txsCount |> string_of_int}
-                      weight=Text.Semibold
-                      color=Colors.gray7
-                    />
+                    <Text block=true value={txsCount |> string_of_int} weight=Text.Semibold />
                     <HSpacing size=Spacing.xs />
                     <Text
                       block=true
                       value="Transactions"
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      size=Text.Sm
+                      transform=Text.Uppercase
                     />
                   </div>
                 | _ => <LoadingCensorBar width=100 height=15 />
                 }}
              </Col>
              <Col col=Col.One>
-               <Text block=true value="Block" weight=Text.Semibold color=Colors.gray7 />
+               <Text
+                 block=true
+                 value="Block"
+                 weight=Text.Semibold
+                 size=Text.Sm
+                 transform=Text.Uppercase
+               />
              </Col>
              <Col col=Col.One>
                <Text
                  block=true
                  value="Status"
-                 size=Text.Md
+                 size=Text.Sm
+                 transform=Text.Uppercase
                  weight=Text.Semibold
-                 color=Colors.gray7
                  align=Text.Center
                />
              </Col>
@@ -84,12 +92,18 @@ let make = (~accountAddress: Address.t) => {
                  block=true
                  value="Gas Fee (BAND)"
                  weight=Text.Semibold
-                 color=Colors.gray7
-                 align=Text.Center
+                 size=Text.Sm
+                 transform=Text.Uppercase
                />
              </Col>
-             <Col col=Col.Six>
-               <Text block=true value="Actions" weight=Text.Semibold color=Colors.gray7 />
+             <Col col=Col.Five>
+               <Text
+                 block=true
+                 value="Actions"
+                 weight=Text.Semibold
+                 size=Text.Sm
+                 transform=Text.Uppercase
+               />
              </Col>
            </Row>
          </THead>}
