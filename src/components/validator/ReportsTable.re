@@ -2,23 +2,14 @@ module Styles = {
   open Css;
 
   let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
-  let icon = style([width(`px(80)), height(`px(80))]);
-  let iconWrapper =
-    style([
-      width(`percent(100.)),
-      display(`flex),
-      flexDirection(`column),
-      alignItems(`center),
-    ]);
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 
   // DataSource Table
-
-  let dataSourceTable = show => {
+  let dataSourceTable = (show, theme: Theme.t) => {
     style([
       padding2(~v=show ? `px(16) : `zero, ~h=`px(24)),
       marginTop(show ? `px(24) : `zero),
-      backgroundColor(Colors.profileBG),
+      backgroundColor(theme.tableRowBorderColor),
       transition(~duration=200, "all"),
       height(show ? `auto : `zero),
       opacity(show ? 1. : 0.),
@@ -31,8 +22,12 @@ module Styles = {
 module DataSourceItem = {
   [@react.component]
   let make = (~dataSource: ReportSub.ValidatorReport.report_details_t) => {
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+
     <Row>
-      <Col col=Col.Two> <Text block=true value={dataSource.externalID} color=Colors.gray7 /> </Col>
+      <Col col=Col.Two>
+        <Text block=true value={dataSource.externalID} color={theme.textPrimary} />
+      </Col>
       <Col col=Col.Three>
         <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>
           <TypeID.DataSource
@@ -58,16 +53,18 @@ module DataSourceItem = {
                   let rawRequest = dataSource.rawRequest |> Belt_Option.getExn;
                   rawRequest.calldata |> JsBuffer.toUTF8;
                 }
-          color=Colors.gray7
+          color={theme.textPrimary}
         />
       </Col>
-      <Col col=Col.Two> <Text block=true value={dataSource.exitCode} color=Colors.gray7 /> </Col>
+      <Col col=Col.Two>
+        <Text block=true value={dataSource.exitCode} color={theme.textPrimary} />
+      </Col>
       <Col col=Col.Three>
         <Text
           block=true
           value={dataSource.data |> JsBuffer.toUTF8}
           align=Text.Right
-          color=Colors.gray7
+          color={theme.textPrimary}
           ellipsis=true
         />
       </Col>
@@ -77,17 +74,11 @@ module DataSourceItem = {
 
 module RenderBody = {
   [@react.component]
-  let make =
-      (~reserveIndex, ~reportsSub: ApolloHooks.Subscription.variant(ReportSub.ValidatorReport.t)) => {
+  let make = (~reportsSub: ApolloHooks.Subscription.variant(ReportSub.ValidatorReport.t)) => {
     let (show, setShow) = React.useState(_ => false);
-    <TBody
-      key={
-        switch (reportsSub) {
-        | Data({request}) => request.id |> ID.Request.toString
-        | _ => reserveIndex |> string_of_int
-        }
-      }
-      paddingH={`px(24)}>
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+
+    <TBody>
       <Row alignItems=Row.Center minHeight={`px(30)}>
         <Col col=Col.Three>
           {switch (reportsSub) {
@@ -127,12 +118,12 @@ module RenderBody = {
                    block=true
                    value={show ? "Hide Report" : "Show Report"}
                    weight=Text.Semibold
-                   color=Colors.bandBlue
+                   color={theme.baseBlue}
                  />
                  <HSpacing size=Spacing.xs />
                  <Icon
                    name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
-                   color=Colors.bandBlue
+                   color={theme.baseBlue}
                  />
                </>
              | _ => <LoadingCensorBar width=100 height=15 />
@@ -140,19 +131,19 @@ module RenderBody = {
           </div>
         </Col>
       </Row>
-      <div className={Styles.dataSourceTable(show)}>
+      <div className={Styles.dataSourceTable(show, theme)}>
         <Row>
           <Col col=Col.Two>
-            <Text block=true value="External ID" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="External ID" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.Three>
-            <Text block=true value="Data Source" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="Data Source" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.Two>
-            <Text block=true value="Param" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="Param" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.Two>
-            <Text block=true value="Exit Code" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="Exit Code" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.Three>
             <Text
@@ -160,7 +151,7 @@ module RenderBody = {
               value="Value"
               weight=Text.Semibold
               align=Text.Right
-              color=Colors.gray7
+              transform=Text.Uppercase
             />
           </Col>
         </Row>
@@ -252,6 +243,7 @@ let make = (~address) => {
   let allSub = Sub.all2(reportsSub, reportsCountSub);
 
   let isMobile = Media.isMobile();
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
     {isMobile
@@ -264,10 +256,15 @@ let make = (~address) => {
                     block=true
                     value={reportsCount |> Format.iPretty}
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    transform=Text.Uppercase
                   />
                   <HSpacing size=Spacing.xs />
-                  <Text block=true value="Requests" weight=Text.Semibold color=Colors.gray7 />
+                  <Text
+                    block=true
+                    value="Requests"
+                    weight=Text.Semibold
+                    transform=Text.Uppercase
+                  />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
               }}
@@ -283,24 +280,29 @@ let make = (~address) => {
                       block=true
                       value={reportsCount |> Format.iPretty}
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      transform=Text.Uppercase
                     />
                     <HSpacing size=Spacing.xs />
                     <Text
                       block=true
                       value="Oracle Reports"
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      transform=Text.Uppercase
                     />
                   </div>
                 | _ => <LoadingCensorBar width=100 height=15 />
                 }}
              </Col>
              <Col col=Col.Four>
-               <Text block=true value="Oracle Script" weight=Text.Semibold color=Colors.gray7 />
+               <Text
+                 block=true
+                 value="Oracle Script"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+               />
              </Col>
              <Col col=Col.Five>
-               <Text block=true value="TX Hash" weight=Text.Semibold color=Colors.gray7 />
+               <Text block=true value="TX Hash" weight=Text.Semibold transform=Text.Uppercase />
              </Col>
            </Row>
          </THead>}
@@ -319,19 +321,21 @@ let make = (~address) => {
                       />
                     : <RenderBody
                         key={(i |> string_of_int) ++ (e.request.id |> ID.Request.toString)}
-                        reserveIndex=i
                         reportsSub={Sub.resolve(e)}
                       />
                 )
               ->React.array
             : <EmptyContainer>
-                <img src=Images.noSource className=Styles.noDataImage />
+                <img
+                  src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+                  className=Styles.noDataImage
+                />
                 <Heading
                   size=Heading.H4
                   value="No Report"
                   align=Heading.Center
                   weight=Heading.Regular
-                  color=Colors.bandBlue
+                  color={theme.textSecondary}
                 />
               </EmptyContainer>}
          {isMobile
@@ -347,7 +351,7 @@ let make = (~address) => {
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
              ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i reportsSub=noData />
-             : <RenderBody key={i |> string_of_int} reserveIndex=i reportsSub=noData />
+             : <RenderBody key={i |> string_of_int} reportsSub=noData />
          )
        ->React.array
      }}

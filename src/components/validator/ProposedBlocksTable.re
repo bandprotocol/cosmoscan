@@ -2,15 +2,6 @@ module Styles = {
   open Css;
 
   let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
-  let icon = style([width(`px(80)), height(`px(80))]);
-  let iconWrapper =
-    style([
-      width(`percent(100.)),
-      display(`flex),
-      flexDirection(`column),
-      alignItems(`center),
-    ]);
-  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 //TODO: Will Remove After Doing on Validator index
@@ -22,20 +13,20 @@ module LoadingWithHeader = {
       <THead>
         <Row alignItems=Row.Center>
           <Col col=Col.Two>
-            <Text block=true value="Block" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="Block" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.Seven>
-            <Text block=true value="Block Hash" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="Block Hash" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.One>
-            <Text block=true value="Txn" weight=Text.Semibold color=Colors.gray7 />
+            <Text block=true value="Txn" weight=Text.Semibold transform=Text.Uppercase />
           </Col>
           <Col col=Col.Two>
             <Text
               block=true
               value="Timestamp"
               weight=Text.Semibold
-              color=Colors.gray7
+              transform=Text.Uppercase
               align=Text.Right
             />
           </Col>
@@ -48,7 +39,9 @@ module LoadingWithHeader = {
 module RenderBody = {
   [@react.component]
   let make = (~blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
-    <TBody paddingH={`px(24)}>
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+
+    <TBody>
       <Row alignItems=Row.Center>
         <Col col=Col.Two>
           {switch (blockSub) {
@@ -59,15 +52,21 @@ module RenderBody = {
         <Col col=Col.Seven>
           {switch (blockSub) {
            | Data({hash}) =>
-             <Text value={hash |> Hash.toHex(~upper=true)} block=true code=true ellipsis=true />
-
+             <Text
+               value={hash |> Hash.toHex(~upper=true)}
+               block=true
+               code=true
+               ellipsis=true
+               color={theme.textPrimary}
+             />
            | _ => <LoadingCensorBar width=522 height=15 />
            }}
         </Col>
         <Col col=Col.One>
           <div className={CssHelper.flexBox(~justify=`center, ())}>
             {switch (blockSub) {
-             | Data({txn}) => <Text value={txn |> Format.iPretty} align=Text.Center />
+             | Data({txn}) =>
+               <Text value={txn |> Format.iPretty} align=Text.Center color={theme.textPrimary} />
              | _ => <LoadingCensorBar width=20 height=15 />
              }}
           </div>
@@ -81,6 +80,7 @@ module RenderBody = {
                  size=Text.Md
                  weight=Text.Regular
                  textAlign=Text.Right
+                 color={theme.textPrimary}
                />
              | _ =>
                <>
@@ -141,17 +141,17 @@ let make = (~consensusAddress) => {
        : <THead>
            <Row alignItems=Row.Center>
              <Col col=Col.Two>
-               <Text block=true value="Block" weight=Text.Semibold color=Colors.gray7 />
+               <Text block=true value="Block" weight=Text.Semibold transform=Text.Uppercase />
              </Col>
              <Col col=Col.Seven>
-               <Text block=true value="Block Hash" weight=Text.Semibold color=Colors.gray7 />
+               <Text block=true value="Block Hash" weight=Text.Semibold transform=Text.Uppercase />
              </Col>
              <Col col=Col.One>
                <Text
                  block=true
                  value="Txn"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 transform=Text.Uppercase
                  align=Text.Center
                />
              </Col>
@@ -160,7 +160,7 @@ let make = (~consensusAddress) => {
                  block=true
                  value="Timestamp"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 transform=Text.Uppercase
                  align=Text.Right
                />
              </Col>

@@ -42,7 +42,7 @@ module Styles = {
   let infoCardContainer =
     style([padding(`px(10)), selector("+ div", [marginTop(`px(10))])]);
 
-  let infoCardContainerWrapper = show => {
+  let infoCardContainerWrapper = (show, theme: Theme.t) => {
     style([
       marginTop(show ? `px(16) : `zero),
       transition(~duration=200, "all"),
@@ -51,6 +51,7 @@ module Styles = {
       pointerEvents(`none),
       selector("> div + div", [paddingTop(`px(16))]),
       overflow(`hidden),
+      backgroundColor(theme.tableRowBorderColor),
     ]);
   };
 };
@@ -121,7 +122,7 @@ let make = (~values, ~idx, ~status=?, ~requestStatus=?, ~styles="", ~panels=[]) 
     <InnerPanel values idx />
     {panels->Belt.List.size > 0
        ? <>
-           <div className={Styles.infoCardContainerWrapper(show)}>
+           <div className={Styles.infoCardContainerWrapper(show, theme)}>
              {panels
               ->Belt.List.mapWithIndex((i, e) =>
                   <div key={(i |> string_of_int) ++ idx} className=Styles.infoCardContainer>

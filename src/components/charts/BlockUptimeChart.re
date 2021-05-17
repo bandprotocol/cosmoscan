@@ -22,9 +22,9 @@ module Styles = {
   let blockBase = style([width(`percent(100.)), height(`percent(100.))]);
   let status =
     fun
-    | ValidatorSub.Missed => style([backgroundColor(Colors.blue10)])
-    | Proposed => style([backgroundColor(Colors.blue9)])
-    | Signed => style([backgroundColor(Colors.bandBlue)]);
+    | ValidatorSub.Missed => style([backgroundColor(hex("937EF1"))])
+    | Proposed => style([backgroundColor(hex("4520E6"))])
+    | Signed => style([backgroundColor(hex("230E81"))]);
 
   let labelBox =
     style([
