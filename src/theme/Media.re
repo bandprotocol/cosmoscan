@@ -9,7 +9,7 @@ type t =
 let getBreakpoint =
   fun
   | Sm => 370
-  | Md => 768;
+  | Md => 990;
 
 let query = (size, styles) => {
   let breakpoint = getBreakpoint(size);

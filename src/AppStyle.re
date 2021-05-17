@@ -94,7 +94,6 @@ video {
 p {
   font-size: 14px;
   line-height: 1.3;
-  margin-bottom: 1em;
 }
 
 h1,

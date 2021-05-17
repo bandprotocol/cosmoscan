@@ -14,6 +14,7 @@ module Styles = {
         ],
       ),
       selector("p", [color(theme.textSecondary)]),
+      selector("p + p", [marginTop(`em(1.))]),
     ]);
 };
 

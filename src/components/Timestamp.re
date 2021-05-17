@@ -70,15 +70,24 @@ module Grid = {
         ~size=Text.Sm,
         ~weight=Text.Regular,
         ~spacing=Text.Unset,
-        ~color=Colors.gray7,
+        ~color=?,
         ~code=false,
         ~upper=false,
         ~textAlign=Text.Left,
       ) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div>
       {prefix != ""
          ? <>
-             <Text value=prefix size weight spacing color code nowrap=true />
+             <Text
+               value=prefix
+               size
+               weight
+               spacing
+               color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+               code
+               nowrap=true
+             />
              <HSpacing size=Spacing.sm />
            </>
          : React.null}
@@ -88,7 +97,7 @@ module Grid = {
           size
           weight
           spacing
-          color
+          color={color->Belt.Option.getWithDefault(theme.textSecondary)}
           code
           nowrap=true
           block=true
@@ -101,7 +110,7 @@ module Grid = {
           size
           weight
           spacing
-          color=Colors.gray6
+          color={color->Belt.Option.getWithDefault(theme.textSecondary)}
           code
           nowrap=true
           block=true
@@ -111,7 +120,15 @@ module Grid = {
       {suffix != ""
          ? <>
              <HSpacing size=Spacing.sm />
-             <Text value=suffix size weight spacing color code nowrap=true />
+             <Text
+               value=suffix
+               size
+               weight
+               spacing
+               color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+               code
+               nowrap=true
+             />
            </>
          : React.null}
     </div>;
