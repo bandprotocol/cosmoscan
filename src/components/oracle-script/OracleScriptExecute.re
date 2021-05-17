@@ -345,9 +345,9 @@ module ExecutionPart = {
                      <VSpacing size=Spacing.lg />
                      <div className={CssHelper.flexBox(~direction=`column, ())}>
                        {paramsInput
-                        ->Belt_Array.mapWithIndex((i, params)
-                            // parameterInput(param, i, setCallDataArr)
-                            => <ParameterInput params index=i setCallDataArr />)
+                        ->Belt_Array.mapWithIndex((i, params) =>
+                            <ParameterInput params index=i setCallDataArr />
+                          )
                         ->React.array}
                      </div>
                    </div>}
