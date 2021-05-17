@@ -9,28 +9,6 @@ module Styles = {
 
   let upperTextCotainer = style([marginBottom(`px(24))]);
 
-  let paramsContainer = (theme: Theme.t) =>
-    style([
-      display(`flex),
-      flexDirection(`column),
-      selector(
-        "input",
-        [
-          width(`percent(100.)),
-          backgroundColor(`transparent),
-          padding2(~v=`zero, ~h=`px(16)),
-          fontSize(`px(12)),
-          fontWeight(`num(500)),
-          outline(`px(1), `none, `transparent),
-          height(`px(37)),
-          borderRadius(`px(4)),
-          border(`px(1), `solid, theme.inputColor),
-          color(theme.textPrimary),
-          placeholder([color(theme.textPrimary)]),
-        ],
-      ),
-    ]);
-
   let listContainer = style([marginBottom(`px(25))]);
 
   let input = (theme: Theme.t) =>
@@ -121,26 +99,30 @@ module ConnectPanel = {
   };
 };
 
-let parameterInput = (Obi.{fieldName, fieldType}, index, setCalldataArr) => {
-  let fieldName = Js.String.replaceByRe([%re "/[_]/g"], " ", fieldName);
-  <div className=Styles.listContainer key=fieldName>
-    <div className={CssHelper.flexBox()}>
-      <Text value=fieldName weight=Text.Semibold transform=Text.Capitalize />
-      <HSpacing size=Spacing.xs />
-      <Text value={j|($fieldType)|j} weight=Text.Semibold />
-    </div>
-    <VSpacing size=Spacing.sm />
-    <input
-      // className=Styles.input
-      type_="text"
-      onChange={event => {
-        let newVal = ReactEvent.Form.target(event)##value;
-        setCalldataArr(prev => {
-          prev->Belt_Array.mapWithIndex((i, value) => {index == i ? newVal : value})
-        });
-      }}
-    />
-  </div>;
+module ParameterInput = {
+  [@react.component]
+  let make = (~params: Obi.field_key_type_t, ~index, ~setCallDataArr) => {
+    let fieldName = Js.String.replaceByRe([%re "/[_]/g"], " ", params.fieldName);
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <div className=Styles.listContainer key=fieldName>
+      <div className={CssHelper.flexBox()}>
+        <Text value=fieldName weight=Text.Semibold transform=Text.Capitalize />
+        <HSpacing size=Spacing.xs />
+        <Text value={j|($params.fieldType)|j} weight=Text.Semibold />
+      </div>
+      <VSpacing size=Spacing.sm />
+      <input
+        className={Styles.input(theme)}
+        type_="text"
+        onChange={event => {
+          let newVal: string = ReactEvent.Form.target(event)##value;
+          setCallDataArr(prev => {
+            prev->Belt_Array.mapWithIndex((i, value: string) => {index == i ? newVal : value})
+          });
+        }}
+      />
+    </div>;
+  };
 };
 
 module CountInputs = {
@@ -361,11 +343,11 @@ module ExecutionPart = {
                             />}
                      </div>
                      <VSpacing size=Spacing.lg />
-                     <div className={Styles.paramsContainer(theme)}>
+                     <div className={CssHelper.flexBox(~direction=`column, ())}>
                        {paramsInput
-                        ->Belt_Array.mapWithIndex((i, param) =>
-                            parameterInput(param, i, setCallDataArr)
-                          )
+                        ->Belt_Array.mapWithIndex((i, params)
+                            // parameterInput(param, i, setCallDataArr)
+                            => <ParameterInput params index=i setCallDataArr />)
                         ->React.array}
                      </div>
                    </div>}
