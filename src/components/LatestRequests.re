@@ -108,7 +108,7 @@ let make = () => {
   let isMobile = Media.isMobile();
   let requestCount = 5;
   let requestsSub = RequestSub.getList(~page=1, ~pageSize=requestCount, ());
-  let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <Table>
     <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0>
@@ -158,18 +158,31 @@ let make = () => {
        : <THead height=30>
            <Row alignItems=Row.Center>
              <Col col=Col.Three>
-               <Text block=true value="REQUEST ID" size=Text.Sm weight=Text.Semibold />
+               <Text
+                 block=true
+                 value="Request ID"
+                 size=Text.Sm
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+               />
              </Col>
              <Col col=Col.Six>
-               <Text block=true value="ORACLE SCRIPT" size=Text.Sm weight=Text.Semibold />
+               <Text
+                 block=true
+                 value="Oracle Script"
+                 size=Text.Sm
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+               />
              </Col>
              <Col col=Col.Three>
                <Text
                  block=true
-                 value="REPORT STATUS"
+                 value="Report Status"
                  size=Text.Sm
                  weight=Text.Semibold
                  align=Text.Right
+                 transform=Text.Uppercase
                />
              </Col>
            </Row>
@@ -185,7 +198,10 @@ let make = () => {
              )
            ->React.array
          : <EmptyContainer height={`calc((`sub, `percent(100.), `px(86)))} boxShadow=true>
-             <img src=Images.noSource className=Styles.noDataImage />
+             <img
+               src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+               className=Styles.noDataImage
+             />
              <Heading
                size=Heading.H4
                value="No Request"

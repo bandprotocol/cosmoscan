@@ -136,18 +136,24 @@ let make = () => {
        : <THead height=30>
            <Row alignItems=Row.Center>
              <Col col=Col.Two>
-               <div className={CssHelper.flexBox()}> <Text value="TX HASH" size=Text.Sm /> </div>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Tx Hash" size=Text.Sm transform=Text.Uppercase />
+               </div>
              </Col>
              <Col col=Col.Two>
-               <div className={CssHelper.flexBox()}> <Text value="BLOCK" size=Text.Sm /> </div>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Block" size=Text.Sm transform=Text.Uppercase />
+               </div>
              </Col>
              <Col col=Col.One>
                <div className={CssHelper.flexBox(~justify=`center, ~align=`center, ())}>
-                 <Text value="STATUS" size=Text.Sm />
+                 <Text value="Status" size=Text.Sm transform=Text.Uppercase />
                </div>
              </Col>
              <Col col=Col.Seven>
-               <div className={CssHelper.flexBox()}> <Text value="ACTIONS" size=Text.Sm /> </div>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Actions" size=Text.Sm transform=Text.Uppercase />
+               </div>
              </Col>
            </Row>
          </THead>}

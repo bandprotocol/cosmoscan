@@ -5,7 +5,7 @@ module Styles = {
     style([
       backgroundColor(theme.secondaryBg),
       position(`relative),
-      borderRadius(`px(4)),
+      borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       Media.smallMobile([margin2(~v=`zero, ~h=`px(-5))]),
     ]);
@@ -14,7 +14,7 @@ module Styles = {
     style([
       position(`relative),
       zIndex(2),
-      height(`px(177)),
+      minHeight(`px(177)),
       padding2(~v=`px(24), ~h=`px(32)),
       Media.mobile([padding2(~v=`px(10), ~h=`px(12)), height(`px(120))]),
     ]);
@@ -100,7 +100,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   CssHelper.flexBox(~justify=`spaceBetween, ()),
                   Styles.fullWidth,
                 ])}>
-                <Text value={bandPriceInBTC->Format.fPretty ++ " BTC"} spacing={Text.Em(0.01)} />
+                <Text value={bandPriceInBTC->Format.fPretty ++ " BTC"} />
               </div>;
             },
           )
