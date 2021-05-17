@@ -63,3 +63,12 @@
 [@bs.module] external bandToken: string = "./band-token.svg";
 [@bs.module] external bgLeftLight: string = "./bgleft-light.png";
 [@bs.module] external bgLeftDark: string = "./bgleft-dark.png";
+
+// Footer
+[@bs.module] external githubSvg: string = "./github.svg";
+[@bs.module] external mediumSvg: string = "./medium.svg";
+[@bs.module] external twitterSvg: string = "./twitter.svg";
+[@bs.module] external telegramSvg: string = "./telegram.svg";
+[@bs.module] external discordSvg: string = "./discord.svg";
+[@bs.module] external coinmarketcapWhiteSvg: string = "./coinmarketcap-white.svg";
+[@bs.module] external coingeckoSvg: string = "./coingecko.svg";

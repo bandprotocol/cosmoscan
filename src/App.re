@@ -54,6 +54,7 @@ let make = () => {
        | NotFound => <NotFound />
        }}
     </div>
+    <Footer />
     <Modal />
   </div>;
 };

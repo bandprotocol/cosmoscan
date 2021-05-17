@@ -29,6 +29,7 @@ type t = {
   secondaryTableBg: color_t,
   loadingBaseColor: color_t,
   loadingSecondaryColor: color_t,
+  footer: color_t,
 };
 
 // Default Colors
@@ -45,6 +46,8 @@ let successColor = hex("5FD3C8");
 let pendingColor = hex("F4D23E");
 let activeColor = hex("5FD3C8");
 let failColor = hex("E84A4B");
+
+let footer = hex("1400A5");
 
 let get: mode_t => t =
   fun
@@ -71,6 +74,7 @@ let get: mode_t => t =
       secondaryTableBg: hex("F5F5F5"),
       loadingBaseColor: hex("F5F5F5"),
       loadingSecondaryColor: hex("B2B2B2"),
+      footer,
     }
   | Dark => {
       baseBlue,
@@ -95,4 +99,5 @@ let get: mode_t => t =
       secondaryTableBg: hex("2C2C2C"),
       loadingBaseColor: hex("303030"),
       loadingSecondaryColor: hex("808080"),
+      footer,
     };
