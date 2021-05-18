@@ -46,7 +46,7 @@ module Styles = {
   let addressContainer = style([width(`percent(100.)), maxWidth(`px(420))]);
 
   let buttonContainer =
-    style([marginTop(`px(24)), selector("> button + button", [marginLeft(`px(16))])]);
+    style([marginTop(`px(24)), selector("> button + *", [marginLeft(`px(16))])]);
 };
 
 module BalanceDetails = {
