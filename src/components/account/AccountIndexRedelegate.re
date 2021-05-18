@@ -231,13 +231,15 @@ let make = (~address) => {
                      redelegateListSub={Sub.resolve(e)}
                      reserveIndex=i
                      key={
-                       (e.completionTime |> MomentRe.Moment.toISOString) ++ (i |> string_of_int)
+                       (e.srcValidator.operatorAddress |> Address.toBech32)
+                       ++ (e.dstValidator.operatorAddress |> Address.toBech32)
                      }
                    />
                  : <RenderBody
                      redelegateListSub={Sub.resolve(e)}
                      key={
-                       (e.completionTime |> MomentRe.Moment.toISOString) ++ (i |> string_of_int)
+                       (e.srcValidator.operatorAddress |> Address.toBech32)
+                       ++ (e.dstValidator.operatorAddress |> Address.toBech32)
                      }
                    />
              )

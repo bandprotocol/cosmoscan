@@ -75,7 +75,6 @@ module BalanceDetails = {
                    value=amount
                    size=Text.Lg
                    weight=Text.Regular
-                   spacing={Text.Em(0.)}
                    color={theme.textPrimary}
                  />
                : <Text
@@ -154,13 +153,7 @@ module TotalBalanceRender = {
           CssHelper.flexBox(~align=`flexEnd, ()),
           CssHelper.mb(~size=16, ()),
         ])}>
-        <NumberCountup
-          value=amountBAND
-          size=Text.Xxxl
-          weight=Text.Regular
-          spacing={Text.Em(0.)}
-          smallNumber=true
-        />
+        <NumberCountup value=amountBAND size=Text.Xxxl weight=Text.Regular smallNumber=true />
         <HSpacing size=Spacing.sm />
         <Text value="BAND" size=Text.Lg code=false weight=Text.Thin color={theme.textPrimary} />
       </div>
@@ -169,7 +162,6 @@ module TotalBalanceRender = {
           value={amountBAND *. usdPrice}
           size=Text.Lg
           weight=Text.Regular
-          spacing={Text.Em(0.)}
           color={theme.textSecondary}
         />
         <HSpacing size=Spacing.sm />

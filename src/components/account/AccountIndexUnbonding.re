@@ -184,12 +184,20 @@ let make = (~address) => {
            ->Belt_Array.mapWithIndex((i, e) =>
                isMobile
                  ? <RenderBodyMobile
-                     key={e.completionTime |> MomentRe.Moment.toISOString}
+                     key={
+                       (e.validator.operatorAddress |> Address.toBech32)
+                       ++ (e.completionTime |> MomentRe.Moment.toISOString)
+                       ++ (i |> string_of_int)
+                     }
                      reserveIndex=i
                      unbondingListSub={Sub.resolve(e)}
                    />
                  : <RenderBody
-                     key={e.completionTime |> MomentRe.Moment.toISOString}
+                     key={
+                       (e.validator.operatorAddress |> Address.toBech32)
+                       ++ (e.completionTime |> MomentRe.Moment.toISOString)
+                       ++ (i |> string_of_int)
+                     }
                      unbondingListSub={Sub.resolve(e)}
                    />
              )

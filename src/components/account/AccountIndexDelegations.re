@@ -174,8 +174,8 @@ let make = (~address) => {
                isMobile
                  ? <RenderBodyMobile
                      key={
-                       (e.amount |> Coin.getBandAmountFromCoin |> Js.Float.toString)
-                       ++ (e.reward |> Coin.getBandAmountFromCoin |> Js.Float.toString)
+                       (e.operatorAddress |> Address.toBech32)
+                       ++ (address |> Address.toBech32)
                        ++ (i |> string_of_int)
                      }
                      reserveIndex=i
@@ -183,8 +183,8 @@ let make = (~address) => {
                    />
                  : <RenderBody
                      key={
-                       (e.amount |> Coin.getBandAmountFromCoin |> Js.Float.toString)
-                       ++ (e.reward |> Coin.getBandAmountFromCoin |> Js.Float.toString)
+                       (e.operatorAddress |> Address.toBech32)
+                       ++ (address |> Address.toBech32)
                        ++ (i |> string_of_int)
                      }
                      delegationsSub={Sub.resolve(e)}
