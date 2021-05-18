@@ -72,9 +72,9 @@ module TxSyncing = {
               color=Colors.blueGray6
             />
             <HSpacing size=Spacing.xs />
-            <a href=link target="_blank" rel="noopener">
+            <AbsoluteLink href=link>
               <Text value="here" size=Text.Lg color=Colors.blueGray6 underline=true />
-            </a>
+            </AbsoluteLink>
           </div>
         </div>
       </div>

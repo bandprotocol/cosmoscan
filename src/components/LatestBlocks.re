@@ -71,7 +71,7 @@ let make = (~blocksSub) => {
        | Data(blocks) =>
          blocks
          ->Belt.Array.map(({height, validator}) =>
-             <Col mb=8>
+             <Col mb=8 key={height |> ID.Block.toString}>
                <div className={Styles.card(theme)}>
                  <Row>
                    <Col col=Col.Six colSm=Col.Six>
@@ -94,8 +94,8 @@ let make = (~blocksSub) => {
          ->React.array
        | _ =>
          Belt_Array.make(5, ())
-         ->Belt.Array.map(_ =>
-             <Col mb=8>
+         ->Belt.Array.mapWithIndex((i, _) =>
+             <Col mb=8 key={string_of_int(i)}>
                <div className={Styles.card(theme)}>
                  <Row>
                    <Col col=Col.Six colSm=Col.Six> <LoadingCensorBar width=60 height=15 /> </Col>

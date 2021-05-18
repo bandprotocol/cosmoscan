@@ -118,24 +118,21 @@ module RenderMobile = {
          ->React.array}
         <div className=Styles.socialContainer>
           <div className=Styles.socialLink>
-            <a href="https://twitter.com/bandprotocol" target="_blank" rel="noopener">
+            <AbsoluteLink href="https://twitter.com/bandprotocol">
               <Icon name="fab fa-twitter" color={theme.baseBlue} size=20 />
-            </a>
+            </AbsoluteLink>
           </div>
           <HSpacing size={`px(24)} />
           <div className=Styles.socialLink>
-            <a href="https://t.me/bandprotocol" target="_blank" rel="noopener">
+            <AbsoluteLink href="https://t.me/bandprotocol">
               <Icon name="fab fa-telegram-plane" color={theme.baseBlue} size=21 />
-            </a>
+            </AbsoluteLink>
           </div>
           <HSpacing size={`px(24)} />
           <div className=Styles.socialLink>
-            <a
-              href="https://coinmarketcap.com/currencies/band-protocol"
-              target="_blank"
-              rel="noopener">
+            <AbsoluteLink href="https://coinmarketcap.com/currencies/band-protocol">
               <img src=Images.cmcLogo className=Styles.cmcLogo />
-            </a>
+            </AbsoluteLink>
           </div>
         </div>
       </div>
