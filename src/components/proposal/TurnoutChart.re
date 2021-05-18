@@ -51,7 +51,7 @@ let make = (~percent) => {
       ])}>
       <Heading
         size=Heading.H5
-        value="Voting Power"
+        value="Turnout"
         align=Heading.Center
         marginBottom=8
         color={theme.textSecondary}
