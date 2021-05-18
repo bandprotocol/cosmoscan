@@ -77,9 +77,9 @@ let make = (~reports: array(RequestSub.report_t)) => {
                  ? React.null
                  : <>
                      <Row alignItems=Row.Center marginBottom=16>
-                       <Col col=Col.Three> <Text value="EXTERNAL ID" weight=Text.Medium /> </Col>
-                       <Col col=Col.Three> <Text value="EXIT CODE" weight=Text.Medium /> </Col>
-                       <Col col=Col.Six> <Text value="VALUE" weight=Text.Medium /> </Col>
+                       <Col col=Col.Three> <Text value="External ID" weight=Text.Medium transform=Text.Uppercase /> </Col>
+                       <Col col=Col.Three> <Text value="Exit Code" weight=Text.Medium transform=Text.Uppercase /> </Col>
+                       <Col col=Col.Six> <Text value="Value" weight=Text.Medium transform=Text.Uppercase /> </Col>
                      </Row>
                      <SeperatedLine mt=10 mb=15 />
                    </>}
@@ -88,9 +88,9 @@ let make = (~reports: array(RequestSub.report_t)) => {
                    isMobile
                      ? <MobileCard
                          values=InfoMobileCard.[
-                           ("EXTERNAL ID", Text(externalID)),
-                           ("EXIT CODE", Text(exitCode)),
-                           ("VALUE", Text(data |> JsBuffer.toUTF8)),
+                           ("External ID", Text(externalID)),
+                           ("Exit Code", Text(exitCode)),
+                           ("Value", Text(data |> JsBuffer.toUTF8)),
                          ]
                          key={externalID ++ exitCode}
                          idx={externalID ++ exitCode}

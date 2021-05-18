@@ -523,9 +523,9 @@ let make = (~reqID) => {
                      isMobile
                        ? <MobileCard
                            values=InfoMobileCard.[
-                             ("EXTERNAL ID", Text(externalID)),
-                             ("DATA SOURCE", DataSource(dataSourceID, name)),
-                             ("PARAM", Text(calldata |> JsBuffer.toUTF8)),
+                             ("External ID", Text(externalID)),
+                             ("Data Source", DataSource(dataSourceID, name)),
+                             ("Param", Text(calldata |> JsBuffer.toUTF8)),
                            ]
                            key={externalID ++ name}
                            idx={externalID ++ name}
@@ -565,9 +565,9 @@ let make = (~reqID) => {
                  isMobile
                    ? <MobileCard
                        values=InfoMobileCard.[
-                         ("EXTERNAL ID", Loading(60)),
-                         ("DATA SOURCE", Loading(60)),
-                         ("PARAM", Loading(60)),
+                         ("External ID", Loading(60)),
+                         ("Data Source", Loading(60)),
+                         ("Param", Loading(60)),
                        ]
                        idx="1"
                        styles=Styles.kvTableMobile
