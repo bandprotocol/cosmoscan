@@ -48,10 +48,8 @@ let make = () => {
           <div className={CssHelper.flexBox(~justify={isMobile ? `center : `flexEnd}, ())}>
             <Text
               block=true
-              code=true
-              spacing={Text.Em(0.02)}
               value="Cosmoscan"
-              weight=Text.Regular
+              weight=Text.Semibold
               color={theme.white}
             />
             <HSpacing size={`px(5)} />
@@ -59,10 +57,8 @@ let make = () => {
             <HSpacing size={`px(5)} />
             <Text
               block=true
-              code=true
-              spacing={Text.Em(0.02)}
               value="2021"
-              weight=Text.Regular
+              weight=Text.Semibold
               color={theme.white}
             />
           </div>
