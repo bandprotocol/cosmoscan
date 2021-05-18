@@ -433,13 +433,13 @@ let make = (~reqID) => {
           <InfoContainer>
             <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
               <Heading value="Proof of validity" size=Heading.H4 />
-              <a href="https://docs.bandchain.org/" target="_blank" rel="noopener">
+              <AbsoluteLink href="https://docs.bandchain.org/">
                 <div className={CssHelper.flexBox()}>
                   <Heading value="What is proof ?" size=Heading.H5 />
                   <HSpacing size=Spacing.sm />
                   <Icon name="far fa-external-link-alt" color={theme.textPrimary} />
                 </div>
-              </a>
+              </AbsoluteLink>
             </div>
             <SeperatedLine mt=32 />
             {switch (requestSub) {

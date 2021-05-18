@@ -1,17 +1,12 @@
 module Styles = {
   open Css;
 
-  let footerBg = style([zIndex(4), minHeight(`px(60))]);
-
-  let externalLinkIcon = (isFirst, isMobile) =>
-    style([
-      width(`px(16)),
-      height(`auto),
-      marginLeft(isFirst ? `px(0) : `px(isMobile ? 24 : 16)),
-    ]);
+  let footerBg = style([zIndex(4)]);
+  let socialContainer = style([selector("a + a", [marginLeft(`px(16))])]);
+  let socialImg = style([width(`px(16))]);
 };
 
-let mapImage = [|
+let mapImages = [|
   [|"https:/\/github.com/bandprotocol", Images.githubSvg|],
   [|"https:/\/medium.com/bandprotocol", Images.mediumSvg|],
   [|"https:/\/twitter.com/BandProtocol", Images.twitterSvg|],
@@ -21,105 +16,58 @@ let mapImage = [|
   [|"https:/\/www.coingecko.com/en/coins/band-protocol", Images.coingeckoSvg|],
 |];
 
-module DesktopRender = {
-  [@react.component]
-  let make = () => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-    <Section bg={theme.footer} pt=0 pb=0 style=Styles.footerBg>
-      <div className=CssHelper.container>
-        <Row alignItems=Row.Center justify=Row.Between>
-          <Col col=Col.Six>
-            <Row alignItems=Row.Center>
-              {mapImage
-               ->Belt.Array.mapWithIndex((i, e) =>
-                   <A link={Array.get(e, 0)}>
-                     <img
-                       src={Array.get(e, 1)}
-                       className={Styles.externalLinkIcon(i == 0, false)}
-                     />
-                   </A>
-                 )
-               ->React.array}
-            </Row>
-          </Col>
-          <Col col=Col.Six>
-            <Row alignItems=Row.Center justify=Row.End>
-              <Text
-                block=true
-                code=true
-                spacing={Text.Em(0.02)}
-                value="Cosmoscan"
-                weight=Text.Regular
-                color={`hex("ffffff")}
-                height={Text.Px(60)}
-              />
-              <HSpacing size={`px(5)} />
-              <Icon name="far fa-copyright" color={`hex("ffffff")} />
-              <HSpacing size={`px(5)} />
-              <Text
-                block=true
-                code=true
-                spacing={Text.Em(0.02)}
-                value="2021"
-                weight=Text.Regular
-                color={`hex("ffffff")}
-                height={Text.Px(60)}
-              />
-            </Row>
-          </Col>
-        </Row>
-      </div>
-    </Section>;
-  };
-};
-
-module MobileRender = {
-  [@react.component]
-  let make = () => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-    <Section bg={theme.footer} style=Styles.footerBg>
-      <Col>
-        <Row alignItems=Row.Center justify=Row.Center>
-          {mapImage
-           ->Belt.Array.mapWithIndex((i, e) =>
-               <A link={Array.get(e, 0)}>
-                 <img src={Array.get(e, 1)} className={Styles.externalLinkIcon(i == 0, true)} />
-               </A>
-             )
-           ->React.array}
-        </Row>
-        <Row> <VSpacing size={`px(20)} /> </Row>
-        <Row alignItems=Row.Center justify=Row.Center>
-          <Text
-            block=true
-            code=true
-            spacing={Text.Em(0.02)}
-            value="Cosmoscan"
-            weight=Text.Regular
-            color={`hex("ffffff")}
-            height={Text.Px(20)}
-          />
-          <HSpacing size={`px(5)} />
-          <Icon name="far fa-copyright" color={`hex("ffffff")} />
-          <HSpacing size={`px(5)} />
-          <Text
-            block=true
-            code=true
-            spacing={Text.Em(0.02)}
-            value="2021"
-            weight=Text.Regular
-            color={`hex("ffffff")}
-            height={Text.Px(20)}
-          />
-        </Row>
-      </Col>
-    </Section>;
-  };
-};
-
 [@react.component]
 let make = () => {
-  Media.isMobile() ? <MobileRender /> : <DesktopRender />;
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let isMobile = Media.isMobile();
+
+  <Section bg={theme.footer} pt=24 pb=24 ptSm=24 pbSm=24 style=Styles.footerBg>
+    <div className=CssHelper.container>
+      <Row alignItems=Row.Center>
+        <Col col=Col.Six mbSm=24>
+          <div
+            className={Css.merge([
+              CssHelper.flexBox(
+                ~justify={
+                  isMobile ? `center : `flexStart;
+                },
+                (),
+              ),
+              Styles.socialContainer,
+            ])}>
+            {mapImages
+             ->Belt.Array.mapWithIndex((i, e) =>
+                 <AbsoluteLink key={string_of_int(i)} href={Array.get(e, 0)}>
+                   <img src={Array.get(e, 1)} className=Styles.socialImg />
+                 </AbsoluteLink>
+               )
+             ->React.array}
+          </div>
+        </Col>
+        <Col col=Col.Six>
+          <div className={CssHelper.flexBox(~justify={isMobile ? `center : `flexEnd}, ())}>
+            <Text
+              block=true
+              code=true
+              spacing={Text.Em(0.02)}
+              value="Cosmoscan"
+              weight=Text.Regular
+              color={theme.white}
+            />
+            <HSpacing size={`px(5)} />
+            <Icon name="far fa-copyright" color={theme.white} />
+            <HSpacing size={`px(5)} />
+            <Text
+              block=true
+              code=true
+              spacing={Text.Em(0.02)}
+              value="2021"
+              weight=Text.Regular
+              color={theme.white}
+            />
+          </div>
+        </Col>
+      </Row>
+    </div>
+  </Section>;
 };
