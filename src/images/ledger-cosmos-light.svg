@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>EE686D81-FC34-494A-AFC2-C41D41128C84@3x</title>
+    <g id="Connect-Wallet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="NewCosmoscan_ConnectWallet" transform="translate(-362.000000, -1061.000000)">
+            <g id="Ledger_icon_cosmos_light" transform="translate(362.000000, 1061.233920)">
+                <path d="M19.8969946,0 L9.04300531,0 L9.04300531,14.6427583 L23.697678,14.6427583 L23.697678,3.78876902 C23.697678,1.70971181 21.9867747,0 19.9089089,0 C19.9053346,0 19.9005689,0 19.8969946,0 Z" id="Path" fill="#303030" fill-rule="nonzero"></path>
+                <path d="M5.6593248,0 L3.78876902,0 C1.71090324,0 0,1.71090324 0,3.78876902 L0,5.6593248 L5.6593248,5.6593248 L5.6593248,0 Z" id="Path" fill="#303030" fill-rule="nonzero"></path>
+                <polygon id="Path" fill="#303030" fill-rule="nonzero" points="0 8.76608 5.6593248 8.76608 5.6593248 14.4254048 0 14.4254048"></polygon>
+                <path d="M18.0860106,23.697678 L19.9565664,23.697678 C22.0356236,23.697678 23.7453354,21.9867747 23.7453354,19.9089089 C23.7453354,19.9053346 23.7453354,19.9005689 23.7453354,19.8969946 L23.7453354,18.0860106 L18.0860106,18.0860106 L18.0860106,23.697678 Z" id="Path" fill="#000000" fill-rule="nonzero"></path>
+                <polygon id="Path" fill="#303030" fill-rule="nonzero" points="9.04300531 18.0860106 14.7023301 18.0860106 14.7023301 23.7453354 9.04300531 23.7453354"></polygon>
+                <path d="M3.97903932e-13,18.0860106 L3.97903932e-13,19.9565664 C3.97903932e-13,22.0344322 1.71090324,23.7453354 3.78876902,23.7453354 L5.6593248,23.7453354 L5.6593248,18.0860106 L3.97903932e-13,18.0860106 Z" id="Path" fill="#303030" fill-rule="nonzero"></path>
+                <g id="cosmos-plain" transform="translate(16.030588, 15.796668)">
+                    <rect id="a5a36894-1795-476e-b00b-c9b04c2d4991" fill="#303030" fill-rule="nonzero" x="0" y="0" width="11.8611765" height="11.8611765" rx="4.66588235"></rect>
+                    <circle id="Oval" stroke="#FFFFFF" stroke-width="0.5" cx="5.86823529" cy="5.76" r="2.31764706"></circle>
+                    <line x1="2.31529412" y1="9.32" x2="9.36235294" y2="2.27294118" id="Path" stroke="#FFFFFF" stroke-width="0.5"></line>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -31,8 +31,6 @@
 [@bs.module] external ibcDirArrow: string = "./ibcDirArrow.svg";
 [@bs.module] external modalBg: string = "./modal-bg.svg";
 [@bs.module] external waitingModalBg: string = "./waiting-modal-bg.svg";
-[@bs.module] external ledgerCosmosIcon: string = "./ledger-cosmos.svg";
-[@bs.module] external ledgerBandChainIcon: string = "./ledger-bandchain.svg";
 [@bs.module] external ledgerStep1: string = "./ledger-step1.svg";
 [@bs.module] external ledgerStep2Cosmos: string = "./ledger-step2-cosmos.svg";
 [@bs.module] external ledgerStep2BandChain: string = "./ledger-step2-bandchain.svg";
@@ -72,3 +70,9 @@
 [@bs.module] external discordSvg: string = "./discord.svg";
 [@bs.module] external coinmarketcapWhiteSvg: string = "./coinmarketcap-white.svg";
 [@bs.module] external coingeckoSvg: string = "./coingecko.svg";
+
+//Ledger
+[@bs.module] external ledgerCosmosLightIcon: string = "./ledger-cosmos-light.svg";
+[@bs.module] external ledgerBandChainLightIcon: string = "./ledget-band-light.svg";
+[@bs.module] external ledgerCosmosDarkIcon: string = "./ledger-cosmos-dark.svg";
+[@bs.module] external ledgerBandChainDarkIcon: string = "./ledger-band-dark.svg";

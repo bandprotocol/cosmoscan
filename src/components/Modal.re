@@ -27,18 +27,16 @@ module Styles = {
       ),
     ]);
 
-  let content = isFadeOut =>
+  let content = (isFadeOut, theme: Theme.t) =>
     style([
       display(`table),
       position(`absolute),
       top(`percent(50.)),
       left(`percent(50.)),
-      backgroundColor(Css_Colors.white),
-      borderRadius(`px(5)),
+      backgroundColor(theme.secondaryBg),
+      borderRadius(`px(8)),
       overflow(`hidden),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(8), ~blur=`px(32), Css.rgba(0, 0, 0, `num(0.5))),
-      ),
+      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       animation(
         ~duration=Config.modalFadingDutation,
         ~timingFunction=`cubicBezier((0.25, 0.46, 0.45, 0.94)),
@@ -87,6 +85,7 @@ module Styles = {
 [@react.component]
 let make = () => {
   let (modalStateOpt, dispatchModal) = React.useContext(ModalContext.context);
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   let closeModal = () => {
     dispatchModal(CloseModal);
@@ -113,13 +112,15 @@ let make = () => {
   | Some({modal, canExit, closing}) =>
     <div className={Styles.overlay(closing)} onClick={_ => {canExit ? closeModal() : ()}}>
       <div
-        className={Styles.content(closing)} onClick={e => ReactEvent.Mouse.stopPropagation(e)}>
-        <img
+        className={Styles.content(closing, theme)}
+        onClick={e => ReactEvent.Mouse.stopPropagation(e)}>
+        <div
           id="closeModal"
           src=Images.closeButton
           onClick={_ => {canExit ? closeModal() : ()}}
-          className=Styles.closeButton
-        />
+          className=Styles.closeButton>
+          <Icon name="fal fa-times" color={theme.textPrimary} size=18 />
+        </div>
         {switch (modal) {
          | Connect(chainID) => <ConnectModal chainID />
          | SubmitTx(msg) => <SubmitTxModal msg />

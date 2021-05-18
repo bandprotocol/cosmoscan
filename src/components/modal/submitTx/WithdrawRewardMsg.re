@@ -14,6 +14,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
 
   let allSub = Sub.all2(validatorInfoSub, delegationSub);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   React.useEffect1(
     _ => {
       let msgsOpt = {
@@ -27,42 +29,44 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
 
   <>
     <div className=Styles.container>
-      <Text
+      <Heading
         value="Withdraw Delegation Rewards"
-        size=Text.Md
-        weight=Text.Medium
-        nowrap=true
-        block=true
+        size=Heading.H5
+        marginBottom=8
+        align=Heading.Left
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       <VSpacing size=Spacing.sm />
       {switch (allSub) {
        | Data(({moniker}, _)) =>
          <div>
-           <Text value=moniker size=Text.Lg ellipsis=true align=Text.Right />
-           <Text
-             value={"(" ++ validator->Address.toOperatorBech32 ++ ")"}
-             size=Text.Md
-             color=Colors.gray6
-             code=true
-             block=true
-           />
+           <Text value=moniker ellipsis=true align=Text.Right />
+           <Text value={"(" ++ validator->Address.toOperatorBech32 ++ ")"} code=true block=true />
          </div>
        | _ => <LoadingCensorBar width=300 height=34 />
        }}
     </div>
     <div className=Styles.container>
-      <Text value="Current Reward" size=Text.Md weight=Text.Medium nowrap=true block=true />
+      <Heading
+        value="Current Reward"
+        size=Heading.H5
+        marginBottom=8
+        align=Heading.Left
+        weight=Heading.Regular
+        color={theme.textSecondary}
+      />
       <VSpacing size=Spacing.sm />
       {switch (allSub) {
        | Data((_, {reward})) =>
          <div>
            <NumberCountup
              value={reward |> Coin.getBandAmountFromCoin}
-             size=Text.Lg
              weight=Text.Thin
-             spacing={Text.Em(0.0)}
+             spacing={Text.Em(0.)}
+             size=Text.Md
            />
-           <Text value=" BAND" size=Text.Lg code=true />
+           <Text value=" BAND" />
          </div>
        | _ => <LoadingCensorBar width=150 height=18 />
        }}

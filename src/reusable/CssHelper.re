@@ -50,7 +50,7 @@ let pxSm = (~size=0, ()) => {
 
 // Angle Icon on select input
 
-let selectWrapper = (~size=14, ~pRight=16, ~pRightSm=pRight, ~mW=500, ()) => {
+let selectWrapper = (~size=14, ~pRight=16, ~pRightSm=pRight, ~mW=500, ~fontColor=Theme.black, ()) => {
   style([
     position(`relative),
     width(`percent(100.)),
@@ -65,6 +65,7 @@ let selectWrapper = (~size=14, ~pRight=16, ~pRightSm=pRight, ~mW=500, ()) => {
       pointerEvents(`none),
       top(`percent(50.)),
       right(`px(pRight)),
+      color(fontColor),
       transform(`translateY(`percent(-50.))),
       Media.mobile([right(`px(pRightSm))]),
     ]),

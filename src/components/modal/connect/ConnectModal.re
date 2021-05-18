@@ -15,29 +15,29 @@ module Styles = {
   let loginSelectionContainer =
     style([padding2(~v=`zero, ~h=`px(24)), height(`percent(100.))]);
 
-  let modalTitle =
+  let modalTitle = (theme: Theme.t) =>
     style([
       display(`flex),
       justifyContent(`center),
       flexDirection(`column),
       alignItems(`center),
       paddingTop(`px(30)),
-      borderBottom(`px(1), `solid, Colors.gray9),
+      borderBottom(`px(1), `solid, theme.tableRowBorderColor),
     ]);
 
   let row = style([height(`percent(100.))]);
   let rowContainer = style([margin2(~v=`zero, ~h=`px(12)), height(`percent(100.))]);
-  let warning = style([display(`flex), flexDirection(`row)]);
 
-  let header = active =>
+  let header = (active, theme: Theme.t) =>
     style([
       display(`flex),
       flexDirection(`row),
       alignSelf(`center),
       alignItems(`center),
       padding2(~v=`zero, ~h=`px(20)),
-      color(active ? Colors.gray8 : Colors.gray6),
-      backgroundColor(Colors.white),
+      fontSize(`px(14)),
+      fontWeight(active ? `bold : `normal),
+      color(active ? theme.textPrimary : theme.textSecondary),
     ]);
 
   let loginList = active =>
@@ -45,14 +45,13 @@ module Styles = {
       display(`flex),
       width(`percent(100.)),
       height(`px(50)),
-      borderRadius(`px(4)),
-      border(`px(1), `solid, active ? Colors.bandBlue : Colors.white),
-      backgroundColor(Colors.white),
+      borderRadius(`px(8)),
+      border(`px(2), `solid, active ? Theme.baseBlue : `transparent),
       cursor(`pointer),
       overflow(`hidden),
     ]);
 
-  let loginSelectionBackground = style([background(Colors.profileBG)]);
+  let loginSelectionBackground = (theme: Theme.t) => style([background(theme.contrastBg)]);
 
   let ledgerIcon = style([height(`px(28)), width(`px(28)), transform(translateY(`px(3)))]);
   let ledgerImageContainer = active =>
@@ -75,20 +74,28 @@ let toLoginMethodString = method => {
 module LoginMethod = {
   [@react.component]
   let make = (~name, ~active, ~onClick) => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
     <div className={Styles.loginList(active)} onClick>
-      <div className={Styles.header(active)}>
+      <div className={Styles.header(active, theme)}>
         {switch (name) {
          | LedgerWithCosmos =>
            <div className={Styles.ledgerImageContainer(active)}>
-             <img src=Images.ledgerCosmosIcon className=Styles.ledgerIcon />
+             <img
+               src={isDarkMode ? Images.ledgerCosmosDarkIcon : Images.ledgerCosmosLightIcon}
+               className=Styles.ledgerIcon
+             />
            </div>
          | LedgerWithBandChain =>
            <div className={Styles.ledgerImageContainer(active)}>
-             <img src=Images.ledgerBandChainIcon className=Styles.ledgerIcon />
+             <img
+               src={isDarkMode ? Images.ledgerBandChainDarkIcon : Images.ledgerBandChainLightIcon}
+               className=Styles.ledgerIcon
+             />
            </div>
          | _ => <div />
          }}
-        <Text value={name |> toLoginMethodString} weight=Text.Medium size=Text.Lg />
+        {name |> toLoginMethodString |> React.string}
       </div>
     </div>;
   };
@@ -97,21 +104,23 @@ module LoginMethod = {
 [@react.component]
 let make = (~chainID) => {
   let (loginMethod, setLoginMethod) = React.useState(_ => Mnemonic);
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.container>
     <div className=Styles.innerContainer>
-      <div className=Styles.modalTitle>
-        <Text value="Connect with your wallet" weight=Text.Medium size=Text.Xl />
+      <div className={Styles.modalTitle(theme)}>
+        <Heading value="Connect with your wallet" size=Heading.H4 />
         {chainID == "band-guanyu-mainnet"
            ? <>
                <VSpacing size=Spacing.md />
-               <div className=Styles.warning>
+               <div className={CssHelper.flexBox()}>
                  <Text value="Please check that you are visiting" size=Text.Lg />
                  <HSpacing size=Spacing.sm />
                  <Text
                    value="https://www.cosmoscan.io"
                    size=Text.Lg
                    weight=Text.Medium
-                   color=Colors.bandBlue
+                   color={theme.textPrimary}
                  />
                </div>
              </>
@@ -120,10 +129,10 @@ let make = (~chainID) => {
       </div>
       <div className=Styles.rowContainer>
         <Row style=Styles.row>
-          <Col col=Col.Five style=Styles.loginSelectionBackground>
+          <Col col=Col.Five style={Styles.loginSelectionBackground(theme)}>
             <div className=Styles.loginSelectionContainer>
               <VSpacing size=Spacing.xl />
-              <Text value="Select your connection method" size=Text.Lg color=Colors.gray7 />
+              <Heading size=Heading.H5 value="Select your connection method" />
               <VSpacing size=Spacing.md />
               {[|Mnemonic, LedgerWithCosmos, LedgerWithBandChain|]
                ->Belt_Array.map(method =>
