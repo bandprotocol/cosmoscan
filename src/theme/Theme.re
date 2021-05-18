@@ -26,6 +26,7 @@ type t = {
   activeColor: color_t,
   dropdownHover: color_t,
   tableRowBorderColor: color_t,
+  secondaryTableBg: color_t,
   loadingBaseColor: color_t,
   loadingSecondaryColor: color_t,
 };
@@ -67,6 +68,7 @@ let get: mode_t => t =
       inputColor: hex("2C2C2C"),
       dropdownHover: hex("EDEDED"),
       tableRowBorderColor: hex("EDEDED"),
+      secondaryTableBg: hex("F5F5F5"),
       loadingBaseColor: hex("F5F5F5"),
       loadingSecondaryColor: hex("B2B2B2"),
     }
@@ -90,6 +92,7 @@ let get: mode_t => t =
       inputColor: hex("ffffff"),
       dropdownHover: hex("0F0F0F"),
       tableRowBorderColor: hex("353535"),
+      secondaryTableBg: hex("2C2C2C"),
       loadingBaseColor: hex("303030"),
       loadingSecondaryColor: hex("808080"),
     };

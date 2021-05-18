@@ -1,26 +1,20 @@
 module Styles = {
   open Css;
 
-  let reportCard = isLast =>
-    style([
-      padding(`px(24)),
-      isLast ? borderBottomStyle(`none) : borderBottom(`px(1), `solid, Colors.gray9),
-      Media.mobile([padding2(~v=`px(24), ~h=`px(16))]),
-    ]);
+  let reportCard = style([Media.mobile([padding2(~v=`px(8), ~h=`zero)])]);
 
-  let reportsTable =
+  let reportsTable = (theme: Theme.t) =>
     style([
       padding2(~v=`px(16), ~h=`px(24)),
       paddingBottom(`px(1)),
       marginTop(`px(24)),
-      backgroundColor(Colors.profileBG),
+      backgroundColor(theme.secondaryTableBg),
       transition(~duration=200, "all"),
       height(`auto),
-      Media.mobile([padding(`zero), backgroundColor(Colors.white)]),
+      Media.mobile([paddingTop(`zero), paddingBottom(`zero)]),
     ]);
 
-  let mobileCard =
-    style([backgroundColor(Colors.profileBG), boxShadow(`none), marginTop(`px(8))]);
+  let mobileCard = style([boxShadow(`none), marginTop(`px(8))]);
 
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
@@ -28,6 +22,7 @@ module Styles = {
 [@react.component]
 let make = (~reports: array(RequestSub.report_t)) => {
   let isMobile = Media.isMobile();
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   reports->Belt.Array.size > 0
     ? reports
@@ -40,13 +35,18 @@ let make = (~reports: array(RequestSub.report_t)) => {
               reportDetails,
             },
           ) => {
-          <div
-            key={operatorAddress |> Address.toOperatorBech32}
-            className={Styles.reportCard(idx == reports->Belt.Array.size - 1)}>
-            <Row marginBottom=24>
-              <Col col=Col.Six mbSm=24>
-                <Heading value="Report by" size=Heading.H5 />
-                <VSpacing size={`px(8)} />
+          <div key={operatorAddress |> Address.toOperatorBech32} className=Styles.reportCard>
+            {idx == 0 ? React.null : <SeperatedLine mt=32 mb=24 />}
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Report by"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 <ValidatorMonikerLink
                   validatorAddress=operatorAddress
                   moniker
@@ -55,23 +55,34 @@ let make = (~reports: array(RequestSub.report_t)) => {
                   avatarWidth=20
                 />
               </Col>
-              <Col col=Col.Six>
-                <Heading value="TX Hash" size=Heading.H5 />
-                <VSpacing size={`px(8)} />
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="TX Hash"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (transactionOpt) {
                  | Some({hash}) => <TxLink txHash=hash width=280 />
                  | None => <Text value="Genesis Transaction" />
                  }}
               </Col>
             </Row>
-            <div className=Styles.reportsTable>
+            <div className={Styles.reportsTable(theme)}>
               {isMobile
                  ? React.null
-                 : <Row alignItems=Row.Center marginBottom=16>
-                     <Col col=Col.Three> <Text value="External ID" weight=Text.Medium /> </Col>
-                     <Col col=Col.Three> <Text value="Exit Code" weight=Text.Medium /> </Col>
-                     <Col col=Col.Six> <Text value="Value" weight=Text.Medium /> </Col>
-                   </Row>}
+                 : <>
+                     <Row alignItems=Row.Center marginBottom=16>
+                       <Col col=Col.Three> <Text value="External ID" weight=Text.Medium transform=Text.Uppercase /> </Col>
+                       <Col col=Col.Three> <Text value="Exit Code" weight=Text.Medium transform=Text.Uppercase /> </Col>
+                       <Col col=Col.Six> <Text value="Value" weight=Text.Medium transform=Text.Uppercase /> </Col>
+                     </Row>
+                     <SeperatedLine mt=10 mb=15 />
+                   </>}
               {reportDetails
                ->Belt.Array.map(({externalID, exitCode, data}) => {
                    isMobile
@@ -102,14 +113,14 @@ let make = (~reports: array(RequestSub.report_t)) => {
           </div>
         })
       ->React.array
-    : <EmptyContainer height={`px(250)} backgroundColor=Colors.blueGray1>
-        <img src=Images.noSource className=Styles.noDataImage />
+    : <EmptyContainer>
+        <img src={isDarkMode ? Images.noTxDark : Images.noTxLight} className=Styles.noDataImage />
         <Heading
           size=Heading.H4
           value="No Report"
           align=Heading.Center
           weight=Heading.Regular
-          color=Colors.bandBlue
+          color={theme.textSecondary}
         />
       </EmptyContainer>;
 };
