@@ -193,7 +193,7 @@ let make = () => {
          ? requests
            ->Belt_Array.mapWithIndex((i, e) =>
                isMobile
-                 ? <RenderBodyMobile reserveIndex=i requestSub={Sub.resolve(e)} />
+                 ? <RenderBodyMobile key={e.id |> ID.Request.toString} reserveIndex=i requestSub={Sub.resolve(e)} />
                  : <RenderBody key={e.id |> ID.Request.toString} requestSub={Sub.resolve(e)} />
              )
            ->React.array
@@ -213,7 +213,7 @@ let make = () => {
        Belt_Array.make(requestCount, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
-             ? <RenderBodyMobile reserveIndex=i requestSub=noData />
+             ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestSub=noData />
              : <RenderBody key={i |> string_of_int} requestSub=noData />
          )
        ->React.array
