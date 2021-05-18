@@ -60,7 +60,7 @@ describe("Expect Search Functionality to work correctly", () => {
     |> toEqual(
          AccountIndexPage(
            "band1p40yh3zkmhcv0ecqp3mcazy83sa57rgjp07dun" |> Address.fromBech32,
-           AccountTransactions,
+           AccountDelegations,
          ),
        )
   );

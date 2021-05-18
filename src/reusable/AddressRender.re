@@ -19,9 +19,9 @@ module Styles = {
         ])
       : style([
           pointerEvents(`none),
-          color(Colors.gray7),
-          hover([color(Colors.gray7)]),
-          active([color(Colors.gray7)]),
+          color(theme.textPrimary),
+          hover([color(theme.textPrimary)]),
+          active([color(theme.textPrimary)]),
         ]);
 
   let prefix = style([fontWeight(`num(600))]);
@@ -86,7 +86,7 @@ let make =
       route={
         isValidator
           ? Route.ValidatorIndexPage(address, Route.ProposedBlocks)
-          : Route.AccountIndexPage(address, Route.AccountTransactions)
+          : Route.AccountIndexPage(address, Route.AccountDelegations)
       }>
       <span
         className={Css.merge([

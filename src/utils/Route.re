@@ -12,7 +12,6 @@ type oracle_script_tab_t =
   | OracleScriptRevisions;
 
 type account_tab_t =
-  | AccountTransactions
   | AccountDelegations
   | AccountUnbonding
   | AccountRedelegate;
@@ -91,10 +90,9 @@ let fromUrl = (url: ReasonReactRouter.url) =>
   | (["account", address], hash) =>
     let urlHash = (
       fun
-      | "delegations" => AccountDelegations
       | "unbonding" => AccountUnbonding
       | "redelegate" => AccountRedelegate
-      | _ => AccountTransactions
+      | _ => AccountDelegations
     );
     switch (address |> Address.fromBech32Opt) {
     | Some(address) => AccountIndexPage(address, urlHash(hash))
@@ -139,10 +137,6 @@ let toString =
   | BlockIndexPage(height) => {j|/block/$height|j}
   | RequestHomePage => "/requests"
   | RequestIndexPage(reqID) => {j|/request/$reqID|j}
-  | AccountIndexPage(address, AccountTransactions) => {
-      let addressBech32 = address |> Address.toBech32;
-      {j|/account/$addressBech32|j};
-    }
   | AccountIndexPage(address, AccountDelegations) => {
       let addressBech32 = address |> Address.toBech32;
       {j|/account/$addressBech32#delegations|j};
@@ -190,7 +184,7 @@ let search = (str: string) => {
       if (str |> Js.String.startsWith("bandvaloper")) {
         Some(ValidatorIndexPage(str |> Address.fromBech32, Reports));
       } else if (str |> Js.String.startsWith("band")) {
-        Some(AccountIndexPage(str |> Address.fromBech32, AccountTransactions));
+        Some(AccountIndexPage(str |> Address.fromBech32, AccountDelegations));
       } else if (len == 64 || str |> Js.String.startsWith("0x") && len == 66) {
         Some(TxIndexPage(str |> Hash.fromHex));
       } else if (capStr |> Js.String.startsWith("B")) {

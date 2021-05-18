@@ -30,103 +30,101 @@ module Styles = {
         [
           height(`calc((`sub, `percent(50.), `px(12)))),
           width(`percent(100.)),
-          Media.mobile([height(`auto)]),
+          Media.mobile([height(`auto), marginBottom(`px(16))]),
         ],
       ),
     ]);
 
-  let amountBoxes = style([selector("> div + div", [marginTop(`px(18))])]);
-
-  let qrContainer = style([width(`percent(100.)), Media.mobile([width(`auto)])]);
-
-  let qrCode =
+  let amountBoxes =
     style([
-      backgroundColor(Colors.bandBlue),
-      borderRadius(`px(4)),
-      padding(`px(10)),
-      cursor(`pointer),
-      Media.mobile([marginRight(`px(8))]),
+      selector("> div:nth-child(1)", [marginBottom(`px(40))]),
+      selector("> div + div", [marginTop(`px(24))]),
     ]);
 
-  let addressContainer =
-    style([Media.mobile([width(`calc((`sub, `percent(100.), `px(50))))])]);
+  let detailContainer = style([height(`percent(100.))]);
+
+  let addressContainer = style([width(`percent(100.)), maxWidth(`px(420))]);
+
+  let buttonContainer =
+    style([marginTop(`px(24)), selector("> button + *", [marginLeft(`px(16))])]);
 };
 
-let balanceDetail = (~title, ~description, ~amount, ~usdPrice, ~color, ~isCountup=false, ()) => {
-  <Row>
-    <Col col=Col.Six colSm=Col.Five>
-      <div className={CssHelper.flexBox()}>
-        <div className={Styles.squareIcon(color)} />
-        <Text
-          value=title
-          size=Text.Lg
-          weight=Text.Semibold
-          tooltipItem={description |> React.string}
-          tooltipPlacement=Text.AlignBottomStart
-        />
-      </div>
-    </Col>
-    <Col col=Col.Six colSm=Col.Seven>
-      <div className={CssHelper.flexBox(~direction=`column, ~align=`flexEnd, ())}>
+module BalanceDetails = {
+  [@react.component]
+  let make = (~title, ~description, ~amount, ~usdPrice, ~color, ~isCountup=false) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six colSm=Col.Five>
         <div className={CssHelper.flexBox()}>
-          {isCountup
-             ? <NumberCountup
-                 value=amount
-                 size=Text.Lg
-                 weight=Text.Regular
-                 spacing={Text.Em(0.)}
-               />
-             : <Text
-                 value={amount |> Format.fPretty}
-                 size=Text.Lg
-                 weight=Text.Regular
-                 spacing={Text.Em(0.)}
-                 nowrap=true
-                 code=true
-               />}
-          <HSpacing size=Spacing.sm />
+          <div className={Styles.squareIcon(color)} />
           <Text
-            value="BAND"
+            value=title
             size=Text.Lg
-            code=true
-            weight=Text.Thin
-            spacing={Text.Em(0.)}
-            nowrap=true
+            weight=Text.Semibold
+            tooltipItem={description |> React.string}
+            tooltipPlacement=Text.AlignBottomStart
+            color={theme.textPrimary}
           />
         </div>
-        <VSpacing size=Spacing.xs />
-        <div className={Css.merge([CssHelper.flexBox(), Styles.balance])}>
-          {isCountup
-             ? <NumberCountup
-                 value={amount *. usdPrice}
-                 size=Text.Md
-                 weight=Text.Thin
-                 spacing={Text.Em(0.02)}
-                 color=Colors.gray6
-               />
-             : <Text
-                 value={amount *. usdPrice |> Format.fPretty}
-                 size=Text.Md
-                 spacing={Text.Em(0.02)}
-                 weight=Text.Thin
-                 nowrap=true
-                 code=true
-                 color=Colors.gray6
-               />}
-          <HSpacing size=Spacing.sm />
-          <Text
-            value="USD"
-            size=Text.Md
-            code=true
-            spacing={Text.Em(0.02)}
-            weight=Text.Thin
-            nowrap=true
-            color=Colors.gray6
-          />
+      </Col>
+      <Col col=Col.Six colSm=Col.Seven>
+        <div className={CssHelper.flexBox(~direction=`column, ~align=`flexEnd, ())}>
+          <div className={CssHelper.flexBox()}>
+            {isCountup
+               ? <NumberCountup
+                   value=amount
+                   size=Text.Lg
+                   weight=Text.Regular
+                   color={theme.textPrimary}
+                 />
+               : <Text
+                   value={amount |> Format.fPretty}
+                   size=Text.Lg
+                   weight=Text.Regular
+                   nowrap=true
+                   code=true
+                   color={theme.textPrimary}
+                 />}
+            <HSpacing size=Spacing.sm />
+            <Text
+              value="BAND"
+              size=Text.Lg
+              weight=Text.Thin
+              nowrap=true
+              color={theme.textPrimary}
+            />
+          </div>
+          <VSpacing size=Spacing.xs />
+          <div className={Css.merge([CssHelper.flexBox(), Styles.balance])}>
+            {isCountup
+               ? <NumberCountup
+                   value={amount *. usdPrice}
+                   size=Text.Md
+                   weight=Text.Thin
+                   spacing={Text.Em(0.02)}
+                   color={theme.textSecondary}
+                 />
+               : <Text
+                   value={amount *. usdPrice |> Format.fPretty}
+                   size=Text.Md
+                   spacing={Text.Em(0.02)}
+                   weight=Text.Thin
+                   nowrap=true
+                   code=true
+                 />}
+            <HSpacing size=Spacing.sm />
+            <Text
+              value="USD"
+              size=Text.Md
+              weight=Text.Thin
+              nowrap=true
+              color={theme.textSecondary}
+            />
+          </div>
         </div>
-      </div>
-    </Col>
-  </Row>;
+      </Col>
+    </Row>;
+  };
 };
 
 module BalanceDetailLoading = {
@@ -145,38 +143,36 @@ module BalanceDetailLoading = {
   };
 };
 
-let totalBalanceRender = (amountBAND, usdPrice) => {
-  <>
-    <div
-      className={Css.merge([CssHelper.flexBox(~align=`flexEnd, ()), CssHelper.mb(~size=5, ())])}>
-      <NumberCountup
-        value=amountBAND
-        size=Text.Xxxl
-        weight=Text.Regular
-        spacing={Text.Em(0.)}
-        color=Colors.bandBlue
-        smallNumber=true
-      />
-      <HSpacing size=Spacing.sm />
-      <Text value="BAND" color=Colors.bandBlue size=Text.Lg code=false weight=Text.Thin />
-    </div>
-    <div className={CssHelper.flexBox()}>
-      <NumberCountup
-        value={amountBAND *. usdPrice}
-        size=Text.Lg
-        weight=Text.Regular
-        spacing={Text.Em(0.)}
-        color=Colors.gray7
-      />
-      <HSpacing size=Spacing.sm />
-      <Text
-        value={"USD " ++ "($" ++ (usdPrice |> Js.Float.toString) ++ " / BAND)"}
-        color=Colors.gray6
-        size=Text.Lg
-        weight=Text.Thin
-      />
-    </div>
-  </>;
+module TotalBalanceRender = {
+  [@react.component]
+  let make = (~amountBAND, ~usdPrice) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <>
+      <div
+        className={Css.merge([
+          CssHelper.flexBox(~align=`flexEnd, ()),
+          CssHelper.mb(~size=16, ()),
+        ])}>
+        <NumberCountup value=amountBAND size=Text.Xxxl weight=Text.Regular smallNumber=true />
+        <HSpacing size=Spacing.sm />
+        <Text value="BAND" size=Text.Lg code=false weight=Text.Thin color={theme.textPrimary} />
+      </div>
+      <div className={CssHelper.flexBox()}>
+        <NumberCountup
+          value={amountBAND *. usdPrice}
+          size=Text.Lg
+          weight=Text.Regular
+          color={theme.textSecondary}
+        />
+        <HSpacing size=Spacing.sm />
+        <Text
+          value={" USD " ++ "($" ++ (usdPrice |> Js.Float.toString) ++ " / BAND)"}
+          size=Text.Lg
+          weight=Text.Thin
+        />
+      </div>
+    </>;
+  };
 };
 
 [@react.component]
@@ -221,90 +217,83 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
     address->QRCode->OpenModal->dispatchModal;
   };
 
-  <Section pbSm=0>
+  <Section>
     <div className=CssHelper.container>
-      <Row marginBottom=40 marginBottomSm=24>
-        <Col> <Heading value="Account Detail" size=Heading.H4 /> </Col>
+      <Row marginBottom=40 marginBottomSm=16>
+        <Col> <Heading value="Account Details" size=Heading.H2 /> </Col>
       </Row>
-      <Row>
+      <Row marginBottom=24 marginBottomSm=16>
         <Col col=Col.Six>
           <div
             className={Css.merge([
               CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
               Styles.infoLeft,
             ])}>
-            <div
-              className={Css.merge([
-                CssHelper.infoContainer,
-                CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`stretch, ()),
-                CssHelper.flexBoxSm(~direction=`row, ~align=`center, ~justify=`flexStart, ()),
-                CssHelper.mb(~size=24, ()),
-              ])}>
+            <InfoContainer>
               <div
                 className={Css.merge([
-                  CssHelper.flexBox(~justify=`spaceBetween, ~align=`flexStart, ()),
-                  CssHelper.mb(~size=24, ()),
-                  CssHelper.mbSm(~size=0, ()),
-                  Styles.qrContainer,
+                  CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`flexStart, ()),
+                  Styles.detailContainer,
                 ])}>
-                <div className=Styles.qrCode onClick={_ => {qrCode()}}>
-                  <Icon size=20 name="far fa-qrcode" color=Colors.white />
+                <div className=Styles.addressContainer>
+                  <Heading size=Heading.H4 value="Address" marginBottom=25 />
+                  <div className={CssHelper.flexBox()}>
+                    <AddressRender
+                      address
+                      position=AddressRender.Subtitle
+                      copy=true
+                      clickable=false
+                    />
+                  </div>
                 </div>
-                {isMobile
-                   ? React.null
-                   : {
-                     switch (topPartAllSub) {
-                     | Data((_, _, _, _, {chainID})) =>
-                       <Button variant=Button.Outline py=5 px=11 onClick={_ => {send(chainID)}}>
-                         <Text
-                           value="Send BAND"
-                           block=true
-                           weight=Text.Semibold
-                           color=Colors.bandBlue
-                           nowrap=true
-                         />
-                       </Button>
-                     | _ => <LoadingCensorBar width=90 height=26 />
-                     };
-                   }}
-              </div>
-              <div className=Styles.addressContainer>
-                <Heading size=Heading.H4 value="Address" marginBottom=5 />
-                <div className={CssHelper.flexBox()}>
-                  <AddressRender
-                    address
-                    position=AddressRender.Subtitle
-                    copy=true
-                    clickable=false
-                  />
+                <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
+                  <Button variant=Button.Outline py=5 onClick={_ => {qrCode()}}>
+                    <div className={CssHelper.flexBox()}>
+                      <Icon size=20 name="far fa-qrcode" mr=8 />
+                      {"QR Code" |> React.string}
+                    </div>
+                  </Button>
+                  {isMobile
+                     ? React.null
+                     : {
+                       switch (topPartAllSub) {
+                       | Data((_, _, _, _, {chainID})) =>
+                         <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
+                           {"Send BAND" |> React.string}
+                         </Button>
+                       | _ => <LoadingCensorBar width=90 height=26 />
+                       };
+                     }}
                 </div>
               </div>
-            </div>
-            <div
-              className={Css.merge([
-                CssHelper.infoContainer,
-                CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`stretch, ()),
-                CssHelper.mbSm(~size=24, ()),
-              ])}>
-              <Heading size=Heading.H4 value="Total Balance" marginBottom=8 />
-              {switch (topPartAllSub) {
-               | Data(({financial}, {balance, commission}, {amount, reward}, unbonding, _)) =>
-                 totalBalanceRender(
-                   sumBalance(balance, amount, unbonding, reward, commission),
-                   financial.usdPrice,
-                 )
-               | _ =>
-                 <>
-                   <LoadingCensorBar width=200 height=22 mb=10 />
-                   <LoadingCensorBar width=220 height=16 />
-                 </>
-               }}
-            </div>
+            </InfoContainer>
+            <InfoContainer>
+              <div
+                className={Css.merge([
+                  CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`flexStart, ()),
+                  Styles.detailContainer,
+                ])}>
+                <Heading size=Heading.H4 value="Total Balance" marginBottom=24 />
+                {switch (topPartAllSub) {
+                 | Data(({financial}, {balance, commission}, {amount, reward}, unbonding, _)) =>
+                   <TotalBalanceRender
+                     amountBAND={sumBalance(balance, amount, unbonding, reward, commission)}
+                     usdPrice={financial.usdPrice}
+                   />
+
+                 | _ =>
+                   <>
+                     <LoadingCensorBar width=200 height=22 mb=10 />
+                     <LoadingCensorBar width=220 height=16 />
+                   </>
+                 }}
+              </div>
+            </InfoContainer>
           </div>
         </Col>
         <Col col=Col.Six>
-          <div className=CssHelper.infoContainer>
-            <Heading value="Balance" size=Heading.H4 style=Styles.infoHeader marginBottom=24 />
+          <InfoContainer>
+            <Heading value="Balance" size=Heading.H4 marginBottom=40 />
             <div className=Styles.amountBoxes>
               {switch (topPartAllSub) {
                | Data((_, {balance, commission}, {amount, reward}, unbonding, _)) =>
@@ -325,66 +314,53 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
               <div>
                 {switch (topPartAllSub) {
                  | Data(({financial}, {balance}, _, _, _)) =>
-                   balanceDetail(
-                     ~title="Available",
-                     ~description="Balance available to send, delegate, etc",
-                     ~amount={
-                       balance->Coin.getBandAmountFromCoins;
-                     },
-                     ~usdPrice=financial.usdPrice,
-                     ~color=Colors.bandBlue,
-                     (),
-                   )
+                   <BalanceDetails
+                     title="Available"
+                     description="Balance available to send, delegate, etc"
+                     amount={balance->Coin.getBandAmountFromCoins}
+                     usdPrice={financial.usdPrice}
+                     color=Theme.baseBlue
+                   />
                  | _ => <BalanceDetailLoading />
                  }}
               </div>
               <div>
                 {switch (topPartAllSub) {
                  | Data(({financial}, _, {amount}, _, _)) =>
-                   balanceDetail(
-                     ~title="Delegated",
-                     ~description="Balance currently delegated to validators",
-                     ~amount={
-                       amount->Coin.getBandAmountFromCoin;
-                     },
-                     ~usdPrice=financial.usdPrice,
-                     ~color=Colors.chartBalanceAtStake,
-                     (),
-                   )
+                   <BalanceDetails
+                     title="Delegated"
+                     description="Balance currently delegated to validators"
+                     amount={amount->Coin.getBandAmountFromCoin}
+                     usdPrice={financial.usdPrice}
+                     color=Theme.lightBlue
+                   />
                  | _ => <BalanceDetailLoading />
                  }}
               </div>
               <div>
                 {switch (topPartAllSub) {
                  | Data(({financial}, _, _, unbonding, _)) =>
-                   balanceDetail(
-                     ~title="Unbonding",
-                     ~description=
-                       "Amount undelegated from validators awaiting 21 days lockup period",
-                     ~amount={
-                       unbonding->Coin.getBandAmountFromCoin;
-                     },
-                     ~usdPrice=financial.usdPrice,
-                     ~color=Colors.blue4,
-                     (),
-                   )
+                   <BalanceDetails
+                     title="Unbonding"
+                     description="Amount undelegated from validators awaiting 21 days lockup period"
+                     amount={unbonding->Coin.getBandAmountFromCoin}
+                     usdPrice={financial.usdPrice}
+                     color=Theme.lightenBlue
+                   />
                  | _ => <BalanceDetailLoading />
                  }}
               </div>
               <div>
                 {switch (topPartAllSub) {
                  | Data(({financial}, _, {reward}, _, _)) =>
-                   balanceDetail(
-                     ~title="Reward",
-                     ~description="Reward from staking to validators",
-                     ~amount={
-                       reward->Coin.getBandAmountFromCoin;
-                     },
-                     ~usdPrice=financial.usdPrice,
-                     ~color=Colors.chartReward,
-                     ~isCountup=true,
-                     (),
-                   )
+                   <BalanceDetails
+                     title="Reward"
+                     description="Reward from staking to validators"
+                     amount={reward->Coin.getBandAmountFromCoin}
+                     usdPrice={financial.usdPrice}
+                     color=Theme.darkenBlue
+                     isCountup=true
+                   />
                  | _ => <BalanceDetailLoading />
                  }}
               </div>
@@ -394,45 +370,59 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                  commissionAmount == 0.
                    ? React.null
                    : <div>
-                       {balanceDetail(
-                          ~title="Commission",
-                          ~description="Reward commission from delegator's reward",
-                          ~amount=commissionAmount,
-                          ~usdPrice=financial.usdPrice,
-                          ~color=Colors.gray6,
-                          ~isCountup=true,
-                          (),
-                        )}
+                       <BalanceDetails
+                         title="Commission"
+                         description="Reward commission from delegator's reward"
+                         amount=commissionAmount
+                         usdPrice={financial.usdPrice}
+                         isCountup=true
+                         color=Theme.darkenBlue
+                       />
                      </div>;
 
                | _ => React.null
                }}
             </div>
-          </div>
+          </InfoContainer>
         </Col>
       </Row>
-      <VSpacing size=Spacing.xl />
-      <Tab
-        tabs=[|
-          {
-            name: "Transactions",
-            route: Route.AccountIndexPage(address, Route.AccountTransactions),
-          },
-          {
-            name: "Delegations",
-            route: Route.AccountIndexPage(address, Route.AccountDelegations),
-          },
-          {name: "Unbonding", route: Route.AccountIndexPage(address, Route.AccountUnbonding)},
-          {name: "Redelegate", route: Route.AccountIndexPage(address, Route.AccountRedelegate)},
-        |]
-        currentRoute={Route.AccountIndexPage(address, hashtag)}>
-        {switch (hashtag) {
-         | AccountTransactions => <AccountIndexTransactions accountAddress=address />
-         | AccountDelegations => <AccountIndexDelegations address />
-         | AccountUnbonding => <AccountIndexUnbonding address />
-         | AccountRedelegate => <AccountIndexRedelegate address />
-         }}
-      </Tab>
+      <Row marginBottom=24 marginBottomSm=16>
+        <Col>
+          <Table>
+            <Tab
+              tabs=[|
+                {
+                  name: "Delegations",
+                  route: Route.AccountIndexPage(address, Route.AccountDelegations),
+                },
+                {
+                  name: "Unbonding",
+                  route: Route.AccountIndexPage(address, Route.AccountUnbonding),
+                },
+                {
+                  name: "Redelegate",
+                  route: Route.AccountIndexPage(address, Route.AccountRedelegate),
+                },
+              |]
+              currentRoute={Route.AccountIndexPage(address, hashtag)}>
+              {switch (hashtag) {
+               | AccountDelegations => <AccountIndexDelegations address />
+               | AccountUnbonding => <AccountIndexUnbonding address />
+               | AccountRedelegate => <AccountIndexRedelegate address />
+               }}
+            </Tab>
+          </Table>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <InfoContainer>
+            <Heading value="Transactions" size=Heading.H4 />
+            <SeperatedLine mt=32 mb=0 />
+            <AccountIndexTransactions accountAddress=address />
+          </InfoContainer>
+        </Col>
+      </Row>
     </div>
   </Section>;
 };

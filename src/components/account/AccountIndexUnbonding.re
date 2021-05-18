@@ -5,94 +5,86 @@ module Styles = {
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
-let renderBody =
-    (
-      reserveIndex,
-      unbondingListSub: ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t),
-    ) => {
-  <TBody
-    key={
-      switch (unbondingListSub) {
-      | Data({validator: {operatorAddress}, amount, completionTime}) =>
-        (operatorAddress |> Address.toBech32)
-        ++ (completionTime |> MomentRe.Moment.toISOString)
-        ++ (amount |> Coin.getBandAmountFromCoin |> Js.Float.toString)
-      | _ => reserveIndex |> string_of_int
-      }
-    }
-    paddingH={`px(24)}>
-    <Row alignItems=Row.Center>
-      <Col col=Col.Six>
-        {switch (unbondingListSub) {
-         | Data({validator: {operatorAddress, moniker, identity}}) =>
-           <div className={CssHelper.flexBox()}>
-             <ValidatorMonikerLink
-               validatorAddress=operatorAddress
-               moniker
-               identity
-               width={`px(300)}
-             />
-           </div>
-         | _ => <LoadingCensorBar width=200 height=20 />
-         }}
-      </Col>
-      <Col col=Col.Three>
-        <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+module RenderBody = {
+  [@react.component]
+  let make = (~unbondingListSub: ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t)) => {
+    <TBody>
+      <Row alignItems=Row.Center>
+        <Col col=Col.Six>
           {switch (unbondingListSub) {
-           | Data({amount}) =>
-             <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+           | Data({validator: {operatorAddress, moniker, identity}}) =>
+             <div className={CssHelper.flexBox()}>
+               <ValidatorMonikerLink
+                 validatorAddress=operatorAddress
+                 moniker
+                 identity
+                 width={`px(300)}
+               />
+             </div>
            | _ => <LoadingCensorBar width=200 height=20 />
            }}
-        </div>
-      </Col>
-      <Col col=Col.Three>
-        <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          {switch (unbondingListSub) {
-           | Data({completionTime}) =>
-             <Timestamp.Grid
-               time=completionTime
-               size=Text.Md
-               weight=Text.Regular
-               textAlign=Text.Right
-             />
-           | _ => <LoadingCensorBar width=200 height=20 />
-           }}
-        </div>
-      </Col>
-    </Row>
-  </TBody>;
+        </Col>
+        <Col col=Col.Three>
+          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+            {switch (unbondingListSub) {
+             | Data({amount}) =>
+               <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+             | _ => <LoadingCensorBar width=200 height=20 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Three>
+          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+            {switch (unbondingListSub) {
+             | Data({completionTime}) =>
+               <Timestamp
+                 time=completionTime
+                 size=Text.Md
+                 weight=Text.Regular
+                 textAlign=Text.Right
+               />
+             | _ => <LoadingCensorBar width=200 height=20 />
+             }}
+          </div>
+        </Col>
+      </Row>
+    </TBody>;
+  };
 };
 
-let renderBodyMobile =
-    (
-      reserveIndex,
-      unbondingListSub: ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t),
-    ) => {
-  switch (unbondingListSub) {
-  | Data({validator: {operatorAddress, moniker, identity}, amount, completionTime}) =>
-    let key_ =
-      (operatorAddress |> Address.toBech32)
-      ++ (completionTime |> MomentRe.Moment.toISOString)
-      ++ (reserveIndex |> string_of_int);
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Validator", Validator(operatorAddress, moniker, identity)),
-        ("Amount\n(BAND)", Coin({value: [amount], hasDenom: false})),
-        ("Unbonded At", Timestamp(completionTime)),
-      ]
-      key=key_
-      idx=key_
-    />;
-  | _ =>
-    <MobileCard
-      values=InfoMobileCard.[
-        ("Validator", Loading(230)),
-        ("Amount\n(BAND)", Loading(230)),
-        ("Unbonded At", Loading(230)),
-      ]
-      key={reserveIndex |> string_of_int}
-      idx={reserveIndex |> string_of_int}
-    />
+module RenderBodyMobile = {
+  [@react.component]
+  let make =
+      (
+        ~reserveIndex,
+        ~unbondingListSub: ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t),
+      ) => {
+    switch (unbondingListSub) {
+    | Data({validator: {operatorAddress, moniker, identity}, amount, completionTime}) =>
+      let key_ =
+        (operatorAddress |> Address.toBech32)
+        ++ (completionTime |> MomentRe.Moment.toISOString)
+        ++ (reserveIndex |> string_of_int);
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Validator", Validator(operatorAddress, moniker, identity)),
+          ("Amount\n(BAND)", Coin({value: [amount], hasDenom: false})),
+          ("Unbonded At", Timestamp(completionTime)),
+        ]
+        key=key_
+        idx=key_
+      />;
+    | _ =>
+      <MobileCard
+        values=InfoMobileCard.[
+          ("Validator", Loading(230)),
+          ("Amount\n(BAND)", Loading(230)),
+          ("Unbonded At", Loading(230)),
+        ]
+        key={reserveIndex |> string_of_int}
+        idx={reserveIndex |> string_of_int}
+      />
+    };
   };
 };
 
@@ -109,6 +101,8 @@ let make = (~address) => {
     UnbondingSub.getUnbondingByDelegator(address, currentTime, ~pageSize, ~page, ());
   let unbondingCountSub = UnbondingSub.getUnbondingCountByDelegator(address, currentTime);
 
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.tableWrapper>
     {isMobile
        ? <Row marginBottom=16>
@@ -120,14 +114,16 @@ let make = (~address) => {
                     block=true
                     value={unbondingCount |> string_of_int}
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    size=Text.Sm
+                    transform=Text.Uppercase
                   />
                   <HSpacing size=Spacing.xs />
                   <Text
                     block=true
                     value="Unbonding Entries"
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    size=Text.Sm
+                    transform=Text.Uppercase
                   />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
@@ -144,14 +140,16 @@ let make = (~address) => {
                       block=true
                       value={unbondingCount |> string_of_int}
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      size=Text.Sm
+                      transform=Text.Uppercase
                     />
                     <HSpacing size=Spacing.xs />
                     <Text
                       block=true
                       value="Unbonding Entries"
                       weight=Text.Semibold
-                      color=Colors.gray7
+                      size=Text.Sm
+                      transform=Text.Uppercase
                     />
                   </div>
                 | _ => <LoadingCensorBar width=100 height=15 />
@@ -162,7 +160,8 @@ let make = (~address) => {
                  block=true
                  value="Amount (BAND)"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 size=Text.Sm
+                 transform=Text.Uppercase
                  align=Text.Right
                />
              </Col>
@@ -171,7 +170,8 @@ let make = (~address) => {
                  block=true
                  value="Unbonded At"
                  weight=Text.Semibold
-                 color=Colors.gray7
+                 size=Text.Sm
+                 transform=Text.Uppercase
                  align=Text.Right
                />
              </Col>
@@ -182,23 +182,49 @@ let make = (~address) => {
        unbondingList->Belt.Array.size > 0
          ? unbondingList
            ->Belt_Array.mapWithIndex((i, e) =>
-               isMobile ? renderBodyMobile(i, Sub.resolve(e)) : renderBody(i, Sub.resolve(e))
+               isMobile
+                 ? <RenderBodyMobile
+                     key={
+                       (e.validator.operatorAddress |> Address.toBech32)
+                       ++ (e.completionTime |> MomentRe.Moment.toISOString)
+                       ++ (i |> string_of_int)
+                     }
+                     reserveIndex=i
+                     unbondingListSub={Sub.resolve(e)}
+                   />
+                 : <RenderBody
+                     key={
+                       (e.validator.operatorAddress |> Address.toBech32)
+                       ++ (e.completionTime |> MomentRe.Moment.toISOString)
+                       ++ (i |> string_of_int)
+                     }
+                     unbondingListSub={Sub.resolve(e)}
+                   />
              )
            ->React.array
          : <EmptyContainer>
-             <img src=Images.noBlock className=Styles.noDataImage />
+             <img
+               src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+               className=Styles.noDataImage
+             />
              <Heading
                size=Heading.H4
                value="No Unbonding"
                align=Heading.Center
                weight=Heading.Regular
-               color=Colors.bandBlue
+               color={theme.textSecondary}
              />
            </EmptyContainer>
      | _ =>
        Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
-           isMobile ? renderBodyMobile(i, noData) : renderBody(i, noData)
+           isMobile
+             ? <RenderBodyMobile
+                 key={i |> string_of_int}
+                 reserveIndex=i
+                 unbondingListSub=noData
+               />
+             : <RenderBody key={i |> string_of_int} unbondingListSub=noData />
          )
        ->React.array
      }}

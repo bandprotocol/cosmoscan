@@ -21,10 +21,10 @@ let make = (~availableBalance, ~balanceAtStake, ~reward, ~unbonding, ~commission
   let commissionPercent = totalBalance == 0. ? 0. : 100. *. commission /. totalBalance;
 
   <div className={Css.merge([Styles.barChart, CssHelper.flexBox()])}>
-    <div className={Styles.barItem(availableBalancePercent, Colors.bandBlue)} />
-    <div className={Styles.barItem(balanceAtStakePercent, Colors.chartBalanceAtStake)} />
-    <div className={Styles.barItem(unbondingPercent, Colors.blue4)} />
-    <div className={Styles.barItem(rewardPercent, Colors.chartReward)} />
+    <div className={Styles.barItem(availableBalancePercent, Theme.baseBlue)} />
+    <div className={Styles.barItem(balanceAtStakePercent, Theme.lightBlue)} />
+    <div className={Styles.barItem(unbondingPercent, Theme.lightenBlue)} />
+    <div className={Styles.barItem(rewardPercent, Theme.darkenBlue)} />
     {commission == 0.
        ? React.null : <div className={Styles.barItem(commissionPercent, Colors.gray6)} />}
   </div>;
