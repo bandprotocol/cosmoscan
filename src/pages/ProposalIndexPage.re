@@ -296,9 +296,7 @@ let make = (~proposalID) => {
                  </InfoContainer>
                </Col>
              </Row>
-             <Row marginBottom=24>
-               <Col> <Table> <VoteBreakdownTable proposalID /> </Table> </Col>
-             </Row>
+             <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
            </>
          }
        | _ => React.null

@@ -148,45 +148,20 @@ let make = (~proposalID) => {
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
-  <div className=Styles.container>
-    <div className={Css.merge([Styles.header(theme), CssHelper.flexBox(~wrap=`nowrap, ())])}>
-      {[|VoteSub.Yes, No, NoWithVeto, Abstain|]
-       ->Belt.Array.map(tab =>
-           <TabButton key={tab |> VoteSub.toString} tab setTab active={tab == currentTab} />
-         )
-       ->React.array}
-    </div>
-    <div className=Styles.childrenContainer>
-      <div className=Styles.tableWrapper>
-        {isMobile
-           ? <Row marginBottom=16>
-               <Col>
-                 {switch (voteCountSub) {
-                  | Data(voteCount) =>
-                    <div className={CssHelper.flexBox()}>
-                      <Text
-                        block=true
-                        value={voteCount |> string_of_int}
-                        weight=Text.Semibold
-                        size=Text.Sm
-                        transform=Text.Uppercase
-                      />
-                      <HSpacing size=Spacing.xs />
-                      <Text
-                        block=true
-                        value="Voters"
-                        weight=Text.Semibold
-                        size=Text.Sm
-                        transform=Text.Uppercase
-                      />
-                    </div>
-                  | _ => <LoadingCensorBar width=100 height=15 />
-                  }}
-               </Col>
-             </Row>
-           : <THead>
-               <Row alignItems=Row.Center>
-                 <Col col=Col.Five>
+  <Table>
+    <div className=Styles.container>
+      <div className={Css.merge([Styles.header(theme), CssHelper.flexBox(~wrap=`nowrap, ())])}>
+        {[|VoteSub.Yes, No, NoWithVeto, Abstain|]
+         ->Belt.Array.map(tab =>
+             <TabButton key={tab |> VoteSub.toString} tab setTab active={tab == currentTab} />
+           )
+         ->React.array}
+      </div>
+      <div className=Styles.childrenContainer>
+        <div className=Styles.tableWrapper>
+          {isMobile
+             ? <Row marginBottom=16>
+                 <Col>
                    {switch (voteCountSub) {
                     | Data(voteCount) =>
                       <div className={CssHelper.flexBox()}>
@@ -209,74 +184,101 @@ let make = (~proposalID) => {
                     | _ => <LoadingCensorBar width=100 height=15 />
                     }}
                  </Col>
-                 <Col col=Col.Four>
-                   <Text
-                     block=true
-                     value="TX Hash"
-                     weight=Text.Semibold
-                     size=Text.Sm
-                     transform=Text.Uppercase
-                   />
-                 </Col>
-                 <Col col=Col.Three>
-                   <Text
-                     block=true
-                     value="Timestamp"
-                     weight=Text.Semibold
-                     size=Text.Sm
-                     transform=Text.Uppercase
-                     align=Text.Right
-                   />
-                 </Col>
                </Row>
-             </THead>}
-        {switch (votesSub) {
-         | Data(votes) =>
-           votes->Belt.Array.size > 0
-             ? votes
-               ->Belt_Array.mapWithIndex((i, e) =>
-                   isMobile
-                     ? <RenderBodyMobile
-                         reserveIndex=i
-                         key={e.voter |> Address.toBech32}
-                         voteSub={Sub.resolve(e)}
-                       />
-                     : <RenderBody key={e.voter |> Address.toBech32} voteSub={Sub.resolve(e)} />
-                 )
-               ->React.array
-             : <EmptyContainer height={`px(250)}>
-                 <img
-                   src={isDarkMode ? Images.noDelegatorDark : Images.noDelegatorLight}
-                   className=Styles.noDataImage
-                 />
-                 <Heading
-                   size=Heading.H4
-                   value="No Voters"
-                   align=Heading.Center
-                   weight=Heading.Regular
-                   color={theme.textSecondary}
-                 />
-               </EmptyContainer>
-         | _ =>
-           Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
-           ->Belt_Array.mapWithIndex((i, noData) =>
-               isMobile
-                 ? <RenderBodyMobile reserveIndex=i key={i |> string_of_int} voteSub=noData />
-                 : <RenderBody key={i |> string_of_int} voteSub=noData />
-             )
-           ->React.array
-         }}
-        {switch (voteCountSub) {
-         | Data(voteCount) =>
-           let pageCount = Page.getPageCount(voteCount, pageSize);
-           <Pagination
-             currentPage=page
-             pageCount
-             onPageChange={newPage => setPage(_ => newPage)}
-           />;
-         | _ => React.null
-         }}
+             : <THead>
+                 <Row alignItems=Row.Center>
+                   <Col col=Col.Five>
+                     {switch (voteCountSub) {
+                      | Data(voteCount) =>
+                        <div className={CssHelper.flexBox()}>
+                          <Text
+                            block=true
+                            value={voteCount |> string_of_int}
+                            weight=Text.Semibold
+                            size=Text.Sm
+                            transform=Text.Uppercase
+                          />
+                          <HSpacing size=Spacing.xs />
+                          <Text
+                            block=true
+                            value="Voters"
+                            weight=Text.Semibold
+                            size=Text.Sm
+                            transform=Text.Uppercase
+                          />
+                        </div>
+                      | _ => <LoadingCensorBar width=100 height=15 />
+                      }}
+                   </Col>
+                   <Col col=Col.Four>
+                     <Text
+                       block=true
+                       value="TX Hash"
+                       weight=Text.Semibold
+                       size=Text.Sm
+                       transform=Text.Uppercase
+                     />
+                   </Col>
+                   <Col col=Col.Three>
+                     <Text
+                       block=true
+                       value="Timestamp"
+                       weight=Text.Semibold
+                       size=Text.Sm
+                       transform=Text.Uppercase
+                       align=Text.Right
+                     />
+                   </Col>
+                 </Row>
+               </THead>}
+          {switch (votesSub) {
+           | Data(votes) =>
+             votes->Belt.Array.size > 0
+               ? votes
+                 ->Belt_Array.mapWithIndex((i, e) =>
+                     isMobile
+                       ? <RenderBodyMobile
+                           reserveIndex=i
+                           key={e.voter |> Address.toBech32}
+                           voteSub={Sub.resolve(e)}
+                         />
+                       : <RenderBody key={e.voter |> Address.toBech32} voteSub={Sub.resolve(e)} />
+                   )
+                 ->React.array
+               : <EmptyContainer height={`px(250)}>
+                   <img
+                     src={isDarkMode ? Images.noDelegatorDark : Images.noDelegatorLight}
+                     className=Styles.noDataImage
+                   />
+                   <Heading
+                     size=Heading.H4
+                     value="No Voters"
+                     align=Heading.Center
+                     weight=Heading.Regular
+                     color={theme.textSecondary}
+                   />
+                 </EmptyContainer>
+           | _ =>
+             Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
+             ->Belt_Array.mapWithIndex((i, noData) =>
+                 isMobile
+                   ? <RenderBodyMobile reserveIndex=i key={i |> string_of_int} voteSub=noData />
+                   : <RenderBody key={i |> string_of_int} voteSub=noData />
+               )
+             ->React.array
+           }}
+          {switch (voteCountSub) {
+           | Data(voteCount) =>
+             let pageCount = Page.getPageCount(voteCount, pageSize);
+             <Pagination
+               currentPage=page
+               pageCount
+               onPageChange={newPage => setPage(_ => newPage)}
+             />;
+           | _ => React.null
+           }}
+        </div>
       </div>
     </div>
-  </div>;
+  </Table>;
 };

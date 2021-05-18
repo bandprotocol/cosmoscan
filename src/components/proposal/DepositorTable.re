@@ -5,7 +5,6 @@ module Styles = {
     style([
       Media.mobile([padding2(~v=`px(16), ~h=`px(12)), margin2(~v=`zero, ~h=`px(-12))]),
     ]);
-  let icon = style([width(`px(80)), height(`px(80))]);
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 

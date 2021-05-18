@@ -1,7 +1,7 @@
 module Styles = {
   open Css;
 
-  let chartContainer = style([position(`relative), width(`px(220)), height(`px(220))]);
+  let chartContainer = style([position(`relative), maxWidth(`px(220)), maxHeight(`px(220))]);
 
   let textContainer = (theme: Theme.t) =>
     style([
