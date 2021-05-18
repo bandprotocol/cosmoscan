@@ -33,7 +33,11 @@ module Styles = {
     ]);
 
   let innerProfileCard = (theme: Theme.t) =>
-    style([padding(`px(16)), backgroundColor(theme.secondaryBg)]);
+    style([
+      padding(`px(16)),
+      backgroundColor(theme.headerBg),
+      boxShadow(Shadow.box(~x=`zero, ~y=`zero, ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08)))),
+    ]);
 
   let connect = style([padding2(~v=`px(10), ~h=`zero)]);
   let disconnect = style([paddingTop(`px(16))]);
@@ -96,9 +100,7 @@ module SendBtn = {
   [@react.component]
   let make = (~send) => {
     <div id="sendToken">
-      <Button px=20 py=5 onClick={_ => {send()}}>
-        <Text value="Send" weight=Text.Medium nowrap=true block=true />
-      </Button>
+      <Button px=20 py=5 onClick={_ => {send()}}> {"Send" |> React.string} </Button>
     </div>;
   };
 };
