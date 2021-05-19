@@ -166,9 +166,15 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            Styles.resultContainer,
          ])}>
          <div className={CssHelper.mb(~size=16, ())}>
-           <Icon name="fad fa-spinner-third fa-spin" color=Colors.bandBlue size=48 />
+           <Icon name="fad fa-spinner-third fa-spin" size=48 />
          </div>
-         <Text value="Waiting for signing transaction" size=Text.Lg block=true align=Text.Center />
+         <Text
+           value="Waiting for signing transaction"
+           size=Text.Lg
+           block=true
+           align=Text.Center
+           color={theme.textPrimary}
+         />
        </div>
      | Broadcasting =>
        <div
@@ -177,13 +183,14 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            Styles.resultContainer,
          ])}>
          <div className={CssHelper.mb(~size=16, ())}>
-           <Icon name="fad fa-spinner-third fa-spin" color=Colors.bandBlue size=48 />
+           <Icon name="fad fa-spinner-third fa-spin" size=48 />
          </div>
          <Text
            value="Waiting for broadcasting transaction"
            size=Text.Lg
            block=true
            align=Text.Center
+           color={theme.textPrimary}
          />
        </div>
      | Error(err) =>
@@ -194,9 +201,15 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
          ])}>
          <img src=Images.fail className=Styles.resultIcon />
          <div className={CssHelper.mb()}>
-           <Text value="Broadcast transaction fail" size=Text.Lg block=true align=Text.Center />
+           <Text
+             value="Broadcast transaction fail"
+             size=Text.Lg
+             block=true
+             align=Text.Center
+             color={theme.textPrimary}
+           />
          </div>
-         <Text value=err color=Colors.red3 align=Text.Center breakAll=true />
+         <Text value=err color={theme.failColor} align=Text.Center breakAll=true />
        </div>
      }}
   </div>;
