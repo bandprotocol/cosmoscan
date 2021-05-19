@@ -13,7 +13,7 @@ module Styles = {
       alignItems(`center),
       position(`relative),
       cursor(`pointer),
-      zIndex(3),
+      zIndex(5),
       Media.mobile([padding2(~v=`px(5), ~h=`px(10))]),
       Media.smallMobile([minWidth(`px(90))]),
     ]);

@@ -5,7 +5,7 @@ module Styles = {
     style([
       backgroundColor(theme.secondaryBg),
       height(`percent(100.)),
-      borderRadius(`px(4)),
+      borderRadius(`px(8)),
       padding4(~top=`px(31), ~left=`px(32), ~right=`px(32), ~bottom=`px(10)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       Media.mobile([padding2(~v=`px(24), ~h=`px(16))]),
@@ -121,7 +121,7 @@ function(data, isDarkMode) {
           titleFontColor: '#ffffff',
           titleFontStyle: "500",
           titleMarginBottom: 2,
-          bodyFontFamily: "Inter",
+          bodyFontFamily: "Montserrat",
           bodyFontSize: 10,
           bodyFontColor: '#888888',
           bodyFontStyle: "normal",

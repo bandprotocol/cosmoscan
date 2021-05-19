@@ -1,28 +1,12 @@
 module Styles = {
   open Css;
+  let card = style([padding2(~v=`px(24), ~h=`px(32))]);
   let link = style([color(Colors.bandBlue), textDecoration(`none)]);
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      height(`percent(100.)),
-      Media.mobile([padding(`px(16))]),
-    ]);
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-  let idContainer = style([marginBottom(`px(16)), Media.mobile([marginBottom(`px(8))])]);
-  let containerSpacingSm = style([Media.mobile([marginTop(`px(16))])]);
-
-  let infoHeaderCustom = style([margin3(~top=`px(8), ~h=`px(12), ~bottom=`px(20))]);
-  // Avatar Box
-
+  let bondedTokenContainer = style([height(`percent(100.))]);
   let avatarContainer =
     style([
       position(`relative),
-      marginRight(`px(40)),
+      marginRight(`px(24)),
       Media.mobile([marginRight(`zero), marginBottom(`px(16))]),
     ]);
   let rankContainer =
@@ -36,21 +20,10 @@ module Styles = {
       height(`px(26)),
     ]);
 
-  // Active Status
-  let statusBox = isActive_ => {
-    style([
-      backgroundColor(isActive_ ? Colors.green4 : Colors.gray7),
-      position(`relative),
-      width(`px(20)),
-      height(`px(20)),
-      borderRadius(`percent(50.)),
-    ]);
-  };
-
   // Oracle Status
-  let oracleStatusBox = isActive_ => {
+  let oracleStatusBox = (isActive, theme: Theme.t) => {
     style([
-      backgroundColor(isActive_ ? Colors.green4 : Colors.red4),
+      backgroundColor(isActive ? theme.successColor : theme.failColor),
       borderRadius(`px(50)),
       padding2(~v=`px(2), ~h=`px(10)),
     ]);
@@ -66,13 +39,8 @@ module UptimePercentage = {
        | Data(uptime) =>
          switch (uptime) {
          | Some(uptime) =>
-           <Text
-             value={uptime |> Format.fPercent(~digits=2)}
-             size=Text.Xxxl
-             align=Text.Center
-             block=true
-           />
-         | None => <Text value="N/A" size=Text.Xxxl align=Text.Center block=true />
+           <Text value={uptime |> Format.fPercent(~digits=2)} size=Text.Xxxl block=true />
+         | None => <Text value="N/A" size=Text.Xxxl block=true />
          }
        | _ => <LoadingCensorBar width=100 height=24 />
        }}
@@ -82,6 +50,7 @@ module UptimePercentage = {
 
 [@react.component]
 let make = (~address, ~hashtag: Route.validator_tab_t) => {
+  let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
   let isMobile = Media.isMobile();
   let validatorSub = ValidatorSub.get(address);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
@@ -93,14 +62,13 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
 
   <Section pbSm=0>
     <div className=CssHelper.container>
-      <Heading value="Validator Details" size=Heading.H4 marginBottom=40 marginBottomSm=24 />
+      <Heading value="Validator Details" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
       <Row marginBottom=40 marginBottomSm=16 alignItems=Row.Center>
         <Col col=Col.Nine>
           <div
             className={Css.merge([
               CssHelper.flexBox(),
               CssHelper.flexBoxSm(~direction=`column, ()),
-              Styles.idContainer,
             ])}>
             <div className=Styles.avatarContainer>
               {switch (allSub) {
@@ -111,7 +79,6 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                        moniker === m ? Some(rank) : None
                      )
                    ->Belt.Array.get(0);
-
                  <>
                    <Avatar moniker identity width=100 widthSm=80 />
                    {switch (rankOpt) {
@@ -150,9 +117,9 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                    />
                  </div>
                  <HSpacing size=Spacing.sm />
-                 <Text value={isActive ? "Active" : "Inactive"} />
+                 <Text value={isActive ? "Active" : "Inactive"} color={theme.textSecondary} />
                </div>
-             | _ => <LoadingCensorBar width=60 height=14 />
+             | _ => <LoadingCensorBar width=60 height=20 />
              }}
             <HSpacing size=Spacing.md />
             {switch (allSub) {
@@ -160,133 +127,103 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                <div
                  className={Css.merge([
                    CssHelper.flexBox(~justify=`center, ()),
-                   Styles.oracleStatusBox(oracleStatus),
+                   Styles.oracleStatusBox(oracleStatus, theme),
                  ])}>
-                 <Text value="Oracle" color=Colors.white />
+                 <Text value="Oracle" color={theme.white} />
                  <HSpacing size=Spacing.sm />
                  <Icon
                    name={oracleStatus ? "fas fa-check" : "fal fa-times"}
-                   color=Colors.white
+                   color={theme.white}
                    size=10
                  />
                </div>
-             | _ => <LoadingCensorBar width=75 height=14 />
+             | _ => <LoadingCensorBar width=75 height=20 />
              }}
           </div>
         </Col>
       </Row>
+      // Validator Highlight Info
       <Row marginBottom=24 marginBottomSm=16>
-        <Col>
-          <div className=Styles.infoContainer>
-            <Row>
-              <Col col=Col.Three colSm=Col.Six mbSm=48>
-                <div className={CssHelper.flexBox(~direction=`column, ())}>
-                  <Heading
-                    value="Voting power"
-                    size=Heading.H4
-                    marginBottom=16
-                    align=Heading.Center
-                  />
-                  {switch (allSub) {
-                   | Data(({votingPower}, _, {amount})) =>
-                     <>
-                       <Text
-                         value={votingPower *. 100. /. amount |> Format.fPercent(~digits=2)}
-                         size=Text.Xxxl
-                         align=Text.Center
-                         block=true
-                       />
-                     </>
-                   | _ => <LoadingCensorBar width=100 height=24 />
-                   }}
-                  <VSpacing size=Spacing.xs />
-                  {switch (allSub) {
-                   | Data(({votingPower}, _, _)) =>
-                     <>
-                       <Text
-                         value={(votingPower /. 1e6 |> Format.fPretty(~digits=0)) ++ " Band"}
-                         size=Text.Lg
-                         color=Colors.gray6
-                         align=Text.Center
-                         block=true
-                       />
-                     </>
-                   | _ => <LoadingCensorBar width=80 height=14 />
-                   }}
-                </div>
-              </Col>
-              <Col col=Col.Three colSm=Col.Six mbSm=48>
-                <div className={CssHelper.flexBox(~direction=`column, ())}>
-                  <Heading
-                    value="Commission"
-                    size=Heading.H4
-                    marginBottom=27
-                    align=Heading.Center
-                  />
-                  {switch (allSub) {
-                   | Data(({commission}, _, _)) =>
-                     <>
-                       <Text
-                         value={commission |> Format.fPercent(~digits=2)}
-                         size=Text.Xxxl
-                         align=Text.Center
-                         block=true
-                       />
-                     </>
-                   | _ => <LoadingCensorBar width=100 height=24 />
-                   }}
-                </div>
-              </Col>
-              <Col col=Col.Three colSm=Col.Six>
-                <div className={CssHelper.flexBox(~direction=`column, ())}>
-                  <Heading value="Uptime" size=Heading.H4 marginBottom=27 align=Heading.Center />
-                  {switch (allSub) {
-                   | Data(({consensusAddress}, _, _)) => <UptimePercentage consensusAddress />
-                   | _ => <LoadingCensorBar width=100 height=24 />
-                   }}
-                </div>
-              </Col>
-              <Col col=Col.Three colSm=Col.Six>
-                <div className={CssHelper.flexBox(~direction=`column, ())}>
-                  <div className={Css.merge([CssHelper.flexBox(), CssHelper.mb(~size=27, ())])}>
-                    <Heading value="Oracle Reports" size=Heading.H4 align=Heading.Center />
-                    <HSpacing size=Spacing.xs />
-                    <CTooltip
-                      tooltipPlacementSm=CTooltip.BottomRight
-                      tooltipText="The number of reports this validator has submitted to date">
-                      <Icon name="fal fa-info-circle" size=12 />
-                    </CTooltip>
-                  </div>
-                  {switch (oracleReportsCountSub) {
-                   | Data(oracleReportsCount) =>
-                     <Text
-                       value={oracleReportsCount |> Format.iPretty}
-                       size=Text.Xxxl
-                       color=Colors.gray7
-                       align=Text.Center
-                       block=true
-                     />
-                   | _ => <LoadingCensorBar width=100 height=24 />
-                   }}
-                </div>
-              </Col>
-            </Row>
-          </div>
+        <Col col=Col.Three colSm=Col.Six mbSm=16>
+          <InfoContainer style=Styles.card>
+            <Heading value="Voting power" size=Heading.H4 marginBottom=27 />
+            {switch (allSub) {
+             | Data(({votingPower}, _, {amount})) =>
+               <Text
+                 value={votingPower *. 100. /. amount |> Format.fPercent(~digits=2)}
+                 size=Text.Xxxl
+                 align=Text.Left
+                 block=true
+               />
+             | _ => <LoadingCensorBar width=100 height=24 />
+             }}
+          </InfoContainer>
+        </Col>
+        <Col col=Col.Three colSm=Col.Six mbSm=16>
+          <InfoContainer style=Styles.card>
+            <Heading value="Commission" size=Heading.H4 marginBottom=27 />
+            {switch (allSub) {
+             | Data(({commission}, _, _)) =>
+               <Text
+                 value={commission |> Format.fPercent(~digits=2)}
+                 size=Text.Xxxl
+                 align=Text.Left
+                 block=true
+               />
+             | _ => <LoadingCensorBar width=100 height=24 />
+             }}
+          </InfoContainer>
+        </Col>
+        <Col col=Col.Three colSm=Col.Six mbSm=16>
+          <InfoContainer style=Styles.card>
+            <Heading value="Uptime" size=Heading.H4 marginBottom=27 />
+            {switch (allSub) {
+             | Data(({consensusAddress}, _, _)) => <UptimePercentage consensusAddress />
+             | _ => <LoadingCensorBar width=100 height=24 />
+             }}
+          </InfoContainer>
+        </Col>
+        <Col col=Col.Three colSm=Col.Six mbSm=16>
+          <InfoContainer style=Styles.card>
+            <div className={Css.merge([CssHelper.flexBox(), CssHelper.mb(~size=27, ())])}>
+              <Heading value="Oracle Reports" size=Heading.H4 />
+              <HSpacing size=Spacing.xs />
+              <CTooltip
+                tooltipPlacementSm=CTooltip.BottomRight
+                tooltipText="The number of reports this validator has submitted to date">
+                <Icon name="fal fa-info-circle" size=12 />
+              </CTooltip>
+            </div>
+            {switch (oracleReportsCountSub) {
+             | Data(oracleReportsCount) =>
+               <Text value={oracleReportsCount |> Format.iPretty} size=Text.Xxxl block=true />
+             | _ => <LoadingCensorBar width=100 height=24 />
+             }}
+          </InfoContainer>
         </Col>
       </Row>
+      // Validator Information
       <Row marginBottom=24>
         <Col>
-          <div className=Styles.infoContainer>
-            <Heading value="Information" size=Heading.H4 style=Styles.infoHeader marginBottom=24 />
-            <Row marginBottom=24>
-              <Col col=Col.Six mbSm=24>
-                <div className={Css.merge([CssHelper.flexBox(), CssHelper.mb(~size=8, ())])}>
-                  <Heading value="Operator Address" size=Heading.H5 />
-                  <HSpacing size=Spacing.xs />
+          <InfoContainer>
+            <Heading value="Information" size=Heading.H4 />
+            <SeperatedLine mt=32 mb=24 />
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <div className={CssHelper.flexBox()}>
+                  <Heading
+                    value="Operator Address"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                  <HSpacing size={`px(4)} />
                   <CTooltip tooltipText="The address used to show the validator's entity status">
                     <Icon name="fal fa-info-circle" size=10 />
                   </CTooltip>
                 </div>
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({operatorAddress}, _, _)) =>
                    <AddressRender
@@ -299,14 +236,23 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                  | _ => <LoadingCensorBar width=260 height=15 />
                  }}
               </Col>
-              <Col col=Col.Six>
-                <div className={Css.merge([CssHelper.flexBox(), CssHelper.mb(~size=8, ())])}>
-                  <Heading value="Address" size=Heading.H5 />
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <div className={CssHelper.flexBox()}>
+                  <Heading
+                    value="Address"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
                   <HSpacing size=Spacing.xs />
                   <CTooltip tooltipText="The validator entity's unique address">
                     <Icon name="fal fa-info-circle" size=10 />
                   </CTooltip>
                 </div>
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({operatorAddress}, _, _)) =>
                    <AddressRender address=operatorAddress position=AddressRender.Subtitle />
@@ -314,93 +260,111 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                  }}
               </Col>
             </Row>
-            <Row marginBottom=24>
-              <Col col=Col.Six mbSm=24>
-                <div className={Css.merge([CssHelper.flexBox(), CssHelper.mb(~size=8, ())])}>
-                  <Heading value="Commission Max Change" size=Heading.H5 />
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <div className={CssHelper.flexBox()}>
+                  <Heading
+                    value="Commission Max Change"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
                   <HSpacing size=Spacing.xs />
                   <CTooltip
                     tooltipText="The maximum increment by which the validator can increase their commission rate">
                     <Icon name="fal fa-info-circle" size=10 />
                   </CTooltip>
                 </div>
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({commissionMaxChange}, _, _)) =>
-                   <Text
-                     value={commissionMaxChange |> Format.fPercent(~digits=2)}
-                     size=Text.Lg
-                     block=true
-                   />
+                   <Text value={commissionMaxChange |> Format.fPercent(~digits=2)} size=Text.Lg />
                  | _ => <LoadingCensorBar width=260 height=15 />
                  }}
               </Col>
-              <Col col=Col.Six>
-                <div className={Css.merge([CssHelper.flexBox(), CssHelper.mb(~size=8, ())])}>
-                  <Heading value="Commission Max Rate" size=Heading.H5 />
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <div className={CssHelper.flexBox()}>
+                  <Heading
+                    value="Commission Max Rate"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
                   <HSpacing size=Spacing.xs />
                   <CTooltip
                     tooltipText="Highest possible commission rate that the validator can set">
                     <Icon name="fal fa-info-circle" size=10 />
                   </CTooltip>
                 </div>
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({commissionMaxRate}, _, _)) =>
-                   <Text
-                     value={commissionMaxRate |> Format.fPercent(~digits=2)}
-                     size=Text.Lg
-                     block=true
-                   />
+                   <Text value={commissionMaxRate |> Format.fPercent(~digits=2)} size=Text.Lg />
                  | _ => <LoadingCensorBar width=260 height=15 />
                  }}
               </Col>
             </Row>
-            <Row marginBottom=24>
-              <Col>
-                <Heading value="Website" size=Heading.H5 marginBottom=8 />
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Website"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({website}, _, _)) =>
                    <AbsoluteLink href=website className=Styles.link>
-                     <Text value=website size=Text.Lg color=Colors.bandBlue block=true />
+                     <Text value=website size=Text.Lg color={theme.baseBlue} />
                    </AbsoluteLink>
                  | _ => <LoadingCensorBar width=260 height=15 />
                  }}
               </Col>
             </Row>
             <Row>
-              <Col>
-                <Heading value="Description" size=Heading.H5 marginBottom=8 />
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Description"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
-                 | Data(({details}, _, _)) =>
-                   <p> <Text value=details size=Text.Lg color=Colors.gray7 block=true /> </p>
+                 | Data(({details}, _, _)) => <p> <Text value=details size=Text.Lg /> </p>
                  | _ => <LoadingCensorBar width=260 height=15 />
                  }}
               </Col>
             </Row>
-          </div>
+          </InfoContainer>
         </Col>
       </Row>
+      // Bondded token & staking section
       <Row marginBottom=24>
-        <Col col=Col.Four mbSm=24>
-          <div className={Css.merge([Styles.infoContainer, CssHelper.px(~size=12, ())])}>
-            <div
-              className={Css.merge([
-                CssHelper.flexBox(),
-                Styles.infoHeader,
-                Styles.infoHeaderCustom,
-              ])}>
+        <Col col=Col.Four>
+          <InfoContainer style=Styles.bondedTokenContainer>
+            <div className={Css.merge([CssHelper.flexBox()])}>
               <Heading value="Bonded Token" size=Heading.H4 />
-              <HSpacing size=Spacing.xs />
+              <HSpacing size={`px(4)} />
               <CTooltip tooltipText="Total amount of tokens current staked across all validators">
                 <Icon name="fal fa-info-circle" size=10 />
               </CTooltip>
             </div>
+            <SeperatedLine mt=32 mb=24 />
             <div className={CssHelper.flexBox()}>
               {switch (allSub) {
                | Data(({operatorAddress}, _, _)) => <HistoricalBondedGraph operatorAddress />
                | _ => <LoadingCensorBar fullWidth=true height=180 />
                }}
             </div>
-          </div>
+          </InfoContainer>
         </Col>
         {isMobile
            ? React.null
@@ -408,70 +372,64 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
       </Row>
       <Row marginBottom=24>
         <Col col=Col.Six mbSm=24>
-          <div className=Styles.infoContainer>
-            <div
-              className={Css.merge([
-                CssHelper.flexBox(),
-                CssHelper.mb(~size=24, ()),
-                Styles.infoHeader,
-              ])}>
+          <InfoContainer>
+            <div className={CssHelper.flexBox()}>
               <Heading value="Block Uptime" size=Heading.H4 />
               <HSpacing size=Spacing.xs />
               <CTooltip tooltipText="The validator's non-oracle performance">
                 <Icon name="fal fa-info-circle" size=10 />
               </CTooltip>
             </div>
+            <SeperatedLine mt=32 mb=32 />
             {switch (allSub) {
              | Data(({consensusAddress}, _, _)) => <BlockUptimeChart consensusAddress />
              | _ => <LoadingCensorBar fullWidth=true height=90 />
              }}
-          </div>
+          </InfoContainer>
         </Col>
         <Col col=Col.Six>
-          <div className=Styles.infoContainer>
-            <div
-              className={Css.merge([
-                CssHelper.flexBox(),
-                CssHelper.mb(~size=24, ()),
-                Styles.infoHeader,
-              ])}>
+          <InfoContainer>
+            <div className={CssHelper.flexBox()}>
               <Heading value="Oracle Data Report" size=Heading.H4 />
               <HSpacing size=Spacing.xs />
               <CTooltip tooltipText="Last 90 days of Report" align=`center>
                 <Icon name="fal fa-info-circle" size=10 />
               </CTooltip>
             </div>
+            <SeperatedLine mt=32 mb=24 />
             {switch (allSub) {
              | Data(({oracleStatus}, _, _)) =>
                <OracleDataReportChart oracleStatus operatorAddress=address />
              | _ => <LoadingCensorBar fullWidth=true height=90 />
              }}
-          </div>
+          </InfoContainer>
         </Col>
       </Row>
-      <Tab
-        tabs=[|
-          {name: "Oracle Reports", route: Route.ValidatorIndexPage(address, Route.Reports)},
-          {name: "Delegators", route: Route.ValidatorIndexPage(address, Route.Delegators)},
-          {
-            name: "Proposed Blocks",
-            route: Route.ValidatorIndexPage(address, Route.ProposedBlocks),
-          },
-          {name: "Reporters", route: Route.ValidatorIndexPage(address, Route.Reporters)},
-        |]
-        currentRoute={Route.ValidatorIndexPage(address, hashtag)}>
-        {switch (hashtag) {
-         | ProposedBlocks =>
-           switch (validatorSub) {
-           | Data(validator) =>
-             <ProposedBlocksTable consensusAddress={validator.consensusAddress} />
-           | _ => <ProposedBlocksTable.LoadingWithHeader />
-           }
-         | Delegators => <DelegatorsTable address />
-         | Reports => <ReportsTable address />
-         | Reporters => <ReportersTable address />
-         }}
-      </Tab>
+      <Table>
+        <Tab
+          tabs=[|
+            {name: "Oracle Reports", route: Route.ValidatorIndexPage(address, Route.Reports)},
+            {name: "Delegators", route: Route.ValidatorIndexPage(address, Route.Delegators)},
+            {
+              name: "Proposed Blocks",
+              route: Route.ValidatorIndexPage(address, Route.ProposedBlocks),
+            },
+            {name: "Reporters", route: Route.ValidatorIndexPage(address, Route.Reporters)},
+          |]
+          currentRoute={Route.ValidatorIndexPage(address, hashtag)}>
+          {switch (hashtag) {
+           | Reports => <ReportsTable address />
+           | Delegators => <DelegatorsTable address />
+           | ProposedBlocks =>
+             switch (validatorSub) {
+             | Data(validator) =>
+               <ProposedBlocksTable consensusAddress={validator.consensusAddress} />
+             | _ => <ProposedBlocksTable.LoadingWithHeader />
+             }
+           | Reporters => <ReportersTable address />
+           }}
+        </Tab>
+      </Table>
     </div>
   </Section>;
 };

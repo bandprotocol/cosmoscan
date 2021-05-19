@@ -1,26 +1,14 @@
 module Styles = {
   open Css;
 
-  let connectContainer = style([height(`px(200)), backgroundColor(Colors.profileBG)]);
-
-  let infoContainer =
+  let connectContainer = (theme: Theme.t) =>
+    style([height(`px(200)), backgroundColor(theme.secondaryBg)]);
+  let rewardContainer = (theme: Theme.t) =>
     style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      Media.mobile([padding(`px(16))]),
+      backgroundColor(theme.tableRowBorderColor),
+      padding2(~v=`px(16), ~h=`px(24)),
+      borderRadius(`px(8)),
     ]);
-  let infoHeader =
-    style([
-      borderBottom(`px(1), `solid, Colors.gray9),
-      paddingBottom(`px(12)),
-      marginBottom(`px(16)),
-      minHeight(`px(41)),
-    ]);
-  let rewardContainer =
-    style([backgroundColor(Colors.profileBG), padding2(~v=`px(16), ~h=`px(24))]);
 };
 
 module ButtonSection = {
@@ -55,17 +43,17 @@ module ButtonSection = {
                 )
               : delegate()
           }}>
-          <Text value="Delegate" weight=Text.Medium nowrap=true block=true />
+          {"Delegate" |> React.string}
         </Button>
         <HSpacing size=Spacing.md />
         <Button
           px=20 py=5 variant=Button.Outline disabled=disableNoStake onClick={_ => undelegate()}>
-          <Text value="Undelegate" weight=Text.Medium nowrap=true block=true />
+          {"Undelegate" |> React.string}
         </Button>
         <HSpacing size=Spacing.md />
         <Button
           px=20 py=5 variant=Button.Outline disabled=disableNoStake onClick={_ => redelegate()}>
-          <Text value="Redelegate" weight=Text.Medium nowrap=true block=true />
+          {"Redelegate" |> React.string}
         </Button>
       </div>;
     | _ => React.null
@@ -87,6 +75,8 @@ module DisplayBalance = {
 
   [@react.component]
   let make = (~amount, ~usdPrice, ~isCountup=false) => {
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+
     <>
       <div className={CssHelper.flexBox()}>
         {isCountup
@@ -95,16 +85,17 @@ module DisplayBalance = {
                size=Text.Lg
                weight=Text.Regular
                spacing={Text.Em(0.)}
+               color={theme.textSecondary}
                code=false
              />
            : <Text
                value={amount->Coin.getBandAmountFromCoin |> Format.fPretty(~digits=6)}
                size=Text.Lg
-               color=Colors.gray7
+               color={theme.textSecondary}
                block=true
              />}
         <HSpacing size=Spacing.sm />
-        <Text value="BAND" size=Text.Lg color=Colors.gray7 block=true />
+        <Text value="BAND" size=Text.Lg color={theme.textSecondary} block=true />
       </div>
       <div className={CssHelper.flexBox()}>
         {isCountup
@@ -112,18 +103,18 @@ module DisplayBalance = {
                value={amount->Coin.getBandAmountFromCoin *. usdPrice}
                size=Text.Md
                weight=Text.Regular
-               color=Colors.gray6
+               color={theme.textSecondary}
                code=false
                spacing={Text.Em(0.)}
              />
            : <Text
                value={amount->Coin.getBandAmountFromCoin *. usdPrice |> Format.fPretty(~digits=6)}
                size=Text.Md
-               color=Colors.gray6
+               color={theme.textSecondary}
                block=true
              />}
         <HSpacing size=Spacing.sm />
-        <Text value="USD" size=Text.Md color=Colors.gray6 block=true />
+        <Text value="USD" size=Text.Md color={theme.textSecondary} block=true />
       </div>
     </>;
   };
@@ -132,6 +123,7 @@ module DisplayBalance = {
 module StakingInfo = {
   [@react.component]
   let make = (~delegatorAddress, ~validatorAddress) => {
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
     let currentTime =
       React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
     let (_, dispatchModal) = React.useContext(ModalContext.context);
@@ -195,7 +187,7 @@ module StakingInfo = {
           </div>
         </Col>
       </Row>
-      <Row style=Styles.rewardContainer alignItems=Row.Center>
+      <Row style={Styles.rewardContainer(theme)} alignItems=Row.Center>
         <Col>
           <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
             <div>
@@ -219,11 +211,11 @@ module StakingInfo = {
 
                <>
                  <Button px=20 py=5 onClick={_ => withdrawReward()} disabled=disable>
-                   <Text value="Withdraw Reward" weight=Text.Medium nowrap=true block=true />
+                   {"Withdraw Reward" |> React.string}
                  </Button>
                  <HSpacing size=Spacing.sm />
                  <Button px=20 py=5 onClick={_ => reinvest(reward)} disabled=disable>
-                   <Text value="Reinvest" weight=Text.Medium nowrap=true block=true />
+                   {"Reinvest" |> React.string}
                  </Button>
                </>}
             </div>
@@ -239,12 +231,12 @@ let make = (~validatorAddress) => {
   let trackingSub = TrackingSub.use();
   let (accountOpt, _) = React.useContext(AccountContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let connect = chainID => dispatchModal(OpenModal(Connect(chainID)));
 
-  <div className=Styles.infoContainer>
-    <div
-      className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ()), Styles.infoHeader])}>
+  <InfoContainer>
+    <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
       <div className={CssHelper.flexBox()}>
         <Heading value="Your Delegation Info" size=Heading.H4 />
         <HSpacing size=Spacing.xs />
@@ -257,6 +249,7 @@ let make = (~validatorAddress) => {
        | None => <VSpacing size={`px(28)} />
        }}
     </div>
+    <SeperatedLine mt=32 mb=24 />
     {switch (accountOpt) {
      | Some({address: delegatorAddress}) => <StakingInfo validatorAddress delegatorAddress />
      | None =>
@@ -265,14 +258,14 @@ let make = (~validatorAddress) => {
          <div
            className={Css.merge([
              CssHelper.flexBox(~direction=`column, ~justify=`center, ()),
-             Styles.connectContainer,
+             Styles.connectContainer(theme),
            ])}>
-           <Icon name="fal fa-link" size=32 color=Colors.bandBlue />
+           <Icon name="fal fa-link" size=32 color={isDarkMode ? theme.white : theme.black} />
            <VSpacing size={`px(16)} />
-           <Text value="Please connect to make request" size=Text.Lg nowrap=true block=true />
+           <Text value="Please connect to make request" size=Text.Lg nowrap=true />
            <VSpacing size={`px(16)} />
            <Button px=20 py=5 onClick={_ => connect(chainID)}>
-             <Text value="Connect" weight=Text.Medium nowrap=true block=true />
+             {"Connect" |> React.string}
            </Button>
          </div>
        | Error(err) =>
@@ -282,5 +275,5 @@ let make = (~validatorAddress) => {
        | _ => <LoadingCensorBar fullWidth=true height=200 />
        }
      }}
-  </div>;
+  </InfoContainer>;
 };

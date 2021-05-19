@@ -2,15 +2,15 @@ module Styles = {
   open Css;
 
   let container =
-    style([width(`percent(100.)), height(`px(180)), margin2(~v=`zero, ~h=`auto)]);
+    style([width(`percent(100.)), height(`px(200)), margin2(~v=`zero, ~h=`auto)]);
 
   let chart = show => style([important(display(show ? `block : `none))]);
 };
 
-let renderGraph: array(HistoricalBondedQuery.t) => unit = [%bs.raw
+let renderGraph: (array(HistoricalBondedQuery.t), bool) => unit = [%bs.raw
   {|
 // TODO: let's binding chart.js later
-function(data) {
+function(data, isDarkMode) {
   var Chart = require('chart.js');
   var ctx = document.getElementById('historicalBonded').getContext('2d');
 
@@ -32,7 +32,7 @@ function(data) {
               type: 'line',
               pointRadius: 0,
               fill: false,
-              borderColor: '#5269ff',
+              borderColor: isDarkMode ? '#ffffff' : '#303030',
               data: data,
               borderWidth: 2,
           }]
@@ -55,7 +55,7 @@ function(data) {
               },
               ticks: {
                 fontFamily: 'Inter',
-                fontColor: '#888888',
+                fontColor: isDarkMode ? '#888888' : '#7D7D7D',
                 fontSize: 10,
                 autoSkip: true,
                 maxTicksLimit: 5,
@@ -66,13 +66,13 @@ function(data) {
             {
               gridLines: {
                 display: true,
-                color: "#f2f2f2",
+                color: isDarkMode ? '#353535' : '#EDEDED',
                 drawBorder: false,
-                zeroLineColor: '#eaeaea'
+                zeroLineColor: isDarkMode ? '#353535' : '#EDEDED',
               },
               ticks: {
                 fontFamily: 'Inter',
-                fontColor: '#888888',
+                fontColor: isDarkMode ? '#888888' : '#7D7D7D',
                 fontSize: 10,
                 maxTicksLimit: 5,
                 stepSize: 100000,
@@ -98,13 +98,13 @@ function(data) {
         tooltips: {
 					mode: 'index',
 					intersect: false,
-          backgroundColor: '#555555',
-          titleFontFamily: "Inter",
+          backgroundColor: '#000000',
+          titleFontFamily: "Montserrat",
           titleFontSize: 12,
           titleFontColor: '#ffffff',
           titleFontStyle: "500",
           titleMarginBottom: 2,
-          bodyFontFamily: "Inter",
+          bodyFontFamily: "Montserrat",
           bodyFontSize: 10,
           bodyFontColor: '#888888',
           bodyFontStyle: "normal",
@@ -135,17 +135,18 @@ function(data) {
 [@react.component]
 let make = (~operatorAddress) => {
   let dataQuery = HistoricalBondedQuery.get(operatorAddress);
+  let (ThemeContext.{isDarkMode}, _) = React.useContext(ThemeContext.context);
 
-  React.useEffect1(
+  React.useEffect2(
     () => {
       switch (dataQuery) {
-      | Data(data) => renderGraph(data)
+      | Data(data) => renderGraph(data, isDarkMode)
       | _ => ()
       };
 
       None;
     },
-    [|dataQuery|],
+    (dataQuery, isDarkMode),
   );
 
   switch (dataQuery) {
