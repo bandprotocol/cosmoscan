@@ -121,7 +121,7 @@ module RenderMobile = {
         {routes
          ->Belt.List.map(((v, route)) =>
              <Link key=v className={Styles.nav(theme)} route onClick={_ => setShow(_ => false)}>
-               <Text value=v size=Text.Lg weight=Text.Semibold color={theme.textPrimary} />
+               <Text value=v weight=Text.Semibold color={theme.textPrimary} />
              </Link>
            )
          ->Array.of_list
@@ -129,7 +129,7 @@ module RenderMobile = {
         <div className={Css.merge([CssHelper.flexBox(), Styles.toggleContainer])}>
           <ToggleThemeButton />
           <HSpacing size={`px(8)} />
-          <Text value=modeMsg size=Text.Lg weight=Text.Semibold color={theme.textPrimary} />
+          <Text value=modeMsg weight=Text.Semibold color={theme.textPrimary} />
         </div>
       </div>
       <div onClick={_ => setShow(prev => !prev)} className={Styles.backdropContainer(show)} />
