@@ -3,7 +3,7 @@ module Styles = {
 
   let successLogo = style([width(`px(20)), marginRight(`px(10))]);
 
-  let notfoundContainer =
+  let notfoundContainer = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
       minHeight(`px(450)),
@@ -13,9 +13,9 @@ module Styles = {
       paddingLeft(`px(50)),
       paddingRight(`px(50)),
       justifyContent(`center),
-      backgroundColor(Colors.white),
-      borderRadius(`px(4)),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), rgba(0, 0, 0, `num(0.1)))),
+      backgroundColor(theme.secondaryBg),
+      borderRadius(`px(8)),
+      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
     ]);
   let notfoundLogo = style([width(`px(180)), marginRight(`px(10))]);
 };
@@ -23,25 +23,24 @@ module Styles = {
 module TxNotFound = {
   [@react.component]
   let make = () => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <Section>
       <div className=CssHelper.container>
         <VSpacing size=Spacing.lg />
-        <div className=Styles.notfoundContainer>
+        <div className={Styles.notfoundContainer(theme)}>
           <div className={CssHelper.flexBox()}>
-            <img src=Images.notFoundBg className=Styles.notfoundLogo />
+            <img
+              src={isDarkMode ? Images.noTxDark : Images.noTxLight}
+              className=Styles.notfoundLogo
+            />
           </div>
           <VSpacing size=Spacing.md />
           <Text
             value="Sorry, we are unable to retrieve information on this transaction hash."
             size=Text.Lg
-            color=Colors.blueGray6
           />
           <VSpacing size=Spacing.lg />
-          <Text
-            value="Note: Transactions usually take 5-10 seconds to appear."
-            size=Text.Lg
-            color=Colors.blueGray6
-          />
+          <Text value="Note: Transactions usually take 5-10 seconds to appear." size=Text.Lg />
         </div>
       </div>
     </Section>;
@@ -51,29 +50,28 @@ module TxNotFound = {
 module TxSyncing = {
   [@react.component]
   let make = (~height, ~link) => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <Section>
       <div className=CssHelper.container>
         <VSpacing size=Spacing.lg />
-        <div className=Styles.notfoundContainer>
+        <div className={Styles.notfoundContainer(theme)}>
           <div className={CssHelper.flexBox()}>
-            <img src=Images.notFoundBg className=Styles.notfoundLogo />
+            <img
+              src={isDarkMode ? Images.noTxDark : Images.noTxLight}
+              className=Styles.notfoundLogo
+            />
           </div>
           <VSpacing size=Spacing.md />
           <Text
             value={j|This transaction is available on block #B$height but our database is syncing now.|j}
             size=Text.Lg
-            color=Colors.blueGray6
           />
           <VSpacing size=Spacing.lg />
           <div className={CssHelper.flexBox()}>
-            <Text
-              value="You can check the transaction information"
-              size=Text.Lg
-              color=Colors.blueGray6
-            />
+            <Text value="You can check the transaction information" size=Text.Lg />
             <HSpacing size=Spacing.xs />
             <AbsoluteLink href=link>
-              <Text value="here" size=Text.Lg color=Colors.blueGray6 underline=true />
+              <Text value="here" size=Text.Lg underline=true />
             </AbsoluteLink>
           </div>
         </div>
@@ -242,7 +240,7 @@ let make = (~txHash) => {
                          size=Text.Lg
                        />
                        <HSpacing size=Spacing.sm />
-                       <TimeAgos time=timestamp prefix="(" suffix=")" color=Colors.gray7 />
+                       <TimeAgos time=timestamp prefix="(" suffix=")" />
                      </div>
                    | _ => <LoadingCensorBar width=280 height=15 />
                    }}

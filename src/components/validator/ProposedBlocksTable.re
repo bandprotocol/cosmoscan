@@ -94,18 +94,8 @@ module RenderBody = {
           <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
             {switch (blockSub) {
              | Data({timestamp}) =>
-               <Timestamp.Grid
-                 time=timestamp
-                 size=Text.Md
-                 weight=Text.Regular
-                 textAlign=Text.Right
-                 color={theme.textPrimary}
-               />
-             | _ =>
-               <>
-                 <LoadingCensorBar width=70 height=15 />
-                 <LoadingCensorBar width=80 height=15 mt=5 />
-               </>
+               <Timestamp time=timestamp size=Text.Md weight=Text.Regular textAlign=Text.Right />
+             | _ => <LoadingCensorBar width=80 height=15 />
              }}
           </div>
         </Col>

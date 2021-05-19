@@ -28,11 +28,13 @@ let make =
       ~size=Text.Sm,
       ~weight=Text.Regular,
       ~spacing=Text.Unset,
-      ~color=Colors.gray7,
+      ~color=?,
       ~code=false,
       ~height=Text.Px(10),
       ~upper=false,
     ) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   let (displayTime, setDisplayTime) =
     React.useState(_ => time->MomentRe.Moment.fromNow(~withoutSuffix=None));
 
@@ -51,15 +53,39 @@ let make =
   <div className=Styles.timeContainer>
     {prefix != ""
        ? <>
-           <Text value=prefix size weight spacing color code nowrap=true />
+           <Text
+             value=prefix
+             size
+             weight
+             spacing
+             color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+             code
+             nowrap=true
+           />
            <HSpacing size=Spacing.sm />
          </>
        : React.null}
-    <Text value=displayTime size weight spacing color code nowrap=true />
+    <Text
+      value=displayTime
+      size
+      weight
+      spacing
+      color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+      code
+      nowrap=true
+    />
     {suffix != ""
        ? <>
            <HSpacing size=Spacing.sm />
-           <Text value=suffix size weight spacing color code nowrap=true />
+           <Text
+             value=suffix
+             size
+             weight
+             spacing
+             color={color->Belt.Option.getWithDefault(theme.textSecondary)}
+             code
+             nowrap=true
+           />
          </>
        : React.null}
   </div>;

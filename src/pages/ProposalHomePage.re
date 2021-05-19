@@ -60,14 +60,18 @@ module ProposalCard = {
                  isMobile
                    ? <>
                        <LoadingCensorBar width=50 height=15 mbSm=16 />
-                       <LoadingCensorBar width=150 height=15 mbSm=16 />
+                       <LoadingCensorBar width=100 height=15 mbSm=16 />
                      </>
                    : <LoadingCensorBar width=270 height=15 />
                }}
               <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
                 {switch (proposalSub) {
                  | Data({status}) => <ProposalBadge status />
-                 | _ => <LoadingCensorBar width=100 height=15 radius=50 />
+                 | _ =>
+                   <>
+                     {isMobile ? React.null : <HSpacing size={`px(10)} />}
+                     <LoadingCensorBar width=100 height=15 radius=50 />
+                   </>
                  }}
               </div>
             </div>
@@ -85,7 +89,7 @@ module ProposalCard = {
                      <Icon name="far fa-arrow-right" color={theme.white} />
                    </div>
                  </TypeID.ProposalLink>
-               | _ => <LoadingCensorBar width=100 height=15 />
+               | _ => <LoadingCensorBar width=32 height=32 radius=8 />
                }}
             </div>
           </Col>

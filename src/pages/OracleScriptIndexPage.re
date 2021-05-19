@@ -26,7 +26,7 @@ module Content = {
     <Section>
       <div className=CssHelper.container>
         <Heading value="Oracle Script" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
-        <Row marginBottom=40 marginBottomSm=16 alignItems=Row.Center>
+        <Row marginBottom=40 marginBottomSm=24 alignItems=Row.Center>
           <Col col=Col.Six>
             <div className={Css.merge([CssHelper.flexBox(), Styles.idCointainer])}>
               {switch (oracleScriptSub) {

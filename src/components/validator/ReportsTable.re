@@ -118,12 +118,12 @@ module RenderBody = {
                    block=true
                    value={show ? "Hide Report" : "Show Report"}
                    weight=Text.Semibold
-                   color={theme.baseBlue}
+                   color={theme.textPrimary}
                  />
                  <HSpacing size=Spacing.xs />
                  <Icon
                    name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
-                   color={theme.baseBlue}
+                   color={theme.textSecondary}
                  />
                </>
              | _ => <LoadingCensorBar width=100 height=15 />
@@ -282,6 +282,7 @@ let make = (~address) => {
                     value={reportsCount |> Format.iPretty}
                     weight=Text.Semibold
                     transform=Text.Uppercase
+                    size=Text.Sm
                   />
                   <HSpacing size=Spacing.xs />
                   <Text
@@ -289,6 +290,7 @@ let make = (~address) => {
                     value="Requests"
                     weight=Text.Semibold
                     transform=Text.Uppercase
+                    size=Text.Sm
                   />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />

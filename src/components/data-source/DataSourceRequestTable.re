@@ -155,10 +155,16 @@ let make = (~dataSourceID: ID.DataSource.t) => {
                     block=true
                     value={totalRequestCount |> Format.iPretty}
                     weight=Text.Semibold
-                    color=Colors.gray7
+                    size=Text.Sm
                   />
                   <HSpacing size=Spacing.xs />
-                  <Text block=true value="Requests" weight=Text.Semibold color=Colors.gray7 />
+                  <Text
+                    block=true
+                    value="Requests"
+                    weight=Text.Semibold
+                    size=Text.Sm
+                    transform=Text.Uppercase
+                  />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
               }}
@@ -214,6 +220,7 @@ let make = (~dataSourceID: ID.DataSource.t) => {
                  weight=Text.Semibold
                  size=Text.Sm
                  align=Text.Right
+                 transform=Text.Uppercase
                />
              </Col>
            </Row>

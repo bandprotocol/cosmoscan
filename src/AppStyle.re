@@ -96,6 +96,10 @@ p {
   line-height: 1.3;
 }
 
+a {
+  transition: .3s;
+}
+
 h1,
 h2,
 h3,

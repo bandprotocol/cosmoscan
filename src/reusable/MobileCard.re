@@ -31,9 +31,9 @@ module Styles = {
       marginTop(isOneColumn ? `px(10) : `zero),
       overflow(`hidden),
     ]);
-  let toggle =
+  let toggle = (theme: Theme.t) =>
     style([
-      borderTop(`px(1), `solid, Colors.gray2),
+      borderTop(`px(1), `solid, theme.tableRowBorderColor),
       paddingTop(`px(10)),
       marginTop(`px(10)),
       cursor(`pointer),
@@ -134,15 +134,21 @@ let make = (~values, ~idx, ~status=?, ~requestStatus=?, ~styles="", ~panels=[]) 
            </div>
            <div
              onClick={_ => setShow(prev => !prev)}
-             className={Css.merge([CssHelper.flexBox(~justify=`center, ()), Styles.toggle])}>
+             className={Css.merge([
+               CssHelper.flexBox(~justify=`center, ()),
+               Styles.toggle(theme),
+             ])}>
              <Text
                block=true
                value={show ? "Hide Report" : "Show Report"}
                weight=Text.Semibold
-               color=Colors.bandBlue
+               color={theme.textPrimary}
              />
              <HSpacing size=Spacing.xs />
-             <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color=Colors.bandBlue />
+             <Icon
+               name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
+               color={theme.textSecondary}
+             />
            </div>
          </>
        : React.null}

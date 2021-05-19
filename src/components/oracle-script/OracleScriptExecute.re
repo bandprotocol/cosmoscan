@@ -9,21 +9,22 @@ module Styles = {
 
   let upperTextCotainer = style([marginBottom(`px(24))]);
 
-  let listContainer = style([marginBottom(`px(25))]);
+  let listContainer = style([width(`percent(100.)), marginBottom(`px(25))]);
 
   let input = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
-      backgroundColor(`transparent),
-      padding2(~v=`zero, ~h=`px(16)),
-      fontSize(`px(12)),
-      fontWeight(`num(500)),
-      outline(`px(1), `none, `transparent),
       height(`px(37)),
+      paddingLeft(`px(9)),
+      paddingRight(`px(9)),
       borderRadius(`px(4)),
-      border(`px(1), `solid, theme.inputColor),
+      fontSize(`px(14)),
+      fontWeight(`light),
+      border(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.inputContrastColor),
+      outlineStyle(`none),
       color(theme.textPrimary),
-      placeholder([color(theme.textPrimary)]),
+      fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
   let button = isLoading =>
@@ -102,13 +103,14 @@ module ConnectPanel = {
 module ParameterInput = {
   [@react.component]
   let make = (~params: Obi.field_key_type_t, ~index, ~setCallDataArr) => {
+    let fieldType = params.fieldType;
     let fieldName = Js.String.replaceByRe([%re "/[_]/g"], " ", params.fieldName);
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.listContainer key=fieldName>
       <div className={CssHelper.flexBox()}>
         <Text value=fieldName weight=Text.Semibold transform=Text.Capitalize />
         <HSpacing size=Spacing.xs />
-        <Text value={j|($params.fieldType)|j} weight=Text.Semibold />
+        <Text value={j|($fieldType)|j} weight=Text.Semibold />
       </div>
       <VSpacing size=Spacing.sm />
       <input
@@ -141,7 +143,7 @@ module CountInputs = {
             <Icon name="fal fa-info-circle" size=10 />
           </CTooltip>
         </div>
-        <div className={CssHelper.selectWrapper()}>
+        <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ())}>
           <select
             className={Styles.input(theme)}
             onChange={event => {
@@ -169,7 +171,7 @@ module CountInputs = {
             <Icon name="fal fa-info-circle" size=10 />
           </CTooltip>
         </div>
-        <div className={CssHelper.selectWrapper()}>
+        <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ())}>
           <select
             className={Styles.input(theme)}
             onChange={event => {

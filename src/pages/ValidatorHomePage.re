@@ -1,7 +1,13 @@
 module Styles = {
   open Css;
 
-  let infoContainer = style([height(`percent(100.))]);
+  let infoContainer =
+    style([
+      height(`percent(100.)),
+      display(`flex),
+      flexDirection(`column),
+      justifyContent(`spaceBetween),
+    ]);
 };
 
 let getPrevDay = _ => {
@@ -69,7 +75,7 @@ let make = () => {
            }}
         </Col>
       </Row>
-      <Row marginBottom=36 marginBottomSm=24>
+      <Row marginBottom=24>
         <Col>
           <Row>
             <Col col=Col.Three colSm=Col.Six mbSm=24>
@@ -78,6 +84,7 @@ let make = () => {
                   value="Active Validators"
                   size=Heading.H4
                   marginBottom=28
+                  weight=Heading.Thin
                   color={theme.textSecondary}
                 />
                 {switch (topPartAllSub) {
@@ -99,6 +106,7 @@ let make = () => {
                   value="Bonded Tokens"
                   size=Heading.H4
                   marginBottom=28
+                  weight=Heading.Thin
                   color={theme.textSecondary}
                 />
                 {switch (topPartAllSub) {
@@ -120,6 +128,7 @@ let make = () => {
                   value="Inflation Rate"
                   size=Heading.H4
                   marginBottom=28
+                  weight=Heading.Thin
                   color={theme.textSecondary}
                 />
                 {switch (topPartAllSub) {
@@ -141,6 +150,7 @@ let make = () => {
                 <Heading
                   value="24 Hour AVG Block Time"
                   size=Heading.H4
+                  weight=Heading.Thin
                   color={theme.textSecondary}
                   marginBottom=28
                 />

@@ -14,16 +14,17 @@ module Styles = {
   let input = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
-      paddingLeft(`px(20)),
-      fontSize(`px(12)),
-      fontWeight(`num(500)),
-      outline(`px(1), `none, white),
       height(`px(37)),
+      paddingLeft(`px(9)),
+      paddingRight(`px(9)),
       borderRadius(`px(4)),
-      backgroundColor(`transparent),
-      border(`px(1), `solid, theme.textSecondary),
-      placeholder([color(theme.textSecondary)]),
+      fontSize(`px(14)),
+      fontWeight(`light),
+      border(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.inputContrastColor),
+      outlineStyle(`none),
       color(theme.textPrimary),
+      fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
   let button = isLoading =>
