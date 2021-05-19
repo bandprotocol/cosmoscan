@@ -13,13 +13,31 @@ module LoadingWithHeader = {
       <THead>
         <Row alignItems=Row.Center>
           <Col col=Col.Two>
-            <Text block=true value="Block" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="Block"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.Seven>
-            <Text block=true value="Block Hash" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="Block Hash"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.One>
-            <Text block=true value="Txn" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="Txn"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.Two>
             <Text
@@ -27,6 +45,7 @@ module LoadingWithHeader = {
               value="Timestamp"
               weight=Text.Semibold
               transform=Text.Uppercase
+              size=Text.Sm
               align=Text.Right
             />
           </Col>
@@ -141,10 +160,22 @@ let make = (~consensusAddress) => {
        : <THead>
            <Row alignItems=Row.Center>
              <Col col=Col.Two>
-               <Text block=true value="Block" weight=Text.Semibold transform=Text.Uppercase />
+               <Text
+                 block=true
+                 value="Block"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+                 size=Text.Sm
+               />
              </Col>
              <Col col=Col.Seven>
-               <Text block=true value="Block Hash" weight=Text.Semibold transform=Text.Uppercase />
+               <Text
+                 block=true
+                 value="Block Hash"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+                 size=Text.Sm
+               />
              </Col>
              <Col col=Col.One>
                <Text
@@ -152,6 +183,7 @@ let make = (~consensusAddress) => {
                  value="Txn"
                  weight=Text.Semibold
                  transform=Text.Uppercase
+                 size=Text.Sm
                  align=Text.Center
                />
              </Col>
@@ -161,6 +193,7 @@ let make = (~consensusAddress) => {
                  value="Timestamp"
                  weight=Text.Semibold
                  transform=Text.Uppercase
+                 size=Text.Sm
                  align=Text.Right
                />
              </Col>

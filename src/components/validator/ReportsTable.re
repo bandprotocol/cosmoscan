@@ -134,16 +134,40 @@ module RenderBody = {
       <div className={Styles.dataSourceTable(show, theme)}>
         <Row>
           <Col col=Col.Two>
-            <Text block=true value="External ID" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="External ID"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.Three>
-            <Text block=true value="Data Source" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="Data Source"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.Two>
-            <Text block=true value="Param" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="Param"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.Two>
-            <Text block=true value="Exit Code" weight=Text.Semibold transform=Text.Uppercase />
+            <Text
+              block=true
+              value="Exit Code"
+              weight=Text.Semibold
+              transform=Text.Uppercase
+              size=Text.Sm
+            />
           </Col>
           <Col col=Col.Three>
             <Text
@@ -152,6 +176,7 @@ module RenderBody = {
               weight=Text.Semibold
               align=Text.Right
               transform=Text.Uppercase
+              size=Text.Sm
             />
           </Col>
         </Row>
@@ -281,6 +306,7 @@ let make = (~address) => {
                       value={reportsCount |> Format.iPretty}
                       weight=Text.Semibold
                       transform=Text.Uppercase
+                      size=Text.Sm
                     />
                     <HSpacing size=Spacing.xs />
                     <Text
@@ -288,6 +314,7 @@ let make = (~address) => {
                       value="Oracle Reports"
                       weight=Text.Semibold
                       transform=Text.Uppercase
+                      size=Text.Sm
                     />
                   </div>
                 | _ => <LoadingCensorBar width=100 height=15 />
@@ -299,10 +326,17 @@ let make = (~address) => {
                  value="Oracle Script"
                  weight=Text.Semibold
                  transform=Text.Uppercase
+                 size=Text.Sm
                />
              </Col>
              <Col col=Col.Five>
-               <Text block=true value="TX Hash" weight=Text.Semibold transform=Text.Uppercase />
+               <Text
+                 block=true
+                 value="TX Hash"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+                 size=Text.Sm
+               />
              </Col>
            </Row>
          </THead>}

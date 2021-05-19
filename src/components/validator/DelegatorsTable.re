@@ -114,6 +114,7 @@ let make = (~address) => {
                       value={delegatorCount |> Format.iPretty}
                       weight=Text.Semibold
                       transform=Text.Uppercase
+                      size=Text.Sm
                     />
                     <HSpacing size=Spacing.xs />
                     <Text
@@ -121,13 +122,20 @@ let make = (~address) => {
                       value="Delegators"
                       weight=Text.Semibold
                       transform=Text.Uppercase
+                      size=Text.Sm
                     />
                   </div>
                 | _ => <LoadingCensorBar width=100 height=15 />
                 }}
              </Col>
              <Col col=Col.Four>
-               <Text block=true value="Share(%)" weight=Text.Semibold transform=Text.Uppercase />
+               <Text
+                 block=true
+                 value="Share(%)"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+                 size=Text.Sm
+               />
              </Col>
              <Col col=Col.Two>
                <Text
@@ -135,6 +143,7 @@ let make = (~address) => {
                  value="Amount"
                  weight=Text.Semibold
                  transform=Text.Uppercase
+                 size=Text.Sm
                  align=Text.Right
                />
              </Col>
