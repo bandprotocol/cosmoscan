@@ -50,7 +50,7 @@ module RenderMobile = {
         pointerEvents(show ? `auto : `none),
         width(`percent(100.)),
         position(`absolute),
-        top(`px(62)),
+        top(`px(58)),
         left(`zero),
         right(`zero),
         transition(~duration=400, "all"),
@@ -97,7 +97,7 @@ module RenderMobile = {
         opacity(show ? 1. : 0.),
         pointerEvents(show ? `auto : `none),
         left(`zero),
-        top(`px(62)),
+        top(`px(58)),
         transition(~duration=400, "all"),
       ]);
   };
