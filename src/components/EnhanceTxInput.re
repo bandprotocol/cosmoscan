@@ -3,7 +3,7 @@ module Styles = {
 
   let container = style([position(`relative), paddingBottom(`px(24))]);
 
-  let input =
+  let input = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
       height(`px(37)),
@@ -12,39 +12,14 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, Colors.gray9),
-      placeholder([color(Colors.gray5), fontFamily(`custom("Inter"))]),
-      focus([outline(`zero, `none, Colors.white)]),
-      fontFamilies([
-        `custom("Inter"),
-        `custom("-apple-system"),
-        `custom("BlinkMacSystemFont"),
-        `custom("Segoe UI"),
-        `custom("Roboto"),
-        `custom("Oxygen"),
-        `custom("Ubuntu"),
-        `custom("Cantarell"),
-        `custom("Fira Sans"),
-        `custom("Droid Sans"),
-        `custom("Helvatica Neue"),
-        `custom("sans-serif"),
-      ]),
+      border(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.inputContrastColor),
+      outlineStyle(`none),
+      color(theme.textPrimary),
+      fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
-  let code =
-    style([
-      fontFamilies([
-        `custom("IBM Plex Mono"),
-        `custom("cousine"),
-        `custom("sfmono-regular"),
-        `custom("Consolas"),
-        `custom("Menlo"),
-        `custom("liberation mono"),
-        `custom("ubuntu mono"),
-        `custom("Courier"),
-        `monospace,
-      ]),
-    ]);
+  let code = style([fontFamilies([`custom("Roboto Mono"), `monospace])]);
 
   let errMsg = style([position(`absolute), bottom(`px(7))]);
 };
@@ -78,6 +53,8 @@ let make =
     ) => {
   let (status, setStatus) = React.useState(_ => Untouched);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   let onNewText = newText => {
     let newVal = parse(newText);
     setStatus(_ => Touched(newVal));
@@ -88,12 +65,19 @@ let make =
   };
 
   <div className=Styles.container>
-    <Heading value=msg size=Heading.H5 marginBottom=8 align=Heading.Left weight=Heading.Medium />
+    <Heading
+      value=msg
+      size=Heading.H5
+      marginBottom=8
+      align=Heading.Left
+      color={theme.textSecondary}
+      weight=Heading.Regular
+    />
     <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>
       <input
         id
         value={inputData.text}
-        className={Css.merge([Styles.input, code ? Styles.code : ""])}
+        className={Css.merge([Styles.input(theme), code ? Styles.code : ""])}
         placeholder
         type_=inputType
         spellCheck=false
@@ -130,7 +114,9 @@ let make =
     </div>
     {switch (status) {
      | Touched(Err(errMsg)) =>
-       <div className=Styles.errMsg> <Text value=errMsg size=Text.Sm color=Colors.red3 /> </div>
+       <div className=Styles.errMsg>
+         <Text value=errMsg size=Text.Sm color=Theme.failColor />
+       </div>
      | _ => React.null
      }}
   </div>;
@@ -139,11 +125,19 @@ let make =
 module Loading = {
   [@react.component]
   let make = (~msg, ~useMax=false, ~code=false, ~placeholder) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.container>
-      <Heading value=msg size=Heading.H5 marginBottom=8 align=Heading.Left />
+      <Heading
+        value=msg
+        size=Heading.H5
+        marginBottom=8
+        align=Heading.Left
+        color={theme.textSecondary}
+        weight=Heading.Regular
+      />
       <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>
         <input
-          className={Css.merge([Styles.input, code ? Styles.code : ""])}
+          className={Css.merge([Styles.input(theme), code ? Styles.code : ""])}
           placeholder
           disabled=true
         />

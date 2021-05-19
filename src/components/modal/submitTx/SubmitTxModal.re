@@ -7,14 +7,12 @@ module Styles = {
       width(`px(468)),
       minHeight(`px(300)),
       height(`auto),
-      padding2(~v=`px(32), ~h=`px(24)),
+      padding(`px(32)),
       borderRadius(`px(5)),
       justifyContent(`flexStart),
     ]);
 
   let disable = isActive => style([display(isActive ? `flex : `none)]);
-
-  let modalTitle = style([paddingBottom(`px(24))]);
 
   let selectWrapper =
     style([
@@ -41,37 +39,9 @@ module Styles = {
       focus([outlineColor(Colors.white)]),
     ]);
 
-  let nextBtn =
-    style([
-      marginTop(`px(24)),
-      width(`percent(100.)),
-      height(`px(36)),
-      display(`flex),
-      justifyContent(`center),
-      alignItems(`center),
-      backgroundColor(Colors.bandBlue),
-      borderRadius(`px(4)),
-      border(`zero, `solid, Colors.white),
-      alignSelf(`center),
-      cursor(`pointer),
-      color(Colors.white),
-      transition(~duration=600, "all"),
-      disabled([
-        backgroundColor(Colors.buttonDisabled),
-        color(Colors.white),
-        cursor(`default),
-      ]),
-    ]);
+  let nextBtn = style([width(`percent(100.)), marginTop(`px(24))]);
 
   let info = style([display(`flex), justifyContent(`spaceBetween), alignItems(`center)]);
-
-  let seperatedLine =
-    style([
-      width(`percent(100.)),
-      height(`px(1)),
-      marginBottom(`px(24)),
-      backgroundColor(Colors.gray9),
-    ]);
 };
 
 module SubmitTxStep = {
@@ -84,9 +54,7 @@ module SubmitTxStep = {
     let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
 
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
-      <div className=Styles.modalTitle>
-        <Text value={SubmitMsg.toString(msg)} size=Text.Xl weight=Text.Medium />
-      </div>
+      <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
       {switch (msg) {
        | SubmitMsg.Send(receiver) => <SendMsg address={account.address} receiver setMsgsOpt />
        | Delegate(validator) => <DelegateMsg address={account.address} validator setMsgsOpt />
@@ -108,10 +76,10 @@ module SubmitTxStep = {
         placeholder="Memo"
         id="memoInput"
       />
-      <div className=Styles.seperatedLine />
+      <SeperatedLine />
       <div className=Styles.info>
         <Text value="Transaction Fee" size=Text.Md weight=Text.Medium nowrap=true block=true />
-        <Text value="0.005 BAND" size=Text.Lg code=true />
+        <Text value="0.005 BAND" />
       </div>
       <div id="nextButtonContainer">
         <Button
@@ -145,7 +113,7 @@ module SubmitTxStep = {
               };
             ();
           }}>
-          <Text value="Next" weight=Text.Medium size=Text.Lg />
+          {"Next" |> React.string}
         </Button>
       </div>
     </div>;

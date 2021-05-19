@@ -3,12 +3,12 @@ module Styles = {
 
   let container = style([paddingBottom(`px(24))]);
 
-  let warning =
+  let warning = (theme: Theme.t) =>
     style([
       display(`flex),
       flexDirection(`column),
       padding2(~v=`px(16), ~h=`px(24)),
-      backgroundColor(Colors.profileBG),
+      backgroundColor(theme.contrastBg),
       borderRadius(`px(4)),
       marginBottom(`px(24)),
     ]);
@@ -22,6 +22,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
   let allSub = Sub.all2(validatorInfoSub, delegationSub);
 
   let (amount, setAmount) = React.useState(_ => EnhanceTxInput.empty);
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect1(
     _ => {
@@ -41,7 +43,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
   );
 
   <>
-    <div className=Styles.warning>
+    <div className={Styles.warning(theme)}>
       <Heading
         value="Please read before proceeding:"
         size=Heading.H5
@@ -63,19 +65,14 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data(({moniker}, _)) =>
          <div>
-           <Text value=moniker size=Text.Lg ellipsis=true align=Text.Right />
-           <Text
-             value={"(" ++ validator->Address.toOperatorBech32 ++ ")"}
-             size=Text.Md
-             color=Colors.gray6
-             code=true
-             block=true
-           />
+           <Text value=moniker ellipsis=true align=Text.Right />
+           <Text value={"(" ++ validator->Address.toOperatorBech32 ++ ")"} code=true block=true />
          </div>
        | _ => <LoadingCensorBar width=300 height=34 />
        }}
@@ -86,7 +83,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data((_, {amount: stakedAmount})) =>
@@ -94,9 +92,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
            <Text
              value={stakedAmount |> Coin.getBandAmountFromCoin |> Format.fPretty(~digits=6)}
              code=true
-             size=Text.Lg
            />
-           <Text value=" BAND" size=Text.Lg code=true />
+           <Text value=" BAND" />
          </div>
        | _ => <LoadingCensorBar width=150 height=18 />
        }}

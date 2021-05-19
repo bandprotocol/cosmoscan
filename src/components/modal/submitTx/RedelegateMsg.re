@@ -3,12 +3,12 @@ module Styles = {
 
   let container = style([paddingBottom(`px(24))]);
 
-  let warning =
+  let warning = (theme: Theme.t) =>
     style([
       display(`flex),
       flexDirection(`column),
       padding2(~v=`px(16), ~h=`px(24)),
-      backgroundColor(Colors.profileBG),
+      backgroundColor(theme.contrastBg),
       borderRadius(`px(4)),
       marginBottom(`px(24)),
     ]);
@@ -25,6 +25,7 @@ module DstValidatorSelection = {
     backgroundColor: string,
     borderRadius: string,
     border: string,
+    color: string,
   };
 
   type option_t = {
@@ -34,7 +35,13 @@ module DstValidatorSelection = {
     fontSize: string,
     paddingLeft: string,
     cursor: string,
+    color: string,
+    backgroundColor: string,
   };
+
+  type input_t = {color: string};
+
+  type menu_t = {backgroundColor: string};
 
   type container_t = {
     width: string,
@@ -60,6 +67,8 @@ module DstValidatorSelection = {
 
   [@react.component]
   let make = (~filteredValidators: array(BandScan.ValidatorSub.t), ~setDstValidatorOpt) => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
     let (selectedValidator, setSelectedValidator) =
       React.useState(_ =>
         ReactSelect.{value: "N/A", label: "Enter or select validator to delegate to"}
@@ -87,9 +96,14 @@ module DstValidatorSelection = {
             height: "37px",
             width: "100%",
             fontSize: "14px",
-            backgroundColor: "white",
-            borderRadius: "4px",
-            border: "#EAEAEA solid 1px",
+            color: isDarkMode ? "#ffffff" : "#303030",
+            backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
+            borderRadius: "8px",
+            border:
+              "1px solid"
+              ++ {
+                isDarkMode ? "#353535" : "#EDEDED";
+              },
           },
           ReactSelect.option: _ => {
             fontSize: "14px",
@@ -98,6 +112,8 @@ module DstValidatorSelection = {
             alignItems: "center",
             paddingLeft: "10px",
             cursor: "pointer",
+            color: isDarkMode ? "#ffffff" : "#303030",
+            backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
           },
           ReactSelect.container: _ => {
             width: "100%",
@@ -118,15 +134,12 @@ module DstValidatorSelection = {
             lineHeight: "1.3em",
           },
           ReactSelect.indicatorSeparator: _ => {display: "none"},
+          ReactSelect.input: _ => {color: isDarkMode ? "#ffffff" : "#303030"},
+          ReactSelect.menuList: _ => {backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff"},
         }
       />
       <VSpacing size=Spacing.sm />
-      <Text
-        value={"(" ++ selectedValidator.value ++ ")"}
-        size=Text.Md
-        color=Colors.gray6
-        code=true
-      />
+      <Text value={"(" ++ selectedValidator.value ++ ")"} />
     </div>;
   };
 };
@@ -142,6 +155,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
   let (dstValidatorOpt, setDstValidatorOpt) = React.useState(_ => None);
 
   let (amount, setAmount) = React.useState(_ => EnhanceTxInput.empty);
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect2(
     _ => {
@@ -162,7 +177,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
     (dstValidatorOpt, amount),
   );
   <>
-    <div className=Styles.warning>
+    <div className={Styles.warning(theme)}>
       <Heading
         value="Please read before proceeding:"
         size=Heading.H5
@@ -179,19 +194,14 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data(({moniker}, _, _)) =>
          <div>
-           <Text value=moniker size=Text.Lg ellipsis=true align=Text.Right />
-           <Text
-             value={"(" ++ validator->Address.toOperatorBech32 ++ ")"}
-             size=Text.Md
-             color=Colors.gray6
-             code=true
-             block=true
-           />
+           <Text value=moniker ellipsis=true align=Text.Right />
+           <Text value={"(" ++ validator->Address.toOperatorBech32 ++ ")"} code=true block=true />
          </div>
        | _ => <LoadingCensorBar width=300 height=34 />
        }}
@@ -202,7 +212,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data(({operatorAddress}, validators, _)) =>
@@ -220,7 +231,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data((_, _, {amount: stakedAmount})) =>
@@ -228,9 +240,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
            <Text
              value={stakedAmount |> Coin.getBandAmountFromCoin |> Format.fPretty(~digits=6)}
              code=true
-             size=Text.Lg
            />
-           <Text value=" BAND" size=Text.Lg code=true />
+           <Text value=" BAND" />
          </div>
        | _ => <LoadingCensorBar width=150 height=18 />
        }}

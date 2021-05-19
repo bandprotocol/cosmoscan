@@ -38,14 +38,15 @@ module Styles = {
       | Primary =>
         style([
           backgroundColor(theme.baseBlue),
-          color(Colors.white),
+          color(Theme.white),
           border(`px(1), `solid, theme.baseBlue),
           hover([backgroundColor(theme.darkBlue)]),
           active([backgroundColor(theme.darkenBlue)]),
           disabled([
-            backgroundColor(theme.lightBlue),
-            color(Colors.white),
-            borderColor(theme.lightBlue),
+            backgroundColor(isDarkMode ? theme.darkBlue : theme.lightBlue),
+            color(Theme.white),
+            borderColor(isDarkMode ? theme.darkBlue : theme.lightBlue),
+            opacity(0.5),
           ]),
         ])
       | Outline =>
@@ -61,9 +62,10 @@ module Styles = {
           ]),
           active([backgroundColor(Colors.buttonOutlineActive)]),
           disabled([
-            borderColor(Colors.buttonDisabled),
-            color(Colors.buttonDisabled),
-            hover([backgroundColor(Colors.white)]),
+            borderColor(theme.textSecondary),
+            color(theme.textSecondary),
+            hover([backgroundColor(`transparent)]),
+            opacity(0.5),
           ]),
         ])
       };

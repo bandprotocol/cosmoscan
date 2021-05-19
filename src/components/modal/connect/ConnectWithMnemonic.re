@@ -9,14 +9,16 @@ module Styles = {
       padding2(~v=`zero, ~h=`px(18)),
     ]);
 
-  let inputBar =
+  let inputBar = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
       height(`px(37)),
       paddingLeft(`px(9)),
       borderRadius(`px(6)),
-      border(`px(1), `solid, Colors.blueGray3),
-      focus([outline(`zero, `none, Colors.white)]),
+      border(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.inputContrastColor),
+      outlineStyle(`none),
+      color(theme.textPrimary),
     ]);
 
   let mnemonicHelper =
@@ -29,15 +31,7 @@ module Styles = {
       color(Css.hex("5269FF")),
     ]);
 
-  let connectBtn =
-    style([
-      width(`percent(100.)),
-      height(`px(37)),
-      backgroundColor(Colors.bandBlue),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(8), Css.rgba(82, 105, 255, `num(0.25))),
-      ),
-    ]);
+  let connectBtn = style([width(`percent(100.)), height(`px(37))]);
 };
 
 [@react.component]
@@ -46,6 +40,8 @@ let make = (~chainID) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let (mnemonic, setMnemonic) = React.useState(_ => "");
   let (errMsg, setErrMsg) = React.useState(_ => "");
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   let createMnemonic = () =>
     if (mnemonic->Js.String.trim == "") {
@@ -69,13 +65,13 @@ let make = (~chainID) => {
 
   <div className=Styles.container>
     <VSpacing size=Spacing.xl />
-    <Text value="Enter Your Mnemonic" size=Text.Lg weight=Text.Semibold />
+    <Heading value="Enter Your Mnemonic" size=Heading.H5 />
     <VSpacing size=Spacing.md />
     <input
       id="mnemonicInput"
       autoFocus=true
       value=mnemonic
-      className=Styles.inputBar
+      className={Styles.inputBar(theme)}
       onChange={event => setMnemonic(ReactEvent.Form.target(event)##value)}
       onKeyDown={event =>
         switch (ReactEvent.Keyboard.key(event)) {
@@ -89,7 +85,7 @@ let make = (~chainID) => {
     <VSpacing size=Spacing.xl />
     <div id="mnemonicConnectButton" className={CssHelper.flexBox(~justify=`flexEnd, ())}>
       <Button px=20 py=8 onClick={_ => createMnemonic()} style=Styles.connectBtn>
-        <Text value="Connect" weight=Text.Bold size=Text.Lg color=Colors.white />
+        {"Connect" |> React.string}
       </Button>
     </div>
     <VSpacing size=Spacing.lg />

@@ -8,18 +8,9 @@ module Styles = {
       borderRadius(`px(4)),
     ]);
 
-  let modalTitle = style([paddingBottom(`px(24))]);
-
   let resultContainer = style([minHeight(`px(400)), width(`percent(100.))]);
 
   let btn = style([width(`percent(100.))]);
-
-  let btnBack =
-    style([
-      display(`table),
-      cursor(`pointer),
-      margin3(~top=`px(24), ~h=`auto, ~bottom=`zero),
-    ]);
 
   let jsonDisplay =
     style([
@@ -63,10 +54,10 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
   let (state, setState) = React.useState(_ => Nothing);
   let jsonTx = TxCreator.sortAndStringify(rawTx);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.container>
-    <div className=Styles.modalTitle>
-      <Text value="Confirm Transaction" weight=Text.Medium size=Text.Xl />
-    </div>
+    <Heading value="Confirm Transactions" size=Heading.H4 marginBottom=24 />
     {switch (state) {
      | Nothing =>
        <div>
@@ -84,7 +75,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
          <div id="broadcastButtonContainer">
            <Button
              py=10
-             style=Styles.btn
+             style={Css.merge([Styles.btn, CssHelper.mb(~size=16, ())])}
              onClick={_ => {
                dispatchModal(DisableExit);
                setState(_ => Signing);
@@ -141,12 +132,10 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                     });
                ();
              }}>
-             <Text value="Broadcast" weight=Text.Semibold size=Text.Lg color=Colors.white />
+             {"Broadcast" |> React.string}
            </Button>
          </div>
-         <a className=Styles.btnBack onClick=onBack>
-           <Text value="Back" weight=Text.Semibold size=Text.Lg color=Colors.gray7 />
-         </a>
+         <Button py=10 style=Styles.btn onClick=onBack> {"Back" |> React.string} </Button>
        </div>
      | Success(txHash) =>
        <div
@@ -156,17 +145,17 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
          ])}>
          <img src=Images.success className=Styles.resultIcon />
          <div id="successMsgContainer" className={CssHelper.mb(~size=16, ())}>
-           <Text value="Broadcast transaction success" size=Text.Lg block=true align=Text.Center />
+           <Text
+             value="Broadcast transaction success"
+             size=Text.Lg
+             block=true
+             align=Text.Center
+             color={theme.textPrimary}
+           />
          </div>
          <Link className=Styles.txhashContainer route={Route.TxIndexPage(txHash)}>
            <Button py=8 px=13 variant=Button.Outline onClick={_ => {dispatchModal(CloseModal)}}>
-             <Text
-               block=true
-               value="View Details"
-               weight=Text.Semibold
-               ellipsis=true
-               color=Colors.bandBlue
-             />
+             {"View Details" |> React.string}
            </Button>
          </Link>
        </div>
@@ -177,9 +166,15 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            Styles.resultContainer,
          ])}>
          <div className={CssHelper.mb(~size=16, ())}>
-           <Icon name="fad fa-spinner-third fa-spin" color=Colors.bandBlue size=48 />
+           <Icon name="fad fa-spinner-third fa-spin" size=48 />
          </div>
-         <Text value="Waiting for signing transaction" size=Text.Lg block=true align=Text.Center />
+         <Text
+           value="Waiting for signing transaction"
+           size=Text.Lg
+           block=true
+           align=Text.Center
+           color={theme.textPrimary}
+         />
        </div>
      | Broadcasting =>
        <div
@@ -188,13 +183,14 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            Styles.resultContainer,
          ])}>
          <div className={CssHelper.mb(~size=16, ())}>
-           <Icon name="fad fa-spinner-third fa-spin" color=Colors.bandBlue size=48 />
+           <Icon name="fad fa-spinner-third fa-spin" size=48 />
          </div>
          <Text
            value="Waiting for broadcasting transaction"
            size=Text.Lg
            block=true
            align=Text.Center
+           color={theme.textPrimary}
          />
        </div>
      | Error(err) =>
@@ -205,9 +201,15 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
          ])}>
          <img src=Images.fail className=Styles.resultIcon />
          <div className={CssHelper.mb()}>
-           <Text value="Broadcast transaction fail" size=Text.Lg block=true align=Text.Center />
+           <Text
+             value="Broadcast transaction fail"
+             size=Text.Lg
+             block=true
+             align=Text.Center
+             color={theme.textPrimary}
+           />
          </div>
-         <Text value=err color=Colors.red3 align=Text.Center breakAll=true />
+         <Text value=err color={theme.failColor} align=Text.Center breakAll=true />
        </div>
      }}
   </div>;

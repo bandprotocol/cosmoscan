@@ -3,7 +3,7 @@ module Styles = {
 
   let container = style([paddingBottom(`px(24))]);
 
-  let buttonGroup =
+  let buttonGroup = (theme: Theme.t) =>
     style([
       margin4(~top=`px(0), ~right=`px(-12), ~bottom=`px(23), ~left=`px(-12)),
       selector(
@@ -13,10 +13,31 @@ module Styles = {
           flexShrink(0.),
           flexBasis(`calc((`sub, `percent(50.), `px(24)))),
           margin2(~v=`zero, ~h=`px(12)),
-          disabled([backgroundColor(Colors.bandBlue), color(Colors.white)]),
-          border(`px(1), `solid, Colors.gray9),
-          color(Colors.gray7),
-          fontWeight(`light),
+          borderColor(theme.loadingBaseColor),
+          position(`relative),
+          disabled([
+            color(theme.textPrimary),
+            opacity(1.),
+            border(`px(1), `solid, theme.baseBlue),
+            hover([backgroundColor(`transparent)]),
+            after([
+              contentRule(`text("\f00c")),
+              fontFamily(`custom("'Font Awesome 5 Pro'")),
+              fontWeight(`light),
+              borderRadius(`percent(50.)),
+              fontSize(`px(10)),
+              lineHeight(`em(1.8)),
+              display(`block),
+              position(`absolute),
+              pointerEvents(`none),
+              top(`px(-8)),
+              right(`px(-8)),
+              color(theme.white),
+              backgroundColor(theme.baseBlue),
+              width(`px(20)),
+              height(`px(20)),
+            ]),
+          ]),
         ],
       ),
     ]);
@@ -25,15 +46,16 @@ module Styles = {
 module VoteInput = {
   [@react.component]
   let make = (~setAnswerOpt, ~answerOpt) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
-      <div className={Css.merge([CssHelper.flexBox(), Styles.buttonGroup])}>
+      <div className={Css.merge([CssHelper.flexBox(), Styles.buttonGroup(theme)])}>
         <Button
           variant=Button.Outline
           px=15
           py=9
           onClick={_ => setAnswerOpt(_ => Some("Yes"))}
           disabled={answerOpt == Some("Yes")}>
-          <Text size=Text.Lg value="Yes" />
+          {"Yes" |> React.string}
         </Button>
         <Button
           variant=Button.Outline
@@ -41,17 +63,17 @@ module VoteInput = {
           py=9
           onClick={_ => setAnswerOpt(_ => Some("No"))}
           disabled={answerOpt == Some("No")}>
-          <Text size=Text.Lg value="No" />
+          {"No" |> React.string}
         </Button>
       </div>
-      <div className={Css.merge([CssHelper.flexBox(), Styles.buttonGroup])}>
+      <div className={Css.merge([CssHelper.flexBox(), Styles.buttonGroup(theme)])}>
         <Button
           variant=Button.Outline
           px=15
           py=9
           onClick={_ => setAnswerOpt(_ => Some("NoWithVeto"))}
           disabled={answerOpt == Some("NoWithVeto")}>
-          <Text size=Text.Lg value="No with Veto" />
+          {"No with Veto" |> React.string}
         </Button>
         <Button
           variant=Button.Outline
@@ -59,7 +81,7 @@ module VoteInput = {
           py=9
           onClick={_ => setAnswerOpt(_ => Some("Abstain"))}
           disabled={answerOpt == Some("Abstain")}>
-          <Text size=Text.Lg value="Abstain" />
+          {"Abstain" |> React.string}
         </Button>
       </div>
     </>;
@@ -86,9 +108,9 @@ let make = (~proposalID, ~proposalName, ~setMsgsOpt) => {
       <Text value="Vote to" size=Text.Md weight=Text.Medium nowrap=true block=true />
       <VSpacing size=Spacing.sm />
       <div className={CssHelper.flexBox()}>
-        <TypeID.Proposal id=proposalID position=TypeID.Subtitle />
+        <TypeID.Proposal id=proposalID position=TypeID.Text />
         <HSpacing size=Spacing.sm />
-        <Text value=proposalName size=Text.Lg nowrap=true block=true />
+        <Text value=proposalName nowrap=true block=true />
       </div>
     </div>
     <VoteInput answerOpt setAnswerOpt />

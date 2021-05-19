@@ -7,15 +7,6 @@ module Styles = {
 
   let validator =
     style([display(`flex), flexDirection(`column), alignItems(`flexEnd), width(`px(330))]);
-
-  let warning =
-    style([
-      padding(`px(10)),
-      color(Colors.blue5),
-      backgroundColor(Colors.blue1),
-      border(`px(1), `solid, Colors.blue6),
-      borderRadius(`px(4)),
-    ]);
 };
 
 [@react.component]
@@ -26,6 +17,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
   let allSub = Sub.all2(accountSub, validatorInfoSub);
 
   let (amount, setAmount) = React.useState(_ => EnhanceTxInput.empty);
+
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect1(
     _ => {
@@ -51,19 +44,14 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data((_, {moniker})) =>
          <div>
-           <Text value=moniker size=Text.Lg ellipsis=true align=Text.Right />
-           <Text
-             value={"(" ++ validator->Address.toOperatorBech32 ++ ")"}
-             size=Text.Md
-             color=Colors.gray6
-             code=true
-             block=true
-           />
+           <Text value=moniker ellipsis=true align=Text.Right />
+           <Text value={"(" ++ validator->Address.toOperatorBech32 ++ ")"} code=true block=true />
          </div>
        | _ => <LoadingCensorBar width=300 height=34 />
        }}
@@ -74,7 +62,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (allSub) {
        | Data(({balance}, _)) =>
@@ -82,9 +71,8 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
            <Text
              value={balance |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=6)}
              code=true
-             size=Text.Lg
            />
-           <Text value=" BAND" size=Text.Lg code=true />
+           <Text value=" BAND" />
          </div>
        | _ => <LoadingCensorBar width=150 height=18 />
        }}

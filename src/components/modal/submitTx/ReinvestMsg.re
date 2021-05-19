@@ -8,6 +8,8 @@ module Styles = {
 let make = (~validator, ~amount, ~setMsgsOpt) => {
   let validatorInfoSub = ValidatorSub.get(validator);
 
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   React.useEffect0(_ => {
     let msgsOpt = {
       let%Opt amountValue = Some(amount);
@@ -30,19 +32,14 @@ let make = (~validator, ~amount, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       {switch (validatorInfoSub) {
        | Data({moniker}) =>
          <div>
-           <Text value=moniker size=Text.Lg ellipsis=true align=Text.Right />
-           <Text
-             value={"(" ++ validator->Address.toOperatorBech32 ++ ")"}
-             size=Text.Md
-             color=Colors.gray6
-             code=true
-             block=true
-           />
+           <Text value=moniker ellipsis=true align=Text.Right />
+           <Text value={"(" ++ validator->Address.toOperatorBech32 ++ ")"} code=true block=true />
          </div>
        | _ => <LoadingCensorBar width=300 height=34 />
        }}
@@ -53,7 +50,8 @@ let make = (~validator, ~amount, ~setMsgsOpt) => {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        weight=Heading.Medium
+        weight=Heading.Regular
+        color={theme.textSecondary}
       />
       <div>
         <Text
@@ -64,9 +62,8 @@ let make = (~validator, ~amount, ~setMsgsOpt) => {
             |> Format.fPretty(~digits=6)
           }
           code=true
-          size=Text.Lg
         />
-        <Text value=" BAND" size=Text.Lg code=true />
+        <Text value=" BAND" />
       </div>
     </div>
   </>;
