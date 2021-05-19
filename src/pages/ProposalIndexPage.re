@@ -1,52 +1,9 @@
 module Styles = {
   open Css;
-  let infoContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      padding(`px(24)),
-      height(`percent(100.)),
-      position(`relative),
-      Media.mobile([padding(`px(16))]),
-    ]);
-  let resultsInfoContainer = style([paddingTop(`px(17))]);
-
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-
-  let resultsInfoheader =
-    style([paddingBottom(`px(13)), Media.mobile([paddingBottom(`px(16))])]);
-
-  let tableContainer =
-    style([
-      backgroundColor(Colors.white),
-      boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
-      ),
-      Media.mobile([margin2(~h=`px(-12), ~v=`zero), padding2(~h=`px(16), ~v=`zero)]),
-    ]);
-
-  let tableHeader =
-    style([
-      padding2(~v=`px(16), ~h=`px(24)),
-      Media.mobile([padding2(~v=`px(14), ~h=`px(12))]),
-    ]);
 
   let statusLogo = style([width(`px(20))]);
-  let resultContainer =
-    style([
-      margin3(~top=`px(40), ~h=`zero, ~bottom=`px(20)),
-      selector("> div + div", [marginTop(`px(24))]),
-    ]);
-  let separatorLine =
-    style([
-      borderStyle(`none),
-      backgroundColor(Colors.gray9),
-      height(`px(1)),
-      margin2(~v=`px(24), ~h=`auto),
-    ]);
+  let resultContainer = style([selector("> div + div", [marginTop(`px(24))])]);
+
   let voteButton =
     fun
     | ProposalSub.Voting => style([visibility(`visible)])
@@ -54,6 +11,8 @@ module Styles = {
     | Passed
     | Rejected
     | Failed => style([visibility(`hidden)]);
+
+  let chartContainer = style([paddingRight(`px(20)), Media.mobile([paddingRight(`zero)])]);
 };
 
 module VoteButton = {
@@ -70,17 +29,13 @@ module VoteButton = {
     switch (accountOpt) {
     | Some(_) =>
       <Button px=20 py=5 style={CssHelper.flexBox()} onClick={_ => vote()}>
-        <Icon name="fas fa-pencil" size=12 color=Colors.white />
-        <HSpacing size=Spacing.sm />
-        <Text value="Vote" nowrap=true block=true />
+        {"Vote" |> React.string}
       </Button>
     | None =>
       switch (trackingSub) {
       | Data({chainID}) =>
         <Button px=20 py=5 style={CssHelper.flexBox()} onClick={_ => connect(chainID)}>
-          <Icon name="fas fa-pencil" size=12 color=Colors.white />
-          <HSpacing size=Spacing.sm />
-          <Text value="Vote" nowrap=true block=true />
+          {"Vote" |> React.string}
         </Button>
       | Error(err) =>
         // log for err details
@@ -101,48 +56,56 @@ let make = (~proposalID) => {
 
   let allSub = Sub.all3(proposalSub, voteStatByProposalIDSub, bondedTokenCountSub);
 
-  <Section pbSm=0>
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+  <Section>
     <div className=CssHelper.container>
       <Row marginBottom=40 marginBottomSm=16>
-        <Col> <Heading value="Proposal" size=Heading.H4 marginBottom=40 marginBottomSm=24 /> </Col>
+        <Col>
+          <Heading value="Proposal Details" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
+        </Col>
         <Col col=Col.Eight mbSm=16>
           {switch (allSub) {
-           | Data(({id, name}, _, _)) =>
-             <div className={CssHelper.flexBox()}>
-               <TypeID.Proposal id position=TypeID.Title />
-               <HSpacing size=Spacing.sm />
-               <Heading size=Heading.H3 value=name />
+           | Data(({id, name, status}, _, _)) =>
+             <div
+               className={Css.merge([
+                 CssHelper.flexBox(),
+                 CssHelper.flexBoxSm(~direction=`column, ~align=`flexStart, ()),
+               ])}>
+               <div className={CssHelper.flexBox()}>
+                 <TypeID.Proposal id position=TypeID.Title />
+                 <HSpacing size=Spacing.sm />
+                 <Heading size=Heading.H3 value=name />
+                 <HSpacing size={`px(16)} />
+               </div>
+               <div className={CssHelper.mtSm(~size=16, ())}> <ProposalBadge status /> </div>
              </div>
-           | _ => <LoadingCensorBar width=270 height=15 />
+           | _ =>
+             <div className={CssHelper.flexBox()}>
+               <LoadingCensorBar width=270 height=15 />
+               <HSpacing size={`px(16)} />
+               <div className={CssHelper.mtSm(~size=16, ())}>
+                 <LoadingCensorBar width=100 height=15 radius=50 />
+               </div>
+             </div>
            }}
-        </Col>
-        <Col col=Col.Four>
-          <div
-            className={Css.merge([
-              CssHelper.flexBox(~justify=`flexEnd, ()),
-              CssHelper.flexBoxSm(~justify=`flexStart, ()),
-            ])}>
-            {switch (allSub) {
-             | Data(({status}, _, _)) => <ProposalBadge status />
-             | _ => <LoadingCensorBar width=100 height=15 radius=50 />
-             }}
-          </div>
         </Col>
       </Row>
       <Row marginBottom=24>
         <Col>
-          <div className=Styles.infoContainer>
-            <Row>
-              <Col>
+          <InfoContainer>
+            <Heading value="Information" size=Heading.H4 />
+            <SeperatedLine mt=32 mb=24 />
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
                 <Heading
-                  value="Information"
+                  value="Proposer"
                   size=Heading.H4
-                  style=Styles.infoHeader
-                  marginBottom=24
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
                 />
               </Col>
-              <Col col=Col.Six mb=24>
-                <Heading value="Proposer" size=Heading.H5 marginBottom=8 />
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({proposerAddressOpt}, _, _)) =>
                    switch (proposerAddressOpt) {
@@ -153,15 +116,33 @@ let make = (~proposalID) => {
                  | _ => <LoadingCensorBar width=270 height=15 />
                  }}
               </Col>
-              <Col col=Col.Six mb=24>
-                <Heading value="Submit Time" size=Heading.H5 marginBottom=8 />
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Submit Time"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({submitTime}, _, _)) => <Timestamp size=Text.Lg time=submitTime />
                  | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
                  }}
               </Col>
-              <Col col=Col.Six mb=24>
-                <Heading value="Proposal Type" size=Heading.H5 marginBottom=8 />
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Proposal Type"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({proposalType}, _, _)) =>
                    <Text value=proposalType size=Text.Lg block=true />
@@ -170,15 +151,22 @@ let make = (~proposalID) => {
               </Col>
             </Row>
             <Row>
-              <Col>
-                <Heading value="Description" size=Heading.H5 marginBottom=8 />
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Description"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({description}, _, _)) => <Markdown value=description />
                  | _ => <LoadingCensorBar width=270 height=15 />
                  }}
               </Col>
             </Row>
-          </div>
+          </InfoContainer>
         </Col>
       </Row>
       {switch (allSub) {
@@ -206,68 +194,73 @@ let make = (~proposalID) => {
            <>
              <Row>
                <Col col=Col.Six mb=24 mbSm=16>
-                 <div className=Styles.infoContainer>
-                   <Heading
-                     value="Voting Overview"
-                     size=Heading.H4
-                     style=Styles.infoHeader
-                     marginBottom=24
-                   />
+                 <InfoContainer>
+                   <Heading value="Voting Overview" size=Heading.H4 />
+                   <SeperatedLine mt=32 mb=24 />
                    <Row marginTop=38 alignItems=Row.Center>
                      <Col col=Col.Seven>
-                       <div className={CssHelper.flexBoxSm(~justify=`spaceAround, ())}>
+                       <div
+                         className={Css.merge([
+                           CssHelper.flexBoxSm(~justify=`spaceAround, ()),
+                           CssHelper.flexBox(~justify=`flexEnd, ()),
+                         ])}>
                          {let turnoutPercent =
                             total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.;
-                          <TurnoutChart percent=turnoutPercent />}
-                         {isMobile
-                            ? <div>
-                                <Heading value="Total" size=Heading.H5 marginBottom=8 />
-                                <Text
-                                  value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
-                                  size=Text.Lg
-                                  block=true
-                                  color=Colors.gray6
-                                />
-                              </div>
-                            : React.null}
+                          <div className=Styles.chartContainer>
+                            <TurnoutChart percent=turnoutPercent />
+                          </div>}
                        </div>
                      </Col>
-                     {isMobile ? <Col> <hr className=Styles.separatorLine /> </Col> : React.null}
                      <Col col=Col.Five>
-                       <Row>
-                         {isMobile
-                            ? React.null
-                            : <Col mb=24>
-                                <Heading value="Total" size=Heading.H5 marginBottom=8 />
-                                <Text
-                                  value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
-                                  size=Text.Lg
-                                  block=true
-                                  color=Colors.gray6
-                                />
-                              </Col>}
-                         <Col mb=24 mbSm=0 colSm=Col.Six>
-                           <Heading value="Voting Start" size=Heading.H5 marginBottom=8 />
-                           <Timestamp.Grid size=Text.Lg time=votingStartTime />
+                       <Row justify=Row.Center marginTopSm=32>
+                         <Col mb=24>
+                           <Heading
+                             value="Total"
+                             size=Heading.H5
+                             color={theme.textSecondary}
+                             marginBottom=4
+                           />
+                           <Text
+                             value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
+                             size=Text.Lg
+                             block=true
+                             color={theme.textPrimary}
+                           />
                          </Col>
                          <Col mb=24 mbSm=0 colSm=Col.Six>
-                           <Heading value="Voting End" size=Heading.H5 marginBottom=8 />
-                           <Timestamp.Grid size=Text.Lg time=votingEndTime />
+                           <Heading
+                             value="Voting Start"
+                             size=Heading.H5
+                             color={theme.textSecondary}
+                             marginBottom=4
+                           />
+                           <Timestamp.Grid
+                             size=Text.Lg
+                             time=votingStartTime
+                             color={theme.textPrimary}
+                           />
+                         </Col>
+                         <Col mbSm=0 colSm=Col.Six>
+                           <Heading
+                             value="Voting End"
+                             size=Heading.H5
+                             color={theme.textSecondary}
+                             marginBottom=4
+                           />
+                           <Timestamp.Grid
+                             size=Text.Lg
+                             time=votingEndTime
+                             color={theme.textPrimary}
+                           />
                          </Col>
                        </Row>
                      </Col>
                    </Row>
-                 </div>
+                 </InfoContainer>
                </Col>
                <Col col=Col.Six mb=24 mbSm=16>
-                 <div className={Css.merge([Styles.infoContainer, Styles.resultsInfoContainer])}>
-                   <div
-                     className={Css.merge([
-                       CssHelper.flexBox(~justify=`spaceBetween, ()),
-                       Styles.infoHeader,
-                       Styles.resultsInfoheader,
-                       CssHelper.mb(~size=24, ()),
-                     ])}>
+                 <InfoContainer>
+                   <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
                      <Heading value="Results" size=Heading.H4 />
                      {isMobile
                         ? React.null
@@ -275,6 +268,7 @@ let make = (~proposalID) => {
                             <VoteButton proposalID proposalName=name />
                           </div>}
                    </div>
+                   <SeperatedLine mt=24 mb=35 />
                    <div className=Styles.resultContainer>
                      <>
                        <ProgressBar.Voting
@@ -299,7 +293,7 @@ let make = (~proposalID) => {
                        />
                      </>
                    </div>
-                 </div>
+                 </InfoContainer>
                </Col>
              </Row>
              <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
@@ -309,13 +303,19 @@ let make = (~proposalID) => {
        }}
       <Row marginBottom=24>
         <Col>
-          <div className=Styles.infoContainer>
-            <Row>
-              <Col>
-                <Heading value="Deposit" size=Heading.H4 style=Styles.infoHeader marginBottom=24 />
+          <InfoContainer>
+            <Heading value="Deposit" size=Heading.H4 />
+            <SeperatedLine mt=32 mb=24 />
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Deposit Status"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
               </Col>
-              <Col col=Col.Six mbSm=24>
-                <Heading value="Deposit Status" size=Heading.H5 marginBottom=8 />
+              <Col col=Col.Eight>
                 {switch (proposalSub) {
                  | Data({totalDeposit, status}) =>
                    switch (status) {
@@ -325,29 +325,41 @@ let make = (~proposalID) => {
                        <img src=Images.success className=Styles.statusLogo />
                        <HSpacing size=Spacing.sm />
                        // TODO: remove hard-coded later
-                       <Text value="Completed Min Deposit 1,000 BAND" />
+                       <Text value="Completed Min Deposit 1,000 BAND" size=Text.Lg />
                      </div>
                    }
                  | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
                  }}
               </Col>
-              <Col col=Col.Six>
-                <Heading value="Deposit End Time" size=Heading.H5 marginBottom=8 />
+            </Row>
+            <Row alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Deposit End Time"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
                 {switch (proposalSub) {
                  | Data({depositEndTime}) => <Timestamp size=Text.Lg time=depositEndTime />
                  | _ => <LoadingCensorBar width=90 height=15 />
                  }}
               </Col>
             </Row>
-          </div>
+          </InfoContainer>
         </Col>
       </Row>
-      <div className=Styles.tableContainer>
-        <Row>
-          <Col> <Heading value="Depositors" size=Heading.H4 style=Styles.tableHeader /> </Col>
-          <Col> <DepositorTable proposalID /> </Col>
-        </Row>
-      </div>
+      <Row>
+        <Col>
+          <Table>
+            <Heading value="Depositors" size=Heading.H4 marginTop=32 marginTopSm=16 />
+            <SeperatedLine mt=32 mb=0 />
+            <DepositorTable proposalID />
+          </Table>
+        </Col>
+      </Row>
     </div>
   </Section>;
 };

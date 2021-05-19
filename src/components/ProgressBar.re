@@ -161,18 +161,24 @@ module Voting = {
           CssHelper.flexBox(~justify=`spaceBetween, ()),
           CssHelper.mb(~size=8, ()),
         ])}>
-        <Heading value={VoteSub.toString(label, ~withSpace=true)} size=Heading.H4 />
+        <Heading
+          value={VoteSub.toString(label, ~withSpace=true)}
+          size=Heading.H4
+          weight=Heading.Thin
+        />
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
           <Text value={percent |> Format.fPercent(~digits=2)} size=Text.Lg block=true />
           {isMobile
              ? React.null
              : <>
                  <HSpacing size=Spacing.sm />
+                 <Text value="/" size=Text.Lg block=true />
+                 <HSpacing size=Spacing.sm />
                  <Text
-                   value={"(" ++ (amount |> Format.fPretty(~digits=2)) ++ " BAND)"}
+                   value={(amount |> Format.fPretty(~digits=2)) ++ " BAND"}
                    size=Text.Lg
                    block=true
-                   color=Colors.gray6
+                   color={theme.textPrimary}
                  />
                </>}
         </div>
