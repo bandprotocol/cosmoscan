@@ -67,7 +67,13 @@ module RenderMobile = {
         padding2(~v=`px(18), ~h=`zero),
         textAlign(`center),
         boxShadow(
-          Shadow.box(~inset=true, ~x=`zero, ~y=`px(-1), ~blur=`px(0), Css.hex("353535")),
+          Shadow.box(
+            ~inset=true,
+            ~x=`zero,
+            ~y=`px(-1),
+            ~blur=`px(0),
+            theme.tableRowBorderColor,
+          ),
         ),
       ]);
 
