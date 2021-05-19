@@ -53,7 +53,13 @@ let make = (~executable) => {
   React.useMemo1(
     () =>
       <div className=Styles.tableLowerContainer>
-        <div className=Styles.copyContainer> <CopyButton data=code title="Copy Code" /> </div>
+        <div
+          className={Css.merge([
+            CssHelper.flexBox(~justify=`flexEnd, ()),
+            CssHelper.mb(~size=8, ()),
+          ])}>
+          <CopyButton data=code title="Copy Code" />
+        </div>
         {code |> renderCode}
       </div>,
     [||],

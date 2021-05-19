@@ -16,7 +16,7 @@ module Styles = {
       zIndex(2),
       minHeight(`px(177)),
       padding2(~v=`px(24), ~h=`px(32)),
-      Media.mobile([padding2(~v=`px(10), ~h=`px(12)), height(`px(120))]),
+      Media.mobile([padding2(~v=`px(10), ~h=`px(12)), minHeight(`px(146))]),
     ]);
 
   let fullWidth = style([width(`percent(100.))]);

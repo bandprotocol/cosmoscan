@@ -64,6 +64,7 @@ let make = (~address) => {
                     value={reporterCount |> string_of_int}
                     weight=Text.Semibold
                     transform=Text.Uppercase
+                    size=Text.Sm
                   />
                   <HSpacing size=Spacing.xs />
                   <Text
@@ -71,6 +72,7 @@ let make = (~address) => {
                     value="Reporters"
                     weight=Text.Semibold
                     transform=Text.Uppercase
+                    size=Text.Sm
                   />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />

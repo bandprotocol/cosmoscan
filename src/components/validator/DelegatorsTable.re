@@ -95,9 +95,20 @@ let make = (~address) => {
              {switch (allSub) {
               | Data((_, delegatorCount)) =>
                 <div className={CssHelper.flexBox()}>
-                  <Text block=true value={delegatorCount |> Format.iPretty} weight=Text.Semibold />
+                  <Text
+                    block=true
+                    value={delegatorCount |> Format.iPretty}
+                    weight=Text.Semibold
+                    size=Text.Sm
+                  />
                   <HSpacing size=Spacing.xs />
-                  <Text block=true value="Delegators" weight=Text.Semibold />
+                  <Text
+                    block=true
+                    value="Delegators"
+                    weight=Text.Semibold
+                    size=Text.Sm
+                    transform=Text.Uppercase
+                  />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
               }}

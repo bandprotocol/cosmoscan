@@ -19,9 +19,9 @@ module Styles = {
         ])
       : style([
           pointerEvents(`none),
-          color(theme.textPrimary),
-          hover([color(theme.textPrimary)]),
-          active([color(theme.textPrimary)]),
+          color(theme.textSecondary),
+          hover([color(theme.textSecondary)]),
+          active([color(theme.textSecondary)]),
         ]);
 
   let prefix = style([fontWeight(`num(600))]);

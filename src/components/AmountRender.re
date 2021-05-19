@@ -16,7 +16,6 @@ let make = (~coins, ~pos=Msg) => {
      | TxIndex =>
        <Text
          value={coins |> Coin.getBandAmountFromCoins |> Format.fPretty}
-         weight=Text.Semibold
          code=true
          block=true
          nowrap=true
@@ -25,7 +24,6 @@ let make = (~coins, ~pos=Msg) => {
      | _ =>
        <Text
          value={coins |> Coin.getBandAmountFromCoins |> Format.fPretty}
-         weight=Text.Semibold
          block=true
          nowrap=true
          code=true

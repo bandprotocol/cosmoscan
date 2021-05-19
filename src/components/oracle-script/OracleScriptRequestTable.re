@@ -142,9 +142,16 @@ let make = (~oracleScriptID: ID.OracleScript.t) => {
                     block=true
                     value={totalRequestCount |> Format.iPretty}
                     weight=Text.Semibold
+                    size=Text.Sm
                   />
                   <HSpacing size=Spacing.xs />
-                  <Text block=true value="Requests" weight=Text.Semibold />
+                  <Text
+                    block=true
+                    value="Requests"
+                    weight=Text.Semibold
+                    size=Text.Sm
+                    transform=Text.Uppercase
+                  />
                 </div>
               | _ => <LoadingCensorBar width=100 height=15 />
               }}

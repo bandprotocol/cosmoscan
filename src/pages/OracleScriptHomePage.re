@@ -116,7 +116,7 @@ module RenderMostRequestedCard = {
                  <Icon name="far fa-arrow-right" color={theme.white} />
                </div>
              </TypeID.OracleScriptLink>
-           | _ => <LoadingCensorBar width=100 height=15 />
+           | _ => <LoadingCensorBar width=32 height=32 radius=8 />
            }}
         </div>
         <div className=Styles.descriptionBox>

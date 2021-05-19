@@ -14,7 +14,7 @@ module Content = {
       ) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-    <Section pbSm=0>
+    <Section>
       <div className=CssHelper.container>
         <Row marginBottom=40 marginBottomSm=16>
           <Col>

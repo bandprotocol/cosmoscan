@@ -194,6 +194,7 @@ let make = (~height) => {
         </Row>
         <Table>
           <Heading value="Transactions" size=Heading.H4 marginBottom=32 marginTop=32 />
+          <SeperatedLine mt=32 mb=0 />
           <BlockIndexTxsTable txsSub />
           {switch (blockSub) {
            | Data({txn}) =>
