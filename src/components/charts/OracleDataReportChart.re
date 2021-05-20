@@ -78,7 +78,7 @@ let make = (~oracleStatus, ~operatorAddress) => {
                  />
                )
              ->React.array
-           | _ => <LoadingCensorBar fullWidth=true height=90 />
+           | _ => <LoadingCensorBar.CircleSpin height=90 />
            }}
         </div>
       </Col>

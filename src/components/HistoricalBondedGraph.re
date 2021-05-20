@@ -167,6 +167,6 @@ let make = (~operatorAddress) => {
         />
       </EmptyContainer>
     </div>;
-  | _ => <LoadingCensorBar fullWidth=true height=180 />
+  | _ => <LoadingCensorBar.CircleSpin height=180 />
   };
 };

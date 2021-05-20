@@ -85,7 +85,7 @@ let make = (~consensusAddress) => {
                  <UptimeBlock key={blockHeight |> ID.Block.toString} status height=blockHeight />
                )
              ->React.array
-           | _ => <LoadingCensorBar fullWidth=true height=90 />
+           | _ => <LoadingCensorBar.CircleSpin height=90 />
            }}
         </div>
       </Col>

@@ -30,6 +30,8 @@ module Styles = {
       padding2(~v=`px(2), ~h=`px(10)),
     ]);
   };
+
+  let customContainer = style([height(`percent(100.))])
 };
 
 module UptimePercentage = {
@@ -426,7 +428,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
       </Row>
       <Row marginBottom=24>
         <Col col=Col.Six mbSm=24>
-          <InfoContainer>
+          <InfoContainer style=Styles.customContainer>
             <div className={CssHelper.flexBox()}>
               <Heading value="Block Uptime" size=Heading.H4 />
               <HSpacing size=Spacing.xs />
@@ -442,7 +444,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
           </InfoContainer>
         </Col>
         <Col col=Col.Six>
-          <InfoContainer>
+          <InfoContainer style=Styles.customContainer>
             <div className={CssHelper.flexBox()}>
               <Heading value="Oracle Data Report" size=Heading.H4 />
               <HSpacing size=Spacing.xs />
