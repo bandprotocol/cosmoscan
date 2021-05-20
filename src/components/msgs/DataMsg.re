@@ -14,7 +14,7 @@ module CreateDataSourceMsg = {
         Styles.msgContainer,
       ])}>
       <TypeID.DataSource id />
-      <Text value=name color=Colors.gray7 nowrap=true block=true ellipsis=true />
+      <Text value=name nowrap=true block=true ellipsis=true />
     </div>;
   };
 };
@@ -30,7 +30,7 @@ module EditDataSourceMsg = {
       ])}>
       <TypeID.DataSource id />
       {name == Config.doNotModify
-         ? React.null : <Text value=name color=Colors.gray7 nowrap=true block=true ellipsis=true />}
+         ? React.null : <Text value=name nowrap=true block=true ellipsis=true />}
     </div>;
   };
 };
@@ -45,7 +45,7 @@ module CreateOracleScriptMsg = {
         Styles.msgContainer,
       ])}>
       <TypeID.OracleScript id />
-      <Text value=name color=Colors.gray7 nowrap=true block=true ellipsis=true />
+      <Text value=name nowrap=true block=true ellipsis=true />
     </div>;
   };
 };
@@ -61,7 +61,7 @@ module EditOracleScriptMsg = {
       ])}>
       <TypeID.OracleScript id />
       {name == Config.doNotModify
-         ? React.null : <Text value=name color=Colors.gray7 nowrap=true block=true ellipsis=true />}
+         ? React.null : <Text value=name nowrap=true block=true ellipsis=true />}
     </div>;
   };
 };
@@ -78,7 +78,7 @@ module RequestMsg = {
       <TypeID.Request id />
       <Text value={j| to |j} size=Text.Md nowrap=true block=true />
       <TypeID.OracleScript id=oracleScriptID />
-      <Text value=oracleScriptName color=Colors.gray7 nowrap=true block=true ellipsis=true />
+      <Text value=oracleScriptName nowrap=true block=true ellipsis=true />
     </div>;
   };
 };

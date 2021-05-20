@@ -17,7 +17,7 @@ module Placeholder = {
   [@react.component]
   let make = (~moniker, ~width, ~widthSm) =>
     <img
-      src={j|https://ui-avatars.com/api/?rounded=true&size=128&name=$moniker&color=9714B8&background=F3CEFD|j}
+      src={j|https://ui-avatars.com/api/?rounded=true&size=128&name=$moniker&color=230F81&background=C2B6F7|j}
       className={Css.merge([Styles.avatar(width), Styles.avatarSm(widthSm)])}
     />;
 };

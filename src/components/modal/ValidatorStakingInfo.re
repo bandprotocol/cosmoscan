@@ -272,7 +272,7 @@ let make = (~validatorAddress) => {
          // log for err details
          Js.Console.log(err);
          <Text value="chain id not found" />;
-       | _ => <LoadingCensorBar fullWidth=true height=200 />
+       | _ => <LoadingCensorBar.CircleSpin height=200 />
        }
      }}
   </InfoContainer>;

@@ -1,4 +1,4 @@
-[@bs.module] external bandLogo: string = "./band-symbol-white.svg";
+[@bs.module] external bandLogo: string = "./band-blue-circle-logo.png";
 [@bs.module] external searchIcon: string = "./search-icon.png";
 [@bs.module] external searchGray: string = "./search-gray.svg";
 [@bs.module] external rightArrow: string = "./right-arrow.svg";
@@ -76,3 +76,10 @@
 [@bs.module] external ledgerBandChainLightIcon: string = "./ledget-band-light.svg";
 [@bs.module] external ledgerCosmosDarkIcon: string = "./ledger-cosmos-dark.svg";
 [@bs.module] external ledgerBandChainDarkIcon: string = "./ledger-band-dark.svg";
+
+//Toggle
+[@bs.module] external sunIcon: string = "./sun-icon.png";
+
+// Loading
+[@bs.module] external loadingCircleLight: string = "./loading-circle-light.png";
+[@bs.module] external loadingCircleDark: string = "./loading-circle-dark.png";

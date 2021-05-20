@@ -15,15 +15,8 @@ module Styles = {
       ]),
     ]);
 
-  let bandLogo = (theme: Theme.t) =>
-    style([
-      width(`px(40)),
-      backgroundColor(theme.baseBlue),
-      borderRadius(`percent(50.)),
-      padding(`px(8)),
-      marginRight(`px(5)),
-      Media.mobile([width(`px(34))]),
-    ]);
+  let bandLogo =
+    style([width(`px(40)), marginRight(`px(5)), Media.mobile([width(`px(34))])]);
 
   let blockImage = style([display(`block)]);
 
@@ -60,12 +53,12 @@ module DesktopRender = {
             <div className={CssHelper.flexBox(~align=`center, ())}>
               <LinkToHome>
                 <div className={CssHelper.flexBox(~align=`center, ())}>
-                  <img src=Images.bandLogo className={Styles.bandLogo(theme)} />
+                  <img src=Images.bandLogo className=Styles.bandLogo />
                   <div>
                     <Text
                       value="BANDCHAIN"
                       size=Text.Md
-                      weight=Text.Bold
+                      weight=Text.Semibold
                       nowrap=true
                       color={theme.textPrimary}
                       special=true
@@ -85,42 +78,6 @@ module DesktopRender = {
               <div className=Styles.chainIDContainer> <ChainIDBadge /> </div>
             </div>
           </Col>
-          //   <div
-          //     className={Css.merge([
-          //       CssHelper.flexBox(~align=`center, ()),
-          //       Styles.socialContainer,
-          //     ])}>
-          //     <a
-          //       href="https://twitter.com/bandprotocol"
-          //       target="_blank"
-          //       rel="noopener"
-          //       <Icon
-          //         name="fab fa-twitter"
-          //         color={isDarkMode ? Colors.white : theme.baseBlue}
-          //         size=16
-          //       />
-          //     </a>
-          //     <a
-          //       href="https://t.me/bandprotocol"
-          //       target="_blank"
-          //       rel="noopener"
-          //       <Icon
-          //         name="fab fa-telegram-plane"
-          //         color={isDarkMode ? Colors.white : theme.baseBlue}
-          //         size=17
-          //       />
-          //     </a>
-          //     <a
-          //       href="https://coinmarketcap.com/currencies/band-protocol/"
-          //       target="_blank"
-          //       rel="noopener"
-          //       className=Styles.socialLink>
-          //       <img
-          //         src={isDarkMode ? Images.cmcWhiteLogo : Images.cmcLogo}
-          //         className={Css.merge([Styles.cmcLogo, Styles.blockImage])}
-          //       />
-          //     </a>
-          //   </div>
           <Col col=Col.Six>
             <div className={CssHelper.flexBox(~align=`center, ~justify=`flexEnd, ())}>
               <SearchBar />
@@ -158,7 +115,7 @@ module MobileRender = {
             <LinkToHome>
               <img
                 src=Images.bandLogo
-                className={Css.merge([Styles.bandLogo(theme), Styles.blockImage])}
+                className={Css.merge([Styles.bandLogo, Styles.blockImage])}
               />
             </LinkToHome>
             <HSpacing size=Spacing.sm />

@@ -47,6 +47,41 @@ module Styles = {
     style([marginTop(`px(mt)), Media.mobile([marginBottom(`px(mtSm))])]);
   let mb = (~mb, ~mbSm, ()) =>
     style([marginBottom(`px(mb)), Media.mobile([marginBottom(`px(mbSm))])]);
+
+  let loadingCircle = size =>
+    style([
+      width(`px(size)),
+      height(`px(size)),
+      animation(
+        ~duration=1000,
+        ~timingFunction=`linear,
+        ~iterationCount=`infinite,
+        keyframes([
+          (0, [transform(rotate(`deg(0.)))]),
+          (100, [transform(rotate(`deg(360.)))]),
+        ]),
+      ),
+    ]);
+
+  let loadingCircleContainer = height_ =>
+    style([width(`percent(100.)), height(`px(height_))]);
+};
+
+module CircleSpin = {
+  [@react.component]
+  let make = (~size=76, ~height=78) => {
+    let ({ThemeContext.isDarkMode}, _) = React.useContext(ThemeContext.context);
+    <div
+      className={Css.merge([
+        Styles.loadingCircleContainer(height),
+        CssHelper.flexBox(~justify=`center, ()),
+      ])}>
+      <img
+        src={isDarkMode ? Images.loadingCircleDark : Images.loadingCircleLight}
+        className={Styles.loadingCircle(size)}
+      />
+    </div>;
+  };
 };
 
 [@react.component]

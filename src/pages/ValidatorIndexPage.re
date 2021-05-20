@@ -415,7 +415,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
             <div className={CssHelper.flexBox()}>
               {switch (allSub) {
                | Data(({operatorAddress}, _, _)) => <HistoricalBondedGraph operatorAddress />
-               | _ => <LoadingCensorBar fullWidth=true height=180 />
+               | _ => <LoadingCensorBar.CircleSpin height=180 />
                }}
             </div>
           </InfoContainer>
@@ -437,7 +437,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
             <SeperatedLine mt=32 mb=32 />
             {switch (allSub) {
              | Data(({consensusAddress}, _, _)) => <BlockUptimeChart consensusAddress />
-             | _ => <LoadingCensorBar fullWidth=true height=90 />
+             | _ => <LoadingCensorBar.CircleSpin height=90 />
              }}
           </InfoContainer>
         </Col>
@@ -454,7 +454,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
             {switch (allSub) {
              | Data(({oracleStatus}, _, _)) =>
                <OracleDataReportChart oracleStatus operatorAddress=address />
-             | _ => <LoadingCensorBar fullWidth=true height=90 />
+             | _ => <LoadingCensorBar.CircleSpin height=90 />
              }}
           </InfoContainer>
         </Col>

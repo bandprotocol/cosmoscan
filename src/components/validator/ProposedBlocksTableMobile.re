@@ -48,7 +48,7 @@ let make = (~consensusAddress) => {
        blocks
        ->Belt_Array.mapWithIndex((i, e) => renderBodyMobile(i, Sub.resolve(e)))
        ->React.array
-     | _ => <Loading />
+     | _ => <LoadingCensorBar.CircleSpin size=30 height=30 />
      }}
   </div>;
 };

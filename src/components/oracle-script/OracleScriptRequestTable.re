@@ -131,6 +131,8 @@ let make = (~oracleScriptID: ID.OracleScript.t) => {
 
   let isMobile = Media.isMobile();
 
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.tableWrapper>
     {isMobile
        ? <Row marginBottom=16>
@@ -231,13 +233,16 @@ let make = (~oracleScriptID: ID.OracleScript.t) => {
                 )
               ->React.array
             : <EmptyContainer>
-                <img src=Images.noSource className=Styles.noDataImage />
+                <img
+                  src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+                  className=Styles.noDataImage
+                />
                 <Heading
                   size=Heading.H4
                   value="No Request"
                   align=Heading.Center
                   weight=Heading.Regular
-                  color=Colors.bandBlue
+                  color={theme.textSecondary}
                 />
               </EmptyContainer>}
          {isMobile

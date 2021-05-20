@@ -224,7 +224,7 @@ type result_t =
   | Success(TxCreator.tx_response_t);
 
 let loadingRender = (wDiv, wImg, h) => {
-  <div className={Styles.withWH(wDiv, h)}> <Loading width=wImg /> </div>;
+  <div className={Styles.withWH(wDiv, h)}> <LoadingCensorBar.CircleSpin size=wImg /> </div>;
 };
 
 let resultRender = (result, schema) => {
@@ -233,7 +233,7 @@ let resultRender = (result, schema) => {
   | Loading =>
     <>
       <VSpacing size=Spacing.xl />
-      {loadingRender(`percent(100.), `px(104), `px(30))}
+      {loadingRender(`percent(100.), 30, `px(30))}
       <VSpacing size=Spacing.lg />
     </>
   | Error(err) =>

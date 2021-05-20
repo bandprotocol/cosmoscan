@@ -102,12 +102,12 @@ module Content = {
              | DataSourceExecute =>
                switch (dataSourceSub) {
                | Data({executable}) => <DataSourceExecute executable />
-               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               | _ => <LoadingCensorBar.CircleSpin height=400 />
                }
              | DataSourceCode =>
                switch (dataSourceSub) {
                | Data({executable}) => <DataSourceCode executable />
-               | _ => <LoadingCensorBar fullWidth=true height=300 />
+               | _ => <LoadingCensorBar.CircleSpin height=300 />
                }
              | DataSourceRequests => <DataSourceRequestTable dataSourceID />
              | DataSourceRevisions => <DataSourceRevisionTable id=dataSourceID />

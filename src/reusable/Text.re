@@ -155,7 +155,8 @@ module Styles = {
       | Left => style([textAlign(`left)]),
     );
 
-  let code = style([fontFamilies([`custom("Roboto Mono"), `monospace])]);
+  let code =
+    style([fontFamilies([`custom("Roboto Mono"), `monospace]), paddingBottom(`em(0.1))]);
 
   let special = style([fontFamilies([`custom("Lexend Exa"), `monospace])]);
 

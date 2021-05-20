@@ -213,13 +213,7 @@ module RenderBody = {
            }}
         </Col>
         <Col col=Col.Two>
-          <div
-            className={CssHelper.flexBox(
-              ~justify=`flexStart,
-              ~align=`flexEnd,
-              ~direction=`column,
-              (),
-            )}>
+          <div className={CssHelper.flexBox(~justify=`flexStart, ~align=`flexStart, ())}>
             {switch (allSub) {
              | Data(({id, requestCount}, stats)) =>
                let resultOpt = stats->Belt.Array.getBy(stat => id == stat.id);
@@ -230,9 +224,9 @@ module RenderBody = {
                      weight=Text.Medium
                      block=true
                      ellipsis=true
-                     align=Text.Right
                    />
                  </div>
+                 <HSpacing size={`px(2)} />
                  <div>
                    <Text
                      value={
@@ -244,8 +238,6 @@ module RenderBody = {
                      }
                      weight=Text.Medium
                      block=true
-                     color=Colors.gray6
-                     align=Text.Right
                    />
                  </div>
                </>;
@@ -463,19 +455,10 @@ let make = () => {
                    <Col col=Col.Two>
                      <Text
                        block=true
-                       value="Request"
+                       value="Request & Response time"
                        weight=Text.Semibold
                        transform=Text.Uppercase
                        size=Text.Sm
-                       align=Text.Right
-                     />
-                     <Text
-                       block=true
-                       value="& Response time"
-                       weight=Text.Semibold
-                       transform=Text.Uppercase
-                       size=Text.Sm
-                       align=Text.Right
                      />
                    </Col>
                    <Col col=Col.Two>

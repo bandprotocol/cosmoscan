@@ -22,7 +22,7 @@ module Styles = {
     style([
       position(`absolute),
       width(`percent(100.)),
-      border(`px(1), `solid, isDarkMode ? theme.secondaryBg : theme.textPrimary),
+      border(`px(1), `solid, isDarkMode ? theme.secondaryBg : theme.textSecondary),
       backgroundColor(theme.secondaryBg),
       borderRadius(`px(8)),
       transition(~duration=200, "all"),
@@ -84,7 +84,7 @@ let getLink =
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
   | GuanYuTestnet => "https://guanyu-testnet4.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
-  | LaoziTestnet => "https://laozi-testnet.cosmoscan.io/"
+  | LaoziTestnet => "https://laozi-testnet1.cosmoscan.io/"
   | LaoziMainnet
   | Unknown => "";
 
@@ -118,7 +118,7 @@ let make = () =>
       }}>
       <Text
         value={currentChainID->getName}
-        color={theme.textSecondary}
+        color={theme.textPrimary}
         nowrap=true
         weight=Text.Semibold
       />
@@ -127,7 +127,7 @@ let make = () =>
          ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
          : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
-        {[|GuanYuMainnet, GuanYuTestnet|]
+        {[|GuanYuMainnet, GuanYuTestnet, LaoziTestnet|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
