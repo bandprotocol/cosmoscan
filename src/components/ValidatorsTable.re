@@ -53,14 +53,11 @@ module RenderBody = {
                <Text
                  value={tokens |> Coin.getBandAmountFromCoin |> Format.fPretty(~digits=0)}
                  block=true
-                 align=Text.Right
                />
                <VSpacing size=Spacing.sm />
                <Text
                  value={"(" ++ (votingPower |> Format.fPercent(~digits=2)) ++ ")"}
-                 color=Colors.gray6
                  block=true
-                 align=Text.Right
                />
              </div>
            | _ =>
@@ -74,7 +71,7 @@ module RenderBody = {
         <Col col=Col.Two>
           {switch (validatorSub) {
            | Data({commission}) =>
-             <Text value={commission |> Format.fPercent(~digits=2)} block=true align=Text.Right />
+             <Text value={commission |> Format.fPercent(~digits=2)} block=true />
            | _ => <LoadingCensorBar width=70 height=15 isRight=true />
            }}
         </Col>
@@ -293,7 +290,7 @@ module SortableTHead = {
         ~desc,
         ~toggle,
         ~sortedBy,
-        ~isRight=true,
+        ~isRight=false,
         ~tooltipItem=?,
         ~tooltipPlacement=Text.AlignBottomStart,
       ) => {

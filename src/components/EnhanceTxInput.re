@@ -19,7 +19,8 @@ module Styles = {
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
-  let code = style([fontFamilies([`custom("Roboto Mono"), `monospace])]);
+  let code =
+    style([fontFamilies([`custom("Roboto Mono"), `monospace]), paddingBottom(`em(0.1))]);
 
   let errMsg = style([position(`absolute), bottom(`px(7))]);
 };

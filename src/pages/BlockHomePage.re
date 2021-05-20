@@ -23,7 +23,7 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
              block=true
              code=true
              ellipsis=true
-             color={theme.textPrimary}
+             color={theme.textSecondary}
            />
          | _ => <LoadingCensorBar fullWidth=true height=15 />
          }}

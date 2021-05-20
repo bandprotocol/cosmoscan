@@ -93,7 +93,7 @@ video {
 
 p {
   font-size: 14px;
-  line-height: 1.3;
+  line-height: 1.42;
 }
 
 a {

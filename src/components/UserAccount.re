@@ -74,7 +74,7 @@ module FaucetBtn = {
   let make = (~address) => {
     let (isRequest, setIsRequest) = React.useState(_ => false);
     isRequest
-      ? <Loading />
+      ? <LoadingCensorBar.CircleSpin size=30 height=30 />
       : <div id="getFreeButton">
           <Button
             px=20

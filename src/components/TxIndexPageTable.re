@@ -395,10 +395,10 @@ module Loading = {
   let make = () => {
     <InfoContainer>
       <div className={CssHelper.flexBox()}>
-        <SeperatedLine mt=32 mb=24 />
         <LoadingCensorBar width=24 height=24 radius=24 />
         <HSpacing size=Spacing.sm />
         <LoadingCensorBar width=75 height=15 />
+        <SeperatedLine mt=32 mb=24 />
       </div>
       <Row>
         <Col col=Col.Six mb=24>

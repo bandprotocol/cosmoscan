@@ -225,7 +225,7 @@ let make = () => {
            />
          </EmptyContainer>
        </div>;
-     | _ => <LoadingCensorBar fullWidth=true height=200 />
+     | _ => <LoadingCensorBar.CircleSpin height=200 />
      }}
   </div>;
 };

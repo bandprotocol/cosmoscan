@@ -111,7 +111,7 @@ let make = () => {
   let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <Table>
-    <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0>
+    <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0 alignItems=Row.Center>
       <Col col=Col.Six colSm=Col.Six>
         {isMobile
            ? <>
@@ -132,10 +132,7 @@ let make = () => {
                 | _ => <LoadingCensorBar width=90 height=18 />
                 }}
              </>
-           : <>
-               <Heading value="Latest" size=Heading.H4 />
-               <Heading value="Requests" size=Heading.H4 />
-             </>}
+           : <Heading value="Latest Requests" size=Heading.H4 />}
       </Col>
       <Col col=Col.Six colSm=Col.Six>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
@@ -193,7 +190,11 @@ let make = () => {
          ? requests
            ->Belt_Array.mapWithIndex((i, e) =>
                isMobile
-                 ? <RenderBodyMobile key={e.id |> ID.Request.toString} reserveIndex=i requestSub={Sub.resolve(e)} />
+                 ? <RenderBodyMobile
+                     key={e.id |> ID.Request.toString}
+                     reserveIndex=i
+                     requestSub={Sub.resolve(e)}
+                   />
                  : <RenderBody key={e.id |> ID.Request.toString} requestSub={Sub.resolve(e)} />
              )
            ->React.array

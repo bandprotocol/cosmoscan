@@ -6,7 +6,11 @@ module Styles = {
     style([
       borderBottom(`px(1), `solid, theme.tableRowBorderColor),
       selector("> a + a", [marginLeft(`px(32))]),
-      Media.mobile([overflow(`auto), padding2(~v=`px(1), ~h=`px(15))]),
+      Media.mobile([
+        overflow(`auto),
+        padding2(~v=`px(1), ~h=`px(15)),
+        selector("&::-webkit-scrollbar", [display(`none)]),
+      ]),
     ]);
 
   let buttonContainer = active =>

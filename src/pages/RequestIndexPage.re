@@ -398,7 +398,7 @@ let make = (~reqID) => {
                  <KVTableContainer decodesOpt />;
                | (Pending, _) =>
                  <EmptyContainer height={`px(200)}>
-                   <Loading marginBottom={`px(16)} />
+                   <LoadingCensorBar.CircleSpin size=50 height=70 />
                    <Heading
                      size=Heading.H4
                      value="Waiting for result"
@@ -448,7 +448,7 @@ let make = (~reqID) => {
                | Success => <RequestProof request />
                | Pending =>
                  <EmptyContainer height={`px(200)}>
-                   <Loading marginBottom={`px(16)} />
+                   <LoadingCensorBar.CircleSpin size=50 height=70 />
                    <Heading
                      size=Heading.H4
                      value="Waiting for result"
@@ -597,7 +597,7 @@ let make = (~reqID) => {
             <div className=Styles.kvTableContainer>
               {switch (requestSub) {
                | Data({reports}) => <DataReports reports />
-               | _ => <LoadingCensorBar fullWidth=true height=200 />
+               | _ => <LoadingCensorBar.CircleSpin height=200 />
                }}
             </div>
           </InfoContainer>
