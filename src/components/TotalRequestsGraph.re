@@ -150,12 +150,11 @@ function(data, isDarkMode) {
 ];
 
 [@react.component]
-let make = () => {
+let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
   let dataQuery = HistoricalTotalRequestQuery.get();
   let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
   let (lastCount, setLastCount) = React.useState(_ => 0);
   let (lastMode, setLastMode) = React.useState(_ => isDarkMode);
-  let requestCountSub = RequestSub.count();
 
   React.useEffect2(
     () => {
@@ -196,10 +195,15 @@ let make = () => {
         </CTooltip>
       </div>
       <div className=Styles.requestCount>
-        {switch (requestCountSub) {
-         | Data(requestCount) =>
+        {switch (latest5RequestSub) {
+         | Data(latestRequest) =>
            <Heading
-             value={requestCount |> Format.iPretty}
+             value={
+               latestRequest
+               ->Belt.Array.get(0)
+               ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt)
+               ->Format.iPretty
+             }
              size=Heading.H4
              weight=Heading.Thin
              color={theme.textSecondary}
