@@ -138,10 +138,10 @@ module Content = {
                 name: "Code",
                 route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceCode),
               },
-              {
-                name: "Test Execution",
-                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceExecute),
-              },
+              // {
+              //   name: "Test Execution",
+              //   route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceExecute),
+              // },
               // {
               //   name: "Revisions",
               //   route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRevisions),
