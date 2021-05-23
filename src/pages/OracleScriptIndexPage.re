@@ -206,11 +206,11 @@ module Content = {
                   oracleScriptID
                   |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptBridgeCode),
               },
-              {
-                name: "Make New Request",
-                route:
-                  oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptExecute),
-              },
+              // {
+              //   name: "Make New Request",
+              //   route:
+              //     oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptExecute),
+              // },
               // {
               //   name: "Revisions",
               //   route:

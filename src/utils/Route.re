@@ -50,7 +50,7 @@ let fromUrl = (url: ReasonReactRouter.url) =>
     let urlHash = (
       fun
       | "code" => DataSourceCode
-      | "execute" => DataSourceExecute
+      // | "execute" => DataSourceExecute
       | "revisions" => DataSourceRevisions
       | _ => DataSourceRequests
     );
@@ -65,7 +65,7 @@ let fromUrl = (url: ReasonReactRouter.url) =>
       fun
       | "code" => OracleScriptCode
       | "bridge" => OracleScriptBridgeCode
-      | "execute" => OracleScriptExecute
+      // | "execute" => OracleScriptExecute
       | "revisions" => OracleScriptRequests
       | _ => OracleScriptRequests
     );
