@@ -104,10 +104,8 @@ module RenderBodyMobile = {
 };
 
 [@react.component]
-let make = () => {
+let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
   let isMobile = Media.isMobile();
-  let requestCount = 5;
-  let requestsSub = RequestSub.getList(~page=1, ~pageSize=requestCount, ());
   let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <Table>
@@ -117,7 +115,7 @@ let make = () => {
            ? <>
                <Heading value="Total Request" size=Heading.H4 />
                <VSpacing size={`px(4)} />
-               {switch (requestsSub) {
+               {switch (latest5RequestSub) {
                 | ApolloHooks.Subscription.Data(requests) =>
                   <Text
                     value={
@@ -184,7 +182,7 @@ let make = () => {
              </Col>
            </Row>
          </THead>}
-    {switch (requestsSub) {
+    {switch (latest5RequestSub) {
      | Data(requests) =>
        requests->Belt.Array.length > 0
          ? requests
@@ -211,7 +209,7 @@ let make = () => {
              />
            </EmptyContainer>
      | _ =>
-       Belt_Array.make(requestCount, ApolloHooks.Subscription.NoData)
+       Belt_Array.make(5, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
              ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestSub=noData />

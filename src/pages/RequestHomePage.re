@@ -128,10 +128,10 @@ let make = () => {
   let (page, setPage) = React.useState(_ => 1);
   let pageSize = 10;
 
-  let totalRequestCountSub = RequestSub.count();
+  let latestRequestSub = RequestSub.getList(~pageSize=1, ~page=1, ());
   let requestsSub = RequestSub.getList(~pageSize, ~page, ());
 
-  let allSub = Sub.all2(requestsSub, totalRequestCountSub);
+  let allSub = Sub.all2(requestsSub, latestRequestSub);
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
@@ -141,12 +141,16 @@ let make = () => {
         <Col col=Col.Twelve>
           <Heading value="All Requests" size=Heading.H2 marginBottom=16 marginBottomSm=8 />
           {switch (allSub) {
-           | Data((_, totalRequestCount)) =>
+           | Data((_, latestRequest)) =>
              <Heading
-               value={(totalRequestCount |> Format.iPretty) ++ " In total"}
+               value={
+                 latestRequest
+                 ->Belt.Array.get(0)
+                 ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt)
+                 ->Format.iPretty
+                 ++ " In total"
+               }
                size=Heading.H3
-               weight=Heading.Thin
-               color={theme.textSecondary}
              />
            | _ => <LoadingCensorBar width=65 height=21 />
            }}
@@ -197,7 +201,11 @@ let make = () => {
                </Row>
              </THead>}
         {switch (allSub) {
-         | Data((requests, requestsCount)) =>
+         | Data((requests, latestRequest)) =>
+           let requestsCount =
+             latestRequest
+             ->Belt.Array.get(0)
+             ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt);
            let pageCount = Page.getPageCount(requestsCount, pageSize);
            <>
              {requestsCount > 0

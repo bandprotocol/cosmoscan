@@ -131,14 +131,9 @@ let make = () =>
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
-             <a
-               href={getLink(chainID)}
-               key=name
-               className={Styles.link(theme)}
-               target="_blank"
-               rel="noopener">
+             <AbsoluteLink href={getLink(chainID)} key=name className={Styles.link(theme)}>
                <Text value=name color={theme.textSecondary} nowrap=true weight=Text.Semibold />
-             </a>;
+             </AbsoluteLink>;
            })
          ->React.array}
       </div>

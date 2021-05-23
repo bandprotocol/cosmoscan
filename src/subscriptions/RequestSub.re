@@ -287,10 +287,8 @@ module Mini = {
 module RequestCountByDataSourceConfig = [%graphql
   {|
     subscription RequestsMiniCountByDataSource($id: Int!) {
-      raw_requests_aggregate(where: {data_source_id: {_eq: $id}}) {
-        aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
-        }
+      data_source_requests(where: {data_source_id: {_eq: $id}}) {
+        count
       }
     }
   |}
@@ -299,10 +297,8 @@ module RequestCountByDataSourceConfig = [%graphql
 module RequestCountByOracleScriptConfig = [%graphql
   {|
     subscription RequestsCountMiniByOracleScript($id: Int!) {
-      requests_aggregate(where: {oracle_script_id: {_eq: $id}}) {
-        aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
-        }
+      oracle_script_requests(where: {oracle_script_id: {_eq: $id}}) {
+        count
       }
     }
   |}
@@ -597,14 +593,7 @@ let countByOracleScript = id => {
       ~variables=
         RequestCountByOracleScriptConfig.makeVariables(~id=id |> ID.OracleScript.toInt, ()),
     );
-  result
-  |> Sub.map(_, x => {
-       {
-         let%Opt aggregate = x##requests_aggregate##aggregate;
-         Some(aggregate##count);
-       }
-       ->Belt_Option.getExn
-     });
+  result |> Sub.map(_, x => x##oracle_script_requests->Belt.Array.getExn(0)##count);
 };
 
 let countByDataSource = id => {
@@ -613,12 +602,5 @@ let countByDataSource = id => {
       RequestCountByDataSourceConfig.definition,
       ~variables=RequestCountByDataSourceConfig.makeVariables(~id=id |> ID.DataSource.toInt, ()),
     );
-  result
-  |> Sub.map(_, x => {
-       {
-         let%Opt aggregate = x##raw_requests_aggregate##aggregate;
-         Some(aggregate##count);
-       }
-       ->Belt_Option.getExn
-     });
+  result |> Sub.map(_, x => x##data_source_requests->Belt.Array.getExn(0)##count);
 };
