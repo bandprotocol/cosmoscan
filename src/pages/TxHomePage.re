@@ -1,9 +1,7 @@
 [@react.component]
 let make = () => {
-  let (page, setPage) = React.useState(_ => 1);
   let pageSize = 10;
-
-  let txsSub = TxSub.getList(~pageSize, ~page, ());
+  let txsSub = TxSub.getList(~pageSize, ~page=1, ());
   let latestTxsSub = TxSub.getList(~pageSize=1, ~page=1, ());
   let isMobile = Media.isMobile();
 
@@ -20,7 +18,7 @@ let make = () => {
                value={
                  txs
                  ->Belt.Array.get(0)
-                 ->Belt.Option.mapWithDefault(0, ({id}) => id)
+                 ->Belt.Option.mapWithDefault(0, ({id}) => id - 2207294)
                  ->Format.iPretty
                  ++ " In total"
                }

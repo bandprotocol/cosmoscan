@@ -106,7 +106,7 @@ let make = () => {
              value={
                txs
                ->Belt.Array.get(0)
-               ->Belt.Option.mapWithDefault(0, ({id}) => id)
+               ->Belt.Option.mapWithDefault(0, ({id}) => id - 2207294)
                ->Format.iPretty
              }
              size=Text.Lg
