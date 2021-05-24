@@ -748,8 +748,14 @@ module Msg = {
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         amount: json |> at(["msg", "amount"], Coin.decodeCoin),
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        moniker:
+          json
+          |> optional(at(["extra", "moniker"], string))
+          |> Belt.Option.getWithDefault(_, "Validator"),
+        identity:
+          json
+          |> optional(at(["extra", "identity"], string))
+          |> Belt.Option.getWithDefault(_, ""),
       };
     };
 
@@ -781,8 +787,14 @@ module Msg = {
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         amount: json |> at(["msg", "amount"], Coin.decodeCoin),
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        moniker:
+          json
+          |> optional(at(["extra", "moniker"], string))
+          |> Belt.Option.getWithDefault(_, "Validator"),
+        identity:
+          json
+          |> optional(at(["extra", "identity"], string))
+          |> Belt.Option.getWithDefault(_, ""),
       };
     };
 
@@ -858,8 +870,14 @@ module Msg = {
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         amount: json |> at(["extra", "reward_amount"], string) |> GraphQLParser.coins,
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        moniker:
+          json
+          |> optional(at(["extra", "moniker"], string))
+          |> Belt.Option.getWithDefault(_, "Validator"),
+        identity:
+          json
+          |> optional(at(["extra", "identity"], string))
+          |> Belt.Option.getWithDefault(_, ""),
       };
     };
 
@@ -1003,8 +1021,14 @@ module Msg = {
       JsonUtils.Decode.{
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         amount: json |> at(["extra", "commission_amount"], string) |> GraphQLParser.coins,
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        moniker:
+          json
+          |> optional(at(["extra", "moniker"], string))
+          |> Belt.Option.getWithDefault(_, "Validator"),
+        identity:
+          json
+          |> optional(at(["extra", "identity"], string))
+          |> Belt.Option.getWithDefault(_, ""),
       };
     };
 
