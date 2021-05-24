@@ -41,7 +41,11 @@ module DstValidatorSelection = {
 
   type input_t = {color: string};
 
-  type menu_t = {backgroundColor: string};
+  type menu_t = {
+    backgroundColor: string,
+    overflowY: string,
+    height: string,
+  };
 
   type container_t = {
     width: string,
@@ -135,7 +139,11 @@ module DstValidatorSelection = {
           },
           ReactSelect.indicatorSeparator: _ => {display: "none"},
           ReactSelect.input: _ => {color: isDarkMode ? "#ffffff" : "#303030"},
-          ReactSelect.menuList: _ => {backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff"},
+          ReactSelect.menuList: _ => {
+            backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
+            overflowY: "scroll",
+            height: "230px",
+          },
         }
       />
       <VSpacing size=Spacing.sm />
