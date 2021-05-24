@@ -112,14 +112,23 @@ module RenderBody = {
              | Some(_) =>
                <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
                  {switch (validatorSub) {
-                  | Data({operatorAddress}) =>
+                  | Data({operatorAddress, commission}) =>
                     let delegate = () =>
                       operatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
-
-                    <Button variant=Button.Outline onClick={_ => delegate()}>
+                    <Button
+                      variant=Button.Outline
+                      onClick={_ => {
+                        commission == 100.
+                          ? Webapi.Dom.(
+                              window
+                              |> Window.alert(
+                                   "Delegation to foundation validator nodes is not advised.",
+                                 )
+                            )
+                          : delegate()
+                      }}>
                       {"Delegate" |> React.string}
                     </Button>;
-
                   | _ => <LoadingCensorBar width=20 height=20 radius=50 />
                   }}
                </div>
