@@ -179,11 +179,7 @@ let make = (~chainID, ~ledgerApp) => {
      }}
     <div className=Styles.resultContainer>
       {switch (result) {
-       | Loading =>
-         <>
-           <Text value="Please accept with ledger" weight=Text.Medium />
-           <Loading width={`px(100)} />
-         </>
+       | Loading => <Text value="Please accept with ledger" weight=Text.Medium />
        | Error(err) => <Text value=err color=Theme.failColor weight=Text.Medium size=Text.Lg />
        | Nothing => React.null
        }}

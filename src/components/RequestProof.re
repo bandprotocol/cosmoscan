@@ -90,7 +90,7 @@ let make = (~request: RequestSub.t) => {
     </>
   | None =>
     <EmptyContainer height={`px(130)} backgroundColor={theme.secondaryTableBg}>
-      <Loading marginBottom={`px(16)} />
+      <LoadingCensorBar.CircleSpin size=30 height=80 />
       <Heading
         size=Heading.H4
         value="Waiting for proof"
