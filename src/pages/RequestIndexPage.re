@@ -270,6 +270,76 @@ let make = (~reqID) => {
             <Row marginBottom=24 alignItems=Row.Center>
               <Col col=Col.Four mbSm=8>
                 <Heading
+                  value="Request Time"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Four>
+                {switch (requestSub) {
+                 | Data({requestTime}) =>
+                   switch (requestTime) {
+                   | Some(requestTime') =>
+                     <div className={CssHelper.flexBox()}>
+                       <Text
+                         value={
+                           requestTime'
+                           |> MomentRe.Moment.format(Config.timestampDisplayFormat)
+                           |> String.uppercase_ascii
+                         }
+                         size=Text.Lg
+                       />
+                       <HSpacing size=Spacing.sm />
+                       <TimeAgos
+                         time=requestTime'
+                         prefix="("
+                         suffix=")"
+                         size=Text.Md
+                         weight=Text.Thin
+                       />
+                     </div>
+                   | None => <Text value="TBD" size=Text.Lg />
+                   }
+                 | _ => <LoadingCensorBar width=200 height=15 />
+                 }}
+              </Col>
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Resolve Time"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Four>
+                {switch (requestSub) {
+                 | Data({resolveTime}) =>
+                   switch (resolveTime) {
+                   | Some(resolveTime') =>
+                     <div className={CssHelper.flexBox()}>
+                       <Text
+                         value={
+                           resolveTime'
+                           |> MomentRe.Moment.format(Config.timestampDisplayFormat)
+                           |> String.uppercase_ascii
+                         }
+                         size=Text.Lg
+                       />
+                       <HSpacing size=Spacing.sm />
+                       <TimeAgos time=resolveTime' prefix="(" suffix=")" size=Text.Md weight=Text.Thin />
+                     </div>
+                   | None => <Text value="TBD" size=Text.Lg />
+                   }
+                 | _ => <LoadingCensorBar width=200 height=15 />
+                 }}
+              </Col>
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
                   value="Report Status"
                   size=Heading.H4
                   weight=Heading.Thin
