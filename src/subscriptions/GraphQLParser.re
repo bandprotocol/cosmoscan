@@ -20,9 +20,7 @@ let timeS = json => {
 };
 
 let fromUnixSecondOpt = timeOpt => {
-  timeOpt->Belt_Option.map(x => {
-    x * 1000 |> MomentRe.momentWithUnix |> MomentRe.Moment.defaultUtc
-  });
+  timeOpt->Belt_Option.map(x => {x |> MomentRe.momentWithUnix |> MomentRe.Moment.defaultUtc});
 };
 
 let timeMS = json => {
