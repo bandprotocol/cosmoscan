@@ -82,7 +82,7 @@ let getLink =
   | WenchangMainnet
   | GuanYuMainnet => "https://cosmoscan.io/"
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
-  | GuanYuTestnet => "https://guanyu-testnet4.cosmoscan.io/"
+  | GuanYuTestnet => "https://guanyu-testnet3.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
   | LaoziTestnet => "https://laozi-testnet1.cosmoscan.io/"
   | LaoziMainnet
