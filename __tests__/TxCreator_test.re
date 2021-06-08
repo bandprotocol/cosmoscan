@@ -50,7 +50,6 @@ describe("expect TxCreator to give the correct message", () => {
     })
     |> toEqual(
          createSignedTx(
-           ~network="WENCHANG",
            ~signature,
            ~pubKey,
            ~mode="block",
@@ -118,7 +117,6 @@ describe("expect TxCreator to give the correct message", () => {
     })
     |> toEqual(
          createSignedTx(
-           ~network="GUANYU",
            ~signature,
            ~pubKey,
            ~mode="block",

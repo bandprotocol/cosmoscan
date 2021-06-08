@@ -22,25 +22,18 @@ let decodeLog = json => JsonUtils.Decode.{message: json |> field("message", stri
 let decode = json => JsonUtils.Decode.{log: json |> optional(field("log", string))};
 
 let parseErr = msg => {
-  exception WrongNetwork(string);
-  switch (Env.network) {
-  | "GUANYU" => msg
-  | "WENCHANG"
-  | "GUANYU38" =>
-    let err =
-      {
-        let%Opt json = msg |> Json.parse;
-        let%Opt x = json |> Js.Json.decodeArray;
-        let%Opt y = x->Belt.Array.get(0);
-        let%Opt logStr = (y |> decode).log;
-        let%Opt logJson = logStr |> Json.parse;
-        let log = logJson |> decodeLog;
-        Opt.ret(log.message);
-      }
-      |> Belt.Option.getWithDefault(_, msg);
-    "Error: " ++ err;
-  | _ => raise(WrongNetwork("Incorrect or unspecified NETWORK environment variable"))
-  };
+  let err =
+    {
+      let%Opt json = msg |> Json.parse;
+      let%Opt x = json |> Js.Json.decodeArray;
+      let%Opt y = x->Belt.Array.get(0);
+      let%Opt logStr = (y |> decode).log;
+      let%Opt logJson = logStr |> Json.parse;
+      let log = logJson |> decodeLog;
+      Opt.ret(log.message);
+    }
+    |> Belt.Option.getWithDefault(_, msg);
+  "Error: " ++ err;
 };
 
 module Full = {

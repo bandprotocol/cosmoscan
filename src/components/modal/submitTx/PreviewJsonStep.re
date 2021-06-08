@@ -85,7 +85,6 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                       setState(_ => Broadcasting);
                       let signedTx =
                         TxCreator.createSignedTx(
-                          ~network=Env.network,
                           ~signature=signature |> JsBuffer.toBase64,
                           ~pubKey=account.pubKey,
                           ~tx=rawTx,

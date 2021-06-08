@@ -261,7 +261,7 @@ let createRawTx = (~address, ~msgs, ~chainID, ~feeAmount, ~gas, ~memo, ()) => {
   });
 };
 
-let createSignedTx = (~network, ~signature, ~pubKey, ~tx: raw_tx_t, ~mode, ()) => {
+let createSignedTx = (~signature, ~pubKey, ~tx: raw_tx_t, ~mode, ()) => {
   let newPubKey = "eb5ae98721" ++ (pubKey |> PubKey.toHex) |> JsBuffer.hexToBase64;
   let signedTx = {
     fee: tx.fee,
@@ -270,19 +270,12 @@ let createSignedTx = (~network, ~signature, ~pubKey, ~tx: raw_tx_t, ~mode, ()) =
     signatures: [|
       {
         pub_key: {
-          exception WrongNetwork(string);
-          switch (network) {
-          | "GUANYU" => Js.Json.string(newPubKey)
-          | "WENCHANG"
-          | "GUANYU38" =>
-            Js.Json.object_(
-              Js.Dict.fromList([
-                ("type", Js.Json.string("tendermint/PubKeySecp256k1")),
-                ("value", Js.Json.string(pubKey |> PubKey.toBase64)),
-              ]),
-            )
-          | _ => raise(WrongNetwork("Incorrect or unspecified NETWORK environment variable"))
-          };
+          Js.Json.object_(
+            Js.Dict.fromList([
+              ("type", Js.Json.string("tendermint/PubKeySecp256k1")),
+              ("value", Js.Json.string(pubKey |> PubKey.toBase64)),
+            ]),
+          );
         },
         public_key: newPubKey,
         signature,

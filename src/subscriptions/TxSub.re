@@ -396,36 +396,17 @@ module Msg = {
     };
 
     let decode = json => {
-      exception WrongNetwork(string);
-      switch (Env.network) {
-      | "GUANYU"
-      | "GUANYU38" =>
-        JsonUtils.Decode.{
-          moniker: json |> at(["msg", "description", "moniker"], string),
-          identity: json |> at(["msg", "description", "identity"], string),
-          website: json |> at(["msg", "description", "website"], string),
-          details: json |> at(["msg", "description", "details"], string),
-          commissionRate: json |> optional(at(["msg", "commission_rate"], floatstr)),
-          sender: json |> at(["msg", "address"], string) |> Address.fromBech32,
-          minSelfDelegation:
-            json
-            |> optional(at(["msg", "min_self_delegation"], floatstr))
-            |> Belt.Option.map(_, Coin.newUBANDFromAmount),
-        }
-      | "WENCHANG" =>
-        JsonUtils.Decode.{
-          moniker: json |> at(["msg", "moniker"], string),
-          identity: json |> at(["msg", "identity"], string),
-          website: json |> at(["msg", "website"], string),
-          details: json |> at(["msg", "details"], string),
-          commissionRate: json |> optional(at(["msg", "commission_rate"], floatstr)),
-          sender: json |> at(["msg", "address"], string) |> Address.fromBech32,
-          minSelfDelegation:
-            json
-            |> optional(at(["msg", "min_self_delegation"], floatstr))
-            |> Belt.Option.map(_, Coin.newUBANDFromAmount),
-        }
-      | _ => raise(WrongNetwork("Incorrect or unspecified NETWORK environment variable"))
+      JsonUtils.Decode.{
+        moniker: json |> at(["msg", "description", "moniker"], string),
+        identity: json |> at(["msg", "description", "identity"], string),
+        website: json |> at(["msg", "description", "website"], string),
+        details: json |> at(["msg", "description", "details"], string),
+        commissionRate: json |> optional(at(["msg", "commission_rate"], floatstr)),
+        sender: json |> at(["msg", "address"], string) |> Address.fromBech32,
+        minSelfDelegation:
+          json
+          |> optional(at(["msg", "min_self_delegation"], floatstr))
+          |> Belt.Option.map(_, Coin.newUBANDFromAmount),
       };
     };
   };
