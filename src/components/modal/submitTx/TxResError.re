@@ -1,24 +1,4 @@
-let wenchang =
-  fun
-  | 1 => "internal error"
-  | 2 => "tx parse error"
-  | 3 => "invalid sequence"
-  | 4 => "unauthorized"
-  | 5 => "insufficient funds"
-  | 6 => "unknown request"
-  | 7 => "invalid address"
-  | 8 => "invalid pubkey"
-  | 9 => "unknown address"
-  | 10 => "insufficient coins"
-  | 11 => "invalid coins"
-  | 12 => "out of gas"
-  | 13 => "memo too large"
-  | 14 => "insufficient fee"
-  | 15 => "maximum numer of signatures exceeded"
-  | 16 => "no signatures supplied"
-  | _ => "an error occurred";
-
-let guanyu =
+let parse =
   fun
   | 1 => "internal error"
   | 2 => "tx parse error"
@@ -51,7 +31,3 @@ let guanyu =
   | 29 => "invalid type"
   | 111222 => "panic"
   | _ => "an error occurred";
-
-let parse = code => {
-  guanyu(code);
-};

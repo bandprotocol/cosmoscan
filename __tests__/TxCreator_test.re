@@ -108,7 +108,13 @@ describe("expect TxCreator to give the correct message", () => {
         signatures: [|
           {
             pub_key:
-              Js.Json.string("eb5ae98721" ++ (pubKey |> PubKey.toHex) |> JsBuffer.hexToBase64),
+              Js.Json.object_(
+                Js.Dict.fromList([
+                  ("type", Js.Json.string("tendermint/PubKeySecp256k1")),
+                  ("value", Js.Json.string(pubKey |> PubKey.toBase64)),
+                ]),
+              ),
+
             public_key: "eb5ae98721" ++ (pubKey |> PubKey.toHex) |> JsBuffer.hexToBase64,
             signature,
           },
