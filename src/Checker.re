@@ -23,19 +23,7 @@ module SyncStaus = {
   };
 };
 
-let checkNetwork = () => {
-  exception WrongNetwork(string);
-  switch (Env.network) {
-  | "WENCHANG"
-  | "GUANYU38"
-  | "GUANYU" => ()
-  | _ => raise(WrongNetwork("Incorrect or unspecified NETWORK environment variable"))
-  };
-};
-
 [@react.component]
 let make = () => {
-  checkNetwork();
-
   <SyncStaus />;
 };

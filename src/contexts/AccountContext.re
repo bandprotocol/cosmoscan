@@ -47,7 +47,6 @@ let reducer = state =>
           let%Promise signature = Wallet.sign(TxCreator.sortAndStringify(rawTx), wallet);
           let signedTx =
             TxCreator.createSignedTx(
-              ~network=Env.network,
               ~signature=signature |> JsBuffer.toBase64,
               ~pubKey,
               ~tx=rawTx,
