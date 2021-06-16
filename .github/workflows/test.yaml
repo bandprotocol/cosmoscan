@@ -2,7 +2,7 @@ name: Run Unit Test Workflow
 on: [push, pull_request]
 
 jobs:
-  scan-test:
+  cosmoscan-test:
     runs-on: ubuntu-latest
     env:
       working-directory: .
