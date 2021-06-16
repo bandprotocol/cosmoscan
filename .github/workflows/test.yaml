@@ -5,7 +5,7 @@ jobs:
   cosmoscan-test:
     runs-on: ubuntu-latest
     env:
-      working-directory: .
+      working-directory: ./
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'bandprotocol/cosmoscan'
 
     steps:
