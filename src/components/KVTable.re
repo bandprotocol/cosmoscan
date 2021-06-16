@@ -11,7 +11,7 @@ module Styles = {
   let tabletContainer = (theme: Theme.t) =>
     style([
       padding2(~v=`px(8), ~h=`px(24)),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.secondaryTableBg),
       borderRadius(`px(8)),
       Media.mobile([padding2(~v=`px(8), ~h=`px(12))]),
     ]);
@@ -92,13 +92,14 @@ let make = (~headers=["Key", "Value"], ~rows) => {
         {headers
          ->Belt_List.mapWithIndex((i, header) => {
              <Col key={header ++ (i |> string_of_int)} col=columnSize colSm=columnSize>
-               <Text value=header weight=Text.Semibold height={Text.Px(18)} />
+               <Text value=header weight=Text.Semibold height={Text.Px(18)} transform=Text.Uppercase />
              </Col>
            })
          ->Belt_List.toArray
          ->React.array}
       </Row>
     </div>
+    <SeperatedLine mt=10 mb=15 />
     {rows
      ->Belt.List.mapWithIndex((i, row) => {
          <div
