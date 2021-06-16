@@ -1,4 +1,4 @@
-name: Cosmoscan Workflow
+name: Run Unit Test Workflow
 on: [push, pull_request]
 
 jobs:
@@ -22,12 +22,12 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.OS }}-scan-test-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.OS }}-cosmoscan-test-${{ hashFiles('**/yarn.lock') }}
 
       - name: Yarn install deps with node_modules cache
         run: |
           yarn install --frozen-lockfile
-        if: steps.scan-node-modules-cache.outputs.cache-hit != 'true'
+        if: steps.cosmoscan-node-modules-cache.outputs.cache-hit != 'true'
         working-directory: ${{env.working-directory}}
 
       # TODO
