@@ -1,0 +1,52 @@
+name: Cosmoscan Workflow
+on: [push, pull_request]
+
+jobs:
+  scan-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: .
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'bandprotocol/cosmoscan'
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+
+      - name: Cache node_modules
+        id: cosmoscan-node-modules-cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-scan-test-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Yarn install deps with node_modules cache
+        run: |
+          yarn install --frozen-lockfile
+        if: steps.scan-node-modules-cache.outputs.cache-hit != 'true'
+        working-directory: ${{env.working-directory}}
+
+      # TODO
+      # - name: Run yarn build
+      #   run: yarn build
+      #   env:
+      #     RPC_URL: "https://d3n.bandprotocol.com/rest"
+      #     GRAPHQL_URL: "wss://d3n.bandprotocol.com/v1/graphql"
+      #     NETWORK: "GUANYU38"
+      #   working-directory: ${{env.working-directory}}
+
+      # - name: Run install cypress
+      #   run: yarn cypress install
+      #   working-directory: ${{env.working-directory}}
+
+      - name: Run yarn test
+        run: yarn test
+        working-directory: ${{env.working-directory}}
+
+      # - name: Run yarn integration-test
+      #   run: yarn integration-test
+      #   working-directory: ${{env.working-directory}}
