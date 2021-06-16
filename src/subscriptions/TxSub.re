@@ -833,10 +833,22 @@ module Msg = {
           json |> at(["msg", "validator_dst_address"], string) |> Address.fromBech32,
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         amount: json |> at(["msg", "amount"], Coin.decodeCoin),
-        monikerSource: json |> at(["extra", "val_src_moniker"], string),
-        monikerDestination: json |> at(["extra", "val_dst_moniker"], string),
-        identitySource: json |> at(["extra", "val_src_identity"], string),
-        identityDestination: json |> at(["extra", "val_dst_identity"], string),
+        monikerSource:
+          json
+          |> optional(at(["extra", "val_src_moniker"], string))
+          |> Belt.Option.getWithDefault(_, "From Validator"),
+        monikerDestination:
+          json
+          |> optional(at(["extra", "val_dst_moniker"], string))
+          |> Belt.Option.getWithDefault(_, "To Validator"),
+        identitySource:
+          json
+          |> optional(at(["extra", "val_src_identity"], string))
+          |> Belt.Option.getWithDefault(_, ""),
+        identityDestination:
+          json
+          |> optional(at(["extra", "val_dst_identity"], string))
+          |> Belt.Option.getWithDefault(_, ""),
       };
     };
 
