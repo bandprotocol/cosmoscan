@@ -62,9 +62,9 @@ type t = {
   route: Route.t,
 };
 
-type s = {
+type state_filter_t = {
   name: string,
-  index: int,
+  index: IBCSub.packet_direction_t,
 };
 
 [@react.component]
@@ -85,14 +85,20 @@ let make = (~tabs: array(t), ~currentRoute, ~children) => {
 
 module StateFilter = {
   [@react.component]
-  let make = (~tabs: array(s), ~currentIndex: int, ~setIndex, ~children) => {
+  let make =
+      (
+        ~tabs: array(state_filter_t),
+        ~currentIndex: IBCSub.packet_direction_t,
+        ~setIndex,
+        ~children,
+      ) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <div className=Styles.container>
       <div className={Css.merge([Styles.header(theme), CssHelper.flexBox(~wrap=`nowrap, ())])}>
         {tabs
          ->Belt.Array.map(({name, index}) =>
-             <TabButtonState name index setIndex active={index == currentIndex} />
+             <TabButtonState key=name name index setIndex active={index == currentIndex} />
            )
          ->React.array}
       </div>
