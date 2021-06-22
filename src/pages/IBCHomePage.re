@@ -138,9 +138,7 @@ module CounterPartySelect = {
 
 [@react.component]
 let make = () => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-  let (tabIndex, setTabIndex) = React.useState(_ => 0);
+  let (tabIndex, setTabIndex) = React.useState(_ => IBCSub.Incoming);
 
   <Section ptSm=32 pbSm=32>
     <div className=CssHelper.container id="ibcSection">
@@ -148,13 +146,13 @@ let make = () => {
         <Col col=Col.Twelve> <Heading value="IBCs" size=Heading.H2 /> </Col>
       </Row>
       <Row marginBottom=40 marginBottomSm=24>
-        <Col col=Col.Six>
+        <Col col=Col.Six colSm=Col.Six>
           <div className=Styles.selectContainer>
             <div className={CssHelper.mb(~size=8, ())}> <Text value="Counterparty Chain" /> </div>
             <CounterPartySelect />
           </div>
         </Col>
-        <Col col=Col.Six>
+        <Col col=Col.Six colSm=Col.Six>
           <div
             className={Css.merge([
               CssHelper.flexBox(~justify=`flexEnd, ~align=`flexEnd, ()),
@@ -169,13 +167,12 @@ let make = () => {
       <Row>
         <Col col=Col.Twelve>
           <Tab.StateFilter
-            tabs=[|{name: "Incoming", index: 0}, {name: "Outgoing", index: 1}|]
+            tabs=[|{name: "Incoming", index: Incoming}, {name: "Outgoing", index: Outgoing}|]
             currentIndex=tabIndex
             setIndex=setTabIndex>
             {switch (tabIndex) {
-             | 0 => <IBCTab value="incoming" />
-             | 1 => <IBCTab value="outgoing" />
-             | _ => <IBCTab value="incoming" />
+             | Incoming => <IBCTab direction=Incoming />
+             | Outgoing => <IBCTab direction=Outgoing />
              }}
           </Tab.StateFilter>
         </Col>

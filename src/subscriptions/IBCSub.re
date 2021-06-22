@@ -1,16 +1,16 @@
-module Request = {
+module OracleRequestPacket = {
   type t = {
     id: ID.Request.t,
     oracleScriptID: ID.OracleScript.t,
     oracleScriptName: string,
     clientID: string,
-    calldata: JsBuffer.t,
+    // calldata: JsBuffer.t,
     askCount: int,
     minCount: int,
   };
 };
 
-module Response = {
+module OracleResponsePacket = {
   type status_t =
     | Success
     | Fail;
@@ -20,9 +20,14 @@ module Response = {
     oracleScriptID: ID.OracleScript.t,
     oracleScriptName: string,
     status: status_t,
-    result: option(JsBuffer.t),
   };
 };
+
+type packet_type_t =
+  | OracleRequest
+  | OracleResponse
+  | Transfer
+  | Others;
 
 type packet_direction_t =
   | Incoming
@@ -30,134 +35,144 @@ type packet_direction_t =
 
 type packet_t =
   | Unknown
-  | Request(Request.t)
-  | Response(Response.t);
+  | OracleRequestPacket(OracleRequestPacket.t)
+  | OracleResponsePacket(OracleResponsePacket.t);
+
+type acknowledge_data_t =
+  | Request(ID.Request.t)
+  | Transfer(string)
+  | Empty;
+
+type acknowledgement_t = {
+  data: acknowledge_data_t,
+  reason: option(string),
+  success: bool,
+};
 
 type t = {
+  srcChannel: string,
+  srcPort: string,
+  dstChannel: string,
+  sequence: int,
+  dstPort: string,
   direction: packet_direction_t,
-  channel: string,
-  port: string,
-  yourChainID: string,
-  yourChannel: string,
-  yourPort: string,
+  packetType: packet_type_t,
   blockHeight: ID.Block.t,
+  acknowledgement: option(acknowledgement_t),
   packet: packet_t,
 };
 
 module Internal = {
   type t = {
-    isIncoming: bool,
+    srcChannel: string,
+    srcPort: string,
+    sequence: int,
+    dstChannel: string,
+    dstPort: string,
     blockHeight: ID.Block.t,
-    channel: string,
-    port: string,
-    yourChainID: string,
-    yourChannel: string,
-    yourPort: string,
-    packetType: string,
+    packetType: packet_type_t,
     packetDetail: Js.Json.t,
+    acknowledgement: option(acknowledgement_t),
+    isIncoming: bool,
   };
 
   let toExternal =
       (
         {
+          srcChannel,
+          srcPort,
+          dstChannel,
+          sequence,
+          dstPort,
+          packetType,
           isIncoming,
           blockHeight,
-          channel,
-          port,
-          yourChainID,
-          yourChannel,
-          yourPort,
-          packetType,
           packetDetail,
+          acknowledgement,
         },
       ) => {
+    srcChannel,
+    srcPort,
+    sequence,
+    dstChannel,
+    dstPort,
     direction: isIncoming ? Incoming : Outgoing,
-    channel,
-    port,
-    yourChainID,
-    yourChannel,
-    yourPort,
     blockHeight,
+    acknowledgement,
+    packetType,
     packet:
       switch (packetType) {
-      | "ORACLE REQUEST" =>
-        Request(
+      | OracleRequest =>
+        OracleRequestPacket(
           JsonUtils.Decode.{
-            id: ID.Request.ID(packetDetail |> at(["request_id"], int)),
-            oracleScriptID: ID.OracleScript.ID(packetDetail |> at(["oracle_script_id"], int)),
+            id: ID.Request.ID(packetDetail |> at(["request_id"], string) |> int_of_string),
+            oracleScriptID:
+              ID.OracleScript.ID(
+                packetDetail |> at(["oracle_script_id"], string) |> int_of_string,
+              ),
             oracleScriptName: packetDetail |> at(["oracle_script_name"], string),
             clientID: packetDetail |> at(["client_id"], string),
-            calldata: packetDetail |> at(["calldata"], string) |> JsBuffer.fromHex,
-            askCount: packetDetail |> at(["ask_count"], int),
-            minCount: packetDetail |> at(["min_count"], int),
+            // calldata: packetDetail |> at(["calldata"], string) |> JsBuffer.fromHex,
+            askCount: packetDetail |> at(["ask_count"], string) |> int_of_string,
+            minCount: packetDetail |> at(["min_count"], string) |> int_of_string,
           },
         )
-      | "ORACLE RESPONSE" =>
+      | OracleResponse =>
         let status =
           packetDetail
           |> JsonUtils.Decode.at(["resolve_status"], JsonUtils.Decode.string) == "Success"
-            ? Response.Success : Response.Fail;
-        Response(
+            ? OracleResponsePacket.Success : OracleResponsePacket.Fail;
+        OracleResponsePacket(
           JsonUtils.Decode.{
-            requestID: ID.Request.ID(packetDetail |> at(["request_id"], int)),
+            requestID:
+              ID.Request.ID(packetDetail |> at(["request_id"], string) |> int_of_string),
             oracleScriptID: ID.OracleScript.ID(packetDetail |> at(["oracle_script_id"], int)),
             oracleScriptName: packetDetail |> at(["oracle_script_name"], string),
             status,
-            result:
-              status == Success
-                ? Some(packetDetail |> at(["result"], string) |> JsBuffer.fromHex) : None,
           },
         );
       | _ => Unknown
       },
   };
-  // module MultiPacketsConfig = [%graphql
-  //   {|
-  //   subscription Packets($limit: Int!, $offset: Int!) {
-  //     packets(limit: $limit, offset: $offset, order_by: {block_height: desc}) @bsRecord {
-  //       isIncoming: is_incoming
-  //       blockHeight: block_height @bsDecoder(fn: "ID.Block.fromJson")
-  //       channel: my_channel
-  //       port: my_port
-  //       yourChainID: your_chain_id
-  //       yourChannel: your_channel
-  //       yourPort: your_port
-  //       packetType: type
-  //       packetDetail: detail
-  //     }
-  //   }
-  // |}
-  // ];
 };
 
-// module PacketCountConfig = [%graphql
-//   {|
-//   subscription PacketsCount {
-//     packets_aggregate{
-//       aggregate{
-//         count @bsDecoder(fn: "Belt_Option.getExn")
-//       }
-//     }
-//   }
-// |}
-// ];
+let getType =
+  fun
+  | "oracle request" => OracleRequest
+  | "oracle response" => OracleResponse
+  | "transfer" => Transfer
+  | _ => Others;
 
 let getList = (~page=1, ~pageSize=10, ()): ApolloHooks.Subscription.variant(array(t)) => {
-  // let offset = (page - 1) * pageSize;
-  // let (result, _) =
-  //   ApolloHooks.useSubscription(
-  //     Internal.MultiPacketsConfig.definition,
-  //     ~variables=Internal.MultiPacketsConfig.makeVariables(~limit=pageSize, ~offset, ()),
-  //   );
-  // result |> Sub.map(_, x => x##packets->Belt_Array.map(Internal.toExternal));
-  Sub.resolve([||]);
-};
+  let result = [|
+    {
+      Internal.srcChannel: "channel-0",
+      srcPort: "consuming",
+      dstChannel: "channel-0",
+      dstPort: "oracle",
+      sequence: 2,
+      packetType: OracleRequest,
+      isIncoming: true,
+      blockHeight: ID.Block.ID(214388),
+      acknowledgement: Some({data: Request(ID.Request.ID(81801)), success: true, reason: None}),
+      packetDetail: {
+        let dict = Js.Dict.empty();
+        Js.Dict.set(dict, "oracle_script_id", Js.Json.string("32"));
+        Js.Dict.set(dict, "oracle_script_name", Js.Json.string("Desmos Themis"));
+        Js.Dict.set(dict, "oracle_script_schema", Js.Json.string(""));
+        Js.Dict.set(dict, "request_id", Js.Json.string("76189"));
+        Js.Dict.set(
+          dict,
+          "client_id",
+          Js.Json.string("desmos13yp2fq3tslq6mmtq4628q38xzj75ethzela9uu"),
+        );
+        Js.Dict.set(dict, "min_count", Js.Json.string("6"));
+        Js.Dict.set(dict, "ask_count", Js.Json.string("10"));
 
-let count = () => {
-  // let (result, _) = ApolloHooks.useSubscription(PacketCountConfig.definition);
-  // result
-  // |> Sub.map(_, x => x##packets_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
-  Sub.resolve(
-    0,
-  );
+        Js.Json.object_(dict);
+      },
+    },
+  |];
+
+  result |> Belt_Array.map(_, packet => Internal.toExternal(packet)) |> Sub.resolve;
 };
