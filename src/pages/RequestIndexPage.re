@@ -624,6 +624,7 @@ let make = (~reqID) => {
                                    color={theme.textSecondary}
                                    weight=Text.Thin
                                    align=Text.Right
+                                   breakAll=true
                                  />
                                </div>
                              </Col>
