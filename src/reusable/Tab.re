@@ -75,7 +75,7 @@ let make = (~tabs: array(t), ~currentRoute, ~children) => {
     <div className={Css.merge([Styles.header(theme), CssHelper.flexBox(~wrap=`nowrap, ())])}>
       {tabs
        ->Belt.Array.map(({name, route}) =>
-           <TabButton name route active={route == currentRoute} />
+           <TabButton key=name name route active={route == currentRoute} />
          )
        ->React.array}
     </div>
