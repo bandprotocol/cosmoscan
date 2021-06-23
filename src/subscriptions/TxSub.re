@@ -151,7 +151,7 @@ module Msg = {
 
     let decodeSuccess = json =>
       JsonUtils.Decode.{
-        id: json |> at(["extra", "id"], ID.DataSource.fromJson),
+        id: json |> at(["msg", "id"], ID.DataSource.fromJson),
         owner: json |> at(["msg", "owner"], string) |> Address.fromBech32,
         name: json |> at(["msg", "name"], string),
         executable: json |> at(["msg", "executable"], string) |> JsBuffer.fromBase64,
@@ -204,7 +204,7 @@ module Msg = {
 
     let decodeSuccess = json =>
       JsonUtils.Decode.{
-        id: json |> at(["extra", "id"], ID.OracleScript.fromJson),
+        id: json |> at(["msg", "id"], ID.OracleScript.fromJson),
         owner: json |> at(["msg", "owner"], string) |> Address.fromBech32,
         name: json |> at(["msg", "name"], string),
         code: json |> at(["msg", "code"], string) |> JsBuffer.fromBase64,
@@ -247,6 +247,7 @@ module Msg = {
       calldata: JsBuffer.t,
       askCount: int,
       minCount: int,
+      feeLimit: list(Coin.t),
       schema: string,
       sender: Address.t,
     };
@@ -256,18 +257,20 @@ module Msg = {
       calldata: JsBuffer.t,
       askCount: int,
       minCount: int,
+      feeLimit: list(Coin.t),
       sender: Address.t,
     };
 
     let decodeSuccess = json => {
       JsonUtils.Decode.{
-        id: json |> at(["extra", "id"], ID.Request.fromJson),
+        id: json |> at(["msg", "id"], ID.Request.fromJson),
         oracleScriptID: json |> at(["msg", "oracle_script_id"], ID.OracleScript.fromJson),
-        oracleScriptName: json |> at(["extra", "name"], string),
+        oracleScriptName: json |> at(["msg", "name"], string),
         calldata: json |> bufferWithDefault(at(["msg", "calldata"])),
         askCount: json |> at(["msg", "ask_count"], int),
         minCount: json |> at(["msg", "min_count"], int),
-        schema: json |> at(["extra", "schema"], string),
+        feeLimit: json |> at(["msg", "fee_limit"], list(Coin.decodeCoin)),
+        schema: json |> at(["msg", "schema"], string),
         sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
       };
     };
@@ -278,6 +281,7 @@ module Msg = {
         calldata: json |> bufferWithDefault(at(["msg", "calldata"])),
         askCount: json |> at(["msg", "ask_count"], int),
         minCount: json |> at(["msg", "min_count"], int),
+        feeLimit: json |> at(["msg", "fee_limit"], list(Coin.decodeCoin)),
         sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
       };
     };
@@ -315,7 +319,7 @@ module Msg = {
       JsonUtils.Decode.{
         validator: json |> at(["msg", "validator"], string) |> Address.fromBech32,
         reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
-        validatorMoniker: json |> at(["extra", "validator_moniker"], string),
+        validatorMoniker: json |> at(["msg", "validator_moniker"], string),
       };
 
     let decodeFail = json =>
@@ -341,7 +345,7 @@ module Msg = {
       JsonUtils.Decode.{
         validator: json |> at(["msg", "validator"], string) |> Address.fromBech32,
         reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
-        validatorMoniker: json |> at(["extra", "validator_moniker"], string),
+        validatorMoniker: json |> at(["msg", "validator_moniker"], string),
       };
 
     let decodeFail = json =>
@@ -402,7 +406,7 @@ module Msg = {
         website: json |> at(["msg", "description", "website"], string),
         details: json |> at(["msg", "description", "details"], string),
         commissionRate: json |> optional(at(["msg", "commission_rate"], floatstr)),
-        sender: json |> at(["msg", "address"], string) |> Address.fromBech32,
+        sender: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         minSelfDelegation:
           json
           |> optional(at(["msg", "min_self_delegation"], floatstr))
@@ -729,8 +733,8 @@ module Msg = {
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         amount: json |> at(["msg", "amount"], Coin.decodeCoin),
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        moniker: json |> at(["msg", "moniker"], string),
+        identity: json |> at(["msg", "identity"], string),
       };
     };
 
@@ -762,8 +766,8 @@ module Msg = {
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         amount: json |> at(["msg", "amount"], Coin.decodeCoin),
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        moniker: json |> at(["msg", "moniker"], string),
+        identity: json |> at(["msg", "identity"], string),
       };
     };
 
@@ -802,10 +806,10 @@ module Msg = {
           json |> at(["msg", "validator_dst_address"], string) |> Address.fromBech32,
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
         amount: json |> at(["msg", "amount"], Coin.decodeCoin),
-        monikerSource: json |> at(["extra", "val_src_moniker"], string),
-        monikerDestination: json |> at(["extra", "val_dst_moniker"], string),
-        identitySource: json |> at(["extra", "val_src_identity"], string),
-        identityDestination: json |> at(["extra", "val_dst_identity"], string),
+        monikerSource: json |> at(["msg", "val_src_moniker"], string),
+        monikerDestination: json |> at(["msg", "val_dst_moniker"], string),
+        identitySource: json |> at(["msg", "val_src_identity"], string),
+        identityDestination: json |> at(["msg", "val_dst_identity"], string),
       };
     };
 
@@ -838,9 +842,9 @@ module Msg = {
       JsonUtils.Decode.{
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
         delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
-        amount: json |> at(["extra", "reward_amount"], string) |> GraphQLParser.coins,
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        amount: json |> at(["msg", "reward_amount"], string) |> GraphQLParser.coins,
+        moniker: json |> at(["msg", "moniker"], string),
+        identity: json |> at(["msg", "identity"], string),
       };
     };
 
@@ -856,7 +860,9 @@ module Msg = {
     type t = {address: Address.t};
 
     let decode = json => {
-      JsonUtils.Decode.{address: json |> at(["msg", "address"], string) |> Address.fromBech32};
+      JsonUtils.Decode.{
+        address: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
+      };
     };
   };
 
@@ -895,7 +901,7 @@ module Msg = {
         title: json |> at(["msg", "content", "title"], string),
         description: json |> at(["msg", "content", "description"], string),
         initialDeposit: json |> at(["msg", "initial_deposit"], list(Coin.decodeCoin)),
-        proposalID: json |> at(["extra", "proposal_id"], ID.Proposal.fromJson),
+        proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
       };
     };
 
@@ -928,7 +934,7 @@ module Msg = {
         depositor: json |> at(["msg", "depositor"], string) |> Address.fromBech32,
         proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
         amount: json |> at(["msg", "amount"], list(Coin.decodeCoin)),
-        title: json |> at(["extra", "title"], string),
+        title: json |> at(["msg", "title"], string),
       };
     };
 
@@ -959,7 +965,7 @@ module Msg = {
         voterAddress: json |> at(["msg", "voter"], string) |> Address.fromBech32,
         proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
         option: json |> at(["msg", "option"], string),
-        title: json |> at(["extra", "title"], string),
+        title: json |> at(["msg", "title"], string),
       };
     };
 
@@ -983,9 +989,9 @@ module Msg = {
     let decodeSuccess = json => {
       JsonUtils.Decode.{
         validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
-        amount: json |> at(["extra", "commission_amount"], string) |> GraphQLParser.coins,
-        moniker: json |> at(["extra", "moniker"], string),
-        identity: json |> at(["extra", "identity"], string),
+        amount: json |> at(["msg", "commission_amount"], string) |> GraphQLParser.coins,
+        moniker: json |> at(["msg", "moniker"], string),
+        identity: json |> at(["msg", "identity"], string),
       };
     };
 

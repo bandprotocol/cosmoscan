@@ -266,6 +266,32 @@ let make = (~reqID) => {
                  }}
               </Col>
             </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Fee Limit"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
+                {switch (requestSub) {
+                 | Data({feeLimit}) =>
+                   Js.log(feeLimit);
+                   <Text
+                     block=true
+                     value={
+                       (feeLimit |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=6))
+                       ++ " BAND"
+                     }
+                     size=Text.Lg
+                     color={theme.textSecondary}
+                   />;
+                 | _ => <LoadingCensorBar width=200 height=15 />
+                 }}
+              </Col>
+            </Row>
             <SeperatedLine mt=32 mb=24 />
             <Row marginBottom=24 alignItems=Row.Center>
               <Col col=Col.Four mbSm=8>
@@ -329,7 +355,13 @@ let make = (~reqID) => {
                          size=Text.Lg
                        />
                        <HSpacing size=Spacing.sm />
-                       <TimeAgos time=resolveTime' prefix="(" suffix=")" size=Text.Md weight=Text.Thin />
+                       <TimeAgos
+                         time=resolveTime'
+                         prefix="("
+                         suffix=")"
+                         size=Text.Md
+                         weight=Text.Thin
+                       />
                      </div>
                    | None => <Text value="TBD" size=Text.Lg />
                    }

@@ -342,6 +342,7 @@ type internal_t = {
   resolveTime: option(MomentRe.Moment.t),
   oracleScript: oracle_script_internal_t,
   calldata: JsBuffer.t,
+  feeLimit: list(Coin.t),
   requestedValidators: array(requested_validator_internal_t),
   minCount: int,
   resolveStatus: resolve_status_t,
@@ -359,6 +360,7 @@ type t = {
   resolveTime: option(MomentRe.Moment.t),
   oracleScript: oracle_script_internal_t,
   calldata: JsBuffer.t,
+  feeLimit: list(Coin.t),
   requestedValidators: array(requested_validator_internal_t),
   minCount: int,
   resolveStatus: resolve_status_t,
@@ -378,6 +380,7 @@ let toExternal =
         resolveTime,
         oracleScript,
         calldata,
+        feeLimit,
         requestedValidators,
         minCount,
         resolveStatus,
@@ -394,6 +397,7 @@ let toExternal =
   resolveTime,
   oracleScript,
   calldata,
+  feeLimit,
   requestedValidators,
   minCount,
   resolveStatus,
@@ -418,6 +422,7 @@ module SingleRequestConfig = [%graphql
           schema
         }
         calldata @bsDecoder(fn: "GraphQLParser.buffer")
+        feeLimit: fee_limit @bsDecoder(fn: "GraphQLParser.coins")
         reports(order_by: {validator_id: asc}) @bsRecord {
           transactionOpt: transaction @bsRecord {
             hash @bsDecoder(fn: "GraphQLParser.hash")
@@ -486,6 +491,7 @@ module MultiRequestConfig = [%graphql
           schema
         }
         calldata @bsDecoder(fn: "GraphQLParser.buffer")
+        feeLimit: fee_limit @bsDecoder(fn: "GraphQLParser.coins")
         reports @bsRecord {
           transactionOpt: transaction @bsRecord {
             hash @bsDecoder(fn: "GraphQLParser.hash")
