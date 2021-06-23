@@ -5,7 +5,7 @@ module Styles = {
     style([
       backgroundColor(
         switch (msgType) {
-        | TxSub.Msg.TokenMsg => Colors.bandBlue
+        | MsgDecoder.TokenMsg => Colors.bandBlue
         | ValidatorMsg => Colors.blue12
         | ProposalMsg => Colors.blue13
         | DataMsg => Colors.blue14
@@ -29,7 +29,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~category: TxSub.Msg.msg_cat_t) => {
+let make = (~category: MsgDecoder.msg_cat_t) => {
   <div className={Styles.iconWrapper(category)}>
     {switch (category) {
      | TokenMsg => <Icon name="far fa-wallet" color=Colors.white size=14 />

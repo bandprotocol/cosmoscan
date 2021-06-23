@@ -4,11 +4,11 @@ module Styles = {
   let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
 };
 
-let transform = (account, msg: TxSub.Msg.t) => {
+let transform = (account, msg: MsgDecoder.t) => {
   switch (msg) {
   | SendMsgSuccess({toAddress, fromAddress, amount})
   | SendMsgFail({toAddress, fromAddress, amount}) when toAddress == account =>
-    TxSub.Msg.ReceiveMsg({toAddress, fromAddress, amount})
+    MsgDecoder.ReceiveMsg({toAddress, fromAddress, amount})
   | _ => msg
   };
 };

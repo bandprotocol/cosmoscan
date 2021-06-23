@@ -4,7 +4,7 @@ module Styles = {
     style([
       backgroundColor(
         switch (msgType) {
-        | TxSub.Msg.TokenMsg => Theme.baseBlue
+        | MsgDecoder.TokenMsg => Theme.baseBlue
         | ValidatorMsg => Theme.baseBlue
         | ProposalMsg => Theme.baseBlue
         | DataMsg => Theme.baseBlue
@@ -19,7 +19,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~msgType: TxSub.Msg.msg_cat_t, ~name) => {
+let make = (~msgType: MsgDecoder.msg_cat_t, ~name) => {
   <div
     className={Css.merge([
       Styles.msgBadge(msgType),

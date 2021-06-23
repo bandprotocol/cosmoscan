@@ -1,6 +1,6 @@
 module SubmitProposalMsg = {
   [@react.component]
-  let make = (~proposal: TxSub.Msg.SubmitProposal.success_t) => {
+  let make = (~proposal: MsgDecoder.SubmitProposal.success_t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Proposer" size=Heading.H5 marginBottom=8 />
@@ -24,7 +24,7 @@ module SubmitProposalMsg = {
 
 module SubmitProposalFailMsg = {
   [@react.component]
-  let make = (~proposal: TxSub.Msg.SubmitProposal.fail_t) => {
+  let make = (~proposal: MsgDecoder.SubmitProposal.fail_t) => {
     <Row>
       <Col mb=24>
         <Heading value="Proposer" size=Heading.H5 marginBottom=8 />
@@ -44,7 +44,7 @@ module SubmitProposalFailMsg = {
 
 module DepositMsg = {
   [@react.component]
-  let make = (~deposit: TxSub.Msg.Deposit.success_t) => {
+  let make = (~deposit: MsgDecoder.Deposit.success_t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Depositor" size=Heading.H5 marginBottom=8 />
@@ -68,7 +68,7 @@ module DepositMsg = {
 
 module DepositFailMsg = {
   [@react.component]
-  let make = (~deposit: TxSub.Msg.Deposit.fail_t) => {
+  let make = (~deposit: MsgDecoder.Deposit.fail_t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Depositor" size=Heading.H5 marginBottom=8 />
@@ -88,7 +88,7 @@ module DepositFailMsg = {
 
 module VoteMsg = {
   [@react.component]
-  let make = (~vote: TxSub.Msg.Vote.success_t) => {
+  let make = (~vote: MsgDecoder.Vote.success_t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Voter" size=Heading.H5 marginBottom=8 />
@@ -112,7 +112,7 @@ module VoteMsg = {
 
 module VoteFailMsg = {
   [@react.component]
-  let make = (~vote: TxSub.Msg.Vote.fail_t) => {
+  let make = (~vote: MsgDecoder.Vote.fail_t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Voter" size=Heading.H5 marginBottom=8 />
