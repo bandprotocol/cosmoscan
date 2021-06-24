@@ -55,8 +55,8 @@ let makeBadge = (name, length, color1, color2) =>
   </div>;
 
 [@react.component]
-let make = (~msg: TxSub.Msg.t, ~width: int) => {
-  let theme = msg |> TxSub.Msg.getBadgeTheme;
+let make = (~msg: MsgDecoder.t, ~width: int) => {
+  let theme = msg |> MsgDecoder.getBadgeTheme;
   <div
     className={Css.merge([
       CssHelper.flexBox(~wrap=`nowrap, ()),
@@ -67,7 +67,7 @@ let make = (~msg: TxSub.Msg.t, ~width: int) => {
     <MsgFront
       msgType={theme.category}
       name={theme.name}
-      fromAddress={msg |> TxSub.Msg.getCreator}
+      fromAddress={msg |> MsgDecoder.getCreator}
     />
     {switch (msg) {
      | SendMsgSuccess({toAddress, amount}) => <TokenMsg.SendMsg toAddress amount />

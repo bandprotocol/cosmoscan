@@ -1,6 +1,6 @@
 module CreateValidatorMsg = {
   [@react.component]
-  let make = (~validator: TxSub.Msg.CreateValidator.t) => {
+  let make = (~validator: MsgDecoder.CreateValidator.t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Moniker" size=Heading.H5 marginBottom=8 />
@@ -83,7 +83,7 @@ module CreateValidatorMsg = {
 
 module EditValidatorMsg = {
   [@react.component]
-  let make = (~validator: BandScan.TxSub.Msg.EditValidator.t) => {
+  let make = (~validator: BandScan.MsgDecoder.EditValidator.t) => {
     <Row>
       <Col col=Col.Six mb=24>
         <Heading value="Moniker" size=Heading.H5 marginBottom=8 />
@@ -140,7 +140,7 @@ module EditValidatorMsg = {
 
 module UnjailMsg = {
   [@react.component]
-  let make = (~unjail: TxSub.Msg.Unjail.t) => {
+  let make = (~unjail: MsgDecoder.Unjail.t) => {
     <Row>
       <Col col=Col.Six>
         <Heading value="Validator" size=Heading.H5 marginBottom=8 />
@@ -156,7 +156,7 @@ module UnjailMsg = {
 
 module AddReporterMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.AddReporter.success_t) => {
+  let make = (~address: MsgDecoder.AddReporter.success_t) => {
     <Row>
       <Col col=Col.Six mbSm=24>
         <Heading value="Validator" size=Heading.H5 marginBottom=8 />
@@ -176,7 +176,7 @@ module AddReporterMsg = {
 
 module AddReporterFailMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.AddReporter.fail_t) => {
+  let make = (~address: MsgDecoder.AddReporter.fail_t) => {
     <Row>
       <Col col=Col.Six mbSm=24>
         <Heading value="Validator" size=Heading.H5 marginBottom=8 />
@@ -196,7 +196,7 @@ module AddReporterFailMsg = {
 
 module RemoveReporterMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.RemoveReporter.success_t) => {
+  let make = (~address: MsgDecoder.RemoveReporter.success_t) => {
     <Row>
       <Col col=Col.Six mbSm=24>
         <Heading value="Validator" size=Heading.H5 marginBottom=8 />
@@ -216,7 +216,7 @@ module RemoveReporterMsg = {
 
 module RemoveReporterFailMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.RemoveReporter.fail_t) => {
+  let make = (~address: MsgDecoder.RemoveReporter.fail_t) => {
     <Row>
       <Col col=Col.Six mbSm=24>
         <Heading value="Validator" size=Heading.H5 marginBottom=8 />
@@ -236,7 +236,7 @@ module RemoveReporterFailMsg = {
 
 module ActivateMsg = {
   [@react.component]
-  let make = (~activate: TxSub.Msg.Activate.t) => {
+  let make = (~activate: MsgDecoder.Activate.t) => {
     <Row>
       <Col col=Col.Six>
         <Heading value="Validator" size=Heading.H5 marginBottom=8 />
@@ -252,7 +252,7 @@ module ActivateMsg = {
 
 module SetWithdrawAddressMsg = {
   [@react.component]
-  let make = (~set: TxSub.Msg.SetWithdrawAddress.t) => {
+  let make = (~set: MsgDecoder.SetWithdrawAddress.t) => {
     <Row>
       <Col col=Col.Six mbSm=24>
         <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 />

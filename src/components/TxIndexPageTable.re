@@ -62,7 +62,7 @@ module Styles = {
   let msgContainer = style([selector("> div + div", [marginTop(`px(24))])]);
 };
 
-let renderCreateClient = (_: TxSub.Msg.CreateClient.t) => {
+let renderCreateClient = (_: MsgDecoder.CreateClient.t) => {
   // <Col size=Styles.thirdCol alignSelf=Col.Start>
   //   <div className=Styles.topicContainer>
   //     <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
@@ -88,7 +88,7 @@ let renderCreateClient = (_: TxSub.Msg.CreateClient.t) => {
   React.null;
 };
 
-let renderUpdateClient = (_: TxSub.Msg.UpdateClient.t) => {
+let renderUpdateClient = (_: MsgDecoder.UpdateClient.t) => {
   // <Col size=Styles.thirdCol alignSelf=Col.Start>
   //   <div className=Styles.topicContainer>
   //     <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
@@ -140,7 +140,7 @@ let renderUpdateClient = (_: TxSub.Msg.UpdateClient.t) => {
   React.null;
 };
 
-let renderSubmitClientMisbehaviour = (_: TxSub.Msg.SubmitClientMisbehaviour.t) => {
+let renderSubmitClientMisbehaviour = (_: MsgDecoder.SubmitClientMisbehaviour.t) => {
   // <Col size=Styles.thirdCol alignSelf=Col.Start>
   //   <div className=Styles.topicContainer>
   //     <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
@@ -174,7 +174,7 @@ let renderSubmitClientMisbehaviour = (_: TxSub.Msg.SubmitClientMisbehaviour.t) =
   React.null;
 };
 
-let renderPacketVariant = (_: TxSub.Msg.t, _: TxSub.Msg.Packet.common_t) => {
+let renderPacketVariant = (_: MsgDecoder.t, _: MsgDecoder.Packet.common_t) => {
   // <Col size=Styles.thirdCol alignSelf=Col.Start>
   //   <div className=Styles.topicContainer>
   //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
@@ -234,7 +234,7 @@ let renderPacketVariant = (_: TxSub.Msg.t, _: TxSub.Msg.Packet.common_t) => {
   React.null;
 };
 
-let renderChannelVariant = (_: TxSub.Msg.ChannelCommon.t) => {
+let renderChannelVariant = (_: MsgDecoder.ChannelCommon.t) => {
   // <Col size=Styles.thirdCol alignSelf=Col.Start>
   //   <div className=Styles.topicContainer>
   //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
@@ -255,7 +255,7 @@ let renderChannelVariant = (_: TxSub.Msg.ChannelCommon.t) => {
   React.null;
 };
 
-let renderConnectionVariant = (_: TxSub.Msg.t, _: TxSub.Msg.ConnectionCommon.t) => {
+let renderConnectionVariant = (_: MsgDecoder.t, _: MsgDecoder.ConnectionCommon.t) => {
   // <Col size=Styles.thirdCol alignSelf=Col.Start>
   //   <div className=Styles.topicContainer>
   //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
@@ -298,7 +298,7 @@ let renderUnknownMessage = () => {
   </Col>;
 };
 
-let renderBody = (msg: TxSub.Msg.t) =>
+let renderBody = (msg: MsgDecoder.t) =>
   switch (msg) {
   | SendMsgSuccess(send)
   | SendMsgFail(send) => <IndexTokenMsg.SendMsg send />
@@ -370,11 +370,11 @@ let renderBody = (msg: TxSub.Msg.t) =>
   };
 
 [@react.component]
-let make = (~messages: list(TxSub.Msg.t)) => {
+let make = (~messages: list(MsgDecoder.t)) => {
   <div className=Styles.msgContainer>
     {messages
      ->Belt.List.mapWithIndex((index, msg) => {
-         let theme = msg |> TxSub.Msg.getBadgeTheme;
+         let theme = msg |> MsgDecoder.getBadgeTheme;
          <InfoContainer key={(index |> string_of_int) ++ theme.name}>
            <div className={CssHelper.flexBox()}>
              <IndexMsgIcon category={theme.category} />

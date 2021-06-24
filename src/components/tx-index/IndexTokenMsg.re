@@ -1,9 +1,7 @@
 module SendMsg = {
   [@react.component]
-  let make = (~send: TxSub.Msg.Send.t) => {
-
+  let make = (~send: MsgDecoder.Send.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
 
     <Row>
       <Col col=Col.Six mb=24>
@@ -24,11 +22,16 @@ module SendMsg = {
 
 module DelegateMsg = {
   [@react.component]
-  let make = (~delegation: TxSub.Msg.Delegate.success_t) => {
+  let make = (~delegation: MsgDecoder.Delegate.success_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={delegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
@@ -49,15 +52,25 @@ module DelegateMsg = {
 
 module DelegateFailMsg = {
   [@react.component]
-  let make = (~delegation: TxSub.Msg.Delegate.fail_t) => {
+  let make = (~delegation: MsgDecoder.Delegate.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={delegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={delegation.validatorAddress} accountType=`validator />
       </Col>
       <Col col=Col.Six>
@@ -70,11 +83,16 @@ module DelegateFailMsg = {
 
 module UndelegateMsg = {
   [@react.component]
-  let make = (~undelegation: TxSub.Msg.Undelegate.success_t) => {
+  let make = (~undelegation: MsgDecoder.Undelegate.success_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={undelegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
@@ -95,15 +113,25 @@ module UndelegateMsg = {
 
 module UndelegateFailMsg = {
   [@react.component]
-  let make = (~undelegation: TxSub.Msg.Undelegate.fail_t) => {
+  let make = (~undelegation: MsgDecoder.Undelegate.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={undelegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={undelegation.validatorAddress} accountType=`validator />
       </Col>
       <Col col=Col.Six>
@@ -116,15 +144,25 @@ module UndelegateFailMsg = {
 
 module RedelegateMsg = {
   [@react.component]
-  let make = (~redelegation: TxSub.Msg.Redelegate.success_t) => {
+  let make = (~redelegation: MsgDecoder.Redelegate.success_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={redelegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Source Validator" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Source Validator"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <ValidatorMonikerLink
           validatorAddress={redelegation.validatorSourceAddress}
           moniker={redelegation.monikerSource}
@@ -132,7 +170,12 @@ module RedelegateMsg = {
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Destination Validator" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Destination Validator"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <ValidatorMonikerLink
           validatorAddress={redelegation.validatorDestinationAddress}
           moniker={redelegation.monikerDestination}
@@ -149,19 +192,34 @@ module RedelegateMsg = {
 
 module RedelegateFailMsg = {
   [@react.component]
-  let make = (~redelegation: TxSub.Msg.Redelegate.fail_t) => {
+  let make = (~redelegation: MsgDecoder.Redelegate.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={redelegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator Source Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator Source Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={redelegation.validatorSourceAddress} accountType=`validator />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator Destination Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator Destination Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={redelegation.validatorDestinationAddress} accountType=`validator />
       </Col>
       <Col>
@@ -174,11 +232,16 @@ module RedelegateFailMsg = {
 
 module WithdrawRewardMsg = {
   [@react.component]
-  let make = (~withdrawal: TxSub.Msg.WithdrawReward.success_t) => {
+  let make = (~withdrawal: MsgDecoder.WithdrawReward.success_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={withdrawal.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
@@ -199,15 +262,25 @@ module WithdrawRewardMsg = {
 
 module WithdrawRewardFailMsg = {
   [@react.component]
-  let make = (~withdrawal: TxSub.Msg.WithdrawReward.fail_t) => {
+  let make = (~withdrawal: MsgDecoder.WithdrawReward.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={withdrawal.delegatorAddress} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Validator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={withdrawal.validatorAddress} accountType=`validator />
       </Col>
     </Row>;
@@ -216,7 +289,7 @@ module WithdrawRewardFailMsg = {
 
 module WithdrawComissionMsg = {
   [@react.component]
-  let make = (~withdrawal: TxSub.Msg.WithdrawCommission.success_t) => {
+  let make = (~withdrawal: MsgDecoder.WithdrawCommission.success_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
@@ -237,11 +310,16 @@ module WithdrawComissionMsg = {
 
 module WithdrawComissionFailMsg = {
   [@react.component]
-  let make = (~withdrawal: TxSub.Msg.WithdrawCommission.fail_t) => {
+  let make = (~withdrawal: MsgDecoder.WithdrawCommission.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six>
-        <Heading value="Validator Address" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator Address"
+          size=Heading.H5
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={withdrawal.validatorAddress} accountType=`validator />
       </Col>
     </Row>;
@@ -250,15 +328,24 @@ module WithdrawComissionFailMsg = {
 
 module MultisendMsg = {
   [@react.component]
-  let make = (~tx: TxSub.Msg.MultiSend.t) => {
+  let make = (~tx: MsgDecoder.MultiSend.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let isMobile = Media.isMobile();
     <>
       <Row>
-        <Col col=Col.Six> <Heading value="From" size=Heading.H5 marginBottom=8 color={theme.textSecondary}/> </Col>
+        <Col col=Col.Six>
+          <Heading value="From" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        </Col>
         {isMobile
            ? React.null
-           : <Col col=Col.Six> <Heading value="Amount" size=Heading.H5 marginBottom=8  color={theme.textSecondary}/> </Col >}
+           : <Col col=Col.Six>
+               <Heading
+                 value="Amount"
+                 size=Heading.H5
+                 marginBottom=8
+                 color={theme.textSecondary}
+               />
+             </Col>}
         {tx.inputs
          ->Belt_List.mapWithIndex((idx, input) =>
              <React.Fragment key={(idx |> string_of_int) ++ (input.address |> Address.toBech32)}>
