@@ -13,6 +13,7 @@ type badge_t =
   | EditValidatorBadge
   | CreateClientBadge
   | UpdateClientBadge
+  | UpgradeClientBadge
   | SubmitClientMisbehaviourBadge
   | ConnectionOpenInitBadge
   | ConnectionOpenTryBadge
@@ -46,6 +47,10 @@ type msg_cat_t =
   | ValidatorMsg
   | ProposalMsg
   | DataMsg
+  | IBCClientMsg
+  | IBCConnectionMsg
+  | IBCChannelMsg
+  | IBCTransferMsg
   | UnknownMsg;
 
 let getBadgeVariantFromString = badge => {
@@ -64,6 +69,7 @@ let getBadgeVariantFromString = badge => {
   | "edit_validator" => EditValidatorBadge
   | "create_client" => CreateClientBadge
   | "update_client" => UpdateClientBadge
+  | "upgrade_client" => UpgradeClientBadge
   | "submit_client_misbehaviour" => SubmitClientMisbehaviourBadge
   | "connection_open_init" => ConnectionOpenInitBadge
   | "connection_open_try" => ConnectionOpenTryBadge
@@ -271,7 +277,6 @@ module Request = {
   };
 };
 
-// Use inside RawReports
 module RawDataReport = {
   type t = {
     externalDataID: int,
@@ -416,65 +421,48 @@ module EditValidator = {
 };
 
 module CreateClient = {
-  type t = {
-    address: Address.t,
-    clientID: string,
-    chainID: string,
-    trustingPeriod: MomentRe.Duration.t,
-    unbondingPeriod: MomentRe.Duration.t,
-  };
+  type t = {signer: Address.t};
+
   let decode = json => {
-    JsonUtils.Decode.{
-      address: json |> field("address", string) |> Address.fromBech32,
-      clientID: json |> field("client_id", string),
-      chainID: "band-consumer",
-      trustingPeriod:
-        (json |> field("trusting_period", JsonUtils.Decode.float))
-        /. 1_000_000.
-        |> MomentRe.durationMillis,
-      unbondingPeriod:
-        (json |> field("unbonding_period", JsonUtils.Decode.float))
-        /. 1_000_000.
-        |> MomentRe.durationMillis,
-    };
+    JsonUtils.Decode.{signer: json |> at(["msg", "signer"], string) |> Address.fromBech32};
   };
 };
 
 module UpdateClient = {
   type t = {
-    address: Address.t,
+    signer: Address.t,
     clientID: string,
-    chainID: string,
-    validatorHash: Hash.t,
-    prevValidatorHash: Hash.t,
   };
   let decode = json => {
     JsonUtils.Decode.{
-      address: json |> field("address", string) |> Address.fromBech32,
-      clientID: json |> field("client_id", string),
-      chainID: "band-consumer",
-      validatorHash:
-        "88A40098ACD2B9DDBD81E1397217BD0BC6D5B90C86D3614927B2CCDF4A3023BD" |> Hash.fromBase64,
-      prevValidatorHash:
-        "88A40098ACD2B9DDBD81E1397217BD0BC6D5B90C86D3614927B2CCDF4A3023BD" |> Hash.fromBase64,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      clientID: json |> at(["msg", "client_id"], string),
+    };
+  };
+};
+
+module UpgradeClient = {
+  type t = {
+    signer: Address.t,
+    clientID: string,
+  };
+  let decode = json => {
+    JsonUtils.Decode.{
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      clientID: json |> at(["msg", "client_id"], string),
     };
   };
 };
 
 module SubmitClientMisbehaviour = {
   type t = {
-    address: Address.t,
+    signer: Address.t,
     clientID: string,
-    chainID: string,
-    validatorHash: Hash.t,
   };
   let decode = json => {
     JsonUtils.Decode.{
-      address: json |> field("address", string) |> Address.fromBech32,
-      clientID: json |> field("client_id", string),
-      chainID: "band-consumer",
-      validatorHash:
-        "88A40098ACD2B9DDBD81E1397217BD0BC6D5B90C86D3614927B2CCDF4A3023BD" |> Hash.fromBase64,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      clientID: json |> at(["msg", "client_id"], string),
     };
   };
 };
@@ -1059,20 +1047,6 @@ type t =
   | CreateValidatorMsgFail(CreateValidator.t)
   | EditValidatorMsgSuccess(EditValidator.t)
   | EditValidatorMsgFail(EditValidator.t)
-  | CreateClientMsg(CreateClient.t)
-  | UpdateClientMsg(UpdateClient.t)
-  | SubmitClientMisbehaviourMsg(SubmitClientMisbehaviour.t)
-  | ConnectionOpenInitMsg(ConnectionOpenInit.t)
-  | ConnectionOpenTryMsg(ConnectionOpenTry.t)
-  | ConnectionOpenAckMsg(ConnectionOpenAck.t)
-  | ConnectionOpenConfirmMsg(ConnectionOpenConfirm.t)
-  | ChannelOpenInitMsg(ChannelOpenInit.t)
-  | ChannelOpenTryMsg(ChannelOpenTry.t)
-  | ChannelOpenAckMsg(ChannelOpenAck.t)
-  | ChannelOpenConfirmMsg(ChannelOpenConfirm.t)
-  | ChannelCloseInitMsg(ChannelCloseInit.t)
-  | ChannelCloseConfirmMsg(ChannelCloseConfirm.t)
-  | PacketMsg(Packet.t)
   | AcknowledgementMsg(Acknowledgement.t)
   | TimeoutMsg(Timeout.t)
   | DelegateMsgSuccess(Delegate.success_t)
@@ -1099,6 +1073,22 @@ type t =
   | MultiSendMsgFail(MultiSend.t)
   | ActivateMsgSuccess(Activate.t)
   | ActivateMsgFail(Activate.t)
+  // IBC
+  | CreateClientMsg(CreateClient.t)
+  | UpdateClientMsg(UpdateClient.t)
+  | UpgradeClientMsg(UpgradeClient.t)
+  | SubmitClientMisbehaviourMsg(SubmitClientMisbehaviour.t)
+  | ConnectionOpenInitMsg(ConnectionOpenInit.t)
+  | ConnectionOpenTryMsg(ConnectionOpenTry.t)
+  | ConnectionOpenAckMsg(ConnectionOpenAck.t)
+  | ConnectionOpenConfirmMsg(ConnectionOpenConfirm.t)
+  | ChannelOpenInitMsg(ChannelOpenInit.t)
+  | ChannelOpenTryMsg(ChannelOpenTry.t)
+  | ChannelOpenAckMsg(ChannelOpenAck.t)
+  | ChannelOpenConfirmMsg(ChannelOpenConfirm.t)
+  | ChannelCloseInitMsg(ChannelCloseInit.t)
+  | ChannelCloseConfirmMsg(ChannelCloseConfirm.t)
+  | PacketMsg(Packet.t)
   | UnknownMsg;
 
 let getCreator = msg => {
@@ -1152,10 +1142,11 @@ let getCreator = msg => {
     firstInput.address;
   | ActivateMsgSuccess(activator)
   | ActivateMsgFail(activator) => activator.validatorAddress
-  //TODO: Revisit IBC msg
-  | CreateClientMsg(client) => client.address
-  | UpdateClientMsg(client) => client.address
-  | SubmitClientMisbehaviourMsg(client) => client.address
+  //IBC
+  | CreateClientMsg(client) => client.signer
+  | UpdateClientMsg(client) => client.signer
+  | UpgradeClientMsg(client) => client.signer
+  | SubmitClientMisbehaviourMsg(client) => client.signer
   | ConnectionOpenInitMsg(connection) => connection.signer
   | ConnectionOpenTryMsg(connection) => connection.signer
   | ConnectionOpenAckMsg(connection) => connection.signer
@@ -1205,23 +1196,24 @@ let getBadge = badgeVariant => {
   | MultiSendBadge => {name: "Multi Send", category: TokenMsg}
   | ActivateBadge => {name: "Activate", category: ValidatorMsg}
   | UnknownBadge => {name: "Unknown", category: TokenMsg}
-  //TODO: Revisit IBC msg
-  | CreateClientBadge => {name: "Create Client", category: TokenMsg}
-  | UpdateClientBadge => {name: "Update Client", category: TokenMsg}
-  | SubmitClientMisbehaviourBadge => {name: "Submit Client Misbehaviour", category: TokenMsg}
-  | ConnectionOpenInitBadge => {name: "Connection Open Init", category: TokenMsg}
-  | ConnectionOpenTryBadge => {name: "Connection Open Try", category: TokenMsg}
-  | ConnectionOpenAckBadge => {name: "Connection Open Ack", category: TokenMsg}
-  | ConnectionOpenConfirmBadge => {name: "Connection Open Confirm", category: TokenMsg}
-  | ChannelOpenInitBadge => {name: "Channel Open Init", category: TokenMsg}
-  | ChannelOpenTryBadge => {name: "Channel Open Try", category: TokenMsg}
-  | ChannelOpenAckBadge => {name: "Channel Open Ack", category: TokenMsg}
-  | ChannelOpenConfirmBadge => {name: "Channel Open Confirm", category: TokenMsg}
-  | ChannelCloseInitBadge => {name: "Channel Close Init", category: TokenMsg}
-  | ChannelCloseConfirmBadge => {name: "Channel Close Confirm", category: TokenMsg}
-  | PacketBadge => {name: "Packet", category: TokenMsg}
-  | AcknowledgementBadge => {name: "Acknowledgement", category: TokenMsg}
-  | TimeoutBadge => {name: "Timeout", category: TokenMsg}
+  //IBC
+  | CreateClientBadge => {name: "Create Client", category: IBCClientMsg}
+  | UpdateClientBadge => {name: "Update Client", category: IBCClientMsg}
+  | UpgradeClientBadge => {name: "Upgrade Client", category: IBCClientMsg}
+  | SubmitClientMisbehaviourBadge => {name: "Submit Client Misbehaviour", category: IBCClientMsg}
+  | ConnectionOpenInitBadge => {name: "Connection Open Init", category: IBCConnectionMsg}
+  | ConnectionOpenTryBadge => {name: "Connection Open Try", category: IBCConnectionMsg}
+  | ConnectionOpenAckBadge => {name: "Connection Open Ack", category: IBCConnectionMsg}
+  | ConnectionOpenConfirmBadge => {name: "Connection Open Confirm", category: IBCConnectionMsg}
+  | ChannelOpenInitBadge => {name: "Channel Open Init", category: IBCChannelMsg}
+  | ChannelOpenTryBadge => {name: "Channel Open Try", category: IBCChannelMsg}
+  | ChannelOpenAckBadge => {name: "Channel Open Ack", category: IBCChannelMsg}
+  | ChannelOpenConfirmBadge => {name: "Channel Open Confirm", category: IBCChannelMsg}
+  | ChannelCloseInitBadge => {name: "Channel Close Init", category: IBCChannelMsg}
+  | ChannelCloseConfirmBadge => {name: "Channel Close Confirm", category: IBCChannelMsg}
+  | PacketBadge => {name: "Packet", category: IBCChannelMsg}
+  | AcknowledgementBadge => {name: "Acknowledgement", category: IBCChannelMsg}
+  | TimeoutBadge => {name: "Timeout", category: IBCChannelMsg}
   };
 };
 
@@ -1275,9 +1267,10 @@ let getBadgeTheme = msg => {
   | ActivateMsgSuccess(_) => getBadge(ActivateBadge)
   | ActivateMsgFail(_) => getBadge(ActivateBadge)
   | UnknownMsg => getBadge(UnknownBadge)
-  //TODO: Revisit IBC msg
+  //IBC
   | CreateClientMsg(_) => getBadge(CreateClientBadge)
   | UpdateClientMsg(_) => getBadge(UpdateClientBadge)
+  | UpgradeClientMsg(_) => getBadge(UpgradeClientBadge)
   | SubmitClientMisbehaviourMsg(_) => getBadge(SubmitClientMisbehaviourBadge)
   | ConnectionOpenInitMsg(_) => getBadge(ConnectionOpenInitBadge)
   | ConnectionOpenTryMsg(_) => getBadge(ConnectionOpenTryBadge)
@@ -1325,9 +1318,10 @@ let decodeAction = json => {
     | MultiSendBadge => MultiSendMsgSuccess(json |> MultiSend.decode)
     | ActivateBadge => ActivateMsgSuccess(json |> Activate.decode)
     | UnknownBadge => UnknownMsg
-    //TODO: Revisit IBC msg
+    //IBC
     | CreateClientBadge => CreateClientMsg(json |> CreateClient.decode)
     | UpdateClientBadge => UpdateClientMsg(json |> UpdateClient.decode)
+    | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
     | SubmitClientMisbehaviourBadge =>
       SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
     | ConnectionOpenInitBadge => ConnectionOpenInitMsg(json |> ConnectionOpenInit.decode)
@@ -1376,6 +1370,12 @@ let decodeFailAction = json => {
     | MultiSendBadge => MultiSendMsgFail(json |> MultiSend.decode)
     | ActivateBadge => ActivateMsgFail(json |> Activate.decode)
     | UnknownBadge => UnknownMsg
+    //IBC
+    | CreateClientBadge => CreateClientMsg(json |> CreateClient.decode)
+    | UpdateClientBadge => UpdateClientMsg(json |> UpdateClient.decode)
+    | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
+    | SubmitClientMisbehaviourBadge =>
+      SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
     | _ => UnknownMsg
     }
   );
