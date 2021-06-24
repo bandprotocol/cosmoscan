@@ -127,10 +127,11 @@ let renderBody = (msg: MsgDecoder.t) =>
   | UpdateClientMsg(client) => <IndexIBCClientMsg.UpdateClient client />
   | UpgradeClientMsg(client) => <IndexIBCClientMsg.UpgradeClient client />
   | SubmitClientMisbehaviourMsg(client) => <IndexIBCClientMsg.SubmitClientMisbehaviour client />
-  | ConnectionOpenInitMsg(_)
-  | ConnectionOpenTryMsg(_)
-  | ConnectionOpenAckMsg(_)
-  | ConnectionOpenConfirmMsg(_)
+  | ConnectionOpenInitMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenInit connection />
+  | ConnectionOpenTryMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenTry connection />
+  | ConnectionOpenAckMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenAck connection />
+  | ConnectionOpenConfirmMsg(connection) =>
+    <IndexIBCConnectionMsg.ConnectionOpenConfirm connection />
   | ChannelOpenInitMsg(_)
   | ChannelOpenTryMsg(_)
   | ChannelOpenAckMsg(_)
