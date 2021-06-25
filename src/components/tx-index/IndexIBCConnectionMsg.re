@@ -14,7 +14,7 @@ module ConnectionOpenInit = {
       </Col>
       <Col col=Col.Six mbSm=24>
         <Heading value="Delay Period" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
-        <Text size=Text.Lg value={connection.delayPeriod |> string_of_int} />
+        <Text size=Text.Lg value={(connection.delayPeriod |> string_of_int) ++ "ns"} />
       </Col>
       <Col col=Col.Six>
         <Heading
@@ -45,7 +45,7 @@ module ConnectionOpenTry = {
       </Col>
       <Col col=Col.Six mb=24>
         <Heading value="Delay Period" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
-        <Text size=Text.Lg value={connection.delayPeriod |> string_of_int} />
+        <Text size=Text.Lg value={(connection.delayPeriod |> string_of_int) ++ "ns"} />
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
@@ -58,7 +58,7 @@ module ConnectionOpenTry = {
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
-          value="Counterparty (Client ID )"
+          value="Counterparty (Client ID)"
           size=Heading.H5
           marginBottom=8
           color={theme.textSecondary}
