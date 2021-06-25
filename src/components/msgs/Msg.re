@@ -111,7 +111,7 @@ let make = (~msg: MsgDecoder.t, ~width: int) => {
      | ChannelOpenAckMsg(_)
      | ChannelOpenConfirmMsg(_)
      | ChannelCloseInitMsg(_)
-     | ChannelCloseConfirmMsg(_)
+     | ChannelCloseConfirmMsg(_) => React.null
      | PacketMsg(_)
      | TimeoutMsg(_)
      | _ => React.null

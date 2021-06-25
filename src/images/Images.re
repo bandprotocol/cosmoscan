@@ -83,3 +83,6 @@
 // Loading
 [@bs.module] external loadingCircleLight: string = "./loading-circle-light.png";
 [@bs.module] external loadingCircleDark: string = "./loading-circle-dark.png";
+
+//IBC
+[@bs.module] external ibcIcon: string = "./tx-ibc-icon.svg";

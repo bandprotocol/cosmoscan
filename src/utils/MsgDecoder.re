@@ -556,55 +556,103 @@ module ConnectionCommon = {
     };
 };
 
+module Height = {
+  type t = {
+    revisionHeight: int,
+    revisionNumber: int,
+  };
+
+  let decode = json =>
+    JsonUtils.Decode.{
+      revisionHeight: json |> field("revision_height", int),
+      revisionNumber: 0,
+      // TODO: Will uncomment when the chain data is ready
+      // revisionNumber: json |> field("revision_number", int),
+    };
+};
+
+module ConnectionCounterParty = {
+  type t = {
+    clientID: string,
+    connectionID: string,
+  };
+
+  let decode = json =>
+    JsonUtils.Decode.{
+      clientID: json |> field("client_id", string),
+      connectionID: json |> field("connection_id", string),
+    };
+};
+
 module ConnectionOpenInit = {
   type t = {
     signer: Address.t,
-    common: ConnectionCommon.t,
     clientID: string,
+    delayPeriod: int,
+    counterpartyClientID: string,
   };
+
   let decode = json =>
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ConnectionCommon.decode,
-      clientID: json |> field("client_id", string),
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      clientID: json |> at(["msg", "client_id"], string),
+      delayPeriod: json |> at(["msg", "delay_period"], int),
+      //TODO: now the field is wrong
+      counterpartyClientID: json |> at(["msg", "counterpart", "client_id"], string),
     };
 };
 
 module ConnectionOpenTry = {
   type t = {
     signer: Address.t,
-    common: ConnectionCommon.t,
     clientID: string,
+    previousConnectionID: string,
+    delayPeriod: int,
+    counterparty: ConnectionCounterParty.t,
+    consensusHeight: Height.t,
+    proofHeight: Height.t,
   };
   let decode = json =>
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      clientID: json |> field("client_id", string),
-      common: json |> ConnectionCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      clientID: json |> at(["msg", "client_id"], string),
+      previousConnectionID: json |> at(["msg", "previous_connection_id"], string),
+      delayPeriod: json |> at(["msg", "delay_period"], int),
+      counterparty: json |> at(["msg", "counterparty"], ConnectionCounterParty.decode),
+      consensusHeight: json |> at(["msg", "consensus_height"], Height.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
 };
 
 module ConnectionOpenAck = {
   type t = {
     signer: Address.t,
-    common: ConnectionCommon.t,
+    connectionID: string,
+    counterpartyConnectionID: string,
+    consensusHeight: Height.t,
+    proofHeight: Height.t,
   };
   let decode = json =>
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ConnectionCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      connectionID: json |> at(["msg", "connection_id"], string),
+      counterpartyConnectionID: json |> at(["msg", "counterparty_connection_id"], string),
+      consensusHeight: json |> at(["msg", "consensus_height"], Height.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
 };
 
 module ConnectionOpenConfirm = {
   type t = {
     signer: Address.t,
-    common: ConnectionCommon.t,
+    connectionID: string,
+    proofHeight: Height.t,
   };
   let decode = json =>
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ConnectionCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      connectionID: json |> at(["msg", "connection_id"], string),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
 };
 
@@ -1376,7 +1424,20 @@ let decodeFailAction = json => {
     | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
     | SubmitClientMisbehaviourBadge =>
       SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
-    | _ => UnknownMsg
+    | ConnectionOpenInitBadge => ConnectionOpenInitMsg(json |> ConnectionOpenInit.decode)
+    | ConnectionOpenTryBadge => ConnectionOpenTryMsg(json |> ConnectionOpenTry.decode)
+    | ConnectionOpenAckBadge => ConnectionOpenAckMsg(json |> ConnectionOpenAck.decode)
+    | ConnectionOpenConfirmBadge => ConnectionOpenConfirmMsg(json |> ConnectionOpenConfirm.decode)
+    | ChannelOpenInitBadge => ChannelOpenInitMsg(json |> ChannelOpenInit.decode)
+    | ChannelOpenTryBadge => ChannelOpenTryMsg(json |> ChannelOpenTry.decode)
+    | ChannelOpenAckBadge => ChannelOpenAckMsg(json |> ChannelOpenAck.decode)
+    | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
+    | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
+    | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
+    | PacketBadge => PacketMsg(json |> Packet.decode)
+    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
+    // TODO: handle case correctly
+    | AcknowledgementBadge => AcknowledgementMsg(json |> Acknowledgement.decode)
     }
   );
 };

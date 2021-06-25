@@ -28,7 +28,11 @@ let make = (~category: MsgDecoder.msg_cat_t) => {
      | ValidatorMsg => <Icon name="fas fa-user" color=Theme.white size=14 />
      | ProposalMsg => <Icon name="fal fa-file" color=Theme.white size=14 />
      | DataMsg => <Icon name="fal fa-globe" color=Theme.white size=14 />
-     | _ => <Icon name="far fa-wallet" color=Theme.white size=14 />
+     | IBCClientMsg
+     | IBCConnectionMsg
+     | IBCChannelMsg
+     | IBCTransferMsg => <img src=Images.ibcIcon />
+     | _ => <Icon name="fal fa-question" color=Theme.white size=14 />
      }}
   </div>;
 };
