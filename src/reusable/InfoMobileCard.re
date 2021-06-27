@@ -167,8 +167,7 @@ let make = (~info) => {
       ellipsis=true
       color={theme.textPrimary}
     />
-  | Messages(txHash, messages, success, errMsg) =>
-    <TxMessages txHash messages success errMsg width=360 />
+  | Messages(txHash, messages, success, errMsg) => <TxMessages txHash messages success errMsg />
   | Badge({name, category}) => <MsgBadge name msgType=category />
   | VotingPower(tokens, votingPercent) =>
     <div className=Styles.vFlex>

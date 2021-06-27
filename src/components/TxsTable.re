@@ -57,7 +57,6 @@ module RenderBody = {
                  messages={messages->Belt_List.map(msgTransform)}
                  success
                  errMsg
-                 width=400
                />
              </div>
            | _ => <> <LoadingCensorBar width=400 height=15 /> </>

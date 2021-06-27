@@ -4,13 +4,15 @@ module Styles = {
   let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
 };
 
-let transform = (account, msg: MsgDecoder.t) => {
-  switch (msg) {
-  | SendMsgSuccess({toAddress, fromAddress, amount})
-  | SendMsgFail({toAddress, fromAddress, amount}) when toAddress == account =>
-    MsgDecoder.ReceiveMsg({toAddress, fromAddress, amount})
-  | _ => msg
-  };
+let transform = (account, {raw, decoded}: MsgDecoder.t) => {
+  let transformDecoded =
+    switch (decoded) {
+    | SendMsgSuccess({toAddress, fromAddress, amount})
+    | SendMsgFail({toAddress, fromAddress, amount}) when toAddress == account =>
+      MsgDecoder.ReceiveMsg({toAddress, fromAddress, amount})
+    | _ => decoded
+    };
+  MsgDecoder.{raw, decoded: transformDecoded};
 };
 
 [@react.component]
