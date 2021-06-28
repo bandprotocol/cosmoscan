@@ -35,7 +35,7 @@ let getBandUsd24Change = () => {
 };
 
 let getBandInfo = client => {
-  let ratesPromise = client->BandChainJS.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
+  let ratesPromise = client->BandChainJS.Client.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
   let supplyPromise = Axios.get("https://supply.bandchain.org/circulating");
   let usd24HrChangePromise = getBandUsd24Change();
 

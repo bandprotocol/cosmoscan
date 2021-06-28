@@ -371,6 +371,31 @@ module ExecutionPart = {
                      style={Styles.button(result == Loading)}
                      onClick={_ =>
                        if (result != Loading) {
+                         //  TODO: remove later
+                         Js.log(
+                           Obi2.encode(
+                             schema,
+                             Obi2.Input,
+                             paramsInput
+                             ->Belt_Array.map(({fieldName}) => fieldName)
+                             ->Belt_Array.zip(callDataArr)
+                             ->Belt_Array.map(((fieldName, fieldValue)) =>
+                                 Obi2.{fieldName, fieldValue}
+                               ),
+                           ),
+                         );
+                         Js.log(
+                           Obi.encode(
+                             schema,
+                             "input",
+                             paramsInput
+                             ->Belt_Array.map(({fieldName}) => fieldName)
+                             ->Belt_Array.zip(callDataArr)
+                             ->Belt_Array.map(((fieldName, fieldValue)) =>
+                                 Obi.{fieldName, fieldValue}
+                               ),
+                           ),
+                         );
                          switch (
                            Obi.encode(
                              schema,
