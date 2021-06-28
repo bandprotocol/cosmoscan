@@ -25,9 +25,10 @@ type badge_t =
   | ChannelOpenConfirmBadge
   | ChannelCloseInitBadge
   | ChannelCloseConfirmBadge
-  | PacketBadge
-  | AcknowledgementBadge
+  | AcknowledgePacketBadge
+  | RecvPacketBadge
   | TimeoutBadge
+  | TimeoutOnCloseBadge
   | DelegateBadge
   | UndelegateBadge
   | RedelegateBadge
@@ -50,6 +51,7 @@ type msg_cat_t =
   | IBCClientMsg
   | IBCConnectionMsg
   | IBCChannelMsg
+  | IBCPacketMsg
   | IBCTransferMsg
   | UnknownMsg;
 
@@ -81,9 +83,9 @@ let getBadgeVariantFromString = badge => {
   | "channel_open_confirm" => ChannelOpenConfirmBadge
   | "channel_close_init" => ChannelCloseInitBadge
   | "channel_close_confirm" => ChannelCloseConfirmBadge
-  | "ics04/opaque" => PacketBadge
-  | "ics04/timeout" => TimeoutBadge
-  | "acknowledgement" => AcknowledgementBadge
+  | "timeout" => TimeoutBadge
+  | "recv_packet" => RecvPacketBadge
+  | "acknowledge_packet" => AcknowledgePacketBadge
   | "delegate" => DelegateBadge
   | "begin_unbonding" => UndelegateBadge
   | "begin_redelegate" => RedelegateBadge
@@ -99,6 +101,9 @@ let getBadgeVariantFromString = badge => {
   | _ => UnknownBadge
   };
 };
+
+// for handling the empty value
+let getDefaultValue = value => value |> Belt.Option.getWithDefault(_, "");
 
 module Send = {
   type t = {
@@ -467,95 +472,6 @@ module SubmitClientMisbehaviour = {
   };
 };
 
-module Packet = {
-  type common_t = {
-    sequence: int,
-    sourcePort: string,
-    sourceChannel: string,
-    destinationPort: string,
-    destinationChannel: string,
-    timeoutHeight: int,
-    chainID: string,
-  };
-
-  type t = {
-    sender: Address.t,
-    data: string,
-    common: common_t,
-  };
-  let decode = json => {
-    JsonUtils.Decode.{
-      sender: json |> field("signer", string) |> Address.fromBech32,
-      data: json |> at(["packet", "data"], string) |> Js.String.toUpperCase,
-      common: {
-        sequence: json |> at(["packet", "sequence"], int),
-        sourcePort: json |> at(["packet", "source_port"], string),
-        sourceChannel: json |> at(["packet", "source_channel"], string),
-        destinationPort: json |> at(["packet", "destination_port"], string),
-        destinationChannel: json |> at(["packet", "destination_channel"], string),
-        timeoutHeight: json |> at(["packet", "timeout_height"], int),
-        chainID: "band-consumer",
-      },
-    };
-  };
-};
-
-module Acknowledgement = {
-  type t = {
-    common: Packet.common_t,
-    sender: Address.t,
-    acknowledgement: string,
-  };
-  let decode = json =>
-    JsonUtils.Decode.{
-      common: {
-        sequence: 999,
-        sourcePort: "gjdojfpjfp",
-        sourceChannel: "gjdojfpjfp",
-        destinationPort: "gjdojfpjfp",
-        destinationChannel: "gjdojfpjfp",
-        timeoutHeight: 999999,
-        chainID: "band-consumer",
-      },
-      sender: json |> field("address", string) |> Address.fromBech32,
-      acknowledgement: "iKQAmKzSud29geE5che9C8bVuQyG02FJJ7LM...",
-    };
-};
-
-module Timeout = {
-  type t = {
-    sender: Address.t,
-    common: Packet.common_t,
-    nextSequenceReceive: int,
-  };
-  let decode = json =>
-    JsonUtils.Decode.{
-      sender: json |> field("signer", string) |> Address.fromBech32,
-      common: {
-        sequence: json |> at(["packet", "sequence"], int),
-        sourcePort: json |> at(["packet", "source_port"], string),
-        sourceChannel: json |> at(["packet", "source_channel"], string),
-        destinationPort: json |> at(["packet", "destination_port"], string),
-        destinationChannel: json |> at(["packet", "destination_channel"], string),
-        timeoutHeight: json |> at(["packet", "timeout_height"], int),
-        chainID: "band-consumer",
-      },
-      nextSequenceReceive: json |> at(["packet", "next_sequence_receive"], int),
-    };
-};
-
-module ConnectionCommon = {
-  type t = {
-    chainID: string,
-    connectionID: string,
-  };
-  let decode = json =>
-    JsonUtils.Decode.{
-      chainID: "band-consumer",
-      connectionID: json |> field("connection_id", string),
-    };
-};
-
 module Height = {
   type t = {
     revisionHeight: int,
@@ -580,7 +496,7 @@ module ConnectionCounterParty = {
   let decode = json =>
     JsonUtils.Decode.{
       clientID: json |> field("client_id", string),
-      connectionID: json |> field("connection_id", string),
+      connectionID: json |> optional(field("connection_id", string)) |> getDefaultValue,
     };
 };
 
@@ -589,7 +505,7 @@ module ConnectionOpenInit = {
     signer: Address.t,
     clientID: string,
     delayPeriod: int,
-    counterpartyClientID: string,
+    counterparty: ConnectionCounterParty.t,
   };
 
   let decode = json =>
@@ -597,8 +513,7 @@ module ConnectionOpenInit = {
       signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
       clientID: json |> at(["msg", "client_id"], string),
       delayPeriod: json |> at(["msg", "delay_period"], int),
-      //TODO: now the field is wrong
-      counterpartyClientID: json |> at(["msg", "counterpart", "client_id"], string),
+      counterparty: json |> at(["msg", "counterparty"], ConnectionCounterParty.decode),
     };
 };
 
@@ -655,58 +570,81 @@ module ConnectionOpenConfirm = {
       proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
 };
-
-module ChannelCommon = {
+module ChannelCounterParty = {
   type t = {
-    chainID: string,
     portID: string,
     channelID: string,
   };
 
-  let decode = json => {
+  let decode = json =>
     JsonUtils.Decode.{
-      chainID: "band-consumer",
       portID: json |> field("port_id", string),
-      channelID: json |> field("channel_id", string),
+      channelID: json |> optional(field("channel_id", string)) |> getDefaultValue,
     };
+};
+
+module Channel = {
+  type t = {
+    state: int,
+    ordering: int,
+    counterparty: ChannelCounterParty.t,
   };
+
+  let decode = json =>
+    JsonUtils.Decode.{
+      state: json |> field("state", int),
+      ordering: json |> field("ordering", int),
+      counterparty: json |> field("counterparty", ChannelCounterParty.decode),
+    };
 };
 
 module ChannelOpenInit = {
   type t = {
     signer: Address.t,
-    common: ChannelCommon.t,
+    portID: string,
+    channel: Channel.t,
   };
-  let decode = json => {
+
+  let decode = json =>
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ChannelCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      portID: json |> at(["msg", "port_id"], string),
+      channel: json |> at(["msg", "channel"], Channel.decode),
     };
-  };
 };
 
 module ChannelOpenTry = {
   type t = {
     signer: Address.t,
-    common: ChannelCommon.t,
+    portID: string,
+    channel: Channel.t,
+    proofHeight: Height.t,
   };
-  let decode = json => {
+
+  let decode = json =>
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ChannelCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      portID: json |> at(["msg", "port_id"], string),
+      channel: json |> at(["msg", "channel"], Channel.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
-  };
 };
 
 module ChannelOpenAck = {
   type t = {
     signer: Address.t,
-    common: ChannelCommon.t,
+    portID: string,
+    channelID: string,
+    counterpartyChannelID: string,
+    proofHeight: Height.t,
   };
   let decode = json => {
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ChannelCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      portID: json |> at(["msg", "port_id"], string),
+      channelID: json |> at(["msg", "channel_id"], string),
+      counterpartyChannelID: json |> at(["msg", "counterparty_channel_id"], string),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
   };
 };
@@ -714,12 +652,16 @@ module ChannelOpenAck = {
 module ChannelOpenConfirm = {
   type t = {
     signer: Address.t,
-    common: ChannelCommon.t,
+    portID: string,
+    channelID: string,
+    proofHeight: Height.t,
   };
   let decode = json => {
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ChannelCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      portID: json |> at(["msg", "port_id"], string),
+      channelID: json |> at(["msg", "channel_id"], string),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
   };
 };
@@ -727,12 +669,15 @@ module ChannelOpenConfirm = {
 module ChannelCloseInit = {
   type t = {
     signer: Address.t,
-    common: ChannelCommon.t,
+    portID: string,
+    channelID: string,
   };
+
   let decode = json => {
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ChannelCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      portID: json |> at(["msg", "port_id"], string),
+      channelID: json |> at(["msg", "channel_id"], string),
     };
   };
 };
@@ -740,12 +685,105 @@ module ChannelCloseInit = {
 module ChannelCloseConfirm = {
   type t = {
     signer: Address.t,
-    common: ChannelCommon.t,
+    portID: string,
+    channelID: string,
+    proofHeight: Height.t,
   };
+
   let decode = json => {
     JsonUtils.Decode.{
-      signer: json |> field("signer", string) |> Address.fromBech32,
-      common: json |> ChannelCommon.decode,
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      portID: json |> at(["msg", "port_id"], string),
+      channelID: json |> at(["msg", "channel_id"], string),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
+    };
+  };
+};
+
+module Packet = {
+  type t = {
+    sequence: int,
+    sourcePort: string,
+    sourceChannel: string,
+    destinationPort: string,
+    destinationChannel: string,
+    timeoutHeight: int,
+    data: string,
+  };
+
+  let decode = json => {
+    JsonUtils.Decode.{
+      sequence: json |> field("sequence", int),
+      sourcePort: json |> field("source_port", string),
+      sourceChannel: json |> field("source_channel", string),
+      destinationPort: json |> field("destination_port", string),
+      destinationChannel: json |> field("destination_channel", string),
+      timeoutHeight: json |> at(["timeout_height", "revision_height"], int),
+      data: json |> field("data", string),
+    };
+  };
+};
+
+module RecvPacket = {
+  type t = {
+    signer: Address.t,
+    packet: Packet.t,
+    proofHeight: Height.t,
+  };
+
+  let decode = json => {
+    JsonUtils.Decode.{
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      packet: json |> at(["msg", "packet"], Packet.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
+    };
+  };
+};
+
+module AcknowledgePacket = {
+  type t = {
+    signer: Address.t,
+    packet: Packet.t,
+    proofHeight: Height.t,
+  };
+
+  let decode = json => {
+    JsonUtils.Decode.{
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      packet: json |> at(["msg", "packet"], Packet.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
+    };
+  };
+};
+
+module Timeout = {
+  type t = {
+    signer: Address.t,
+    packet: Packet.t,
+    proofHeight: Height.t,
+  };
+
+  let decode = json => {
+    JsonUtils.Decode.{
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      packet: json |> at(["msg", "packet"], Packet.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
+    };
+  };
+};
+
+module TimeoutOnClose = {
+  type t = {
+    signer: Address.t,
+    packet: Packet.t,
+    proofHeight: Height.t,
+  };
+
+  let decode = json => {
+    JsonUtils.Decode.{
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      packet: json |> at(["msg", "packet"], Packet.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
     };
   };
 };
@@ -1095,8 +1133,6 @@ type t =
   | CreateValidatorMsgFail(CreateValidator.t)
   | EditValidatorMsgSuccess(EditValidator.t)
   | EditValidatorMsgFail(EditValidator.t)
-  | AcknowledgementMsg(Acknowledgement.t)
-  | TimeoutMsg(Timeout.t)
   | DelegateMsgSuccess(Delegate.success_t)
   | DelegateMsgFail(Delegate.fail_t)
   | UndelegateMsgSuccess(Undelegate.success_t)
@@ -1136,7 +1172,10 @@ type t =
   | ChannelOpenConfirmMsg(ChannelOpenConfirm.t)
   | ChannelCloseInitMsg(ChannelCloseInit.t)
   | ChannelCloseConfirmMsg(ChannelCloseConfirm.t)
-  | PacketMsg(Packet.t)
+  | AcknowledgePacketMsg(AcknowledgePacket.t)
+  | RecvPacketMsg(RecvPacket.t)
+  | TimeoutMsg(Timeout.t)
+  | TimeoutOnCloseMsg(TimeoutOnClose.t)
   | UnknownMsg;
 
 let getCreator = msg => {
@@ -1205,9 +1244,10 @@ let getCreator = msg => {
   | ChannelOpenConfirmMsg(channel) => channel.signer
   | ChannelCloseInitMsg(channel) => channel.signer
   | ChannelCloseConfirmMsg(channel) => channel.signer
-  | PacketMsg(packet) => packet.sender
-  | AcknowledgementMsg(ack) => ack.sender
-  | TimeoutMsg(timeout) => timeout.sender
+  | RecvPacketMsg(packet) => packet.signer
+  | AcknowledgePacketMsg(packet) => packet.signer
+  | TimeoutMsg(timeout) => timeout.signer
+  | TimeoutOnCloseMsg(timeout) => timeout.signer
   | _ => "" |> Address.fromHex
   };
 };
@@ -1258,10 +1298,11 @@ let getBadge = badgeVariant => {
   | ChannelOpenAckBadge => {name: "Channel Open Ack", category: IBCChannelMsg}
   | ChannelOpenConfirmBadge => {name: "Channel Open Confirm", category: IBCChannelMsg}
   | ChannelCloseInitBadge => {name: "Channel Close Init", category: IBCChannelMsg}
-  | ChannelCloseConfirmBadge => {name: "Channel Close Confirm", category: IBCChannelMsg}
-  | PacketBadge => {name: "Packet", category: IBCChannelMsg}
-  | AcknowledgementBadge => {name: "Acknowledgement", category: IBCChannelMsg}
-  | TimeoutBadge => {name: "Timeout", category: IBCChannelMsg}
+  | ChannelCloseConfirmBadge => {name: "Channel Close Confirm", category: IBCPacketMsg}
+  | RecvPacketBadge => {name: "Recv Packet", category: IBCPacketMsg}
+  | AcknowledgePacketBadge => {name: "Acknowledge Packet", category: IBCPacketMsg}
+  | TimeoutBadge => {name: "Timeout", category: IBCPacketMsg}
+  | TimeoutOnCloseBadge => {name: "Timeout", category: IBCPacketMsg}
   };
 };
 
@@ -1330,9 +1371,10 @@ let getBadgeTheme = msg => {
   | ChannelOpenConfirmMsg(_) => getBadge(ChannelOpenConfirmBadge)
   | ChannelCloseInitMsg(_) => getBadge(ChannelCloseInitBadge)
   | ChannelCloseConfirmMsg(_) => getBadge(ChannelCloseConfirmBadge)
-  | PacketMsg(_) => getBadge(PacketBadge)
-  | AcknowledgementMsg(_) => getBadge(AcknowledgementBadge)
+  | RecvPacketMsg(_) => getBadge(AcknowledgePacketBadge)
+  | AcknowledgePacketMsg(_) => getBadge(AcknowledgePacketBadge)
   | TimeoutMsg(_) => getBadge(TimeoutBadge)
+  | TimeoutOnCloseMsg(_) => getBadge(TimeoutOnCloseBadge)
   };
 };
 
@@ -1382,10 +1424,10 @@ let decodeAction = json => {
     | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
     | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
     | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-    | PacketBadge => PacketMsg(json |> Packet.decode)
     | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
-    // TODO: handle case correctly
-    | AcknowledgementBadge => AcknowledgementMsg(json |> Acknowledgement.decode)
+    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
+    | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
+    | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
     }
   );
 };
@@ -1434,10 +1476,10 @@ let decodeFailAction = json => {
     | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
     | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
     | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-    | PacketBadge => PacketMsg(json |> Packet.decode)
     | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
-    // TODO: handle case correctly
-    | AcknowledgementBadge => AcknowledgementMsg(json |> Acknowledgement.decode)
+    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
+    | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
+    | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
     }
   );
 };

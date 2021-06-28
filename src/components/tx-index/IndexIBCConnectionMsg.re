@@ -23,7 +23,7 @@ module ConnectionOpenInit = {
           marginBottom=8
           color={theme.textSecondary}
         />
-        <Text size=Text.Lg value={connection.counterpartyClientID} />
+        <Text size=Text.Lg value={connection.counterparty.clientID} />
       </Col>
     </Row>;
   };
