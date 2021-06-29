@@ -70,7 +70,7 @@ module RecvPacket = {
           <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
           <AddressRender address={packet.signer} />
         </Col>
-        <Col col=Col.Six>
+        <Col col=Col.Six mbSm=24>
           <Heading
             value="Proof Height (Revision Height)"
             size=Heading.H5
@@ -104,7 +104,7 @@ module AcknowledgePacket = {
           <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
           <AddressRender address={packet.signer} />
         </Col>
-        <Col col=Col.Six>
+        <Col col=Col.Six mbSm=24>
           <Heading
             value="Proof Height (Revision Height)"
             size=Heading.H5

@@ -1,7 +1,6 @@
 module Transfer = {
   [@react.component]
   let make = (~msg: MsgDecoder.Transfer.t) => {
-    Js.Console.log(msg.timeoutTimestamp);
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <Row>
