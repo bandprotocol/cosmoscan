@@ -53,12 +53,6 @@ module Packet = {
             marginBottom=8
             color={theme.textSecondary}
           />
-          <Heading
-            value="Timeout Timestamp"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
           <Timestamp time={packet.timeoutTimestamp} size=Text.Lg />
         </Col>
       </Row>
