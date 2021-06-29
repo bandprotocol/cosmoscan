@@ -42,9 +42,24 @@ module Packet = {
           />
           <Text size=Text.Lg value={packet.destinationChannel} />
         </Col>
-        <Col>
+        <Col col=Col.Six mbSm=24>
           <Heading value="Data" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
           <Text size=Text.Lg value={packet.data} breakAll=true />
+        </Col>
+        <Col col=Col.Six mbSm=24>
+          <Heading
+            value="Timeout Timestamp"
+            size=Heading.H5
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <Heading
+            value="Timeout Timestamp"
+            size=Heading.H5
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <Timestamp time={packet.timeoutTimestamp} size=Text.Lg />
         </Col>
       </Row>
     </>;

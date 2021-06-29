@@ -11,6 +11,18 @@ type badge_t =
   | RemoveReporterBadge
   | CreateValidatorBadge
   | EditValidatorBadge
+  | DelegateBadge
+  | UndelegateBadge
+  | RedelegateBadge
+  | WithdrawRewardBadge
+  | UnjailBadge
+  | SetWithdrawAddressBadge
+  | SubmitProposalBadge
+  | DepositBadge
+  | VoteBadge
+  | WithdrawCommissionBadge
+  | MultiSendBadge
+  | ActivateBadge
   | CreateClientBadge
   | UpdateClientBadge
   | UpgradeClientBadge
@@ -29,18 +41,7 @@ type badge_t =
   | RecvPacketBadge
   | TimeoutBadge
   | TimeoutOnCloseBadge
-  | DelegateBadge
-  | UndelegateBadge
-  | RedelegateBadge
-  | WithdrawRewardBadge
-  | UnjailBadge
-  | SetWithdrawAddressBadge
-  | SubmitProposalBadge
-  | DepositBadge
-  | VoteBadge
-  | WithdrawCommissionBadge
-  | MultiSendBadge
-  | ActivateBadge
+  | TransferBadge
   | UnknownBadge;
 
 type msg_cat_t =
@@ -69,6 +70,18 @@ let getBadgeVariantFromString = badge => {
   | "remove_reporter" => RemoveReporterBadge
   | "create_validator" => CreateValidatorBadge
   | "edit_validator" => EditValidatorBadge
+  | "delegate" => DelegateBadge
+  | "begin_unbonding" => UndelegateBadge
+  | "begin_redelegate" => RedelegateBadge
+  | "withdraw_delegator_reward" => WithdrawRewardBadge
+  | "unjail" => UnjailBadge
+  | "set_withdraw_address" => SetWithdrawAddressBadge
+  | "submit_proposal" => SubmitProposalBadge
+  | "deposit" => DepositBadge
+  | "vote" => VoteBadge
+  | "withdraw_validator_commission" => WithdrawCommissionBadge
+  | "multisend" => MultiSendBadge
+  | "activate" => ActivateBadge
   | "create_client" => CreateClientBadge
   | "update_client" => UpdateClientBadge
   | "upgrade_client" => UpgradeClientBadge
@@ -84,20 +97,10 @@ let getBadgeVariantFromString = badge => {
   | "channel_close_init" => ChannelCloseInitBadge
   | "channel_close_confirm" => ChannelCloseConfirmBadge
   | "timeout" => TimeoutBadge
+  | "timeout_on_close" => TimeoutOnCloseBadge
   | "recv_packet" => RecvPacketBadge
   | "acknowledge_packet" => AcknowledgePacketBadge
-  | "delegate" => DelegateBadge
-  | "begin_unbonding" => UndelegateBadge
-  | "begin_redelegate" => RedelegateBadge
-  | "withdraw_delegator_reward" => WithdrawRewardBadge
-  | "unjail" => UnjailBadge
-  | "set_withdraw_address" => SetWithdrawAddressBadge
-  | "submit_proposal" => SubmitProposalBadge
-  | "deposit" => DepositBadge
-  | "vote" => VoteBadge
-  | "withdraw_validator_commission" => WithdrawCommissionBadge
-  | "multisend" => MultiSendBadge
-  | "activate" => ActivateBadge
+  | "transfer" => TransferBadge
   | _ => UnknownBadge
   };
 };
@@ -481,9 +484,7 @@ module Height = {
   let decode = json =>
     JsonUtils.Decode.{
       revisionHeight: json |> field("revision_height", int),
-      revisionNumber: 0,
-      // TODO: Will uncomment when the chain data is ready
-      // revisionNumber: json |> field("revision_number", int),
+      revisionNumber: json |> field("revision_number", int),
     };
 };
 
@@ -708,6 +709,7 @@ module Packet = {
     destinationPort: string,
     destinationChannel: string,
     timeoutHeight: int,
+    timeoutTimestamp: MomentRe.Moment.t,
     data: string,
   };
 
@@ -719,6 +721,7 @@ module Packet = {
       destinationPort: json |> field("destination_port", string),
       destinationChannel: json |> field("destination_channel", string),
       timeoutHeight: json |> at(["timeout_height", "revision_height"], int),
+      timeoutTimestamp: json |> at(["timeout_timestamp"], GraphQLParser.timeNS),
       data: json |> field("data", string),
     };
   };
@@ -784,6 +787,30 @@ module TimeoutOnClose = {
       signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
       packet: json |> at(["msg", "packet"], Packet.decode),
       proofHeight: json |> at(["msg", "proof_height"], Height.decode),
+    };
+  };
+};
+
+module Transfer = {
+  type t = {
+    sender: Address.t,
+    receiver: string,
+    sourcePort: string,
+    sourceChannel: string,
+    token: Coin.t,
+    timeoutHeight: Height.t,
+    timeoutTimestamp: MomentRe.Moment.t,
+  };
+
+  let decode = json => {
+    JsonUtils.Decode.{
+      sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
+      receiver: json |> at(["msg", "receiver"], string),
+      sourcePort: json |> at(["msg", "source_port"], string),
+      sourceChannel: json |> at(["msg", "source_channel"], string),
+      token: json |> at(["msg", "token"], Coin.decodeCoin),
+      timeoutHeight: json |> at(["msg", "timeout_height"], Height.decode),
+      timeoutTimestamp: json |> at(["msg", "timeout_timestamp"], GraphQLParser.timeNS),
     };
   };
 };
@@ -1176,6 +1203,7 @@ type t =
   | RecvPacketMsg(RecvPacket.t)
   | TimeoutMsg(Timeout.t)
   | TimeoutOnCloseMsg(TimeoutOnClose.t)
+  | TransferMsg(Transfer.t)
   | UnknownMsg;
 
 let getCreator = msg => {
@@ -1248,6 +1276,7 @@ let getCreator = msg => {
   | AcknowledgePacketMsg(packet) => packet.signer
   | TimeoutMsg(timeout) => timeout.signer
   | TimeoutOnCloseMsg(timeout) => timeout.signer
+  | TransferMsg(message) => message.sender
   | _ => "" |> Address.fromHex
   };
 };
@@ -1303,6 +1332,7 @@ let getBadge = badgeVariant => {
   | AcknowledgePacketBadge => {name: "Acknowledge Packet", category: IBCPacketMsg}
   | TimeoutBadge => {name: "Timeout", category: IBCPacketMsg}
   | TimeoutOnCloseBadge => {name: "Timeout", category: IBCPacketMsg}
+  | TransferBadge => {name: "Transfer", category: IBCTransferMsg}
   };
 };
 
@@ -1371,10 +1401,11 @@ let getBadgeTheme = msg => {
   | ChannelOpenConfirmMsg(_) => getBadge(ChannelOpenConfirmBadge)
   | ChannelCloseInitMsg(_) => getBadge(ChannelCloseInitBadge)
   | ChannelCloseConfirmMsg(_) => getBadge(ChannelCloseConfirmBadge)
-  | RecvPacketMsg(_) => getBadge(AcknowledgePacketBadge)
+  | RecvPacketMsg(_) => getBadge(RecvPacketBadge)
   | AcknowledgePacketMsg(_) => getBadge(AcknowledgePacketBadge)
   | TimeoutMsg(_) => getBadge(TimeoutBadge)
   | TimeoutOnCloseMsg(_) => getBadge(TimeoutOnCloseBadge)
+  | TransferMsg(_) => getBadge(TransferBadge)
   };
 };
 
@@ -1424,10 +1455,11 @@ let decodeAction = json => {
     | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
     | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
     | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
-    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
     | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
     | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
+    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
+    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
+    | TransferBadge => TransferMsg(json |> Transfer.decode)
     }
   );
 };
@@ -1476,10 +1508,11 @@ let decodeFailAction = json => {
     | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
     | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
     | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
-    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
     | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
     | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
+    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
+    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
+    | TransferBadge => TransferMsg(json |> Transfer.decode)
     }
   );
 };

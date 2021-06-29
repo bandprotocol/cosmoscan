@@ -138,10 +138,11 @@ let renderBody = (msg: MsgDecoder.t) =>
   | ChannelOpenConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelOpenConfirm channel />
   | ChannelCloseInitMsg(channel) => <IndexIBCChannelMsg.ChannelCloseInit channel />
   | ChannelCloseConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelCloseConfirm channel />
-  | AcknowledgePacketMsg(packet) => <IndexIBCPacket.AcknowledgePacket packet />
-  | RecvPacketMsg(packet) => <IndexIBCPacket.RecvPacket packet />
-  | TimeoutMsg(packet) => <IndexIBCPacket.Timeout packet />
-  | TimeoutOnCloseMsg(packet) => <IndexIBCPacket.TimeoutOnClose packet />
+  | AcknowledgePacketMsg(packet) => <IndexIBCPacketMsg.AcknowledgePacket packet />
+  | RecvPacketMsg(packet) => <IndexIBCPacketMsg.RecvPacket packet />
+  | TimeoutMsg(packet) => <IndexIBCPacketMsg.Timeout packet />
+  | TimeoutOnCloseMsg(packet) => <IndexIBCPacketMsg.TimeoutOnClose packet />
+  | TransferMsg(msg) => <IndexIBCTransferMsg.Transfer msg />
   | _ => React.null
   };
 
