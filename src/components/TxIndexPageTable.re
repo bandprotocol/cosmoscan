@@ -132,15 +132,17 @@ let renderBody = (msg: MsgDecoder.t) =>
   | ConnectionOpenAckMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenAck connection />
   | ConnectionOpenConfirmMsg(connection) =>
     <IndexIBCConnectionMsg.ConnectionOpenConfirm connection />
-  | ChannelOpenInitMsg(_)
-  | ChannelOpenTryMsg(_)
-  | ChannelOpenAckMsg(_)
-  | ChannelOpenConfirmMsg(_)
-  | ChannelCloseInitMsg(_)
-  | ChannelCloseConfirmMsg(_)
-  | PacketMsg(_)
-  | AcknowledgementMsg(_)
-  | TimeoutMsg(_)
+  | ChannelOpenInitMsg(channel) => <IndexIBCChannelMsg.ChannelOpenInit channel />
+  | ChannelOpenTryMsg(channel) => <IndexIBCChannelMsg.ChannelOpenTry channel />
+  | ChannelOpenAckMsg(channel) => <IndexIBCChannelMsg.ChannelOpenAck channel />
+  | ChannelOpenConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelOpenConfirm channel />
+  | ChannelCloseInitMsg(channel) => <IndexIBCChannelMsg.ChannelCloseInit channel />
+  | ChannelCloseConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelCloseConfirm channel />
+  | AcknowledgePacketMsg(packet) => <IndexIBCPacketMsg.AcknowledgePacket packet />
+  | RecvPacketMsg(packet) => <IndexIBCPacketMsg.RecvPacket packet />
+  | TimeoutMsg(packet) => <IndexIBCPacketMsg.Timeout packet />
+  | TimeoutOnCloseMsg(packet) => <IndexIBCPacketMsg.TimeoutOnClose packet />
+  | TransferMsg(msg) => <IndexIBCTransferMsg.Transfer msg />
   | _ => React.null
   };
 

@@ -23,7 +23,7 @@ module ConnectionOpenInit = {
           marginBottom=8
           color={theme.textSecondary}
         />
-        <Text size=Text.Lg value={connection.counterpartyClientID} />
+        <Text size=Text.Lg value={connection.counterparty.clientID} />
       </Col>
     </Row>;
   };
@@ -188,7 +188,7 @@ module ConnectionOpenConfirm = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <Row>
-      <Col col=Col.Six>
+      <Col col=Col.Six mb=24>
         <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
         <AddressRender address={connection.signer} />
       </Col>

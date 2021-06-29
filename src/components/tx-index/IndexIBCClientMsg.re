@@ -23,7 +23,7 @@ module UpdateClient = {
         <AddressRender address={client.signer} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="ClientID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading value="Client ID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
         <Text size=Text.Lg value={client.clientID} />
       </Col>
     </Row>;
