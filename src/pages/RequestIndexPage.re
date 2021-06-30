@@ -13,6 +13,23 @@ module Styles = {
   let addressContainer = style([Media.mobile([width(`px(260))])]);
   let validatorReportStatus = style([marginBottom(`px(13))]);
   let noPaddingBottom = style([paddingBottom(`zero), Media.mobile([paddingBottom(`zero)])]);
+  let ibcBadge =
+    style([
+      display(`flex),
+      padding2(~v=`px(4), ~h=`px(16)),
+      background(Theme.baseBlue),
+      borderRadius(`px(10)),
+      marginLeft(`px(8)),
+    ]);
+  let reasonSection =
+    style([
+      padding2(~v=`px(24), ~h=`px(40)),
+      border(`px(1), solid, Theme.failColor),
+      borderRadius(`px(12)),
+      marginTop(`px(40)),
+      display(`flex),
+      alignItems(`center),
+    ]);
 };
 
 module ValidatorReportStatus = {
@@ -163,7 +180,15 @@ let make = (~reqID) => {
         <Col>
           <Heading value="Request Details" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
           {switch (requestSub) {
-           | Data({id}) => <TypeID.Request id position=TypeID.Title />
+           | Data({id, isIBC}) =>
+             <div className={CssHelper.flexBox()}>
+               <TypeID.Request id position=TypeID.Title />
+               {isIBC
+                  ? <div className=Styles.ibcBadge>
+                      <Text value="IBC" color={theme.white} weight=Text.Semibold />
+                    </div>
+                  : React.null}
+             </div>
            | _ => <LoadingCensorBar width=150 height=23 />
            }}
         </Col>
@@ -240,7 +265,7 @@ let make = (~reqID) => {
             <Row marginBottom=24 alignItems=Row.Center>
               <Col col=Col.Four mbSm=8>
                 <Heading
-                  value="Fee"
+                  value="Tx Fee"
                   size=Heading.H4
                   weight=Heading.Thin
                   color={theme.textSecondary}
@@ -269,6 +294,50 @@ let make = (~reqID) => {
             <Row marginBottom=24 alignItems=Row.Center>
               <Col col=Col.Four mbSm=8>
                 <Heading
+                  value="Prepare Gas"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
+                {switch (requestSub) {
+                 | Data({prepareGas}) =>
+                   <Text
+                     block=true
+                     value={prepareGas |> string_of_int}
+                     size=Text.Lg
+                     color={theme.textSecondary}
+                   />
+                 | _ => <LoadingCensorBar width=200 height=15 />
+                 }}
+              </Col>
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Execute Gas"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
+                {switch (requestSub) {
+                 | Data({executeGas}) =>
+                   <Text
+                     block=true
+                     value={executeGas |> string_of_int}
+                     size=Text.Lg
+                     color={theme.textSecondary}
+                   />
+                 | _ => <LoadingCensorBar width=200 height=15 />
+                 }}
+              </Col>
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
                   value="Fee Limit"
                   size=Heading.H4
                   weight=Heading.Thin
@@ -278,12 +347,41 @@ let make = (~reqID) => {
               <Col col=Col.Eight>
                 {switch (requestSub) {
                  | Data({feeLimit}) =>
-                   Js.log(feeLimit);
                    <Text
                      block=true
                      value={
                        (feeLimit |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=6))
                        ++ " BAND"
+                     }
+                     size=Text.Lg
+                     color={theme.textSecondary}
+                   />
+                 | _ => <LoadingCensorBar width=200 height=15 />
+                 }}
+              </Col>
+            </Row>
+            <Row marginBottom=24 alignItems=Row.Center>
+              <Col col=Col.Four mbSm=8>
+                <Heading
+                  value="Fee Used by Request"
+                  size=Heading.H4
+                  weight=Heading.Thin
+                  color={theme.textSecondary}
+                />
+              </Col>
+              <Col col=Col.Eight>
+                {switch (requestSub) {
+                 | Data({feeUsed, feeLimit}) =>
+                   let feeUsed_ = feeUsed |> Coin.getBandAmountFromCoins;
+                   let feeLimit_ = feeLimit |> Coin.getBandAmountFromCoins;
+                   let usedRatio =
+                     (feeLimit_ == 0. ? 0. : feeUsed_ /. feeLimit_)
+                     *. 100.
+                     |> Format.fPercent(~digits=2);
+                   <Text
+                     block=true
+                     value={
+                       (feeUsed_ |> Format.fPretty(~digits=6)) ++ " BAND " ++ {j|($usedRatio)|j}
                      }
                      size=Text.Lg
                      color={theme.textSecondary}
@@ -296,7 +394,7 @@ let make = (~reqID) => {
             <Row marginBottom=24 alignItems=Row.Center>
               <Col col=Col.Four mbSm=8>
                 <Heading
-                  value="Request Time"
+                  value="Request at Block"
                   size=Heading.H4
                   weight=Heading.Thin
                   color={theme.textSecondary}
@@ -304,66 +402,10 @@ let make = (~reqID) => {
               </Col>
               <Col col=Col.Four>
                 {switch (requestSub) {
-                 | Data({requestTime}) =>
-                   switch (requestTime) {
-                   | Some(requestTime') =>
-                     <div className={CssHelper.flexBox()}>
-                       <Text
-                         value={
-                           requestTime'
-                           |> MomentRe.Moment.format(Config.timestampDisplayFormat)
-                           |> String.uppercase_ascii
-                         }
-                         size=Text.Lg
-                       />
-                       <HSpacing size=Spacing.sm />
-                       <TimeAgos
-                         time=requestTime'
-                         prefix="("
-                         suffix=")"
-                         size=Text.Md
-                         weight=Text.Thin
-                       />
-                     </div>
-                   | None => <Text value="TBD" size=Text.Lg />
-                   }
-                 | _ => <LoadingCensorBar width=200 height=15 />
-                 }}
-              </Col>
-            </Row>
-            <Row marginBottom=24 alignItems=Row.Center>
-              <Col col=Col.Four mbSm=8>
-                <Heading
-                  value="Resolve Time"
-                  size=Heading.H4
-                  weight=Heading.Thin
-                  color={theme.textSecondary}
-                />
-              </Col>
-              <Col col=Col.Four>
-                {switch (requestSub) {
-                 | Data({resolveTime}) =>
-                   switch (resolveTime) {
-                   | Some(resolveTime') =>
-                     <div className={CssHelper.flexBox()}>
-                       <Text
-                         value={
-                           resolveTime'
-                           |> MomentRe.Moment.format(Config.timestampDisplayFormat)
-                           |> String.uppercase_ascii
-                         }
-                         size=Text.Lg
-                       />
-                       <HSpacing size=Spacing.sm />
-                       <TimeAgos
-                         time=resolveTime'
-                         prefix="("
-                         suffix=")"
-                         size=Text.Md
-                         weight=Text.Thin
-                       />
-                     </div>
-                   | None => <Text value="TBD" size=Text.Lg />
+                 | Data({transactionOpt}) =>
+                   switch (transactionOpt) {
+                   | Some({blockHeight}) => <TypeID.Block id=blockHeight />
+                   | None => <Text value="Genesis" size=Text.Lg />
                    }
                  | _ => <LoadingCensorBar width=200 height=15 />
                  }}
@@ -401,8 +443,20 @@ let make = (~reqID) => {
               </Col>
               <Col col=Col.Eight>
                 {switch (requestSub) {
-                 | Data({resolveStatus}) =>
-                   <RequestStatus resolveStatus display=RequestStatus.Full />
+                 | Data({resolveStatus, resolveHeight}) =>
+                   <div className={CssHelper.flexBox()}>
+                     <RequestStatus resolveStatus display=RequestStatus.Full />
+                     {switch (resolveHeight) {
+                      | Some(height) =>
+                        <>
+                          <HSpacing size=Spacing.md />
+                          <Text value=" (" block=true size=Text.Lg color={theme.textPrimary} />
+                          <TypeID.Block id=height />
+                          <Text value=")" block=true size=Text.Lg color={theme.textPrimary} />
+                        </>
+                      | None => React.null
+                      }}
+                   </div>
                  | _ => <LoadingCensorBar width=200 height=15 />
                  }}
               </Col>
@@ -440,6 +494,19 @@ let make = (~reqID) => {
                 </Row>
               </Col>
             </Row>
+            {switch (requestSub) {
+             | Data({reason}) =>
+               switch (reason) {
+               | Some(reason') when reason' != "" =>
+                 <div className=Styles.reasonSection>
+                   <img src=Images.fail />
+                   <HSpacing size=Spacing.md />
+                   <Text value=reason' color={theme.textPrimary} />
+                 </div>
+               | _ => React.null
+               }
+             | _ => React.null
+             }}
           </InfoContainer>
         </Col>
       </Row>
