@@ -102,20 +102,27 @@ let make = (~msg: MsgDecoder.t, ~width: int) => {
      | UpdateClientMsg({clientID})
      | UpgradeClientMsg({clientID})
      | SubmitClientMisbehaviourMsg({clientID}) => <IBCClientMsg.Client clientID />
-     | ConnectionOpenInitMsg(_)
-     | ConnectionOpenTryMsg(_)
-     | ConnectionOpenAckMsg(_)
-     | ConnectionOpenConfirmMsg(_)
-     | ChannelOpenInitMsg(_)
-     | ChannelOpenTryMsg(_)
-     | ChannelOpenAckMsg(_)
-     | ChannelOpenConfirmMsg(_)
-     | ChannelCloseInitMsg(_)
-     | ChannelCloseConfirmMsg(_)
+     | ConnectionOpenTryMsg({clientID, counterparty})
+     | ConnectionOpenInitMsg({clientID, counterparty}) =>
+       <IBCConnectionMsg.ConnectionCommon clientID counterpartyClientID={counterparty.clientID} />
+     | ConnectionOpenAckMsg({connectionID, counterpartyConnectionID}) =>
+       <IBCConnectionMsg.ConnectionOpenAck connectionID counterpartyConnectionID />
+     | ConnectionOpenConfirmMsg({connectionID}) =>
+       <IBCConnectionMsg.ConnectionOpenConfirm connectionID />
+     | ChannelOpenInitMsg({portID, channel})
+     | ChannelOpenTryMsg({portID, channel}) =>
+       <IBCChannelMsg.ChannelOpenCommon portID counterpartyPortID={channel.counterparty.portID} />
+     | ChannelOpenAckMsg({channelID, counterpartyChannelID}) =>
+       <IBCChannelMsg.ChannelOpenAck channelID counterpartyChannelID />
+     | ChannelOpenConfirmMsg({channelID}) => <IBCChannelMsg.ChannelCloseCommon channelID />
+     | ChannelCloseInitMsg({channelID})
+     | ChannelCloseConfirmMsg({channelID}) => <IBCChannelMsg.ChannelCloseCommon channelID />
+     | TransferMsg({token, receiver}) =>
+       <IBCTransferMsg.Transfer toAddress=receiver amount={token.amount} denom={token.denom} />
+     // TODO: Waiting for the decode data complete
      | AcknowledgePacketMsg(_)
      | RecvPacketMsg(_)
      | TimeoutMsg(_)
-     | TransferMsg(_)
      | TimeoutOnCloseMsg(_)
      | _ => React.null
      }}
