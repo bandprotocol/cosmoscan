@@ -4,11 +4,23 @@ module CreateDataSourceMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Name" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Name"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <div className={CssHelper.flexBox()}>
           <TypeID.DataSource position=TypeID.Subtitle id={dataSource.id} />
           <HSpacing size=Spacing.sm />
@@ -25,11 +37,23 @@ module CreateDataSourceFailMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Name" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Name"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text value={dataSource.name} size=Text.Lg />
       </Col>
     </Row>;
@@ -42,11 +66,23 @@ module EditDataSourceMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Name" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Name"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <div className={CssHelper.flexBox()}>
           <TypeID.DataSource position=TypeID.Subtitle id={dataSource.id} />
           {dataSource.name == Config.doNotModify
@@ -64,11 +100,23 @@ module CreateOracleScriptMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={oracleScript.owner} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Name" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Name"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <div className={CssHelper.flexBox()}>
           <TypeID.OracleScript position=TypeID.Subtitle id={oracleScript.id} />
           <HSpacing size=Spacing.sm />
@@ -85,11 +133,23 @@ module CreateOracleScriptFailMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={oracleScript.owner} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Name" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Name"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text value={oracleScript.name} size=Text.Lg />
       </Col>
     </Row>;
@@ -102,11 +162,23 @@ module EditOracleScriptMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={oracleScript.owner} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Name" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Name"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <div className={CssHelper.flexBox()}>
           <TypeID.OracleScript position=TypeID.Subtitle id={oracleScript.id} />
           {oracleScript.name == Config.doNotModify
@@ -125,17 +197,30 @@ module RequestMsg = {
     let calldataKVsOpt = Obi.decode(request.schema, "input", request.calldata);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={request.sender} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Request ID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Request ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <TypeID.Request position=TypeID.Subtitle id={request.id} />
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
           value="Oracle Script"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -148,7 +233,12 @@ module RequestMsg = {
       <Col mb=24>
         <div
           className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ()), CssHelper.mb()])}>
-          <Heading value="Calldata" size=Heading.H5 color={theme.textSecondary} />
+          <Heading
+            value="Calldata"
+            size=Heading.H4
+            weight=Heading.Regular
+            color={theme.textSecondary}
+          />
           <CopyButton
             data={request.calldata |> JsBuffer.toHex(~with0x=false)}
             title="Copy as bytes"
@@ -181,7 +271,8 @@ module RequestMsg = {
       <Col col=Col.Six mbSm=24>
         <Heading
           value="Request Validator Count"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -190,7 +281,8 @@ module RequestMsg = {
       <Col col=Col.Six>
         <Heading
           value="Sufficient Validator Count"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -206,13 +298,20 @@ module RequestFailMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={request.sender} />
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
           value="Oracle Script"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -221,7 +320,13 @@ module RequestFailMsg = {
         </div>
       </Col>
       <Col mb=24>
-        <Heading value="Calldata" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Calldata"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <div className={CssHelper.flexBox()}>
           <Text value={request.calldata |> JsBuffer.toHex} size=Text.Lg />
           <HSpacing size=Spacing.sm />
@@ -231,7 +336,8 @@ module RequestFailMsg = {
       <Col col=Col.Six mbSm=24>
         <Heading
           value="Request Validator Count"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -240,7 +346,8 @@ module RequestFailMsg = {
       <Col col=Col.Six>
         <Heading
           value="Sufficient Validator Count"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -256,17 +363,30 @@ module ReportMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Owner" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Owner"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender position=AddressRender.Subtitle address={report.reporter} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Request ID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Request ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <TypeID.Request position=TypeID.Subtitle id={report.requestID} />
       </Col>
       <Col>
         <Heading
           value="Raw Data Report"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />

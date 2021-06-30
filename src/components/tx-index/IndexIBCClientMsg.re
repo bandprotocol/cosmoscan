@@ -5,7 +5,13 @@ module CreateClient = {
 
     <Row>
       <Col col=Col.Six>
-        <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Signer"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={client.signer} />
       </Col>
     </Row>;
@@ -19,11 +25,23 @@ module UpdateClient = {
 
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Signer"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={client.signer} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Client ID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Client ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text size=Text.Lg value={client.clientID} />
       </Col>
     </Row>;
@@ -37,11 +55,23 @@ module UpgradeClient = {
 
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Signer"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={client.signer} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="ClientID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="ClientID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text size=Text.Lg value={client.clientID} />
       </Col>
     </Row>;
@@ -55,11 +85,23 @@ module SubmitClientMisbehaviour = {
 
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Signer"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={client.signer} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="ClientID" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="ClientID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text size=Text.Lg value={client.clientID} />
       </Col>
     </Row>;

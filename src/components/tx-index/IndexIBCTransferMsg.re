@@ -5,28 +5,53 @@ module Transfer = {
 
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Sender" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Sender"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={msg.sender} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Receiver" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Receiver"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text size=Text.Lg value={msg.receiver} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Source Port" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Source Port"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text size=Text.Lg value={msg.sourcePort} />
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
           value="Source Channel"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <Text size=Text.Lg value={msg.sourceChannel} />
       </Col>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Token" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Token"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <Text
           size=Text.Lg
           value={(msg.token.amount |> Format.fPretty) ++ " " ++ msg.token.denom}
@@ -36,7 +61,8 @@ module Transfer = {
       <Col col=Col.Six>
         <Heading
           value="Timeout Timestamp"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />

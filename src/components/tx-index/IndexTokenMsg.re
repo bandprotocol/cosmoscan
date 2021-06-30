@@ -5,15 +5,33 @@ module SendMsg = {
 
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="From" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="From"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={send.fromAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="To" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="To"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AddressRender address={send.toAddress} />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins={send.amount} pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -28,14 +46,21 @@ module DelegateMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <AddressRender address={delegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <ValidatorMonikerLink
           validatorAddress={delegation.validatorAddress}
           moniker={delegation.moniker}
@@ -43,7 +68,13 @@ module DelegateMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins=[delegation.amount] pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -58,7 +89,8 @@ module DelegateFailMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -67,14 +99,21 @@ module DelegateFailMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Validator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <AddressRender address={delegation.validatorAddress} accountType=`validator />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins=[delegation.amount] pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -89,14 +128,21 @@ module UndelegateMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <AddressRender address={undelegation.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <ValidatorMonikerLink
           validatorAddress={undelegation.validatorAddress}
           moniker={undelegation.moniker}
@@ -104,7 +150,13 @@ module UndelegateMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins=[undelegation.amount] pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -119,7 +171,8 @@ module UndelegateFailMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -128,14 +181,21 @@ module UndelegateFailMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Validator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <AddressRender address={undelegation.validatorAddress} accountType=`validator />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins=[undelegation.amount] pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -150,7 +210,8 @@ module RedelegateMsg = {
       <Col mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -159,7 +220,8 @@ module RedelegateMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Source Validator"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -172,7 +234,8 @@ module RedelegateMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Destination Validator"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -183,7 +246,13 @@ module RedelegateMsg = {
         />
       </Col>
       <Col>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins=[redelegation.amount] pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -198,7 +267,8 @@ module RedelegateFailMsg = {
       <Col mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -207,7 +277,8 @@ module RedelegateFailMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Validator Source Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -216,14 +287,21 @@ module RedelegateFailMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Validator Destination Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <AddressRender address={redelegation.validatorDestinationAddress} accountType=`validator />
       </Col>
       <Col>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins=[redelegation.amount] pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -238,14 +316,21 @@ module WithdrawRewardMsg = {
       <Col col=Col.Six mb=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
         <AddressRender address={withdrawal.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <ValidatorMonikerLink
           validatorAddress={withdrawal.validatorAddress}
           moniker={withdrawal.moniker}
@@ -253,7 +338,13 @@ module WithdrawRewardMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins={withdrawal.amount} pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -268,7 +359,8 @@ module WithdrawRewardFailMsg = {
       <Col col=Col.Six mbSm=24>
         <Heading
           value="Delegator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -277,7 +369,8 @@ module WithdrawRewardFailMsg = {
       <Col col=Col.Six>
         <Heading
           value="Validator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -293,7 +386,13 @@ module WithdrawComissionMsg = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <ValidatorMonikerLink
           validatorAddress={withdrawal.validatorAddress}
           moniker={withdrawal.moniker}
@@ -301,7 +400,13 @@ module WithdrawComissionMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Amount" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Heading
+          value="Amount"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
         <AmountRender coins={withdrawal.amount} pos=AmountRender.TxIndex />
       </Col>
     </Row>;
@@ -316,7 +421,8 @@ module WithdrawComissionFailMsg = {
       <Col col=Col.Six>
         <Heading
           value="Validator Address"
-          size=Heading.H5
+          size=Heading.H4
+          weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
@@ -334,14 +440,21 @@ module MultisendMsg = {
     <>
       <Row>
         <Col col=Col.Six>
-          <Heading value="From" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+          <Heading
+            value="From"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
         </Col>
         {isMobile
            ? React.null
            : <Col col=Col.Six>
                <Heading
                  value="Amount"
-                 size=Heading.H5
+                 size=Heading.H4
+                 weight=Heading.Regular
                  marginBottom=8
                  color={theme.textSecondary}
                />
@@ -359,7 +472,13 @@ module MultisendMsg = {
          ->React.array}
       </Row>
       <SeperatedLine mt=8 mb=24 />
-      <Heading value="To" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+      <Heading
+        value="To"
+        size=Heading.H4
+        weight=Heading.Regular
+        marginBottom=8
+        color={theme.textSecondary}
+      />
       <Row>
         {tx.outputs
          ->Belt_List.mapWithIndex((idx, output) =>
