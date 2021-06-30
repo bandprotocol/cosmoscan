@@ -27,6 +27,8 @@ module Styles = {
       border(`px(1), solid, Theme.failColor),
       borderRadius(`px(12)),
       marginTop(`px(40)),
+      display(`flex),
+      alignItems(`center),
     ]);
 };
 
@@ -178,7 +180,15 @@ let make = (~reqID) => {
         <Col>
           <Heading value="Request Details" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
           {switch (requestSub) {
-           | Data({id}) => <TypeID.Request id position=TypeID.Title />
+           | Data({id, isIBC}) =>
+             <div className={CssHelper.flexBox()}>
+               <TypeID.Request id position=TypeID.Title />
+               {isIBC
+                  ? <div className=Styles.ibcBadge>
+                      <Text value="IBC" color={theme.white} weight=Text.Semibold />
+                    </div>
+                  : React.null}
+             </div>
            | _ => <LoadingCensorBar width=150 height=23 />
            }}
         </Col>
@@ -186,18 +196,7 @@ let make = (~reqID) => {
       <Row marginBottom=24>
         <Col>
           <InfoContainer>
-            <div className={CssHelper.flexBox()}>
-              <Heading value="Request Info" size=Heading.H4 />
-              {switch (requestSub) {
-               | Data({isIBC}) =>
-                 isIBC
-                   ? <div className=Styles.ibcBadge>
-                       <Text value="IBC" color={theme.white} weight=Text.Semibold />
-                     </div>
-                   : React.null
-               | _ => React.null
-               }}
-            </div>
+            <Heading value="Request Info" size=Heading.H4 />
             <SeperatedLine mt=32 mb=24 />
             <Row marginBottom=24 alignItems=Row.Center>
               <Col col=Col.Four mbSm=8>
@@ -376,7 +375,9 @@ let make = (~reqID) => {
                    let feeUsed_ = feeUsed |> Coin.getBandAmountFromCoins;
                    let feeLimit_ = feeLimit |> Coin.getBandAmountFromCoins;
                    let usedRatio =
-                     (feeLimit_ == 0. ? 0. : feeUsed_ /. feeLimit_) |> Format.fPercent(~digits=2);
+                     (feeLimit_ == 0. ? 0. : feeUsed_ /. feeLimit_)
+                     *. 100.
+                     |> Format.fPercent(~digits=2);
                    <Text
                      block=true
                      value={
@@ -498,6 +499,8 @@ let make = (~reqID) => {
                switch (reason) {
                | Some(reason') when reason' != "" =>
                  <div className=Styles.reasonSection>
+                   <img src=Images.fail />
+                   <HSpacing size=Spacing.md />
                    <Text value=reason' color={theme.textPrimary} />
                  </div>
                | _ => React.null
