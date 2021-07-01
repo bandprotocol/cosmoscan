@@ -58,8 +58,8 @@ let make = (~direction: IBCSub.packet_direction_t) => {
   | Data(packets) =>
     packets
     ->Belt_Array.mapWithIndex((i, e) =>
-        <Col col=Col.Six>
-          <CardDetail packetSub={Sub.resolve(e)} key={i |> string_of_int} />
+        <Col col=Col.Six key={i |> string_of_int}>
+          <CardDetail packetSub={Sub.resolve(e)} />
         </Col>
       )
     ->React.array
