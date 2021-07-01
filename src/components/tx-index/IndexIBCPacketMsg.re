@@ -3,14 +3,15 @@ module Packet = {
   let make = (~packet: MsgDecoder.Packet.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
-      <SeperatedLine />
+      <SeperatedLine mt=24 mb=24 />
       <Row>
-        <Col mb=18> <Heading value="Packet" size=Heading.H5 marginBottom=8 /> </Col>
+        <Col mb=24> <Heading value="Packet" size=Heading.H4 color={theme.textSecondary} /> </Col>
         <Col col=Col.Six mb=24>
           <Heading
             value="Source Port"
-            size=Heading.H5
+            size=Heading.H4
             marginBottom=8
+            weight=Heading.Regular
             color={theme.textSecondary}
           />
           <Text size=Text.Lg value={packet.sourcePort} />
@@ -18,8 +19,9 @@ module Packet = {
         <Col col=Col.Six mb=24>
           <Heading
             value="Destination Port"
-            size=Heading.H5
+            size=Heading.H4
             marginBottom=8
+            weight=Heading.Regular
             color={theme.textSecondary}
           />
           <Text size=Text.Lg value={packet.destinationPort} />
@@ -27,8 +29,9 @@ module Packet = {
         <Col col=Col.Six mb=24>
           <Heading
             value="Source Channel"
-            size=Heading.H5
+            size=Heading.H4
             marginBottom=8
+            weight=Heading.Regular
             color={theme.textSecondary}
           />
           <Text size=Text.Lg value={packet.sourceChannel} />
@@ -36,21 +39,29 @@ module Packet = {
         <Col col=Col.Six mb=24>
           <Heading
             value="Destination Channel"
-            size=Heading.H5
+            size=Heading.H4
             marginBottom=8
+            weight=Heading.Regular
             color={theme.textSecondary}
           />
           <Text size=Text.Lg value={packet.destinationChannel} />
         </Col>
         <Col col=Col.Six mbSm=24>
-          <Heading value="Data" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+          <Heading
+            value="Data"
+            size=Heading.H4
+            marginBottom=8
+            weight=Heading.Regular
+            color={theme.textSecondary}
+          />
           <Text size=Text.Lg value={packet.data} breakAll=true />
         </Col>
         <Col col=Col.Six mbSm=24>
           <Heading
             value="Timeout Timestamp"
-            size=Heading.H5
+            size=Heading.H4
             marginBottom=8
+            weight=Heading.Regular
             color={theme.textSecondary}
           />
           <Timestamp time={packet.timeoutTimestamp} size=Text.Lg />
@@ -66,29 +77,18 @@ module RecvPacket = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
       <Row>
-        <Col mb=24>
-          <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Col>
+          <Heading
+            value="Signer"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
           <AddressRender address={packet.signer} />
         </Col>
-        <Col col=Col.Six mbSm=24>
-          <Heading
-            value="Proof Height (Revision Height)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionHeight |> string_of_int} />
-        </Col>
-        <Col col=Col.Six>
-          <Heading
-            value="Proof Height (Revision Number)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionNumber |> string_of_int} />
-        </Col>
       </Row>
+      <IndexIBCUtils.ProofHeight proofHeight={packet.proofHeight} />
       <Packet packet={packet.packet} />
     </>;
   };
@@ -100,29 +100,18 @@ module AcknowledgePacket = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
       <Row>
-        <Col mb=24>
-          <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Col>
+          <Heading
+            value="Signer"
+            size=Heading.H4
+            marginBottom=8
+            weight=Heading.Regular
+            color={theme.textSecondary}
+          />
           <AddressRender address={packet.signer} />
         </Col>
-        <Col col=Col.Six mbSm=24>
-          <Heading
-            value="Proof Height (Revision Height)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionHeight |> string_of_int} />
-        </Col>
-        <Col col=Col.Six>
-          <Heading
-            value="Proof Height (Revision Number)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionNumber |> string_of_int} />
-        </Col>
       </Row>
+      <IndexIBCUtils.ProofHeight proofHeight={packet.proofHeight} />
       <Packet packet={packet.packet} />
     </>;
   };
@@ -134,29 +123,18 @@ module Timeout = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
       <Row>
-        <Col mb=24>
-          <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Col>
+          <Heading
+            value="Signer"
+            size=Heading.H4
+            marginBottom=8
+            weight=Heading.Regular
+            color={theme.textSecondary}
+          />
           <AddressRender address={packet.signer} />
         </Col>
-        <Col col=Col.Six>
-          <Heading
-            value="Proof Height (Revision Height)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionHeight |> string_of_int} />
-        </Col>
-        <Col col=Col.Six>
-          <Heading
-            value="Proof Height (Revision Number)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionNumber |> string_of_int} />
-        </Col>
       </Row>
+      <IndexIBCUtils.ProofHeight proofHeight={packet.proofHeight} />
       <Packet packet={packet.packet} />
     </>;
   };
@@ -168,29 +146,18 @@ module TimeoutOnClose = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
       <Row>
-        <Col mb=24>
-          <Heading value="Signer" size=Heading.H5 marginBottom=8 color={theme.textSecondary} />
+        <Col>
+          <Heading
+            value="Signer"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
           <AddressRender address={packet.signer} />
         </Col>
-        <Col col=Col.Six>
-          <Heading
-            value="Proof Height (Revision Height)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionHeight |> string_of_int} />
-        </Col>
-        <Col col=Col.Six>
-          <Heading
-            value="Proof Height (Revision Number)"
-            size=Heading.H5
-            marginBottom=8
-            color={theme.textSecondary}
-          />
-          <Text size=Text.Lg value={packet.proofHeight.revisionNumber |> string_of_int} />
-        </Col>
       </Row>
+      <IndexIBCUtils.ProofHeight proofHeight={packet.proofHeight} />
       <Packet packet={packet.packet} />
     </>;
   };
