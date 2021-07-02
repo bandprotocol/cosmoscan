@@ -98,32 +98,40 @@ let renderBody = (msg: MsgDecoder.t) =>
   | _ => React.null
   };
 
+module MsgDetailCard = {
+  [@react.component]
+  let make = (~msg: MsgDecoder.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let badgeTheme = msg |> MsgDecoder.getBadgeTheme;
+    let (showJson, setShowJson) = React.useState(_ => false);
+    let toggle = () => setShowJson(prev => !prev);
+
+    <InfoContainer>
+      <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+        <div className={CssHelper.flexBox()}>
+          <IndexMsgIcon category={badgeTheme.category} />
+          <HSpacing size=Spacing.sm />
+          <Heading value={badgeTheme.name} size=Heading.H4 />
+        </div>
+        <div className={CssHelper.flexBox()} onClick={_ => toggle()}>
+          <Text value="JSON Mode" weight=Text.Semibold color={theme.textPrimary} />
+          <Switch checked=showJson />
+        </div>
+      </div>
+      {showJson
+         ? <div className={CssHelper.mt(~size=32, ())}> <JsonViewer src={msg.raw} /> </div>
+         : <> <SeperatedLine mt=32 mb=24 /> {renderBody(msg)} </>}
+    </InfoContainer>;
+  };
+};
+
 [@react.component]
 let make = (~messages: list(MsgDecoder.t)) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-  let (showJson, setShowJson) = React.useState(_ => false);
-  let toggle = () => setShowJson(prev => !prev);
-
   <div className=Styles.msgContainer>
     {messages
      ->Belt.List.mapWithIndex((index, msg) => {
          let badgeTheme = msg |> MsgDecoder.getBadgeTheme;
-         <InfoContainer key={(index |> string_of_int) ++ badgeTheme.name}>
-           <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
-             <div className={CssHelper.flexBox()}>
-               <IndexMsgIcon category={badgeTheme.category} />
-               <HSpacing size=Spacing.sm />
-               <Heading value={badgeTheme.name} size=Heading.H4 />
-             </div>
-             <div className={CssHelper.flexBox()}>
-               <Text value="JSON Mode" weight=Text.Semibold color={theme.textPrimary} />
-               <Switch checked=showJson onClick=toggle />
-             </div>
-           </div>
-           {showJson
-              ? <div className={CssHelper.mt(~size=32, ())}> <JsonViewer src={msg.raw} /> </div>
-              : <> <SeperatedLine mt=32 mb=24 /> {renderBody(msg)} </>}
-         </InfoContainer>;
+         <MsgDetailCard key={(index |> string_of_int) ++ badgeTheme.name} msg />;
        })
      ->Array.of_list
      ->React.array}

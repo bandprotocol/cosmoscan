@@ -28,8 +28,8 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~checked, ~onClick) => {
-  <div className=Styles.container onClick={_ => onClick()}>
+let make = (~checked) => {
+  <div className=Styles.container>
     <div className={Styles.slide(checked)} />
     <div className={Styles.button(checked)} />
   </div>;
