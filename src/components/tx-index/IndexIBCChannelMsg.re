@@ -32,7 +32,7 @@ module ChannelOpenInit = {
             marginBottom=8
             color={theme.textSecondary}
           />
-          <Text size=Text.Lg value={channel.channel.state |> string_of_int} />
+          <Text size=Text.Lg value={channel.channel.state} />
         </Col>
         <Col col=Col.Six>
           <Heading
@@ -42,7 +42,7 @@ module ChannelOpenInit = {
             marginBottom=8
             color={theme.textSecondary}
           />
-          <Text size=Text.Lg value={channel.channel.ordering |> string_of_int} />
+          <Text size=Text.Lg value={channel.channel.ordering} />
         </Col>
       </Row>
       <SeperatedLine mt=24 mb=24 />
@@ -99,7 +99,7 @@ module ChannelOpenTry = {
             marginBottom=8
             color={theme.textSecondary}
           />
-          <Text size=Text.Lg value={channel.channel.state |> string_of_int} />
+          <Text size=Text.Lg value={channel.channel.state} />
         </Col>
         <Col col=Col.Six>
           <Heading
@@ -109,7 +109,7 @@ module ChannelOpenTry = {
             marginBottom=8
             color={theme.textSecondary}
           />
-          <Text size=Text.Lg value={channel.channel.ordering |> string_of_int} />
+          <Text size=Text.Lg value={channel.channel.ordering} />
         </Col>
       </Row>
       <IndexIBCUtils.ProofHeight proofHeight={channel.proofHeight} />
@@ -287,58 +287,40 @@ module ChannelCloseConfirm = {
   [@react.component]
   let make = (~channel: MsgDecoder.ChannelCloseConfirm.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-    <Row>
-      <Col col=Col.Six mb=24>
-        <Heading
-          value="Signer"
-          size=Heading.H4
-          weight=Heading.Regular
-          marginBottom=8
-          color={theme.textSecondary}
-        />
-        <AddressRender address={channel.signer} />
-      </Col>
-      <Col col=Col.Six mbSm=24>
-        <Heading
-          value="Port ID"
-          size=Heading.H4
-          weight=Heading.Regular
-          marginBottom=8
-          color={theme.textSecondary}
-        />
-        <Text size=Text.Lg value={channel.portID} />
-      </Col>
-      <Col mb=24>
-        <Heading
-          value="Channel ID"
-          size=Heading.H4
-          weight=Heading.Regular
-          marginBottom=8
-          color={theme.textSecondary}
-        />
-        <Text size=Text.Lg value={channel.channelID} />
-      </Col>
-      <Col col=Col.Six mbSm=24>
-        <Heading
-          value="Proof Height (Revision Height)"
-          size=Heading.H4
-          weight=Heading.Regular
-          marginBottom=8
-          color={theme.textSecondary}
-        />
-        <Text size=Text.Lg value={channel.proofHeight.revisionHeight |> string_of_int} />
-      </Col>
-      <Col col=Col.Six>
-        <Heading
-          value="Proof Height (Revision Number)"
-          size=Heading.H4
-          weight=Heading.Regular
-          marginBottom=8
-          color={theme.textSecondary}
-        />
-        <Text size=Text.Lg value={channel.proofHeight.revisionNumber |> string_of_int} />
-      </Col>
-    </Row>;
+    <>
+      <Row>
+        <Col col=Col.Six mb=24>
+          <Heading
+            value="Signer"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <AddressRender address={channel.signer} />
+        </Col>
+        <Col col=Col.Six mb=24>
+          <Heading
+            value="Port ID"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <Text size=Text.Lg value={channel.portID} />
+        </Col>
+        <Col>
+          <Heading
+            value="Channel ID"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <Text size=Text.Lg value={channel.channelID} />
+        </Col>
+      </Row>
+      <IndexIBCUtils.ProofHeight proofHeight={channel.proofHeight} />
+    </>;
   };
 };

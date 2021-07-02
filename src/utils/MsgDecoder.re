@@ -604,17 +604,33 @@ module ChannelCounterParty = {
     };
 };
 
+let getStateText =
+  fun
+  | 0 => "Uninitialized"
+  | 1 => "Init"
+  | 2 => "Try Open"
+  | 3 => "Open"
+  | 4 => "Closed"
+  | _ => "Unknown";
+
+let getOrderText =
+  fun
+  | 0 => "None"
+  | 1 => "Unordered"
+  | 2 => "Ordered"
+  | _ => "Unknown";
+
 module Channel = {
   type t = {
-    state: int,
-    ordering: int,
+    state: string,
+    ordering: string,
     counterparty: ChannelCounterParty.t,
   };
 
   let decode = json =>
     JsonUtils.Decode.{
-      state: json |> field("state", int),
-      ordering: json |> field("ordering", int),
+      state: json |> field("state", int) |> getStateText,
+      ordering: json |> field("ordering", int) |> getOrderText,
       counterparty: json |> field("counterparty", ChannelCounterParty.decode),
     };
 };
