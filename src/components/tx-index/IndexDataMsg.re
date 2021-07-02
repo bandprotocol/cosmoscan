@@ -3,7 +3,7 @@ module CreateDataSourceMsg = {
   let make = (~dataSource: MsgDecoder.CreateDataSource.success_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
-      <Col col=Col.Six mbSm=24>
+      <Col col=Col.Six mb=24>
         <Heading
           value="Owner"
           size=Heading.H4
@@ -13,7 +13,7 @@ module CreateDataSourceMsg = {
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
-      <Col col=Col.Six>
+      <Col col=Col.Six mb=24>
         <Heading
           value="Name"
           size=Heading.H4
@@ -27,6 +27,26 @@ module CreateDataSourceMsg = {
           <Text value={dataSource.name} size=Text.Lg />
         </div>
       </Col>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Treasury"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={dataSource.treasury} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Fee"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={dataSource.fee} />
+      </Col>
     </Row>;
   };
 };
@@ -36,7 +56,7 @@ module CreateDataSourceFailMsg = {
   let make = (~dataSource: MsgDecoder.CreateDataSource.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
-      <Col col=Col.Six mbSm=24>
+      <Col col=Col.Six mb=24>
         <Heading
           value="Owner"
           size=Heading.H4
@@ -46,7 +66,7 @@ module CreateDataSourceFailMsg = {
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
-      <Col col=Col.Six>
+      <Col col=Col.Six mb=24>
         <Heading
           value="Name"
           size=Heading.H4
@@ -55,6 +75,26 @@ module CreateDataSourceFailMsg = {
           color={theme.textSecondary}
         />
         <Text value={dataSource.name} size=Text.Lg />
+      </Col>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Treasury"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={dataSource.treasury} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Fee"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={dataSource.fee} />
       </Col>
     </Row>;
   };
@@ -65,7 +105,7 @@ module EditDataSourceMsg = {
   let make = (~dataSource: MsgDecoder.EditDataSource.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
-      <Col col=Col.Six mbSm=24>
+      <Col col=Col.Six mb=24>
         <Heading
           value="Owner"
           size=Heading.H4
@@ -75,7 +115,7 @@ module EditDataSourceMsg = {
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
-      <Col col=Col.Six>
+      <Col col=Col.Six mb=24>
         <Heading
           value="Name"
           size=Heading.H4
@@ -89,6 +129,26 @@ module EditDataSourceMsg = {
              ? React.null
              : <> <HSpacing size=Spacing.sm /> <Text value={dataSource.name} size=Text.Lg /> </>}
         </div>
+      </Col>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Treasury"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={dataSource.treasury} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Fee"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={dataSource.fee} />
       </Col>
     </Row>;
   };
@@ -229,6 +289,26 @@ module RequestMsg = {
           <HSpacing size=Spacing.sm />
           <Text value={request.oracleScriptName} size=Text.Lg />
         </div>
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Prepare Gas"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <Text value={request.prepareGas |> string_of_int} size=Text.Lg />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Execute Gas"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <Text value={request.executeGas |> string_of_int} size=Text.Lg />
       </Col>
       <Col mb=24>
         <div

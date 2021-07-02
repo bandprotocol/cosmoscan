@@ -321,7 +321,7 @@ let make = (~txHash) => {
                    }}
                 </Col>
               </Row>
-              <Row marginBottom=24 alignItems=Row.Center>
+              <Row alignItems=Row.Center>
                 <Col col=Col.Four mbSm=8>
                   <Heading
                     value="Fee (BAND)"

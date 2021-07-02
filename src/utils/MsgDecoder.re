@@ -137,6 +137,8 @@ module CreateDataSource = {
     owner: Address.t,
     name: string,
     executable: JsBuffer.t,
+    treasury: Address.t,
+    fee: list(Coin.t),
     sender: Address.t,
   };
 
@@ -144,6 +146,8 @@ module CreateDataSource = {
     owner: Address.t,
     name: string,
     executable: JsBuffer.t,
+    treasury: Address.t,
+    fee: list(Coin.t),
     sender: Address.t,
   };
 
@@ -153,6 +157,8 @@ module CreateDataSource = {
       owner: json |> at(["msg", "owner"], string) |> Address.fromBech32,
       name: json |> at(["msg", "name"], string),
       executable: json |> at(["msg", "executable"], string) |> JsBuffer.fromBase64,
+      treasury: json |> at(["msg", "treasury"], string) |> Address.fromBech32,
+      fee: json |> at(["msg", "fee"], list(Coin.decodeCoin)),
       sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
     };
 
@@ -161,6 +167,8 @@ module CreateDataSource = {
       owner: json |> at(["msg", "owner"], string) |> Address.fromBech32,
       name: json |> at(["msg", "name"], string),
       executable: json |> at(["msg", "executable"], string) |> JsBuffer.fromBase64,
+      treasury: json |> at(["msg", "treasury"], string) |> Address.fromBech32,
+      fee: json |> at(["msg", "fee"], list(Coin.decodeCoin)),
       sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
     };
 };
@@ -171,6 +179,8 @@ module EditDataSource = {
     owner: Address.t,
     name: string,
     executable: JsBuffer.t,
+    treasury: Address.t,
+    fee: list(Coin.t),
     sender: Address.t,
   };
 
@@ -180,6 +190,8 @@ module EditDataSource = {
       owner: json |> at(["msg", "owner"], string) |> Address.fromBech32,
       name: json |> at(["msg", "name"], string),
       executable: json |> at(["msg", "executable"], string) |> JsBuffer.fromBase64,
+      treasury: json |> at(["msg", "treasury"], string) |> Address.fromBech32,
+      fee: json |> at(["msg", "fee"], list(Coin.decodeCoin)),
       sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
     };
 };
@@ -245,6 +257,8 @@ module Request = {
     calldata: JsBuffer.t,
     askCount: int,
     minCount: int,
+    prepareGas: int,
+    executeGas: int,
     feeLimit: list(Coin.t),
     schema: string,
     sender: Address.t,
@@ -255,6 +269,8 @@ module Request = {
     calldata: JsBuffer.t,
     askCount: int,
     minCount: int,
+    prepareGas: int,
+    executeGas: int,
     feeLimit: list(Coin.t),
     sender: Address.t,
   };
@@ -267,6 +283,8 @@ module Request = {
       calldata: json |> bufferWithDefault(at(["msg", "calldata"])),
       askCount: json |> at(["msg", "ask_count"], int),
       minCount: json |> at(["msg", "min_count"], int),
+      prepareGas: json |> at(["msg", "prepare_gas"], int),
+      executeGas: json |> at(["msg", "execute_gas"], int),
       feeLimit: json |> at(["msg", "fee_limit"], list(Coin.decodeCoin)),
       schema: json |> at(["msg", "schema"], string),
       sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
@@ -279,6 +297,8 @@ module Request = {
       calldata: json |> bufferWithDefault(at(["msg", "calldata"])),
       askCount: json |> at(["msg", "ask_count"], int),
       minCount: json |> at(["msg", "min_count"], int),
+      prepareGas: json |> at(["msg", "prepare_gas"], int),
+      executeGas: json |> at(["msg", "execute_gas"], int),
       feeLimit: json |> at(["msg", "fee_limit"], list(Coin.decodeCoin)),
       sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
     };
