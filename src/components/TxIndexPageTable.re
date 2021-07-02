@@ -12,6 +12,8 @@ module Styles = {
 
   let failIcon = style([width(`px(16)), height(`px(16))]);
   let msgContainer = style([selector("> div + div", [marginTop(`px(24))])]);
+  let jsonMode =
+    style([display(`flex), alignItems(`center), cursor(`pointer), height(`px(30))]);
 };
 
 let renderUnknownMessage = () => {
@@ -113,7 +115,7 @@ module MsgDetailCard = {
           <HSpacing size=Spacing.sm />
           <Heading value={badgeTheme.name} size=Heading.H4 />
         </div>
-        <div className={CssHelper.flexBox()} onClick={_ => toggle()}>
+        <div className=Styles.jsonMode onClick={_ => toggle()}>
           <Text value="JSON Mode" weight=Text.Semibold color={theme.textPrimary} />
           <Switch checked=showJson />
         </div>

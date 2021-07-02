@@ -1,8 +1,7 @@
 module Styles = {
   open Css;
 
-  let container =
-    style([position(`relative), width(`px(32)), marginLeft(`px(18)), cursor(`pointer)]);
+  let container = style([position(`relative), width(`px(32)), marginLeft(`px(18))]);
   let slide = checked =>
     style([
       position(`absolute),
