@@ -4,6 +4,7 @@ module Styles = {
   let container = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
+      height(`percent(100.)),
       position(`relative),
       height(`vh(100.)),
       overflow(`auto),

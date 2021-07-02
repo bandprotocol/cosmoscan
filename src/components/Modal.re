@@ -125,6 +125,7 @@ let make = () => {
          | Connect(chainID) => <ConnectModal chainID />
          | SubmitTx(msg) => <SubmitTxModal msg />
          | QRCode(address) => <QRCodeModal address />
+         | IBCPacket(reason) => <IBCPacketFailModal reason />
          | Syncing => <SyncingModal />
          }}
       </div>
