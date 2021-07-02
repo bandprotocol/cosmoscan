@@ -4,6 +4,7 @@ module Styles = {
   let container = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
+      height(`percent(100.)),
       position(`relative),
       overflow(`auto),
       backgroundColor(theme.mainBg),
@@ -11,7 +12,7 @@ module Styles = {
 
   let routeContainer =
     style([
-      minHeight(`calc((`sub, `vh(100.), `px(200)))),
+      minHeight(`calc((`sub, `vh(100.), `px(194)))),
       Media.mobile([paddingBottom(`zero)]),
     ]);
 };

@@ -5,6 +5,8 @@ module Styles = {
     style([position(`relative), selector(" > div + div", [marginTop(`px(12))])]);
 
   let badgeContainer = style([selector(" > div", [margin(`zero)])]);
+
+  let failText = style([cursor(`pointer), selector("> span", [marginRight(`px(8))])]);
 };
 
 type t = {
@@ -15,6 +17,10 @@ type t = {
 module CardDetail = {
   [@react.component]
   let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.t)) => {
+    let (_, dispatchModal) = React.useContext(ModalContext.context);
+
+    let errorMsg = reason => reason->IBCPacket->OpenModal->dispatchModal;
+
     <InfoContainer py=24>
       <div className=Styles.cardContainer>
         <div
@@ -26,7 +32,15 @@ module CardDetail = {
           {switch (packetSub) {
            | Data({acknowledgement}) =>
              switch (acknowledgement) {
-             | Some({success}) => <img src={success ? Images.success : Images.fail} />
+             | Some({success, reason}) =>
+               success
+                 ? <img src=Images.success />
+                 : <div
+                     className={Css.merge([CssHelper.flexBox(), Styles.failText])}
+                     onClick={_ => errorMsg(reason |> Belt.Option.getExn)}>
+                     <Text value="View Error Message" color=Theme.failColor />
+                     <img src=Images.fail />
+                   </div>
              | None => React.null
              }
            | _ => React.null
@@ -58,7 +72,7 @@ let make = (~direction: IBCSub.packet_direction_t) => {
   | Data(packets) =>
     packets
     ->Belt_Array.mapWithIndex((i, e) =>
-        <Col col=Col.Six key={i |> string_of_int}>
+        <Col col=Col.Six key={i |> string_of_int} mb=24>
           <CardDetail packetSub={Sub.resolve(e)} />
         </Col>
       )
