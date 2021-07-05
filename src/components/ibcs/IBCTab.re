@@ -32,7 +32,6 @@ module Styles = {
 
   let filterSelector =
     style([
-      // selector("> div", [flexBasis(`percent(25.))]),
       selector("> div + div", [marginLeft(`px(24))]),
       Media.mobile([selector("> div + div", [marginLeft(`zero), marginTop(`px(24))])]),
     ]);

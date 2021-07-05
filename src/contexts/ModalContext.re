@@ -2,7 +2,7 @@ type modal_t =
   | Connect(string)
   | SubmitTx(SubmitMsg.t)
   | QRCode(Address.t)
-  | IBCPacket(string)
+  | IBCPacketError(string)
   | Syncing;
 
 type t = {

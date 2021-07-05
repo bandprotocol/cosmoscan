@@ -19,7 +19,7 @@ module CardDetail = {
   let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.t)) => {
     let (_, dispatchModal) = React.useContext(ModalContext.context);
 
-    let errorMsg = reason => reason->IBCPacket->OpenModal->dispatchModal;
+    let errorMsg = reason => reason->IBCPacketError->OpenModal->dispatchModal;
 
     <InfoContainer py=24>
       <div className=Styles.cardContainer>
