@@ -1,0 +1,7 @@
+[@react.component]
+let make = (~src) => {
+  let ({ThemeContext.isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let style = {"height": "300px", "overflow": "auto", "padding": "24px"};
+
+  <ReactJsonViewer src theme={isDarkMode ? "codeschool" : "bright:inverted"} style />;
+};

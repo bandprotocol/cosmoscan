@@ -1,20 +1,6 @@
 module Styles = {
   open Css;
 
-  let addressContainer = width_ => style([width(`px(width_))]);
-
-  let badgeContainer = style([display(`block), marginTop(`px(-4))]);
-
-  let badge = color =>
-    style([
-      display(`inlineFlex),
-      padding2(~v=`px(5), ~h=`px(8)),
-      backgroundColor(color),
-      borderRadius(`px(50)),
-    ]);
-
-  let hFlex = style([display(`flex), alignItems(`center)]);
-
   let topicContainer =
     style([
       display(`flex),
@@ -24,42 +10,10 @@ module Styles = {
       alignItems(`center),
     ]);
 
-  let detailContainer = style([display(`flex), maxWidth(`px(360)), justifyContent(`flexEnd)]);
-
-  let hashContainer =
-    style([
-      display(`flex),
-      maxWidth(`px(350)),
-      justifyContent(`flexEnd),
-      wordBreak(`breakAll),
-    ]);
-
-  let firstCol = 0.45;
-  let secondCol = 0.50;
-  let thirdCol = 1.20;
-
   let failIcon = style([width(`px(16)), height(`px(16))]);
-
-  let failedMessageDetails =
-    style([
-      display(`flex),
-      width(`px(120)),
-      alignItems(`center),
-      justifyContent(`spaceBetween),
-    ]);
-
-  let separatorLine =
-    style([
-      borderStyle(`none),
-      backgroundColor(Colors.gray9),
-      height(`px(1)),
-      margin2(~v=`px(10), ~h=`auto),
-    ]);
-
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-
   let msgContainer = style([selector("> div + div", [marginTop(`px(24))])]);
+  let jsonMode =
+    style([display(`flex), alignItems(`center), cursor(`pointer), height(`px(30))]);
 };
 
 let renderUnknownMessage = () => {
@@ -72,7 +26,7 @@ let renderUnknownMessage = () => {
 };
 
 let renderBody = (msg: MsgDecoder.t) =>
-  switch (msg) {
+  switch (msg.decoded) {
   | SendMsgSuccess(send)
   | SendMsgFail(send) => <IndexTokenMsg.SendMsg send />
   | DelegateMsgSuccess(delegation) => <IndexTokenMsg.DelegateMsg delegation />
@@ -146,21 +100,40 @@ let renderBody = (msg: MsgDecoder.t) =>
   | _ => React.null
   };
 
+module MsgDetailCard = {
+  [@react.component]
+  let make = (~msg: MsgDecoder.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let badgeTheme = msg |> MsgDecoder.getBadgeTheme;
+    let (showJson, setShowJson) = React.useState(_ => false);
+    let toggle = () => setShowJson(prev => !prev);
+
+    <InfoContainer>
+      <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+        <div className={CssHelper.flexBox()}>
+          <IndexMsgIcon category={badgeTheme.category} />
+          <HSpacing size=Spacing.sm />
+          <Heading value={badgeTheme.name} size=Heading.H4 />
+        </div>
+        <div className=Styles.jsonMode onClick={_ => toggle()}>
+          <Text value="JSON Mode" weight=Text.Semibold color={theme.textPrimary} />
+          <Switch checked=showJson />
+        </div>
+      </div>
+      {showJson
+         ? <div className={CssHelper.mt(~size=32, ())}> <JsonViewer src={msg.raw} /> </div>
+         : <> <SeperatedLine mt=32 mb=24 /> {renderBody(msg)} </>}
+    </InfoContainer>;
+  };
+};
+
 [@react.component]
 let make = (~messages: list(MsgDecoder.t)) => {
   <div className=Styles.msgContainer>
     {messages
      ->Belt.List.mapWithIndex((index, msg) => {
-         let theme = msg |> MsgDecoder.getBadgeTheme;
-         <InfoContainer key={(index |> string_of_int) ++ theme.name}>
-           <div className={CssHelper.flexBox()}>
-             <IndexMsgIcon category={theme.category} />
-             <HSpacing size=Spacing.sm />
-             <Heading value={theme.name} size=Heading.H4 />
-           </div>
-           <SeperatedLine mt=32 mb=24 />
-           {renderBody(msg)}
-         </InfoContainer>;
+         let badgeTheme = msg |> MsgDecoder.getBadgeTheme;
+         <MsgDetailCard key={(index |> string_of_int) ++ badgeTheme.name} msg />;
        })
      ->Array.of_list
      ->React.array}

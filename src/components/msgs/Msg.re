@@ -55,7 +55,7 @@ let makeBadge = (name, length, color1, color2) =>
   </div>;
 
 [@react.component]
-let make = (~msg: MsgDecoder.t, ~width: int) => {
+let make = (~msg: MsgDecoder.t) => {
   let theme = msg |> MsgDecoder.getBadgeTheme;
   <div
     className={Css.merge([
@@ -69,7 +69,7 @@ let make = (~msg: MsgDecoder.t, ~width: int) => {
       name={theme.name}
       fromAddress={msg |> MsgDecoder.getCreator}
     />
-    {switch (msg) {
+    {switch (msg.decoded) {
      | SendMsgSuccess({toAddress, amount}) => <TokenMsg.SendMsg toAddress amount />
      | ReceiveMsg({fromAddress, amount}) => <TokenMsg.ReceiveMsg fromAddress amount />
      | MultiSendMsgSuccess({inputs, outputs}) => <TokenMsg.MultisendMsg inputs outputs />

@@ -1172,7 +1172,7 @@ module Activate = {
   };
 };
 
-type t =
+type decoded_t =
   | SendMsgSuccess(Send.t)
   | SendMsgFail(Send.t)
   | ReceiveMsg(Receive.t)
@@ -1242,8 +1242,13 @@ type t =
   | TransferMsg(Transfer.t)
   | UnknownMsg;
 
+type t = {
+  raw: Js.Json.t,
+  decoded: decoded_t,
+};
+
 let getCreator = msg => {
-  switch (msg) {
+  switch (msg.decoded) {
   | ReceiveMsg(receive) => receive.fromAddress
   | SendMsgSuccess(send)
   | SendMsgFail(send) => send.fromAddress
@@ -1373,7 +1378,7 @@ let getBadge = badgeVariant => {
 };
 
 let getBadgeTheme = msg => {
-  switch (msg) {
+  switch (msg.decoded) {
   | SendMsgSuccess(_)
   | SendMsgFail(_) => getBadge(SendBadge)
   | ReceiveMsg(_) => getBadge(ReceiveBadge)
@@ -1446,109 +1451,118 @@ let getBadgeTheme = msg => {
 };
 
 let decodeAction = json => {
-  JsonUtils.Decode.(
-    switch (json |> field("type", string) |> getBadgeVariantFromString) {
-    | SendBadge => SendMsgSuccess(json |> Send.decode)
-    | ReceiveBadge => raise(Not_found)
-    | CreateDataSourceBadge => CreateDataSourceMsgSuccess(json |> CreateDataSource.decodeSuccess)
-    | EditDataSourceBadge => EditDataSourceMsgSuccess(json |> EditDataSource.decode)
-    | CreateOracleScriptBadge =>
-      CreateOracleScriptMsgSuccess(json |> CreateOracleScript.decodeSuccess)
-    | EditOracleScriptBadge => EditOracleScriptMsgSuccess(json |> EditOracleScript.decode)
-    | RequestBadge => RequestMsgSuccess(json |> Request.decodeSuccess)
-    | ReportBadge => ReportMsgSuccess(json |> Report.decode)
-    | AddReporterBadge => AddReporterMsgSuccess(json |> AddReporter.decodeSuccess)
-    | RemoveReporterBadge => RemoveReporterMsgSuccess(json |> RemoveReporter.decodeSuccess)
-    | CreateValidatorBadge => CreateValidatorMsgSuccess(json |> CreateValidator.decode)
-    | EditValidatorBadge => EditValidatorMsgSuccess(json |> EditValidator.decode)
-    | DelegateBadge => DelegateMsgSuccess(json |> Delegate.decodeSuccess)
-    | UndelegateBadge => UndelegateMsgSuccess(json |> Undelegate.decodeSuccess)
-    | RedelegateBadge => RedelegateMsgSuccess(json |> Redelegate.decodeSuccess)
-    | WithdrawRewardBadge => WithdrawRewardMsgSuccess(json |> WithdrawReward.decodeSuccess)
-    | UnjailBadge => UnjailMsgSuccess(json |> Unjail.decode)
-    | SetWithdrawAddressBadge => SetWithdrawAddressMsgSuccess(json |> SetWithdrawAddress.decode)
-    | SubmitProposalBadge => SubmitProposalMsgSuccess(json |> SubmitProposal.decodeSuccess)
-    | DepositBadge => DepositMsgSuccess(json |> Deposit.decodeSuccess)
-    | VoteBadge => VoteMsgSuccess(json |> Vote.decodeSuccess)
-    | WithdrawCommissionBadge =>
-      WithdrawCommissionMsgSuccess(json |> WithdrawCommission.decodeSuccess)
-    | MultiSendBadge => MultiSendMsgSuccess(json |> MultiSend.decode)
-    | ActivateBadge => ActivateMsgSuccess(json |> Activate.decode)
-    | UnknownBadge => UnknownMsg
-    //IBC
-    | CreateClientBadge => CreateClientMsg(json |> CreateClient.decode)
-    | UpdateClientBadge => UpdateClientMsg(json |> UpdateClient.decode)
-    | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
-    | SubmitClientMisbehaviourBadge =>
-      SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
-    | ConnectionOpenInitBadge => ConnectionOpenInitMsg(json |> ConnectionOpenInit.decode)
-    | ConnectionOpenTryBadge => ConnectionOpenTryMsg(json |> ConnectionOpenTry.decode)
-    | ConnectionOpenAckBadge => ConnectionOpenAckMsg(json |> ConnectionOpenAck.decode)
-    | ConnectionOpenConfirmBadge => ConnectionOpenConfirmMsg(json |> ConnectionOpenConfirm.decode)
-    | ChannelOpenInitBadge => ChannelOpenInitMsg(json |> ChannelOpenInit.decode)
-    | ChannelOpenTryBadge => ChannelOpenTryMsg(json |> ChannelOpenTry.decode)
-    | ChannelOpenAckBadge => ChannelOpenAckMsg(json |> ChannelOpenAck.decode)
-    | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
-    | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
-    | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-    | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
-    | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
-    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
-    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
-    | TransferBadge => TransferMsg(json |> Transfer.decode)
-    }
-  );
+  let decoded =
+    JsonUtils.Decode.(
+      switch (json |> field("type", string) |> getBadgeVariantFromString) {
+      | SendBadge => SendMsgSuccess(json |> Send.decode)
+      | ReceiveBadge => raise(Not_found)
+      | CreateDataSourceBadge =>
+        CreateDataSourceMsgSuccess(json |> CreateDataSource.decodeSuccess)
+      | EditDataSourceBadge => EditDataSourceMsgSuccess(json |> EditDataSource.decode)
+      | CreateOracleScriptBadge =>
+        CreateOracleScriptMsgSuccess(json |> CreateOracleScript.decodeSuccess)
+      | EditOracleScriptBadge => EditOracleScriptMsgSuccess(json |> EditOracleScript.decode)
+      | RequestBadge => RequestMsgSuccess(json |> Request.decodeSuccess)
+      | ReportBadge => ReportMsgSuccess(json |> Report.decode)
+      | AddReporterBadge => AddReporterMsgSuccess(json |> AddReporter.decodeSuccess)
+      | RemoveReporterBadge => RemoveReporterMsgSuccess(json |> RemoveReporter.decodeSuccess)
+      | CreateValidatorBadge => CreateValidatorMsgSuccess(json |> CreateValidator.decode)
+      | EditValidatorBadge => EditValidatorMsgSuccess(json |> EditValidator.decode)
+      | DelegateBadge => DelegateMsgSuccess(json |> Delegate.decodeSuccess)
+      | UndelegateBadge => UndelegateMsgSuccess(json |> Undelegate.decodeSuccess)
+      | RedelegateBadge => RedelegateMsgSuccess(json |> Redelegate.decodeSuccess)
+      | WithdrawRewardBadge => WithdrawRewardMsgSuccess(json |> WithdrawReward.decodeSuccess)
+      | UnjailBadge => UnjailMsgSuccess(json |> Unjail.decode)
+      | SetWithdrawAddressBadge => SetWithdrawAddressMsgSuccess(json |> SetWithdrawAddress.decode)
+      | SubmitProposalBadge => SubmitProposalMsgSuccess(json |> SubmitProposal.decodeSuccess)
+      | DepositBadge => DepositMsgSuccess(json |> Deposit.decodeSuccess)
+      | VoteBadge => VoteMsgSuccess(json |> Vote.decodeSuccess)
+      | WithdrawCommissionBadge =>
+        WithdrawCommissionMsgSuccess(json |> WithdrawCommission.decodeSuccess)
+      | MultiSendBadge => MultiSendMsgSuccess(json |> MultiSend.decode)
+      | ActivateBadge => ActivateMsgSuccess(json |> Activate.decode)
+      | UnknownBadge => UnknownMsg
+      //IBC
+      | CreateClientBadge => CreateClientMsg(json |> CreateClient.decode)
+      | UpdateClientBadge => UpdateClientMsg(json |> UpdateClient.decode)
+      | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
+      | SubmitClientMisbehaviourBadge =>
+        SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
+      | ConnectionOpenInitBadge => ConnectionOpenInitMsg(json |> ConnectionOpenInit.decode)
+      | ConnectionOpenTryBadge => ConnectionOpenTryMsg(json |> ConnectionOpenTry.decode)
+      | ConnectionOpenAckBadge => ConnectionOpenAckMsg(json |> ConnectionOpenAck.decode)
+      | ConnectionOpenConfirmBadge =>
+        ConnectionOpenConfirmMsg(json |> ConnectionOpenConfirm.decode)
+      | ChannelOpenInitBadge => ChannelOpenInitMsg(json |> ChannelOpenInit.decode)
+      | ChannelOpenTryBadge => ChannelOpenTryMsg(json |> ChannelOpenTry.decode)
+      | ChannelOpenAckBadge => ChannelOpenAckMsg(json |> ChannelOpenAck.decode)
+      | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
+      | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
+      | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
+      | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
+      | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
+      | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
+      | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
+      | TransferBadge => TransferMsg(json |> Transfer.decode)
+      }
+    );
+  {raw: json, decoded};
 };
 
 let decodeFailAction = json => {
-  JsonUtils.Decode.(
-    switch (json |> field("type", string) |> getBadgeVariantFromString) {
-    | SendBadge => SendMsgFail(json |> Send.decode)
-    | ReceiveBadge => raise(Not_found)
-    | CreateDataSourceBadge => CreateDataSourceMsgFail(json |> CreateDataSource.decodeFail)
-    | EditDataSourceBadge => EditDataSourceMsgFail(json |> EditDataSource.decode)
-    | CreateOracleScriptBadge => CreateOracleScriptMsgFail(json |> CreateOracleScript.decodeFail)
-    | EditOracleScriptBadge => EditOracleScriptMsgFail(json |> EditOracleScript.decode)
-    | RequestBadge => RequestMsgFail(json |> Request.decodeFail)
-    | ReportBadge => ReportMsgFail(json |> Report.decode)
-    | AddReporterBadge => AddReporterMsgFail(json |> AddReporter.decodeFail)
-    | RemoveReporterBadge => RemoveReporterMsgFail(json |> RemoveReporter.decodeFail)
-    | CreateValidatorBadge => CreateValidatorMsgFail(json |> CreateValidator.decode)
-    | EditValidatorBadge => EditValidatorMsgFail(json |> EditValidator.decode)
-    | DelegateBadge => DelegateMsgFail(json |> Delegate.decodeFail)
-    | UndelegateBadge => UndelegateMsgFail(json |> Undelegate.decodeFail)
-    | RedelegateBadge => RedelegateMsgFail(json |> Redelegate.decodeFail)
-    | WithdrawRewardBadge => WithdrawRewardMsgFail(json |> WithdrawReward.decodeFail)
-    | UnjailBadge => UnjailMsgFail(json |> Unjail.decode)
-    | SetWithdrawAddressBadge => SetWithdrawAddressMsgFail(json |> SetWithdrawAddress.decode)
-    | SubmitProposalBadge => SubmitProposalMsgFail(json |> SubmitProposal.decodeFail)
-    | DepositBadge => DepositMsgFail(json |> Deposit.decodeFail)
-    | VoteBadge => VoteMsgFail(json |> Vote.decodeFail)
-    | WithdrawCommissionBadge => WithdrawCommissionMsgFail(json |> WithdrawCommission.decodeFail)
-    | MultiSendBadge => MultiSendMsgFail(json |> MultiSend.decode)
-    | ActivateBadge => ActivateMsgFail(json |> Activate.decode)
-    | UnknownBadge => UnknownMsg
-    //IBC
-    | CreateClientBadge => CreateClientMsg(json |> CreateClient.decode)
-    | UpdateClientBadge => UpdateClientMsg(json |> UpdateClient.decode)
-    | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
-    | SubmitClientMisbehaviourBadge =>
-      SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
-    | ConnectionOpenInitBadge => ConnectionOpenInitMsg(json |> ConnectionOpenInit.decode)
-    | ConnectionOpenTryBadge => ConnectionOpenTryMsg(json |> ConnectionOpenTry.decode)
-    | ConnectionOpenAckBadge => ConnectionOpenAckMsg(json |> ConnectionOpenAck.decode)
-    | ConnectionOpenConfirmBadge => ConnectionOpenConfirmMsg(json |> ConnectionOpenConfirm.decode)
-    | ChannelOpenInitBadge => ChannelOpenInitMsg(json |> ChannelOpenInit.decode)
-    | ChannelOpenTryBadge => ChannelOpenTryMsg(json |> ChannelOpenTry.decode)
-    | ChannelOpenAckBadge => ChannelOpenAckMsg(json |> ChannelOpenAck.decode)
-    | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
-    | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
-    | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-    | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
-    | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
-    | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
-    | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
-    | TransferBadge => TransferMsg(json |> Transfer.decode)
-    }
-  );
+  let decoded =
+    JsonUtils.Decode.(
+      switch (json |> field("type", string) |> getBadgeVariantFromString) {
+      | SendBadge => SendMsgFail(json |> Send.decode)
+      | ReceiveBadge => raise(Not_found)
+      | CreateDataSourceBadge => CreateDataSourceMsgFail(json |> CreateDataSource.decodeFail)
+      | EditDataSourceBadge => EditDataSourceMsgFail(json |> EditDataSource.decode)
+      | CreateOracleScriptBadge =>
+        CreateOracleScriptMsgFail(json |> CreateOracleScript.decodeFail)
+      | EditOracleScriptBadge => EditOracleScriptMsgFail(json |> EditOracleScript.decode)
+      | RequestBadge => RequestMsgFail(json |> Request.decodeFail)
+      | ReportBadge => ReportMsgFail(json |> Report.decode)
+      | AddReporterBadge => AddReporterMsgFail(json |> AddReporter.decodeFail)
+      | RemoveReporterBadge => RemoveReporterMsgFail(json |> RemoveReporter.decodeFail)
+      | CreateValidatorBadge => CreateValidatorMsgFail(json |> CreateValidator.decode)
+      | EditValidatorBadge => EditValidatorMsgFail(json |> EditValidator.decode)
+      | DelegateBadge => DelegateMsgFail(json |> Delegate.decodeFail)
+      | UndelegateBadge => UndelegateMsgFail(json |> Undelegate.decodeFail)
+      | RedelegateBadge => RedelegateMsgFail(json |> Redelegate.decodeFail)
+      | WithdrawRewardBadge => WithdrawRewardMsgFail(json |> WithdrawReward.decodeFail)
+      | UnjailBadge => UnjailMsgFail(json |> Unjail.decode)
+      | SetWithdrawAddressBadge => SetWithdrawAddressMsgFail(json |> SetWithdrawAddress.decode)
+      | SubmitProposalBadge => SubmitProposalMsgFail(json |> SubmitProposal.decodeFail)
+      | DepositBadge => DepositMsgFail(json |> Deposit.decodeFail)
+      | VoteBadge => VoteMsgFail(json |> Vote.decodeFail)
+      | WithdrawCommissionBadge =>
+        WithdrawCommissionMsgFail(json |> WithdrawCommission.decodeFail)
+      | MultiSendBadge => MultiSendMsgFail(json |> MultiSend.decode)
+      | ActivateBadge => ActivateMsgFail(json |> Activate.decode)
+      | UnknownBadge => UnknownMsg
+      //IBC
+      | CreateClientBadge => CreateClientMsg(json |> CreateClient.decode)
+      | UpdateClientBadge => UpdateClientMsg(json |> UpdateClient.decode)
+      | UpgradeClientBadge => UpgradeClientMsg(json |> UpgradeClient.decode)
+      | SubmitClientMisbehaviourBadge =>
+        SubmitClientMisbehaviourMsg(json |> SubmitClientMisbehaviour.decode)
+      | ConnectionOpenInitBadge => ConnectionOpenInitMsg(json |> ConnectionOpenInit.decode)
+      | ConnectionOpenTryBadge => ConnectionOpenTryMsg(json |> ConnectionOpenTry.decode)
+      | ConnectionOpenAckBadge => ConnectionOpenAckMsg(json |> ConnectionOpenAck.decode)
+      | ConnectionOpenConfirmBadge =>
+        ConnectionOpenConfirmMsg(json |> ConnectionOpenConfirm.decode)
+      | ChannelOpenInitBadge => ChannelOpenInitMsg(json |> ChannelOpenInit.decode)
+      | ChannelOpenTryBadge => ChannelOpenTryMsg(json |> ChannelOpenTry.decode)
+      | ChannelOpenAckBadge => ChannelOpenAckMsg(json |> ChannelOpenAck.decode)
+      | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
+      | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
+      | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
+      | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
+      | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
+      | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
+      | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
+      | TransferBadge => TransferMsg(json |> Transfer.decode)
+      }
+    );
+  {raw: json, decoded};
 };
