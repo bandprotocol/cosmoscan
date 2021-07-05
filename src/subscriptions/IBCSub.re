@@ -4,7 +4,6 @@ module OracleRequestPacket = {
     oracleScriptID: ID.OracleScript.t,
     oracleScriptName: string,
     clientID: string,
-    // calldata: JsBuffer.t,
     askCount: int,
     minCount: int,
   };

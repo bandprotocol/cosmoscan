@@ -33,10 +33,6 @@ module TopPart = {
           <TypeID.Block id=blockHeight position=TypeID.Text />
         </div>
       </div>
-      //   <div className={CssHelper.flexBox(~align=`center, ())}>
-      //     <div className=Styles.labelWrapper> <Text value="Chain ID" /> </div>
-      //     <div className=Styles.valueWrapper> <Text value=chainId /> </div>
-      //   </div>
       <div className={CssHelper.flexBox(~align=`center, ())}>
         <div className=Styles.labelWrapper> <Text value="Port" /> </div>
         <div className=Styles.valueWrapper>
