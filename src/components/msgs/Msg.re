@@ -120,8 +120,9 @@ let make = (~msg: MsgDecoder.t) => {
      | TransferMsg({token, receiver}) =>
        <IBCTransferMsg.Transfer toAddress=receiver amount={token.amount} denom={token.denom} />
      // TODO: Waiting for the decode data complete
+     | RecvPacketMsgSuccess({packetType}) => <IBCPacketMsg.Packet packetType />
+     | RecvPacketMsgFail(_)
      | AcknowledgePacketMsg(_)
-     | RecvPacketMsg(_)
      | TimeoutMsg(_)
      | TimeoutOnCloseMsg(_)
      | _ => React.null

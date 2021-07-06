@@ -93,7 +93,8 @@ let renderBody = (msg: MsgDecoder.t) =>
   | ChannelCloseInitMsg(channel) => <IndexIBCChannelMsg.ChannelCloseInit channel />
   | ChannelCloseConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelCloseConfirm channel />
   | AcknowledgePacketMsg(packet) => <IndexIBCPacketMsg.AcknowledgePacket packet />
-  | RecvPacketMsg(packet) => <IndexIBCPacketMsg.RecvPacket packet />
+  | RecvPacketMsgSuccess(packet) => <IndexIBCPacketMsg.RecvPacketSuccess packet />
+  | RecvPacketMsgFail(packet) => <IndexIBCPacketMsg.RecvPacketFail packet />
   | TimeoutMsg(packet) => <IndexIBCPacketMsg.Timeout packet />
   | TimeoutOnCloseMsg(packet) => <IndexIBCPacketMsg.TimeoutOnClose packet />
   | TransferMsg(msg) => <IndexIBCTransferMsg.Transfer msg />

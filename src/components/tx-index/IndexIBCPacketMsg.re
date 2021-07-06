@@ -71,9 +71,42 @@ module Packet = {
   };
 };
 
-module RecvPacket = {
+module RecvPacketSuccess = {
   [@react.component]
-  let make = (~packet: MsgDecoder.RecvPacket.t) => {
+  let make = (~packet: MsgDecoder.RecvPacket.success_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <>
+      <Row>
+        <Col col=Col.Six mbSm=24>
+          <Heading
+            value="Signer"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <AddressRender address={packet.signer} />
+        </Col>
+        <Col col=Col.Six>
+          <Heading
+            value="Packet Type"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <Text size=Text.Lg value={packet.packetType} />
+        </Col>
+      </Row>
+      <IndexIBCUtils.ProofHeight proofHeight={packet.proofHeight} />
+      <Packet packet={packet.packet} />
+    </>;
+  };
+};
+
+module RecvPacketFail = {
+  [@react.component]
+  let make = (~packet: MsgDecoder.RecvPacket.fail_t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
       <Row>
