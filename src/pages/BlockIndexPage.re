@@ -197,9 +197,9 @@ let make = (~height) => {
           <SeperatedLine mt=32 mb=0 />
           <BlockIndexTxsTable txsSub />
           {switch (blockSub) {
-           | Data({txn}) =>
+           | Data({txn, requests}) =>
              let pageCount = Page.getPageCount(txn, pageSize);
-
+             Js.Console.log(requests);
              <Pagination
                currentPage=page
                pageCount
