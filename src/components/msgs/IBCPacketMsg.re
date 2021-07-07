@@ -7,7 +7,6 @@ module Styles = {
 module Packet = {
   [@react.component]
   let make = (~packetType) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div
       className={Css.merge([
         CssHelper.flexBox(~wrap=`nowrap, ()),

@@ -119,8 +119,11 @@ let make = (~msg: MsgDecoder.t) => {
      | ChannelCloseConfirmMsg({channelID}) => <IBCChannelMsg.ChannelCloseCommon channelID />
      | TransferMsg({token, receiver}) =>
        <IBCTransferMsg.Transfer toAddress=receiver amount={token.amount} denom={token.denom} />
-     // TODO: Waiting for the decode data complete
-     | RecvPacketMsgSuccess({packetType}) => <IBCPacketMsg.Packet packetType />
+     | RecvPacketMsgSuccess({packetData}) =>
+       switch (packetData) {
+       | Some({packetType}) => <IBCPacketMsg.Packet packetType />
+       | None => React.null
+       }
      | RecvPacketMsgFail(_)
      | AcknowledgePacketMsg(_)
      | TimeoutMsg(_)

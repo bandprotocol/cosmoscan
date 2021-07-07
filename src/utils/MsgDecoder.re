@@ -763,18 +763,12 @@ module Packet = {
   };
 };
 
-let getPacketTypeText =
-  fun
-  | "oracle_request" => "Oracle Request"
-  | "oracle_response" => "Oracle Response"
-  | "fungible_token" => "Fungible Token";
-
 module RecvPacket = {
   type success_t = {
     signer: Address.t,
     packet: Packet.t,
     proofHeight: Height.t,
-    packetType: string,
+    packetData: option(PacketDecoder.t),
   };
 
   type fail_t = {
@@ -788,7 +782,7 @@ module RecvPacket = {
       signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
       packet: json |> at(["msg", "packet"], Packet.decode),
       proofHeight: json |> at(["msg", "proof_height"], Height.decode),
-      packetType: json |> at(["msg", "packet_type"], string) |> getPacketTypeText,
+      packetData: json |> optional(PacketDecoder.decodeAction),
     };
   };
 
