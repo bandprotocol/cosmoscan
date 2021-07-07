@@ -177,6 +177,7 @@ let make = () => {
           </Tab.StateFilter>
         </Col>
       </Row>
+      <LiveConnection counterpartyChainID="consumer" />
     </div>
   </Section>;
 };
