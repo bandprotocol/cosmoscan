@@ -12,7 +12,7 @@ module Styles = {
       background(checked ? `hex("4520E6") : `hex("353535")),
       borderRadius(`px(4)),
     ]);
-  let button = checked =>
+  let button = (checked, theme: Theme.t) =>
     style([
       position(`absolute),
       top(`px(-8)),
@@ -20,7 +20,7 @@ module Styles = {
       width(`px(16)),
       height(`px(16)),
       borderRadius(`percent(50.)),
-      background(`hex("ffffff")),
+      background(theme.textPrimary),
       transform(`translateX(checked ? `percent(200.) : `percent(0.))),
       transition(~duration=200, "all"),
     ]);
@@ -28,8 +28,10 @@ module Styles = {
 
 [@react.component]
 let make = (~checked) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
   <div className=Styles.container>
     <div className={Styles.slide(checked)} />
-    <div className={Styles.button(checked)} />
+    <div className={Styles.button(checked, theme)} />
   </div>;
 };
