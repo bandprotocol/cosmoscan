@@ -1084,6 +1084,16 @@ module Deposit = {
   };
 };
 module Vote = {
+  exception ParseVoteNotMatch;
+  let parse =
+    fun
+    | 0 => "Unspecified"
+    | 1 => "Yes"
+    | 2 => "Abstain"
+    | 3 => "No"
+    | 4 => "NoWithVeto"
+    | _ => raise(ParseVoteNotMatch);
+
   type success_t = {
     voterAddress: Address.t,
     proposalID: ID.Proposal.t,
@@ -1101,7 +1111,7 @@ module Vote = {
     JsonUtils.Decode.{
       voterAddress: json |> at(["msg", "voter"], string) |> Address.fromBech32,
       proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
-      option: json |> at(["msg", "option"], string),
+      option: json |> at(["msg", "option"], int) |> parse,
       title: json |> at(["msg", "title"], string),
     };
   };
