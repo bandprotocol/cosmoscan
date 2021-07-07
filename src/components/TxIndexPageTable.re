@@ -1,20 +1,6 @@
 module Styles = {
   open Css;
 
-  let addressContainer = width_ => style([width(`px(width_))]);
-
-  let badgeContainer = style([display(`block), marginTop(`px(-4))]);
-
-  let badge = color =>
-    style([
-      display(`inlineFlex),
-      padding2(~v=`px(5), ~h=`px(8)),
-      backgroundColor(color),
-      borderRadius(`px(50)),
-    ]);
-
-  let hFlex = style([display(`flex), alignItems(`center)]);
-
   let topicContainer =
     style([
       display(`flex),
@@ -24,41 +10,7 @@ module Styles = {
       alignItems(`center),
     ]);
 
-  let detailContainer = style([display(`flex), maxWidth(`px(360)), justifyContent(`flexEnd)]);
-
-  let hashContainer =
-    style([
-      display(`flex),
-      maxWidth(`px(350)),
-      justifyContent(`flexEnd),
-      wordBreak(`breakAll),
-    ]);
-
-  let firstCol = 0.45;
-  let secondCol = 0.50;
-  let thirdCol = 1.20;
-
   let failIcon = style([width(`px(16)), height(`px(16))]);
-
-  let failedMessageDetails =
-    style([
-      display(`flex),
-      width(`px(120)),
-      alignItems(`center),
-      justifyContent(`spaceBetween),
-    ]);
-
-  let separatorLine =
-    style([
-      borderStyle(`none),
-      backgroundColor(Colors.gray9),
-      height(`px(1)),
-      margin2(~v=`px(10), ~h=`auto),
-    ]);
-
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-
   let msgContainer = style([selector("> div + div", [marginTop(`px(24))])]);
 };
 
