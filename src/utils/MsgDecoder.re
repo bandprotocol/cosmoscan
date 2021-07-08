@@ -764,13 +764,29 @@ module Packet = {
 };
 
 module RecvPacket = {
-  type t = {
+  type success_t = {
+    signer: Address.t,
+    packet: Packet.t,
+    proofHeight: Height.t,
+    packetData: option(PacketDecoder.t),
+  };
+
+  type fail_t = {
     signer: Address.t,
     packet: Packet.t,
     proofHeight: Height.t,
   };
 
-  let decode = json => {
+  let decodeSuccess = json => {
+    JsonUtils.Decode.{
+      signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
+      packet: json |> at(["msg", "packet"], Packet.decode),
+      proofHeight: json |> at(["msg", "proof_height"], Height.decode),
+      packetData: json |> optional(PacketDecoder.decodeAction),
+    };
+  };
+
+  let decodeFail = json => {
     JsonUtils.Decode.{
       signer: json |> at(["msg", "signer"], string) |> Address.fromBech32,
       packet: json |> at(["msg", "packet"], Packet.decode),
@@ -1246,7 +1262,8 @@ type decoded_t =
   | ChannelCloseInitMsg(ChannelCloseInit.t)
   | ChannelCloseConfirmMsg(ChannelCloseConfirm.t)
   | AcknowledgePacketMsg(AcknowledgePacket.t)
-  | RecvPacketMsg(RecvPacket.t)
+  | RecvPacketMsgSuccess(RecvPacket.success_t)
+  | RecvPacketMsgFail(RecvPacket.fail_t)
   | TimeoutMsg(Timeout.t)
   | TimeoutOnCloseMsg(TimeoutOnClose.t)
   | TransferMsg(Transfer.t)
@@ -1323,7 +1340,8 @@ let getCreator = msg => {
   | ChannelOpenConfirmMsg(channel) => channel.signer
   | ChannelCloseInitMsg(channel) => channel.signer
   | ChannelCloseConfirmMsg(channel) => channel.signer
-  | RecvPacketMsg(packet) => packet.signer
+  | RecvPacketMsgSuccess(packet) => packet.signer
+  | RecvPacketMsgFail(packet) => packet.signer
   | AcknowledgePacketMsg(packet) => packet.signer
   | TimeoutMsg(timeout) => timeout.signer
   | TimeoutOnCloseMsg(timeout) => timeout.signer
@@ -1452,7 +1470,8 @@ let getBadgeTheme = msg => {
   | ChannelOpenConfirmMsg(_) => getBadge(ChannelOpenConfirmBadge)
   | ChannelCloseInitMsg(_) => getBadge(ChannelCloseInitBadge)
   | ChannelCloseConfirmMsg(_) => getBadge(ChannelCloseConfirmBadge)
-  | RecvPacketMsg(_) => getBadge(RecvPacketBadge)
+  | RecvPacketMsgSuccess(_)
+  | RecvPacketMsgFail(_) => getBadge(RecvPacketBadge)
   | AcknowledgePacketMsg(_) => getBadge(AcknowledgePacketBadge)
   | TimeoutMsg(_) => getBadge(TimeoutBadge)
   | TimeoutOnCloseMsg(_) => getBadge(TimeoutOnCloseBadge)
@@ -1509,7 +1528,7 @@ let decodeAction = json => {
       | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
       | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
       | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-      | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
+      | RecvPacketBadge => RecvPacketMsgSuccess(json |> RecvPacket.decodeSuccess)
       | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
       | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
       | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
@@ -1567,7 +1586,7 @@ let decodeFailAction = json => {
       | ChannelOpenConfirmBadge => ChannelOpenConfirmMsg(json |> ChannelOpenConfirm.decode)
       | ChannelCloseInitBadge => ChannelCloseInitMsg(json |> ChannelCloseInit.decode)
       | ChannelCloseConfirmBadge => ChannelCloseConfirmMsg(json |> ChannelCloseConfirm.decode)
-      | RecvPacketBadge => RecvPacketMsg(json |> RecvPacket.decode)
+      | RecvPacketBadge => RecvPacketMsgFail(json |> RecvPacket.decodeFail)
       | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
       | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
       | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
