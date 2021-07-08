@@ -118,6 +118,26 @@ module OracleRequestPacket = {
         </Col>
         <Col col=Col.Six mb=24>
           <Heading
+            value="Payer"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <AddressRender address={request.payer} />
+        </Col>
+        <Col col=Col.Six mb=24>
+          <Heading
+            value="Request Key"
+            size=Heading.H4
+            weight=Heading.Regular
+            marginBottom=8
+            color={theme.textSecondary}
+          />
+          <Text value={request.requestKey} size=Text.Lg />
+        </Col>
+        <Col col=Col.Six mb=24>
+          <Heading
             value="Prepare Gas"
             size=Heading.H4
             weight=Heading.Regular

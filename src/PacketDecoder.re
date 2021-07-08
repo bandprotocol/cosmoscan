@@ -11,6 +11,8 @@ module OracleRequestPacket = {
     executeGas: int,
     prepareGas: int,
     schema: string,
+    requestKey: string,
+    payer: Address.t,
   };
   let decode = json => {
     JsonUtils.Decode.{
@@ -24,7 +26,9 @@ module OracleRequestPacket = {
       feeLimit: json |> at(["decoded_data", "fee_limit"], string),
       executeGas: json |> at(["decoded_data", "execute_gas"], int),
       prepareGas: json |> at(["decoded_data", "prepare_gas"], int),
-      schema: json |> at(["schema"], string),
+      schema: json |> at(["decoded_data", "oracle_script_schema"], string),
+      requestKey: json |> at(["decoded_data", "request_key"], string),
+      payer: json |> at(["decoded_data", "payer"], string) |> Address.fromBech32,
     };
   };
 };
