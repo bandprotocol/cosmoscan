@@ -192,14 +192,14 @@ let make = (~height) => {
             </InfoContainer>
           </Col>
         </Row>
+        <ResolvedRequest blockSub />
         <Table>
           <Heading value="Transactions" size=Heading.H4 marginBottom=32 marginTop=32 />
           <SeperatedLine mt=32 mb=0 />
           <BlockIndexTxsTable txsSub />
           {switch (blockSub) {
-           | Data({txn, requests}) =>
+           | Data({txn}) =>
              let pageCount = Page.getPageCount(txn, pageSize);
-             Js.Console.log(requests);
              <Pagination
                currentPage=page
                pageCount

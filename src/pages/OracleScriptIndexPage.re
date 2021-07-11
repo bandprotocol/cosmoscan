@@ -188,7 +188,7 @@ module Content = {
           </Col>
         </Row>
         <Table>
-          <Tab
+          <Tab.Route
             tabs=[|
               {
                 name: "Requests",
@@ -239,7 +239,7 @@ module Content = {
              | OracleScriptRequests => <OracleScriptRequestTable oracleScriptID />
              | OracleScriptRevisions => <OracleScriptRevisionTable id=oracleScriptID />
              }}
-          </Tab>
+          </Tab.Route>
         </Table>
       </div>
     </Section>;
