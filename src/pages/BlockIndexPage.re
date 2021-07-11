@@ -86,7 +86,7 @@ let make = (~height) => {
              }}
           </Col>
         </Row>
-        <Row marginBottom=40>
+        <Row marginBottom=24>
           <Col>
             <InfoContainer>
               <Heading value="Information" size=Heading.H4 />
