@@ -76,7 +76,7 @@ let renderBody = (msg: MsgDecoder.t) =>
   | ActivateMsgSuccess(activate)
   | ActivateMsgFail(activate) => <IndexValidatorMsg.ActivateMsg activate />
   | UnknownMsg => renderUnknownMessage()
-  //TODO: Re-visit IBC Msg
+  // IBC Msg
   | CreateClientMsg(client) => <IndexIBCClientMsg.CreateClient client />
   | UpdateClientMsg(client) => <IndexIBCClientMsg.UpdateClient client />
   | UpgradeClientMsg(client) => <IndexIBCClientMsg.UpgradeClient client />
