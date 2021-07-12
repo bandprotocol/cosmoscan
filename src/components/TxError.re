@@ -1,12 +1,12 @@
 module Styles = {
   open Css;
 
-  let errorContainer =
+  let errorContainer = (theme: Theme.t) =>
     style([
       padding(`px(10)),
-      color(Colors.red5),
-      backgroundColor(Colors.red1),
-      border(`px(1), `solid, Colors.red5),
+      color(theme.failColor),
+      backgroundColor(theme.mainBg),
+      border(`px(1), `solid, theme.failColor),
       borderRadius(`px(4)),
       marginBottom(`px(24)),
       selector("> i", [marginRight(`px(8))]),
@@ -39,9 +39,21 @@ let parseErr = msg => {
 module Full = {
   [@react.component]
   let make = (~msg) => {
-    <div className={Css.merge([Styles.errorContainer, CssHelper.flexBox(~wrap=`nowrap, ())])}>
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    <div
+      className={Css.merge([
+        Styles.errorContainer(theme),
+        CssHelper.flexBox(~wrap=`nowrap, ()),
+      ])}>
       <Icon name="fal fa-exclamation-circle" size=14 color=Colors.red5 />
-      <Text value={msg |> parseErr} size=Text.Lg spacing={Text.Em(0.02)} breakAll=true />
+      <Text
+        value={msg |> parseErr}
+        size=Text.Lg
+        spacing={Text.Em(0.02)}
+        breakAll=true
+        color={theme.textPrimary}
+      />
     </div>;
   };
 };
@@ -49,6 +61,8 @@ module Full = {
 module Mini = {
   [@react.component]
   let make = (~msg) => {
-    <Text value={msg |> parseErr} code=true size=Text.Sm breakAll=true />;
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    <Text value={msg |> parseErr} code=true size=Text.Sm breakAll=true color={theme.failColor} />;
   };
 };
