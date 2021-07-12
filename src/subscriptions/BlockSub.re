@@ -4,6 +4,11 @@ type aggregate_t = {count: int};
 
 type transactions_aggregate_t = {aggregate: option(aggregate_t)};
 
+type resolve_request_t = {
+  id: ID.Request.t,
+  isIBC: bool,
+};
+
 type internal_t = {
   height: ID.Block.t,
   hash: Hash.t,
@@ -11,6 +16,7 @@ type internal_t = {
   validator: ValidatorSub.Mini.t,
   timestamp: MomentRe.Moment.t,
   transactions_aggregate: transactions_aggregate_t,
+  requests: array(resolve_request_t),
 };
 
 type t = {
@@ -20,9 +26,11 @@ type t = {
   timestamp: MomentRe.Moment.t,
   validator: ValidatorSub.Mini.t,
   txn: int,
+  requests: array(resolve_request_t),
 };
 
-let toExternal = ({height, hash, inflation, timestamp, validator, transactions_aggregate}) => {
+let toExternal =
+    ({height, hash, inflation, timestamp, validator, transactions_aggregate, requests}) => {
   height,
   hash,
   inflation,
@@ -33,6 +41,7 @@ let toExternal = ({height, hash, inflation, timestamp, validator, transactions_a
     | Some(aggregate) => aggregate.count
     | _ => 0
     },
+  requests,
 };
 
 module MultiConfig = [%graphql
@@ -53,6 +62,10 @@ module MultiConfig = [%graphql
         aggregate @bsRecord {
           count @bsDecoder(fn: "Belt_Option.getExn")
         }
+      }
+      requests(where: {resolve_status: {_neq: "Open"}}) @bsRecord {
+        id @bsDecoder(fn: "ID.Request.fromInt")
+        isIBC: is_ibc
       }
     }
   }
@@ -78,6 +91,10 @@ module MultiConsensusAddressConfig = [%graphql
           count @bsDecoder(fn: "Belt_Option.getExn")
         }
       }
+      requests(where: {resolve_status: {_neq: "Open"}}) @bsRecord {
+        id @bsDecoder(fn: "ID.Request.fromInt")
+        isIBC: is_ibc
+      }
     }
   }
 |}
@@ -101,6 +118,10 @@ module SingleConfig = [%graphql
         aggregate @bsRecord {
           count @bsDecoder(fn: "Belt_Option.getExn")
         }
+      }
+      requests(where: {resolve_status: {_neq: "Open"}}) @bsRecord {
+        id @bsDecoder(fn: "ID.Request.fromInt")
+        isIBC: is_ibc
       }
     }
   },

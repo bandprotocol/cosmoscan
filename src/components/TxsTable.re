@@ -10,7 +10,7 @@ module RenderBody = {
   let make =
       (
         ~txSub: ApolloHooks.Subscription.variant(TxSub.t),
-        ~msgTransform: TxSub.Msg.t => TxSub.Msg.t,
+        ~msgTransform: MsgDecoder.t => MsgDecoder.t,
       ) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <TBody>
@@ -57,7 +57,6 @@ module RenderBody = {
                  messages={messages->Belt_List.map(msgTransform)}
                  success
                  errMsg
-                 width=400
                />
              </div>
            | _ => <> <LoadingCensorBar width=400 height=15 /> </>
@@ -74,7 +73,7 @@ module RenderBodyMobile = {
       (
         ~reserveIndex,
         ~txSub: ApolloHooks.Subscription.variant(TxSub.t),
-        ~msgTransform: TxSub.Msg.t => TxSub.Msg.t,
+        ~msgTransform: MsgDecoder.t => MsgDecoder.t,
       ) => {
     let isSmallMobile = Media.isSmallMobile();
 
@@ -118,7 +117,7 @@ module RenderBodyMobile = {
 let make =
     (
       ~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t)),
-      ~msgTransform: TxSub.Msg.t => TxSub.Msg.t=x => x,
+      ~msgTransform: MsgDecoder.t => MsgDecoder.t=x => x,
     ) => {
   let isMobile = Media.isMobile();
 

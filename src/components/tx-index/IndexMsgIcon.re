@@ -1,17 +1,9 @@
 module Styles = {
   open Css;
 
-  let iconWrapper = msgType =>
+  let iconWrapper =
     style([
-      backgroundColor(
-        switch (msgType) {
-        | TxSub.Msg.TokenMsg => Colors.bandBlue
-        | ValidatorMsg => Colors.blue12
-        | ProposalMsg => Colors.blue13
-        | DataMsg => Colors.blue14
-        | _ => Colors.bandBlue
-        },
-      ),
+      backgroundColor(Theme.baseBlue),
       width(`px(24)),
       height(`px(24)),
       borderRadius(`percent(50.)),
@@ -29,14 +21,19 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~category: TxSub.Msg.msg_cat_t) => {
-  <div className={Styles.iconWrapper(category)}>
+let make = (~category: MsgDecoder.msg_cat_t) => {
+  <div className=Styles.iconWrapper>
     {switch (category) {
-     | TokenMsg => <Icon name="far fa-wallet" color=Colors.white size=14 />
-     | ValidatorMsg => <Icon name="fas fa-user" color=Colors.white size=14 />
-     | ProposalMsg => <Icon name="fal fa-file" color=Colors.white size=14 />
-     | DataMsg => <Icon name="fal fa-globe" color=Colors.white size=14 />
-     | _ => <Icon name="far fa-wallet" color=Colors.white size=14 />
+     | TokenMsg => <Icon name="far fa-wallet" color=Theme.white size=14 />
+     | ValidatorMsg => <Icon name="fas fa-user" color=Theme.white size=14 />
+     | ProposalMsg => <Icon name="fal fa-file" color=Theme.white size=14 />
+     | DataMsg => <Icon name="fal fa-globe" color=Theme.white size=14 />
+     | IBCClientMsg
+     | IBCConnectionMsg
+     | IBCChannelMsg
+     | IBCPacketMsg
+     | IBCTransferMsg => <img src=Images.ibcIcon />
+     | _ => <Icon name="fal fa-question" color=Theme.white size=14 />
      }}
   </div>;
 };

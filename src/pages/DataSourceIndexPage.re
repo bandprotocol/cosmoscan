@@ -58,6 +58,39 @@ module Content = {
                    }}
                 </Col>
               </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Treasury"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (dataSourceSub) {
+                   | Data({treasury}) =>
+                     <AddressRender address=treasury position=AddressRender.Subtitle />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Fee"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (dataSourceSub) {
+                   | Data({fee}) => <AmountRender coins=fee pos=AmountRender.TxIndex />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
               <Row alignItems=Row.Center>
                 <Col col=Col.Four mbSm=8>
                   <Heading
@@ -78,7 +111,7 @@ module Content = {
           </Col>
         </Row>
         <Table>
-          <Tab
+          <Tab.Route
             tabs=[|
               {
                 name: "Requests",
@@ -112,7 +145,7 @@ module Content = {
              | DataSourceRequests => <DataSourceRequestTable dataSourceID />
              | DataSourceRevisions => <DataSourceRevisionTable id=dataSourceID />
              }}
-          </Tab>
+          </Tab.Route>
         </Table>
       </div>
     </Section>;

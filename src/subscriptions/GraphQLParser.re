@@ -35,6 +35,15 @@ let timestamp = json => {
   json |> Js.Json.decodeString |> Belt.Option.getExn |> MomentRe.momentUtcDefaultFormat;
 };
 
+let timeNS = json => {
+  json
+  |> Js.Json.decodeNumber
+  |> Belt.Option.getExn
+  |> (nanoSec => nanoSec /. 1e6)
+  |> MomentRe.momentWithTimestampMS
+  |> MomentRe.Moment.defaultUtc;
+};
+
 let timestampOpt = Belt_Option.map(_, timestamp);
 
 let timestampWithDefault = jsonOpt =>

@@ -33,8 +33,7 @@ module RenderBody = {
         <Col col=Col.Eight>
           {switch (txSub) {
            | Data({messages, txHash, success, errMsg}) =>
-             <TxMessages txHash messages success errMsg width=530 />
-
+             <TxMessages txHash messages success errMsg />
            | _ => <LoadingCensorBar width=530 height=15 />
            }}
         </Col>
@@ -54,7 +53,6 @@ module RenderBodyMobile = {
           ("Gas Fee\n(BAND)", Coin({value: gasFee, hasDenom: false})),
           ("Actions", Messages(txHash, messages, success, errMsg)),
         ]
-        key={txHash |> Hash.toHex}
         idx={txHash |> Hash.toHex}
         status=success
       />
@@ -65,7 +63,6 @@ module RenderBodyMobile = {
           ("Gas Fee\n(BAND)", Loading(60)),
           ("Actions", Loading(230)),
         ]
-        key={reserveIndex |> string_of_int}
         idx={reserveIndex |> string_of_int}
       />
     };
@@ -119,8 +116,12 @@ let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
          ? txs
            ->Belt_Array.mapWithIndex((i, e) =>
                isMobile
-                 ? <RenderBodyMobile reserveIndex=i txSub={Sub.resolve(e)} />
-                 : <RenderBody txSub={Sub.resolve(e)} />
+                 ? <RenderBodyMobile
+                     reserveIndex=i
+                     txSub={Sub.resolve(e)}
+                     key={e.txHash |> Hash.toHex}
+                   />
+                 : <RenderBody txSub={Sub.resolve(e)} key={e.txHash |> Hash.toHex} />
              )
            ->React.array
          : <EmptyContainer>
@@ -140,7 +141,8 @@ let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
        Belt_Array.make(isMobile ? 1 : 10, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
-             ? <RenderBodyMobile reserveIndex=i txSub=noData /> : <RenderBody txSub=noData />
+             ? <RenderBodyMobile reserveIndex=i txSub=noData key={i |> string_of_int} />
+             : <RenderBody txSub=noData key={i |> string_of_int} />
          )
        ->React.array
      }}

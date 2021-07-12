@@ -1,20 +1,6 @@
 module Styles = {
   open Css;
 
-  let addressContainer = width_ => style([width(`px(width_))]);
-
-  let badgeContainer = style([display(`block), marginTop(`px(-4))]);
-
-  let badge = color =>
-    style([
-      display(`inlineFlex),
-      padding2(~v=`px(5), ~h=`px(8)),
-      backgroundColor(color),
-      borderRadius(`px(50)),
-    ]);
-
-  let hFlex = style([display(`flex), alignItems(`center)]);
-
   let topicContainer =
     style([
       display(`flex),
@@ -24,269 +10,10 @@ module Styles = {
       alignItems(`center),
     ]);
 
-  let detailContainer = style([display(`flex), maxWidth(`px(360)), justifyContent(`flexEnd)]);
-
-  let hashContainer =
-    style([
-      display(`flex),
-      maxWidth(`px(350)),
-      justifyContent(`flexEnd),
-      wordBreak(`breakAll),
-    ]);
-
-  let firstCol = 0.45;
-  let secondCol = 0.50;
-  let thirdCol = 1.20;
-
   let failIcon = style([width(`px(16)), height(`px(16))]);
-
-  let failedMessageDetails =
-    style([
-      display(`flex),
-      width(`px(120)),
-      alignItems(`center),
-      justifyContent(`spaceBetween),
-    ]);
-
-  let separatorLine =
-    style([
-      borderStyle(`none),
-      backgroundColor(Colors.gray9),
-      height(`px(1)),
-      margin2(~v=`px(10), ~h=`auto),
-    ]);
-
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
-
   let msgContainer = style([selector("> div + div", [marginTop(`px(24))])]);
-};
-
-let renderCreateClient = (_: TxSub.Msg.CreateClient.t) => {
-  // <Col size=Styles.thirdCol alignSelf=Col.Start>
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.clientID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.chainID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="TRUSTING PERIOD" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.trustingPeriod |> MomentRe.Duration.toISOString} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="UNBOUNDING PERIOD" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.unbondingPeriod |> MomentRe.Duration.toISOString} code=true />
-  //   </div>
-  // </Col>;
-  // info
-  React.null;
-};
-
-let renderUpdateClient = (_: TxSub.Msg.UpdateClient.t) => {
-  // <Col size=Styles.thirdCol alignSelf=Col.Start>
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.clientID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.chainID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text
-  //       value="VALIDATOR HASH"
-  //       size=Text.Sm
-  //       weight=Text.Thin
-  //       height={Text.Px(16)}
-  //       spacing={Text.Em(0.06)}
-  //     />
-  //     <div className=Styles.hashContainer>
-  //       <Text
-  //         value={info.validatorHash |> Hash.toHex}
-  //         code=true
-  //         height={Text.Px(16)}
-  //         align=Text.Right
-  //       />
-  //     </div>
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text
-  //       value="PREVIOUS VALIDATOR HASH"
-  //       size=Text.Sm
-  //       weight=Text.Thin
-  //       height={Text.Px(16)}
-  //       spacing={Text.Em(0.06)}
-  //     />
-  //     <div className=Styles.hashContainer>
-  //       <Text
-  //         value={info.prevValidatorHash |> Hash.toHex}
-  //         code=true
-  //         height={Text.Px(16)}
-  //         align=Text.Right
-  //       />
-  //     </div>
-  //   </div>
-  // </Col>;
-  // info
-  React.null;
-};
-
-let renderSubmitClientMisbehaviour = (_: TxSub.Msg.SubmitClientMisbehaviour.t) => {
-  // <Col size=Styles.thirdCol alignSelf=Col.Start>
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.clientID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={info.chainID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text
-  //       value="VALIDATOR HASH"
-  //       size=Text.Sm
-  //       weight=Text.Thin
-  //       height={Text.Px(16)}
-  //       spacing={Text.Em(0.06)}
-  //     />
-  //     <div className=Styles.hashContainer>
-  //       <Text
-  //         value={info.validatorHash |> Hash.toHex}
-  //         code=true
-  //         height={Text.Px(16)}
-  //         align=Text.Right
-  //       />
-  //     </div>
-  //   </div>
-  // </Col>;
-  // info
-  React.null;
-};
-
-let renderPacketVariant = (_: TxSub.Msg.t, _: TxSub.Msg.Packet.common_t) => {
-  // <Col size=Styles.thirdCol alignSelf=Col.Start>
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.chainID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="SEQUENCE" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.sequence |> string_of_int} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="SOURCE PORT" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.sourcePort} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="SOURCE CHANNEL" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.sourceChannel} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="DESTINATION PORT" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.destinationPort} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="DESTINATION CHANNEL" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.destinationChannel} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="TIMEOUT HEIGHT" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.timeoutHeight |> string_of_int} code=true />
-  //   </div>
-  //   {switch (msg) {
-  //    | AcknowledgementMsg({acknowledgement}) =>
-  //      <>
-  //        <VSpacing size=Spacing.md />
-  //        <div className=Styles.topicContainer>
-  //          <Text value="ACKNOWLEDGEMENT" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //          <Text value=acknowledgement code=true />
-  //        </div>
-  //      </>
-  //    | TimeoutMsg({nextSequenceReceive}) =>
-  //      <>
-  //        <VSpacing size=Spacing.md />
-  //        <div className=Styles.topicContainer>
-  //          <Text value="ACKNOWLEDGEMENT" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //          <Text value={nextSequenceReceive |> string_of_int} code=true />
-  //        </div>
-  //      </>
-  //    | _ => React.null
-  //    }}
-  // </Col>;
-  // msg, common
-  React.null;
-};
-
-let renderChannelVariant = (_: TxSub.Msg.ChannelCommon.t) => {
-  // <Col size=Styles.thirdCol alignSelf=Col.Start>
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.chainID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="PORT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.portID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHANNEL ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.channelID} code=true />
-  //   </div>
-  // </Col>;
-  // common
-  React.null;
-};
-
-let renderConnectionVariant = (_: TxSub.Msg.t, _: TxSub.Msg.ConnectionCommon.t) => {
-  // <Col size=Styles.thirdCol alignSelf=Col.Start>
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CHAIN ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.chainID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   <div className=Styles.topicContainer>
-  //     <Text value="CONNECTION ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //     <Text value={common.connectionID} code=true />
-  //   </div>
-  //   <VSpacing size=Spacing.md />
-  //   {switch (msg) {
-  //    | ConnectionOpenInitMsg({clientID}) =>
-  //      <>
-  //        <div className=Styles.topicContainer>
-  //          <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //          <Text value=clientID code=true />
-  //        </div>
-  //      </>
-  //    | ConnectionOpenTryMsg({clientID}) =>
-  //      <>
-  //        <div className=Styles.topicContainer>
-  //          <Text value="CLIENT ID" size=Text.Sm weight=Text.Thin spacing={Text.Em(0.06)} />
-  //          <Text value=clientID code=true />
-  //        </div>
-  //      </>
-  //    | _ => React.null
-  //    }}
-  // </Col>;
-  // msg, common
-  React.null;
+  let jsonMode =
+    style([display(`flex), alignItems(`center), cursor(`pointer), height(`px(30))]);
 };
 
 let renderUnknownMessage = () => {
@@ -298,8 +25,8 @@ let renderUnknownMessage = () => {
   </Col>;
 };
 
-let renderBody = (msg: TxSub.Msg.t) =>
-  switch (msg) {
+let renderBody = (msg: MsgDecoder.t) =>
+  switch (msg.decoded) {
   | SendMsgSuccess(send)
   | SendMsgFail(send) => <IndexTokenMsg.SendMsg send />
   | DelegateMsgSuccess(delegation) => <IndexTokenMsg.DelegateMsg delegation />
@@ -349,41 +76,65 @@ let renderBody = (msg: TxSub.Msg.t) =>
   | ActivateMsgSuccess(activate)
   | ActivateMsgFail(activate) => <IndexValidatorMsg.ActivateMsg activate />
   | UnknownMsg => renderUnknownMessage()
-  //TODO: Re-visit IBC Msg
-  | CreateClientMsg(info) => renderCreateClient(info)
-  | UpdateClientMsg(info) => renderUpdateClient(info)
-  | SubmitClientMisbehaviourMsg(info) => renderSubmitClientMisbehaviour(info)
-  | ConnectionOpenInitMsg(info) => renderConnectionVariant(msg, info.common)
-  | ConnectionOpenTryMsg(info) => renderConnectionVariant(msg, info.common)
-  | ConnectionOpenAckMsg(info) => renderConnectionVariant(msg, info.common)
-  | ConnectionOpenConfirmMsg(info) => renderConnectionVariant(msg, info.common)
-  | ChannelOpenInitMsg(info) => renderChannelVariant(info.common)
-  | ChannelOpenTryMsg(info) => renderChannelVariant(info.common)
-  | ChannelOpenAckMsg(info) => renderChannelVariant(info.common)
-  | ChannelOpenConfirmMsg(info) => renderChannelVariant(info.common)
-  | ChannelCloseInitMsg(info) => renderChannelVariant(info.common)
-  | ChannelCloseConfirmMsg(info) => renderChannelVariant(info.common)
-  | PacketMsg(info) => renderPacketVariant(msg, info.common)
-  | AcknowledgementMsg(info) => renderPacketVariant(msg, info.common)
-  | TimeoutMsg(info) => renderPacketVariant(msg, info.common)
+  // IBC Msg
+  | CreateClientMsg(client) => <IndexIBCClientMsg.CreateClient client />
+  | UpdateClientMsg(client) => <IndexIBCClientMsg.UpdateClient client />
+  | UpgradeClientMsg(client) => <IndexIBCClientMsg.UpgradeClient client />
+  | SubmitClientMisbehaviourMsg(client) => <IndexIBCClientMsg.SubmitClientMisbehaviour client />
+  | ConnectionOpenInitMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenInit connection />
+  | ConnectionOpenTryMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenTry connection />
+  | ConnectionOpenAckMsg(connection) => <IndexIBCConnectionMsg.ConnectionOpenAck connection />
+  | ConnectionOpenConfirmMsg(connection) =>
+    <IndexIBCConnectionMsg.ConnectionOpenConfirm connection />
+  | ChannelOpenInitMsg(channel) => <IndexIBCChannelMsg.ChannelOpenInit channel />
+  | ChannelOpenTryMsg(channel) => <IndexIBCChannelMsg.ChannelOpenTry channel />
+  | ChannelOpenAckMsg(channel) => <IndexIBCChannelMsg.ChannelOpenAck channel />
+  | ChannelOpenConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelOpenConfirm channel />
+  | ChannelCloseInitMsg(channel) => <IndexIBCChannelMsg.ChannelCloseInit channel />
+  | ChannelCloseConfirmMsg(channel) => <IndexIBCChannelMsg.ChannelCloseConfirm channel />
+  | AcknowledgePacketMsg(packet) => <IndexIBCPacketMsg.AcknowledgePacket packet />
+  | RecvPacketMsgSuccess(packet) => <IndexIBCPacketMsg.RecvPacketSuccess packet />
+  | RecvPacketMsgFail(packet) => <IndexIBCPacketMsg.RecvPacketFail packet />
+  | TimeoutMsg(packet) => <IndexIBCPacketMsg.Timeout packet />
+  | TimeoutOnCloseMsg(packet) => <IndexIBCPacketMsg.TimeoutOnClose packet />
+  | TransferMsg(msg) => <IndexIBCTransferMsg.Transfer msg />
   | _ => React.null
   };
 
+module MsgDetailCard = {
+  [@react.component]
+  let make = (~msg: MsgDecoder.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let badgeTheme = msg |> MsgDecoder.getBadgeTheme;
+    let (showJson, setShowJson) = React.useState(_ => false);
+    let toggle = () => setShowJson(prev => !prev);
+
+    <InfoContainer>
+      <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+        <div className={CssHelper.flexBox()}>
+          <IndexMsgIcon category={badgeTheme.category} />
+          <HSpacing size=Spacing.sm />
+          <Heading value={badgeTheme.name} size=Heading.H4 />
+        </div>
+        <div className=Styles.jsonMode onClick={_ => toggle()}>
+          <Text value="JSON Mode" weight=Text.Semibold color={theme.textPrimary} />
+          <Switch checked=showJson />
+        </div>
+      </div>
+      {showJson
+         ? <div className={CssHelper.mt(~size=32, ())}> <JsonViewer src={msg.raw} /> </div>
+         : <> <SeperatedLine mt=32 mb=24 /> {renderBody(msg)} </>}
+    </InfoContainer>;
+  };
+};
+
 [@react.component]
-let make = (~messages: list(TxSub.Msg.t)) => {
+let make = (~messages: list(MsgDecoder.t)) => {
   <div className=Styles.msgContainer>
     {messages
      ->Belt.List.mapWithIndex((index, msg) => {
-         let theme = msg |> TxSub.Msg.getBadgeTheme;
-         <InfoContainer key={(index |> string_of_int) ++ theme.name}>
-           <div className={CssHelper.flexBox()}>
-             <IndexMsgIcon category={theme.category} />
-             <HSpacing size=Spacing.sm />
-             <Heading value={theme.name} size=Heading.H4 />
-           </div>
-           <SeperatedLine mt=32 mb=24 />
-           {renderBody(msg)}
-         </InfoContainer>;
+         let badgeTheme = msg |> MsgDecoder.getBadgeTheme;
+         <MsgDetailCard key={(index |> string_of_int) ++ badgeTheme.name} msg />;
        })
      ->Array.of_list
      ->React.array}

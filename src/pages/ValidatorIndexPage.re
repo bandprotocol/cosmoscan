@@ -31,7 +31,7 @@ module Styles = {
     ]);
   };
 
-  let customContainer = style([height(`percent(100.))])
+  let customContainer = style([height(`percent(100.))]);
 };
 
 module UptimePercentage = {
@@ -462,7 +462,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
         </Col>
       </Row>
       <Table>
-        <Tab
+        <Tab.Route
           tabs=[|
             {name: "Oracle Reports", route: Route.ValidatorIndexPage(address, Route.Reports)},
             {name: "Delegators", route: Route.ValidatorIndexPage(address, Route.Delegators)},
@@ -484,7 +484,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
              }
            | Reporters => <ReportersTable address />
            }}
-        </Tab>
+        </Tab.Route>
       </Table>
     </div>
   </Section>;

@@ -342,6 +342,13 @@ type internal_t = {
   resolveTime: option(MomentRe.Moment.t),
   oracleScript: oracle_script_internal_t,
   calldata: JsBuffer.t,
+  isIBC: bool,
+  reason: option(string),
+  prepareGas: int,
+  executeGas: int,
+  feeLimit: list(Coin.t),
+  feeUsed: list(Coin.t),
+  resolveHeight: option(int),
   requestedValidators: array(requested_validator_internal_t),
   minCount: int,
   resolveStatus: resolve_status_t,
@@ -359,6 +366,13 @@ type t = {
   resolveTime: option(MomentRe.Moment.t),
   oracleScript: oracle_script_internal_t,
   calldata: JsBuffer.t,
+  isIBC: bool,
+  reason: option(string),
+  prepareGas: int,
+  executeGas: int,
+  feeLimit: list(Coin.t),
+  feeUsed: list(Coin.t),
+  resolveHeight: option(ID.Block.t),
   requestedValidators: array(requested_validator_internal_t),
   minCount: int,
   resolveStatus: resolve_status_t,
@@ -378,6 +392,13 @@ let toExternal =
         resolveTime,
         oracleScript,
         calldata,
+        isIBC,
+        reason,
+        prepareGas,
+        executeGas,
+        feeLimit,
+        feeUsed,
+        resolveHeight,
         requestedValidators,
         minCount,
         resolveStatus,
@@ -394,6 +415,13 @@ let toExternal =
   resolveTime,
   oracleScript,
   calldata,
+  isIBC,
+  reason,
+  prepareGas,
+  executeGas,
+  feeLimit,
+  feeUsed,
+  resolveHeight: resolveHeight |> Belt.Option.map(_, ID.Block.fromInt),
   requestedValidators,
   minCount,
   resolveStatus,
@@ -418,6 +446,13 @@ module SingleRequestConfig = [%graphql
           schema
         }
         calldata @bsDecoder(fn: "GraphQLParser.buffer")
+        isIBC: is_ibc
+        reason
+        prepareGas: prepare_gas
+        executeGas: execute_gas
+        feeLimit: fee_limit @bsDecoder(fn: "GraphQLParser.coins")
+        feeUsed: total_fees @bsDecoder(fn: "GraphQLParser.coins")
+        resolveHeight: resolve_height
         reports(order_by: {validator_id: asc}) @bsRecord {
           transactionOpt: transaction @bsRecord {
             hash @bsDecoder(fn: "GraphQLParser.hash")
@@ -486,6 +521,13 @@ module MultiRequestConfig = [%graphql
           schema
         }
         calldata @bsDecoder(fn: "GraphQLParser.buffer")
+        isIBC: is_ibc
+        reason
+        prepareGas: prepare_gas
+        executeGas: execute_gas
+        feeLimit: fee_limit @bsDecoder(fn: "GraphQLParser.coins")
+        feeUsed: total_fees @bsDecoder(fn: "GraphQLParser.coins")
+        resolveHeight: resolve_height
         reports @bsRecord {
           transactionOpt: transaction @bsRecord {
             hash @bsDecoder(fn: "GraphQLParser.hash")

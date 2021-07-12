@@ -1,9 +1,16 @@
 module CreateValidatorMsg = {
   [@react.component]
-  let make = (~validator: TxSub.Msg.CreateValidator.t) => {
+  let make = (~validator: MsgDecoder.CreateValidator.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Moniker" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Moniker"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <ValidatorMonikerLink
           validatorAddress={validator.validatorAddress}
           moniker={validator.moniker}
@@ -14,11 +21,23 @@ module CreateValidatorMsg = {
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Identity" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Identity"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text size=Text.Lg value={validator.identity} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Commission Rate" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Commission Rate"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           size=Text.Lg
           value={
@@ -27,7 +46,13 @@ module CreateValidatorMsg = {
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Commission Max Rate" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Commission Max Rate"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           size=Text.Lg
           value={
@@ -36,7 +61,13 @@ module CreateValidatorMsg = {
         />
       </Col>
       <Col mb=24>
-        <Heading value="Commission Max Change" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Commission Max Change"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           size=Text.Lg
           value={
@@ -46,11 +77,23 @@ module CreateValidatorMsg = {
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender position=AddressRender.Subtitle address={validator.delegatorAddress} />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={validator.validatorAddress}
@@ -58,23 +101,53 @@ module CreateValidatorMsg = {
         />
       </Col>
       <Col mb=24>
-        <Heading value="Public Key" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Public Key"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <PubKeyRender pubKey={validator.publicKey} alignLeft=true position=PubKeyRender.Subtitle />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Min Self Delegation" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Min Self Delegation"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AmountRender coins=[validator.minSelfDelegation] pos=AmountRender.TxIndex />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Self Delegation" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Self Delegation"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AmountRender coins=[validator.selfDelegation] pos=AmountRender.TxIndex />
       </Col>
       <Col mb=24>
-        <Heading value="Details" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Details"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text size=Text.Lg value={validator.details} />
       </Col>
       <Col>
-        <Heading value="Website" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Website"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text size=Text.Lg value={validator.website} />
       </Col>
     </Row>;
@@ -83,24 +156,43 @@ module CreateValidatorMsg = {
 
 module EditValidatorMsg = {
   [@react.component]
-  let make = (~validator: BandScan.TxSub.Msg.EditValidator.t) => {
+  let make = (~validator: BandScan.MsgDecoder.EditValidator.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mb=24>
-        <Heading value="Moniker" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Moniker"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           value={validator.moniker == Config.doNotModify ? "Unchanged" : validator.moniker}
           size=Text.Lg
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Identity" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Identity"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           size=Text.Lg
           value={validator.identity == Config.doNotModify ? "Unchanged" : validator.identity}
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Commission Rate" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Commission Rate"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           size=Text.Lg
           value={
@@ -112,7 +204,13 @@ module EditValidatorMsg = {
         />
       </Col>
       <Col col=Col.Six mb=24>
-        <Heading value="Validator Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={validator.sender}
@@ -120,7 +218,13 @@ module EditValidatorMsg = {
         />
       </Col>
       <Col mb=24>
-        <Heading value="Min Self Delegation" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Min Self Delegation"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         {switch (validator.minSelfDelegation) {
          | Some(minSelfDelegation') =>
            <AmountRender coins=[minSelfDelegation'] pos=AmountRender.TxIndex />
@@ -128,7 +232,13 @@ module EditValidatorMsg = {
          }}
       </Col>
       <Col>
-        <Heading value="Details" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Details"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <Text
           size=Text.Lg
           value={validator.details == Config.doNotModify ? "Unchanged" : validator.details}
@@ -140,10 +250,17 @@ module EditValidatorMsg = {
 
 module UnjailMsg = {
   [@react.component]
-  let make = (~unjail: TxSub.Msg.Unjail.t) => {
+  let make = (~unjail: MsgDecoder.Unjail.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={unjail.address}
@@ -156,10 +273,17 @@ module UnjailMsg = {
 
 module AddReporterMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.AddReporter.success_t) => {
+  let make = (~address: MsgDecoder.AddReporter.success_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={address.validator}
@@ -167,7 +291,13 @@ module AddReporterMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Reporter Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Reporter Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
       </Col>
     </Row>;
@@ -176,10 +306,17 @@ module AddReporterMsg = {
 
 module AddReporterFailMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.AddReporter.fail_t) => {
+  let make = (~address: MsgDecoder.AddReporter.fail_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={address.validator}
@@ -187,7 +324,13 @@ module AddReporterFailMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Reporter Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Reporter Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
       </Col>
     </Row>;
@@ -196,10 +339,17 @@ module AddReporterFailMsg = {
 
 module RemoveReporterMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.RemoveReporter.success_t) => {
+  let make = (~address: MsgDecoder.RemoveReporter.success_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={address.validator}
@@ -207,7 +357,13 @@ module RemoveReporterMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Reporter Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Reporter Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
       </Col>
     </Row>;
@@ -216,10 +372,17 @@ module RemoveReporterMsg = {
 
 module RemoveReporterFailMsg = {
   [@react.component]
-  let make = (~address: TxSub.Msg.RemoveReporter.fail_t) => {
+  let make = (~address: MsgDecoder.RemoveReporter.fail_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={address.validator}
@@ -227,7 +390,13 @@ module RemoveReporterFailMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Reporter Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Reporter Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
       </Col>
     </Row>;
@@ -236,10 +405,17 @@ module RemoveReporterFailMsg = {
 
 module ActivateMsg = {
   [@react.component]
-  let make = (~activate: TxSub.Msg.Activate.t) => {
+  let make = (~activate: MsgDecoder.Activate.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six>
-        <Heading value="Validator" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Validator"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={activate.validatorAddress}
@@ -252,10 +428,17 @@ module ActivateMsg = {
 
 module SetWithdrawAddressMsg = {
   [@react.component]
-  let make = (~set: TxSub.Msg.SetWithdrawAddress.t) => {
+  let make = (~set: MsgDecoder.SetWithdrawAddress.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six mbSm=24>
-        <Heading value="Delegator Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Delegator Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender
           position=AddressRender.Subtitle
           address={set.delegatorAddress}
@@ -263,7 +446,13 @@ module SetWithdrawAddressMsg = {
         />
       </Col>
       <Col col=Col.Six>
-        <Heading value="Withdraw Address" size=Heading.H5 marginBottom=8 />
+        <Heading
+          value="Withdraw Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
         <AddressRender position=AddressRender.Subtitle address={set.withdrawAddress} />
       </Col>
     </Row>;

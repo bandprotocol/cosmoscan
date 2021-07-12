@@ -25,7 +25,7 @@ type t =
   | RequestResponse(request_response_t)
   | ProgressBar(request_count_t)
   | Float(float, option(int))
-  | KVTableReport(list(string), list(TxSub.RawDataReport.t))
+  | KVTableReport(list(string), list(MsgDecoder.RawDataReport.t))
   | KVTableRequest(option(array(Obi.field_key_value_t)))
   | CopyButton(JsBuffer.t)
   | Percentage(float, option(int))
@@ -33,9 +33,9 @@ type t =
   | TxHash(Hash.t, int)
   | BlockHash(Hash.t)
   | Validator(Address.t, string, string)
-  | Messages(Hash.t, list(TxSub.Msg.t), bool, string)
+  | Messages(Hash.t, list(MsgDecoder.t), bool, string)
   | PubKey(PubKey.t)
-  | Badge(TxSub.Msg.badge_theme_t)
+  | Badge(MsgDecoder.badge_theme_t)
   | VotingPower(Coin.t, float)
   | Uptime(option(float))
   | Loading(int)
@@ -167,8 +167,7 @@ let make = (~info) => {
       ellipsis=true
       color={theme.textPrimary}
     />
-  | Messages(txHash, messages, success, errMsg) =>
-    <TxMessages txHash messages success errMsg width=360 />
+  | Messages(txHash, messages, success, errMsg) => <TxMessages txHash messages success errMsg />
   | Badge({name, category}) => <MsgBadge name msgType=category />
   | VotingPower(tokens, votingPercent) =>
     <div className=Styles.vFlex>
