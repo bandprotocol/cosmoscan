@@ -111,7 +111,7 @@ module Content = {
           </Col>
         </Row>
         <Table>
-          <Tab
+          <Tab.Route
             tabs=[|
               {
                 name: "Requests",
@@ -145,7 +145,7 @@ module Content = {
              | DataSourceRequests => <DataSourceRequestTable dataSourceID />
              | DataSourceRevisions => <DataSourceRevisionTable id=dataSourceID />
              }}
-          </Tab>
+          </Tab.Route>
         </Table>
       </div>
     </Section>;

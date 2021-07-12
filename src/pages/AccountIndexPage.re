@@ -389,7 +389,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
       <Row marginBottom=24 marginBottomSm=16>
         <Col>
           <Table>
-            <Tab
+            <Tab.Route
               tabs=[|
                 {
                   name: "Delegations",
@@ -410,7 +410,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                | AccountUnbonding => <AccountIndexUnbonding address />
                | AccountRedelegate => <AccountIndexRedelegate address />
                }}
-            </Tab>
+            </Tab.Route>
           </Table>
         </Col>
       </Row>

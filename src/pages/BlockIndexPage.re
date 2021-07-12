@@ -86,7 +86,7 @@ let make = (~height) => {
              }}
           </Col>
         </Row>
-        <Row marginBottom=40>
+        <Row marginBottom=24>
           <Col>
             <InfoContainer>
               <Heading value="Information" size=Heading.H4 />
@@ -192,6 +192,7 @@ let make = (~height) => {
             </InfoContainer>
           </Col>
         </Row>
+        <ResolvedRequest blockSub />
         <Table>
           <Heading value="Transactions" size=Heading.H4 marginBottom=32 marginTop=32 />
           <SeperatedLine mt=32 mb=0 />
@@ -199,7 +200,6 @@ let make = (~height) => {
           {switch (blockSub) {
            | Data({txn}) =>
              let pageCount = Page.getPageCount(txn, pageSize);
-
              <Pagination
                currentPage=page
                pageCount
