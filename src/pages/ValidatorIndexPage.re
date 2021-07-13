@@ -1,6 +1,6 @@
 module Styles = {
   open Css;
-  let card = style([padding2(~v=`px(24), ~h=`px(32))]);
+  let card = style([height(`percent(100.)), padding2(~v=`px(24), ~h=`px(32))]);
 
   let link = style([fontSize(`px(14))]);
 
@@ -173,18 +173,31 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               color={theme.textSecondary}
               weight=Heading.Thin
             />
+            <div className={CssHelper.mb(~size=4, ())}>
+              {switch (allSub) {
+               | Data(({votingPower}, _, {amount})) =>
+                 <Text
+                   value={votingPower *. 100. /. amount |> Format.fPercent(~digits=2)}
+                   size=Text.Xxxl
+                   align=Text.Left
+                   block=true
+                   color={theme.textPrimary}
+                   transform=Text.Uppercase
+                   weight=Text.Semibold
+                 />
+               | _ => <LoadingCensorBar width=100 height=24 />
+               }}
+            </div>
             {switch (allSub) {
-             | Data(({votingPower}, _, {amount})) =>
-               <Text
-                 value={votingPower *. 100. /. amount |> Format.fPercent(~digits=2)}
-                 size=Text.Xxxl
-                 align=Text.Left
-                 block=true
-                 color={theme.textPrimary}
-                 transform=Text.Uppercase
-                 weight=Text.Semibold
-               />
-             | _ => <LoadingCensorBar width=100 height=24 />
+             | Data(({votingPower}, _, _)) =>
+               <>
+                 <Text
+                   value={(votingPower /. 1e6 |> Format.fPretty(~digits=0)) ++ " Band"}
+                   size=Text.Lg
+                   block=true
+                 />
+               </>
+             | _ => <LoadingCensorBar width=80 height=14 />
              }}
           </InfoContainer>
         </Col>
