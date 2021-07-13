@@ -220,12 +220,18 @@ let make = () => {
              ? proposals
                ->Belt_Array.mapWithIndex((i, proposal) => {
                    let turnoutRate =
-                     (
-                       voteStatSub->Belt_MapInt.get(proposal.id |> ID.Proposal.toInt)
-                       |> Belt_Option.getWithDefault(_, 0.)
-                     )
-                     /. (bondedTokenCount |> Coin.getBandAmountFromCoin)
-                     *. 100.;
+                     /* if proposal id is 1 and 2, then use this value */
+                     switch (proposal.id) {
+                     | ID.Proposal.ID(1) => 71.59
+                     | ID(2) => 81.42
+                     | id =>
+                       (
+                         voteStatSub->Belt_MapInt.get(id |> ID.Proposal.toInt)
+                         |> Belt_Option.getWithDefault(_, 0.)
+                       )
+                       /. (bondedTokenCount |> Coin.getBandAmountFromCoin)
+                       *. 100.
+                     };
                    <ProposalCard
                      key={i |> string_of_int}
                      reserveIndex=i
