@@ -225,24 +225,21 @@ let make = (~address) => {
      | Data(redelegateList) =>
        redelegateList->Belt.Array.size > 0
          ? redelegateList
-           ->Belt_Array.mapWithIndex((i, e) =>
+           ->Belt_Array.mapWithIndex((i, e) => {
+               let componentKey =
+                 (e.srcValidator.operatorAddress |> Address.toBech32)
+                 ++ (e.dstValidator.operatorAddress |> Address.toBech32)
+                 ++ (e.amount |> Coin.getBandAmountFromCoin |> Js.Float.toString)
+                 ++ (e.completionTime |> MomentRe.Moment.format(Config.timestampDisplayFormat))
+                 ++ (i |> string_of_int);
                isMobile
                  ? <RenderBodyMobile
                      redelegateListSub={Sub.resolve(e)}
                      reserveIndex=i
-                     key={
-                       (e.srcValidator.operatorAddress |> Address.toBech32)
-                       ++ (e.dstValidator.operatorAddress |> Address.toBech32)
-                     }
+                     key=componentKey
                    />
-                 : <RenderBody
-                     redelegateListSub={Sub.resolve(e)}
-                     key={
-                       (e.srcValidator.operatorAddress |> Address.toBech32)
-                       ++ (e.dstValidator.operatorAddress |> Address.toBech32)
-                     }
-                   />
-             )
+                 : <RenderBody redelegateListSub={Sub.resolve(e)} key=componentKey />;
+             })
            ->React.array
          : <EmptyContainer>
              <img
