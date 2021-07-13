@@ -157,6 +157,7 @@ module ProposalCard = {
                    }
                  }
                  color={theme.textPrimary}
+                 suffix=" +UTC"
                />
              | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
              }}
