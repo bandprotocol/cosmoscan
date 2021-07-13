@@ -67,7 +67,7 @@ let toExternal =
       },
     ) => {
   id,
-  name: title,
+  name: id == ID.Proposal.ID(1) ? "BCIP-1: " ++ title : title,
   status,
   description,
   submitTime,

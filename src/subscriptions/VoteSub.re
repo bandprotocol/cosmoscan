@@ -432,16 +432,46 @@ let getVoteStatByProposalID = proposalID => {
   let totalAbstainPower = validatorVotePower.abstainVote +. delegatorVotePower.abstainVote;
   let totalPower = totalYesPower +. totalNoPower +. totalNoWithVetoPower +. totalAbstainPower;
 
-  Sub.resolve({
-    proposalID,
-    totalYes: totalYesPower /. 1e6,
-    totalYesPercent: totalPower == 0. ? 0. : totalYesPower /. totalPower *. 100.,
-    totalNo: totalNoPower /. 1e6,
-    totalNoPercent: totalPower == 0. ? 0. : totalNoPower /. totalPower *. 100.,
-    totalNoWithVeto: totalNoWithVetoPower /. 1e6,
-    totalNoWithVetoPercent: totalPower == 0. ? 0. : totalNoWithVetoPower /. totalPower *. 100.,
-    totalAbstain: totalAbstainPower /. 1e6,
-    totalAbstainPercent: totalPower == 0. ? 0. : totalAbstainPower /. totalPower *. 100.,
-    total: totalPower /. 1e6,
-  });
+  // If proposal id is 1 or 2, use these value.
+  switch (proposalID) {
+  | ID.Proposal.ID(1) =>
+    Sub.resolve({
+      proposalID,
+      totalYes: 61506705.66,
+      totalYesPercent: 100.,
+      totalNo: 0.,
+      totalNoPercent: 0.,
+      totalNoWithVeto: 0.,
+      totalNoWithVetoPercent: 0.,
+      totalAbstain: 515.22,
+      totalAbstainPercent: 0.,
+      total: 61507220.87,
+    })
+  | ID(2) =>
+    Sub.resolve({
+      proposalID,
+      totalYes: 74267821.97,
+      totalYesPercent: 100.,
+      totalNo: 0.,
+      totalNoPercent: 0.,
+      totalNoWithVeto: 0.,
+      totalNoWithVetoPercent: 0.,
+      totalAbstain: 0.,
+      totalAbstainPercent: 0.,
+      total: 74267821.97,
+    })
+  | _ =>
+    Sub.resolve({
+      proposalID,
+      totalYes: totalYesPower,
+      totalYesPercent: totalPower == 0. ? 0. : totalYesPower /. totalPower *. 100.,
+      totalNo: totalNoPower,
+      totalNoPercent: totalPower == 0. ? 0. : totalNoPower /. totalPower *. 100.,
+      totalNoWithVeto: totalNoWithVetoPower,
+      totalNoWithVetoPercent: totalPower == 0. ? 0. : totalNoWithVetoPower /. totalPower *. 100.,
+      totalAbstain: totalAbstainPower,
+      totalAbstainPercent: totalPower == 0. ? 0. : totalAbstainPower /. totalPower *. 100.,
+      total: totalPower,
+    })
+  };
 };
