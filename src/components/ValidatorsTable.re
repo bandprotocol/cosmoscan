@@ -62,9 +62,9 @@ module RenderBody = {
              </div>
            | _ =>
              <>
-               <LoadingCensorBar width=100 height=15 isRight=true />
+               <LoadingCensorBar width=100 height=15 />
                <VSpacing size=Spacing.sm />
-               <LoadingCensorBar width=40 height=15 isRight=true />
+               <LoadingCensorBar width=40 height=15 />
              </>
            }}
         </Col>
@@ -72,7 +72,7 @@ module RenderBody = {
           {switch (validatorSub) {
            | Data({commission}) =>
              <Text value={commission |> Format.fPercent(~digits=2)} block=true />
-           | _ => <LoadingCensorBar width=70 height=15 isRight=true />
+           | _ => <LoadingCensorBar width=70 height=15 />
            }}
         </Col>
         <Col col={accountOpt |> Belt.Option.isNone ? Col.Three : Two}>
