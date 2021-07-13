@@ -54,6 +54,7 @@ type chainID =
   | GuanYuMainnet
   | LaoziTestnet
   | LaoziMainnet
+  | LaoziPOA
   | Unknown;
 
 let parseChainID =
@@ -74,18 +75,20 @@ let parseChainID =
   | "band-laozi-testnet1"
   | "band-laozi-testnet2" => LaoziTestnet
   | "band-laozi-mainnet" => LaoziMainnet
+  | "band-laozi-poa" => LaoziPOA
   | _ => Unknown;
 
 let getLink =
   fun
   | WenchangTestnet => "https://wenchang-testnet3.cosmoscan.io/"
-  | WenchangMainnet
-  | GuanYuMainnet => "https://cosmoscan.io/"
+  | WenchangMainnet => "https://wenchang-legacy.cosmoscan.io/"
+  | GuanYuMainnet => "https://guanyu-legacy.cosmoscan.io/"
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
   | GuanYuTestnet => "https://guanyu-testnet4.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
-  | LaoziTestnet => "https://laozi-testnet1.cosmoscan.io/"
-  | LaoziMainnet
+  | LaoziTestnet => "https://laozi-testnet2.cosmoscan.io/"
+  | LaoziMainnet => "https://cosmoscan.io/"
+  | LaoziPOA => "https://laozi-poa.cosmoscan.io/"
   | Unknown => "";
 
 let getName =
@@ -95,9 +98,10 @@ let getName =
   | GuanYuDevnet => "guanyu-devnet"
   | GuanYuTestnet => "guanyu-testnet"
   | GuanYuPOA => "guanyu-poa"
-  | GuanYuMainnet => "guanyu-mainnet"
+  | GuanYuMainnet => "legacy-guanyu"
   | LaoziTestnet => "laozi-testnet"
   | LaoziMainnet => "laozi-mainnet"
+  | LaoziPOA => "laozi-poa"
   | Unknown => "unknown";
 
 [@react.component]
@@ -127,7 +131,7 @@ let make = () =>
          ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
          : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
-        {[|GuanYuMainnet, GuanYuTestnet, LaoziTestnet|]
+        {[|GuanYuMainnet, LaoziTestnet, LaoziPOA|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
