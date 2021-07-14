@@ -12,7 +12,7 @@ let transform = (account, {raw, decoded}: MsgDecoder.t) => {
       MsgDecoder.ReceiveMsg({toAddress, fromAddress, amount})
     | _ => decoded
     };
-  MsgDecoder.{raw, decoded: transformDecoded};
+  MsgDecoder.{raw, decoded: transformDecoded, isIBC: false}; // isIBC doesn't use.
 };
 
 [@react.component]

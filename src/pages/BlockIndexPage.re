@@ -17,15 +17,24 @@ module Styles = {
   let rightArrow = style([width(`px(20)), filter([`saturate(50.0), `brightness(70.0)])]);
 };
 
+let isIBCTx = (tx: TxSub.t) => {
+  tx.messages->Belt.List.reduce(false, (acc, message) => acc || message.isIBC);
+};
+
 [@react.component]
 let make = (~height) => {
-  let (page, setPage) = React.useState(_ => 1);
-  let pageSize = 10;
   let isMobile = Media.isMobile();
-
   let blockSub = BlockSub.get(height);
   let latestBlockSub = BlockSub.getLatest();
-  let txsSub = TxSub.getListByBlockHeight(height, ~pageSize, ~page, ());
+  let txsSub = TxSub.getListByBlockHeight(height, ());
+  let ibcTxsSub = {
+    let%Sub txs = txsSub;
+    Sub.resolve(txs->Belt.Array.keepMap(tx => isIBCTx(tx) ? Some(tx) : None));
+  };
+  let commonTxsSub = {
+    let%Sub txs = txsSub;
+    Sub.resolve(txs->Belt.Array.keepMap(tx => !isIBCTx(tx) ? Some(tx) : None));
+  };
 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
@@ -193,20 +202,26 @@ let make = (~height) => {
           </Col>
         </Row>
         <ResolvedRequest blockSub />
+        {switch (ibcTxsSub) {
+         | Data(ibcTxs) when ibcTxs->Belt.Array.length != 0 =>
+           <Row marginBottom=24>
+             <Col>
+               <Table>
+                 <Heading value="IBC Transactions" size=Heading.H4 marginBottom=16 marginTop=32 />
+                 <Text
+                   value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                 />
+                 <SeperatedLine mt=32 mb=0 />
+                 <BlockIndexTxsTable txsSub=ibcTxsSub />
+               </Table>
+             </Col>
+           </Row>
+         | _ => React.null
+         }}
         <Table>
           <Heading value="Transactions" size=Heading.H4 marginBottom=32 marginTop=32 />
           <SeperatedLine mt=32 mb=0 />
-          <BlockIndexTxsTable txsSub />
-          {switch (blockSub) {
-           | Data({txn}) =>
-             let pageCount = Page.getPageCount(txn, pageSize);
-             <Pagination
-               currentPage=page
-               pageCount
-               onPageChange={newPage => setPage(_ => newPage)}
-             />;
-           | _ => React.null
-           }}
+          <BlockIndexTxsTable txsSub=commonTxsSub />
         </Table>
       </div>
     </Section>
