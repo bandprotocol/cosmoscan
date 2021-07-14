@@ -34,26 +34,80 @@ let getBandUsd24Change = () => {
   Js.Promise.race([|coingeckoPromise, cryptocomparePromise|]);
 };
 
+let getCirculatingSupply = () => {
+  let bandPromise =
+    Axios.get("https://supply.bandchain.org/circulating")
+    |> Js.Promise.then_(result => Promise.ret(result##data |> JsonUtils.Decode.float));
+
+  let coingeckoPromise =
+    Axios.get(
+      "https://api.coingecko.com/api/v3/coins/band-protocol?tickers=false&community_data=false&developer_data=false&sparkline=false",
+    )
+    |> Js.Promise.then_(result =>
+         Promise.ret(
+           result##data
+           |> JsonUtils.Decode.at(["market_data", "circulating_supply"], JsonUtils.Decode.float),
+         )
+       );
+
+  Js.Promise.race([|bandPromise, coingeckoPromise|]);
+};
+
+let getPrices = () => {
+  Axios.get(
+    "https://lcd-lp.bandchain.org/oracle/v1/request_prices?ask_count=4&min_count=3&symbols=BAND&symbols=BTC",
+  )
+  |> Js.Promise.then_(result =>
+       Promise.ret(
+         {
+           let bandUsdPrice =
+             (result##data##price_results[0]##px |> JsonUtils.Decode.string |> float_of_string)
+             /. (
+               result##data##price_results[0]##multiplier
+               |> JsonUtils.Decode.string
+               |> float_of_string
+             );
+
+           let bandBTCPrice =
+             (result##data##price_results[0]##px |> JsonUtils.Decode.string |> float_of_string)
+             *. (
+               result##data##price_results[1]##multiplier
+               |> JsonUtils.Decode.string
+               |> float_of_string
+             )
+             /. (
+               (result##data##price_results[1]##px |> JsonUtils.Decode.string |> float_of_string)
+               *. (
+                 result##data##price_results[0]##multiplier
+                 |> JsonUtils.Decode.string
+                 |> float_of_string
+               )
+             );
+           (bandUsdPrice, bandBTCPrice);
+         },
+       )
+     );
+};
+
 let getBandInfo = client => {
-  let ratesPromise = client->BandChainJS.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
-  // let supplyPromise = Axios.get("https://supply.bandchain.org/circulating");
+  // let ratesPromise = client->BandChainJS.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
+  let ratesPromise = getPrices();
+  let supplyPromise = getCirculatingSupply();
   let usd24HrChangePromise = getBandUsd24Change();
 
-  let%Promise (rates, usd24HrChange) = Js.Promise.all2((ratesPromise, usd24HrChangePromise));
-  let bandInfoOpt = {
-    let%Opt {rate: bandUsd} = rates->Belt.Array.get(0);
-    let%Opt {rate: bandBtc} = rates->Belt.Array.get(1);
-    // let supply = supplyData##data;
-    let supply = 35191821.;
+  let%Promise (rates, usd24HrChange, supply) =
+    Js.Promise.all3((ratesPromise, usd24HrChangePromise, supplyPromise));
 
-    Some({
-      usdPrice: bandUsd,
-      usdMarketCap: bandUsd *. supply,
-      usd24HrChange,
-      btcPrice: bandBtc,
-      btcMarketCap: bandBtc *. supply,
-      circulatingSupply: supply,
-    });
+  let (bandUsd, bandBtc) = rates;
+
+  let bandInfo = {
+    usdPrice: bandUsd,
+    usdMarketCap: bandUsd *. supply,
+    usd24HrChange,
+    btcPrice: bandBtc,
+    btcMarketCap: bandBtc *. supply,
+    circulatingSupply: supply,
   };
-  bandInfoOpt->Promise.ret;
+
+  bandInfo->Promise.ret;
 };

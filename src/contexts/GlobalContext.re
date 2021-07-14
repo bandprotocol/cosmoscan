@@ -11,8 +11,8 @@ let make = (~children) => {
     let fetchData = () => {
       let _ =
         PriceHook.getBandInfo(client)
-        |> Js.Promise.then_(bandInfoOpt => {
-             setFinancialOpt(_ => bandInfoOpt);
+        |> Js.Promise.then_(bandInfo => {
+             setFinancialOpt(_ => Some(bandInfo));
              Promise.ret();
            });
       ();
