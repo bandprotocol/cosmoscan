@@ -64,7 +64,7 @@ type t = {
 
 type state_filter_t = {
   name: string,
-  index: IBCSub.packet_direction_t,
+  index: int,
 };
 
 [@react.component]
@@ -85,13 +85,7 @@ let make = (~tabs: array(t), ~currentRoute, ~children) => {
 
 module StateFilter = {
   [@react.component]
-  let make =
-      (
-        ~tabs: array(state_filter_t),
-        ~currentIndex: IBCSub.packet_direction_t,
-        ~setIndex,
-        ~children,
-      ) => {
+  let make = (~tabs: array(state_filter_t), ~currentIndex, ~setIndex, ~children) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <div className=Styles.container>
