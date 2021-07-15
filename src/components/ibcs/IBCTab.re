@@ -45,36 +45,8 @@ module Styles = {
     ]);
 };
 
-module PacketSelect = {
-  [@react.component]
-  let make = (~packetOptions, ~setSelectPacket, ~selectLabel, ~selectedPacket, ~disabled=false) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-    <div className=Styles.selectWrapper>
-      <div className={CssHelper.mb(~size=8, ())}> <Text value=selectLabel /> </div>
-      <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ~mW=770, ())}>
-        <select
-          disabled
-          className={Styles.input(theme)}
-          value=selectedPacket
-          onChange={event => {
-            let newVal = ReactEvent.Form.target(event)##value;
-            setSelectPacket(newVal);
-          }}>
-          <option value=""> {"Select " ++ selectLabel |> React.string} </option>
-          {packetOptions
-           |> Belt.Array.map(_, value =>
-                <option key=value value> {value |> React.string} </option>
-              )
-           |> React.array}
-        </select>
-      </div>
-    </div>;
-  };
-};
-
 [@react.component]
-let make = (~direction: IBCSub.packet_direction_t) => {
+let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   let (packetType, setPacketType) = React.useState(_ => "");
@@ -83,9 +55,22 @@ let make = (~direction: IBCSub.packet_direction_t) => {
   let (packetSequence, setPacketSequence) = React.useState(_ => "");
   let (rawPacketSequence, setRawPacketSequence) = React.useState(_ => "");
 
-  let packetTypes = [|"Oracle Request", "Transfer", "Others"|];
-  let packetPorts = [|"Oracle Request", "Transfer", "Others"|];
-  let packetChannels = [|"Oracle Request", "Transfer", "Others"|];
+  let packetsSub =
+    IBCSub.getList(
+      ~pageSize=10,
+      ~direction,
+      ~packetType=packetType |> IBCSub.fromLabel,
+      ~port=packetPort,
+      ~channel=packetChannel,
+      ~sequence=packetSequence |> int_of_string_opt,
+      ~chainID,
+      (),
+    );
+
+  let filters = IBCFilterSub.getFilterList(~chainID, ());
+
+  let packetTypes = [|"Oracle Request", "Oracle Response", "Fungible Token"|];
+  let packetPorts = [|"oracle", "transfer"|];
 
   let handlePacketPort = newVal => {
     setPacketPort(_ => newVal);
@@ -119,19 +104,37 @@ let make = (~direction: IBCSub.packet_direction_t) => {
     <Row marginTop=32>
       <Col col=Col.Nine colSm=Col.Twelve mbSm=24>
         <div className={Css.merge([CssHelper.flexBox(), Styles.filterSelector])}>
-          <PacketSelect
-            packetOptions=packetPorts
-            setSelectPacket=handlePacketPort
-            selectedPacket=packetPort
-            selectLabel="Port"
-          />
-          <PacketSelect
-            packetOptions=packetChannels
-            setSelectPacket=handlePacketChannel
-            selectedPacket=packetChannel
-            disabled={packetPort === ""}
-            selectLabel="Channel"
-          />
+          {switch (filters) {
+           | Data(filter) =>
+             let newPacketChannel =
+               filter->Js.Dict.get(packetPort)->Belt.Option.getWithDefault([||]);
+             <>
+               <Select
+                 options=packetPorts
+                 setSelectOption=handlePacketPort
+                 selectedOption=packetPort
+                 selectLabel="Port"
+               />
+               <Select
+                 options=newPacketChannel
+                 setSelectOption=handlePacketChannel
+                 selectedOption=packetChannel
+                 disabled={packetPort === ""}
+                 selectLabel="Channel"
+               />
+             </>;
+           | _ =>
+             <>
+               <div>
+                 <LoadingCensorBar width=26 height=15 mb=8 radius=8 />
+                 <LoadingCensorBar width=189 height=37 radius=8 />
+               </div>
+               <div>
+                 <LoadingCensorBar width=26 height=15 mb=8 radius=8 />
+                 <LoadingCensorBar width=189 height=37 radius=8 />
+               </div>
+             </>
+           }}
           <SequenceInput
             placeholder="000"
             onChange=setRawPacketSequence
@@ -148,15 +151,34 @@ let make = (~direction: IBCSub.packet_direction_t) => {
       </Col>
       <Col col=Col.Three colSm=Col.Twelve>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          <PacketSelect
-            packetOptions=packetTypes
-            setSelectPacket=setPacketType
-            selectedPacket=packetType
+          <Select
+            options=packetTypes
+            setSelectOption=setPacketType
+            selectedOption=packetType
             selectLabel="Packet Type"
           />
         </div>
       </Col>
     </Row>
-    <Row marginTop=32> <PacketCard direction /> </Row>
+    <Row marginTop=32>
+      {switch (packetsSub) {
+       | Data(packets) =>
+         packets
+         ->Belt_Array.mapWithIndex((i, e) =>
+             <Col col=Col.Six key={i |> string_of_int} mb=24>
+               <PacketCard packetSub={Sub.resolve(e)} />
+             </Col>
+           )
+         ->React.array
+       | _ =>
+         Belt_Array.make(10, ApolloHooks.Subscription.NoData)
+         ->Belt_Array.mapWithIndex((i, noData) =>
+             <Col col=Col.Six key={i |> string_of_int} mb=24>
+               <PacketCard packetSub=noData />
+             </Col>
+           )
+         ->React.array
+       }}
+    </Row>
   </>;
 };

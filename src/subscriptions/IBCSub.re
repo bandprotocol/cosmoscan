@@ -1,52 +1,94 @@
-module OracleRequestPacket = {
-  type t = {
-    id: ID.Request.t,
-    oracleScriptID: ID.OracleScript.t,
-    oracleScriptName: string,
-    clientID: string,
-    askCount: int,
-    minCount: int,
-  };
+module OracleRequestAcknowledge = {
+  type t = {requestID: option(int)};
+
+  let decode = json => JsonUtils.Decode.{requestID: json |> optional(at(["request_id"], int))};
 };
 
-module OracleResponsePacket = {
+module OracleResponseData = {
   type status_t =
     | Success
-    | Fail;
+    | Fail
+    | Unknown;
+
+  let getStatus =
+    fun
+    | 1 => Success
+    | 2 => Fail
+    | _ => Unknown;
 
   type t = {
-    requestID: ID.Request.t,
-    oracleScriptID: ID.OracleScript.t,
-    oracleScriptName: string,
-    status: status_t,
+    requestID: int,
+    resolveStatus: status_t,
   };
+
+  let decode = json =>
+    JsonUtils.Decode.{
+      requestID: json |> at(["request_id"], int),
+      resolveStatus: json |> at(["resolve_status"], int) |> getStatus,
+    };
 };
 
 type packet_type_t =
   | OracleRequest
   | OracleResponse
-  | Transfer
-  | Others;
+  | FungibleToken
+  | Unknown;
 
 type packet_direction_t =
   | Incoming
   | Outgoing;
 
-type packet_t =
-  | Unknown
-  | OracleRequestPacket(OracleRequestPacket.t)
-  | OracleResponsePacket(OracleResponsePacket.t);
-
 type acknowledge_data_t =
-  | Request(ID.Request.t)
-  | Transfer(string)
+  | Request(OracleRequestAcknowledge.t)
   | Empty;
+
+type data_t =
+  | Response(OracleResponseData.t)
+  | Empty;
+
+type packet_status_t =
+  | Pending
+  | Success
+  | Fail;
 
 type acknowledgement_t = {
   data: acknowledge_data_t,
   reason: option(string),
-  success: bool,
+  status: packet_status_t,
 };
+
+let getPacketType =
+  fun
+  | "oracle_request" => OracleRequest
+  | "oracle_response" => OracleResponse
+  | "fungible_token" => FungibleToken
+  | _ => Unknown;
+
+let getPacketTypeText =
+  fun
+  | OracleRequest => "Oracle Request"
+  | OracleResponse => "Oracle Response"
+  | FungibleToken => "Fungible Token"
+  | Unknown => "Unknown";
+
+let fromLabel =
+  fun
+  | "Oracle Request" => "oracle_request"
+  | "Oracle Reponse" => "oracle_response"
+  | "Fungible Token" => "fungible_token"
+  | _ => "";
+
+let getPacketStatus =
+  fun
+  | "success" => Success
+  | "pending" => Pending
+  | "failure" => Fail
+  | _ => raise(Not_found);
+
+type tx_t = {hash: Hash.t};
+
+type connection_t = {counterPartyChainID: string};
+type channel_t = {connection: connection_t};
 
 type t = {
   srcChannel: string,
@@ -54,11 +96,12 @@ type t = {
   dstChannel: string,
   sequence: int,
   dstPort: string,
-  direction: packet_direction_t,
   packetType: packet_type_t,
+  acknowledgement: option(Js.Json.t),
+  data: Js.Json.t,
+  transaction: option(tx_t),
   blockHeight: ID.Block.t,
-  acknowledgement: option(acknowledgement_t),
-  packet: packet_t,
+  channel: option(channel_t),
 };
 
 module Internal = {
@@ -68,11 +111,12 @@ module Internal = {
     sequence: int,
     dstChannel: string,
     dstPort: string,
-    blockHeight: ID.Block.t,
     packetType: packet_type_t,
-    packetDetail: Js.Json.t,
     acknowledgement: option(acknowledgement_t),
-    isIncoming: bool,
+    blockHeight: ID.Block.t,
+    counterPartyChainID: string,
+    txHash: option(Hash.t),
+    data: data_t,
   };
 
   let toExternal =
@@ -84,10 +128,11 @@ module Internal = {
           sequence,
           dstPort,
           packetType,
-          isIncoming,
-          blockHeight,
-          packetDetail,
           acknowledgement,
+          data,
+          transaction,
+          blockHeight,
+          channel,
         },
       ) => {
     srcChannel,
@@ -95,115 +140,217 @@ module Internal = {
     sequence,
     dstChannel,
     dstPort,
-    direction: isIncoming ? Incoming : Outgoing,
-    blockHeight,
-    acknowledgement,
     packetType,
-    packet:
+    blockHeight,
+    counterPartyChainID: {
+      (channel |> Belt.Option.getExn).connection.counterPartyChainID;
+    },
+    acknowledgement: {
+      let%Opt ack = acknowledgement;
+      Some(
+        JsonUtils.Decode.{
+          data:
+            switch (packetType) {
+            | OracleRequest => Request(ack |> OracleRequestAcknowledge.decode)
+            | OracleResponse
+            | FungibleToken
+            | _ => Empty
+            },
+          reason: ack |> optional(at(["reason"], string)),
+          status: ack |> at(["status"], string) |> getPacketStatus,
+        },
+      );
+    },
+    txHash: {
+      let%Opt tx = transaction;
+      Some(tx.hash);
+    },
+    data: {
       switch (packetType) {
-      | OracleRequest =>
-        OracleRequestPacket(
-          JsonUtils.Decode.{
-            id: ID.Request.ID(packetDetail |> at(["request_id"], string) |> int_of_string),
-            oracleScriptID:
-              ID.OracleScript.ID(
-                packetDetail |> at(["oracle_script_id"], string) |> int_of_string,
-              ),
-            oracleScriptName: packetDetail |> at(["oracle_script_name"], string),
-            clientID: packetDetail |> at(["client_id"], string),
-            // calldata: packetDetail |> at(["calldata"], string) |> JsBuffer.fromHex,
-            askCount: packetDetail |> at(["ask_count"], string) |> int_of_string,
-            minCount: packetDetail |> at(["min_count"], string) |> int_of_string,
-          },
-        )
-      | OracleResponse =>
-        let status =
-          packetDetail
-          |> JsonUtils.Decode.at(["resolve_status"], JsonUtils.Decode.string) == "Success"
-            ? OracleResponsePacket.Success : OracleResponsePacket.Fail;
-        OracleResponsePacket(
-          JsonUtils.Decode.{
-            requestID:
-              ID.Request.ID(packetDetail |> at(["request_id"], string) |> int_of_string),
-            oracleScriptID: ID.OracleScript.ID(packetDetail |> at(["oracle_script_id"], int)),
-            oracleScriptName: packetDetail |> at(["oracle_script_name"], string),
-            status,
-          },
-        );
-      | _ => Unknown
-      },
+      | OracleResponse => Response(data |> OracleResponseData.decode)
+      | OracleRequest
+      | FungibleToken
+      | _ => Empty
+      };
+    },
   };
 };
 
-let getType =
-  fun
-  | "oracle request" => OracleRequest
-  | "oracle response" => OracleResponse
-  | "transfer" => Transfer
-  | _ => Others;
+module IncomingPacketsWithoutSequenceConfig = [%graphql
+  {|
+  subscription IncomingPackets($limit: Int!  $packetType: String!, $port: String!, $channel: String!, $chainID: String!) {
+    incoming_packets(limit: $limit,order_by: {block_height: desc}, where: {type: {_ilike: $packetType}, dst_port: {_ilike: $port}, dst_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
+        packetType: type @bsDecoder(fn: "getPacketType")
+        srcPort: src_port
+        srcChannel: src_channel
+        sequence
+        dstPort: dst_port
+        dstChannel: dst_channel
+        data
+        acknowledgement
+        transaction @bsRecord{
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+        }
+        blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
+        channel @bsRecord{
+          connection @bsRecord{
+            counterPartyChainID: counterparty_chain_id
+          }
+        }
+      }
+    }
+|}
+];
 
-let getList = (~page=1, ~pageSize=10, ()): ApolloHooks.Subscription.variant(array(t)) => {
-  let result = [|
-    {
-      Internal.srcChannel: "channel-0",
-      srcPort: "consuming",
-      dstChannel: "channel-0",
-      dstPort: "oracle",
-      sequence: 2,
-      packetType: OracleRequest,
-      isIncoming: true,
-      blockHeight: ID.Block.ID(214388),
-      acknowledgement: Some({data: Request(ID.Request.ID(81801)), success: true, reason: None}),
-      packetDetail: {
-        let dict = Js.Dict.empty();
-        Js.Dict.set(dict, "oracle_script_id", Js.Json.string("32"));
-        Js.Dict.set(dict, "oracle_script_name", Js.Json.string("Desmos Themis"));
-        Js.Dict.set(dict, "oracle_script_schema", Js.Json.string(""));
-        Js.Dict.set(dict, "request_id", Js.Json.string("76189"));
-        Js.Dict.set(
-          dict,
-          "client_id",
-          Js.Json.string("desmos13yp2fq3tslq6mmtq4628q38xzj75ethzela9uu"),
-        );
-        Js.Dict.set(dict, "min_count", Js.Json.string("6"));
-        Js.Dict.set(dict, "ask_count", Js.Json.string("10"));
+module OutgoingPacketsWithoutSequenceConfig = [%graphql
+  {|
+  subscription OutgoingPackets($limit: Int!  $packetType: String!, $port: String!, $channel: String!, $chainID: String!) {
+    outgoing_packets(limit: $limit,order_by: {block_height: desc}, where: {type: {_ilike: $packetType}, src_port: {_ilike: $port}, src_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
+        packetType: type @bsDecoder(fn: "getPacketType")
+        srcPort: src_port
+        srcChannel: src_channel
+        sequence
+        dstPort: dst_port
+        dstChannel: dst_channel
+        data
+        acknowledgement
+        transaction @bsRecord{
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+        }
+        blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
+        channel @bsRecord{
+          connection @bsRecord{
+            counterPartyChainID: counterparty_chain_id
+          }
+        }
+      }
+    }
+|}
+];
+module IncomingPacketsConfig = [%graphql
+  {|
+  subscription IncomingPackets($limit: Int!  $packetType: String!, $port: String!, $channel: String!, $sequence: Int!, $chainID: String!) {
+    incoming_packets(limit: $limit,order_by: {block_height: desc}, where: {type: {_ilike: $packetType}, sequence: {_eq: $sequence}, dst_port: {_ilike: $port}, dst_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
+        packetType: type @bsDecoder(fn: "getPacketType")
+        srcPort: src_port
+        srcChannel: src_channel
+        sequence
+        dstPort: dst_port
+        dstChannel: dst_channel
+        data
+        acknowledgement
+        transaction @bsRecord{
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+        }
+        blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
+        channel @bsRecord{
+          connection @bsRecord{
+            counterPartyChainID: counterparty_chain_id
+          }
+        }
+      }
+    }
+|}
+];
 
-        Js.Json.object_(dict);
-      },
-    },
-    {
-      Internal.srcChannel: "channel-0",
-      srcPort: "consuming",
-      dstChannel: "channel-0",
-      dstPort: "oracle",
-      sequence: 2,
-      packetType: OracleRequest,
-      isIncoming: true,
-      blockHeight: ID.Block.ID(214388),
-      acknowledgement:
-        Some({
-          data: Request(ID.Request.ID(81801)),
-          success: false,
-          reason: Some("require: 1uband, max: 0uband: not enough fee"),
-        }),
-      packetDetail: {
-        let dict = Js.Dict.empty();
-        Js.Dict.set(dict, "oracle_script_id", Js.Json.string("32"));
-        Js.Dict.set(dict, "oracle_script_name", Js.Json.string("Desmos Themis"));
-        Js.Dict.set(dict, "oracle_script_schema", Js.Json.string(""));
-        Js.Dict.set(dict, "request_id", Js.Json.string("76189"));
-        Js.Dict.set(
-          dict,
-          "client_id",
-          Js.Json.string("desmos13yp2fq3tslq6mmtq4628q38xzj75ethzela9uu"),
-        );
-        Js.Dict.set(dict, "min_count", Js.Json.string("6"));
-        Js.Dict.set(dict, "ask_count", Js.Json.string("10"));
+module OutgoingPacketsConfig = [%graphql
+  {|
+  subscription OutgoingPackets($limit: Int!  $packetType: String!, $port: String!, $channel: String!, $sequence: Int!, $chainID: String!) {
+    outgoing_packets(limit: $limit,order_by: {block_height: desc}, where: {type: {_ilike: $packetType}, sequence: {_eq: $sequence} ,src_port: {_ilike: $port}, src_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
+        packetType: type @bsDecoder(fn: "getPacketType")
+        srcPort: src_port
+        srcChannel: src_channel
+        sequence
+        dstPort: dst_port
+        dstChannel: dst_channel
+        data
+        acknowledgement
+        transaction @bsRecord{
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+        }
+        blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
+        channel @bsRecord{
+          connection @bsRecord{
+            counterPartyChainID: counterparty_chain_id
+          }
+        }
+      }
+    }
+|}
+];
 
-        Js.Json.object_(dict);
-      },
-    },
-  |];
-
-  result |> Belt_Array.map(_, packet => Internal.toExternal(packet)) |> Sub.resolve;
+let getList =
+    (~pageSize, ~direction, ~packetType, ~port, ~channel, ~sequence: option(int), ~chainID, ()) => {
+  let result =
+    switch (direction) {
+    | Incoming =>
+      switch (sequence) {
+      | Some(sequence) =>
+        let (result, _) =
+          ApolloHooks.useSubscription(
+            IncomingPacketsConfig.definition,
+            ~variables=
+              IncomingPacketsConfig.makeVariables(
+                ~limit=pageSize,
+                ~packetType="%%" ++ packetType ++ "%%",
+                ~port="%%" ++ port ++ "%%",
+                ~channel="%%" ++ channel ++ "%%",
+                ~chainID="%%" ++ chainID ++ "%%",
+                ~sequence,
+                (),
+              ),
+          );
+        result |> Sub.map(_, x => x##incoming_packets->Belt_Array.map(Internal.toExternal));
+      | None =>
+        let (result, _) =
+          ApolloHooks.useSubscription(
+            IncomingPacketsWithoutSequenceConfig.definition,
+            ~variables=
+              IncomingPacketsWithoutSequenceConfig.makeVariables(
+                ~limit=pageSize,
+                ~packetType="%%" ++ packetType ++ "%%",
+                ~port="%%" ++ port ++ "%%",
+                ~channel="%%" ++ channel ++ "%%",
+                ~chainID="%%" ++ chainID ++ "%%",
+                (),
+              ),
+          );
+        result |> Sub.map(_, x => x##incoming_packets->Belt_Array.map(Internal.toExternal));
+      }
+    | Outgoing =>
+      switch (sequence) {
+      | Some(sequence) =>
+        let (result, _) =
+          ApolloHooks.useSubscription(
+            OutgoingPacketsConfig.definition,
+            ~variables=
+              OutgoingPacketsConfig.makeVariables(
+                ~limit=pageSize,
+                ~packetType="%%" ++ packetType ++ "%%",
+                ~port="%%" ++ port ++ "%%",
+                ~channel="%%" ++ channel ++ "%%",
+                ~chainID="%%" ++ chainID ++ "%%",
+                ~sequence,
+                (),
+              ),
+          );
+        result |> Sub.map(_, x => x##outgoing_packets->Belt_Array.map(Internal.toExternal));
+      | None =>
+        let (result, _) =
+          ApolloHooks.useSubscription(
+            OutgoingPacketsWithoutSequenceConfig.definition,
+            ~variables=
+              OutgoingPacketsWithoutSequenceConfig.makeVariables(
+                ~limit=pageSize,
+                ~packetType="%%" ++ packetType ++ "%%",
+                ~port="%%" ++ port ++ "%%",
+                ~channel="%%" ++ channel ++ "%%",
+                ~chainID="%%" ++ chainID ++ "%%",
+                (),
+              ),
+          );
+        result |> Sub.map(_, x => x##outgoing_packets->Belt_Array.map(Internal.toExternal));
+      }
+    };
+  result;
 };

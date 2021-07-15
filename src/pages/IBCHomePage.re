@@ -59,15 +59,15 @@ module CounterPartySelect = {
   type indicatorSeparator_t = {display: string};
 
   [@react.component]
-  let make = () => {
+  let make = (~filterChainIDList: array(IBCFilterSub.filter_counterparty_t), ~setChainID) => {
     let ({ThemeContext.isDarkMode}, _) = React.useContext(ThemeContext.context);
 
-    let (selectedValidator, setSelectedValidator) =
+    let (selectedChainID, setSelectedChainID) =
       React.useState(_ => ReactSelect.{value: "N/A", label: "Select Counterparty Chain"});
-    let validatorList = [|
-      ReactSelect.{value: "band-laozi-mainnet", label: "band-laozi-mainnet"},
-      {value: "kava-7", label: "kava-7"},
-    |];
+    let validatorList =
+      filterChainIDList->Belt_Array.map(({chainID}) =>
+        ReactSelect.{value: chainID, label: chainID}
+      );
 
     // TODO: Hack styles for react-select
     <div
@@ -77,9 +77,10 @@ module CounterPartySelect = {
         options=validatorList
         onChange={newOption => {
           let newVal = newOption;
-          setSelectedValidator(_ => newVal);
+          setSelectedChainID(_ => newVal);
+          setChainID(_ => newVal.value);
         }}
-        value=selectedValidator
+        value=selectedChainID
         styles={
           ReactSelect.control: _ => {
             display: "flex",
@@ -138,7 +139,10 @@ module CounterPartySelect = {
 
 [@react.component]
 let make = () => {
-  let (tabIndex, setTabIndex) = React.useState(_ => IBCSub.Incoming);
+  let (tabIndex, setTabIndex) = React.useState(_ => 0);
+  let (chainID, setChainID) = React.useState(_ => "");
+
+  let chainIDFilterSub = IBCFilterSub.getChainFilterList();
 
   <Section ptSm=32 pbSm=32>
     <div className=CssHelper.container id="ibcSection">
@@ -149,7 +153,11 @@ let make = () => {
         <Col col=Col.Six colSm=Col.Six>
           <div className=Styles.selectContainer>
             <div className={CssHelper.mb(~size=8, ())}> <Text value="Counterparty Chain" /> </div>
-            <CounterPartySelect />
+            {switch (chainIDFilterSub) {
+             | Data(chainIDList) =>
+               <CounterPartySelect setChainID filterChainIDList=chainIDList />
+             | _ => <LoadingCensorBar width=285 height=37 radius=8 />
+             }}
           </div>
         </Col>
         <Col col=Col.Six colSm=Col.Six>
@@ -167,12 +175,12 @@ let make = () => {
       <Row>
         <Col col=Col.Twelve>
           <Tab.StateFilter
-            tabs=[|{name: "Incoming", index: Incoming}, {name: "Outgoing", index: Outgoing}|]
+            tabs=[|{name: "Incoming", index: 0}, {name: "Outgoing", index: 1}|]
             currentIndex=tabIndex
             setIndex=setTabIndex>
             {switch (tabIndex) {
-             | Incoming => <IBCTab direction=Incoming />
-             | Outgoing => <IBCTab direction=Outgoing />
+             | 0 => <IBCTab direction=Incoming chainID />
+             | 1 => <IBCTab direction=Outgoing chainID />
              }}
           </Tab.StateFilter>
         </Col>
