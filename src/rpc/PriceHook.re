@@ -75,15 +75,15 @@ let getPrices = () => {
            let prices =
              result##data##price_results |> Belt.Array.map(_, json => json |> Price.decode);
 
-           let bandPrice = prices->Belt.Array.get(0)->Belt.Option.getExn;
-           let btcPrice = prices->Belt.Array.get(1)->Belt.Option.getExn;
+           let%Opt bandPrice = prices->Belt.Array.get(0);
+           let%Opt btcPrice = prices->Belt.Array.get(1);
 
            let bandUsdPrice = bandPrice.px /. bandPrice.multiplier;
 
            let bandBtcPrice =
              bandPrice.px *. btcPrice.multiplier /. (btcPrice.px *. bandPrice.multiplier);
 
-           (bandUsdPrice, bandBtcPrice);
+           Some((bandUsdPrice, bandBtcPrice));
          },
        )
      );
@@ -98,16 +98,17 @@ let getBandInfo = client => {
   let%Promise (rates, usd24HrChange, supply) =
     Js.Promise.all3((ratesPromise, usd24HrChangePromise, supplyPromise));
 
-  let (bandUsd, bandBtc) = rates;
-
-  let bandInfo = {
-    usdPrice: bandUsd,
-    usdMarketCap: bandUsd *. supply,
-    usd24HrChange,
-    btcPrice: bandBtc,
-    btcMarketCap: bandBtc *. supply,
-    circulatingSupply: supply,
+  let bandInfoOpt = {
+    let%Opt (bandUsd, bandBtc) = rates;
+    Some({
+      usdPrice: bandUsd,
+      usdMarketCap: bandUsd *. supply,
+      usd24HrChange,
+      btcPrice: bandBtc,
+      btcMarketCap: bandBtc *. supply,
+      circulatingSupply: supply,
+    });
   };
 
-  bandInfo->Promise.ret;
+  bandInfoOpt->Promise.ret;
 };
