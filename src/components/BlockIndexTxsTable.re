@@ -34,7 +34,6 @@ module RenderBody = {
           {switch (txSub) {
            | Data({messages, txHash, success, errMsg}) =>
              <TxMessages txHash messages success errMsg width=530 />
-
            | _ => <LoadingCensorBar width=530 height=15 />
            }}
         </Col>
