@@ -18,8 +18,7 @@ type t = {
   clientID: string,
   connectionID: string,
   counterpartyChainID: string,
-  // TODO: where's counterparty client id?
-  //   counterpartyClientID: string,
+  counterpartyClientID: string,
   counterpartyConnectionID: string,
   channels: array(channel_t),
 };
@@ -45,18 +44,19 @@ module MultiConfig = [%graphql
   {|
   subscription Blocks($chainID: String!) {
     connections(where: {counterparty_chain: {chain_id: {_eq: $chainID}}}) @bsRecord {
-        connectionID: connection_id
-        clientID: client_id
-        counterpartyChainID: counterparty_chain_id
-        counterpartyConnectionID: counterparty_connection_id
-        channels @bsRecord {
-            channelID: channel
-            counterpartyPort: counterparty_port
-            counterpartyChannelID: counterparty_channel
-            order @bsDecoder(fn: "parseOrder")
-            state @bsDecoder(fn: "parseState")
-            port
-        }
+      connectionID: connection_id
+      clientID: client_id
+      counterpartyClientID: counterparty_client_id
+      counterpartyChainID: counterparty_chain_id
+      counterpartyConnectionID: counterparty_connection_id
+      channels @bsRecord {
+          channelID: channel
+          counterpartyPort: counterparty_port
+          counterpartyChannelID: counterparty_channel
+          order @bsDecoder(fn: "parseOrder")
+          state @bsDecoder(fn: "parseState")
+          port
+      }
     }
   }
 |}

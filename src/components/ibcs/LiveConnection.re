@@ -11,7 +11,7 @@ module Styles = {
     ]);
 };
 
-module ConnectionList = {
+module ConnectionListDesktop = {
   module Styles = {
     open Css;
 
@@ -34,7 +34,7 @@ module ConnectionList = {
   };
 
   [@react.component]
-  let make = (~connection: ConnectionSub.t) => {
+  let make = (~connectionSub: ApolloHooks.Subscription.variant(ConnectionSub.t)) => {
     let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
     let (show, setShow) = React.useState(_ => false);
 
@@ -43,37 +43,62 @@ module ConnectionList = {
     <div className={Styles.listContainer(theme)}>
       <Row alignItems=Row.Center>
         <Col col=Col.Two>
-          <div className={CssHelper.flexBox()}>
-            <Text value={connection.connectionID} color={theme.textPrimary} />
-          </div>
+          {switch (connectionSub) {
+           | Data(connection) =>
+             <div className={CssHelper.flexBox()}>
+               <Text value={connection.connectionID} color={theme.textPrimary} />
+             </div>
+           | _ => <LoadingCensorBar width=80 height=15 />
+           }}
         </Col>
         <Col col=Col.Three>
-          <div className={CssHelper.flexBox()}>
-            <Text value={connection.counterpartyChainID} />
-          </div>
+          {switch (connectionSub) {
+           | Data(connection) =>
+             <div className={CssHelper.flexBox()}>
+               <Text value={connection.counterpartyChainID} />
+             </div>
+           | _ => <LoadingCensorBar width=80 height=15 />
+           }}
         </Col>
         <Col col=Col.Two>
-          <div className={CssHelper.flexBox()}> <Text value={connection.clientID} /> </div>
+          {switch (connectionSub) {
+           | Data(connection) =>
+             <div className={CssHelper.flexBox()}> <Text value={connection.clientID} /> </div>
+           | _ => <LoadingCensorBar width=80 height=15 />
+           }}
         </Col>
-        <Col col=Col.Two> <div className={CssHelper.flexBox()}> <Text value="TODO" /> </div> </Col>
+        <Col col=Col.Two>
+          {switch (connectionSub) {
+           | Data(connection) =>
+             <div className={CssHelper.flexBox()}>
+               <Text value={connection.counterpartyClientID} />
+             </div>
+           | _ => <LoadingCensorBar width=80 height=15 />
+           }}
+        </Col>
         <Col col=Col.Three>
           <div className={CssHelper.flexBox(~justify=`flexEnd, ())} onClick={_ => toggle()}>
             <div className=Styles.toggle>
-              <Text value="Show Channels" color={theme.textPrimary} />
+              <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.textPrimary} />
               <HSpacing size=Spacing.sm />
               <Icon name="fas fa-caret-down" color={theme.textSecondary} />
             </div>
           </div>
         </Col>
       </Row>
-      <ChannelTable channels={connection.channels} show />
+      {switch (connectionSub) {
+       | Data(connection) => <ChannelTable channels={connection.channels} show />
+       | _ => React.null
+       }}
     </div>;
   };
 };
 
 [@react.component]
 let make = (~counterpartyChainID) => {
+  // TODO
   let (searchTerm, setSearchTerm) = React.useState(_ => "");
+  let isMobile = Media.isMobile();
   let conntectionsSub = ConnectionSub.getList(~chainID=counterpartyChainID, ());
 
   <>
@@ -123,9 +148,18 @@ let make = (~counterpartyChainID) => {
     {switch (conntectionsSub) {
      | Data(connections) =>
        connections
-       ->Belt.Array.map(connection => <ConnectionList key={connection.connectionID} connection />)
+       ->Belt.Array.map(connection =>
+           <ConnectionListDesktop
+             key={connection.connectionID}
+             connectionSub={Sub.resolve(connection)}
+           />
+         )
        ->React.array
-     | _ => React.null // TODO
+     | _ =>
+       Belt.Array.makeBy(3, i =>
+         <ConnectionListDesktop key={i |> string_of_int} connectionSub=NoData />
+       )
+       ->React.array
      }}
   </>;
 };
