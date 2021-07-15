@@ -35,7 +35,7 @@ let make =
          </>
        : React.null}
     <Text
-      value={time |> MomentRe.Moment.format("YYYY-MM-DD HH:mm:ss.SSS")}
+      value={time |> MomentRe.Moment.format("YYYY-MM-DD HH:mm:ss")}
       size
       weight
       spacing
@@ -106,7 +106,7 @@ module Grid = {
       </div>
       <div>
         <Text
-          value={time |> MomentRe.Moment.format("HH:mm:ss.SSS")}
+          value={time |> MomentRe.Moment.format("HH:mm:ss")}
           size
           weight
           spacing
