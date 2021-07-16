@@ -72,16 +72,15 @@ let getPrices = () => {
   |> Js.Promise.then_(result =>
        Promise.ret(
          {
-           let prices =
-             result##data##price_results |> Belt.Array.map(_, json => json |> Price.decode);
+           let prices = result##data##price_results |> Belt.Array.map(_, Price.decode);
 
            let%Opt bandPrice = prices->Belt.Array.get(0);
            let%Opt btcPrice = prices->Belt.Array.get(1);
 
            let bandUsdPrice = bandPrice.px /. bandPrice.multiplier;
+           let btcUsdPrice = btcPrice.px /. btcPrice.multiplier;
 
-           let bandBtcPrice =
-             bandPrice.px *. btcPrice.multiplier /. (btcPrice.px *. bandPrice.multiplier);
+           let bandBtcPrice = bandUsdPrice /. btcUsdPrice;
 
            Some((bandUsdPrice, bandBtcPrice));
          },
