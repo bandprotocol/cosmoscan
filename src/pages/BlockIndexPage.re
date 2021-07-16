@@ -208,9 +208,7 @@ let make = (~height) => {
              <Col>
                <Table>
                  <Heading value="IBC Transactions" size=Heading.H4 marginBottom=16 marginTop=32 />
-                 <Text
-                   value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                 />
+                 <Text value="This section contains only IBC-related transactions." />
                  <SeperatedLine mt=32 mb=0 />
                  <BlockIndexTxsTable txsSub=ibcTxsSub />
                </Table>
