@@ -80,7 +80,7 @@ module Common = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <>
       <div className={CssHelper.flexBox(~align=`center, ())}>
-        <div className=Styles.labelWrapper> <Text value="Counter Party Chain ID" /> </div>
+        <div className=Styles.labelWrapper> <Text value="Counterparty Chain ID" /> </div>
         <div className=Styles.valueWrapper>
           <div className={CssHelper.flexBox(~align=`center, ())}>
             <Text value=counterPartyChainID />

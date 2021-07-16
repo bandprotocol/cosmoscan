@@ -66,7 +66,7 @@ let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.Interna
            counterPartyChainID,
            packetType,
            txHash,
-           acknowledgement,
+           acknowledgement: acknowledgementOpt,
            data,
          }) =>
          <>
@@ -87,19 +87,17 @@ let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.Interna
            />
            {switch (packetType) {
             | OracleRequest =>
-              switch (acknowledgement) {
-              | Some({data}) =>
-                switch (data) {
-                | Request(request) =>
-                  switch (request.requestID) {
-                  | Some(requestID) =>
-                    <PacketDetail.RequestID requestID={requestID |> ID.Request.fromInt} />
-                  | _ => React.null
-                  }
-                | _ => React.null
-                }
-              | _ => React.null
+              {
+                let%Opt acknowledgement = acknowledgementOpt;
+
+                switch (acknowledgement.data) {
+                | Request({requestID: requestIDOpt}) =>
+                  let%Opt requestID = requestIDOpt;
+                  Some(<PacketDetail.RequestID requestID={requestID |> ID.Request.fromInt} />);
+                | _ => None
+                };
               }
+              ->Belt.Option.getWithDefault(React.null)
             | OracleResponse =>
               switch (data) {
               | Response(response) =>
