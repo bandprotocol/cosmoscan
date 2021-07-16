@@ -30,7 +30,7 @@ let getChainFilterList = () => {
   let (result, _) =
     ApolloHooks.useSubscription(
       CounterpartyConfig.definition,
-      ~variables=CounterpartyConfig.makeVariables(~chainID="%%%%", ()),
+      ~variables=CounterpartyConfig.makeVariables(~chainID="%%", ()),
     );
   result |> Sub.map(_, internal => internal##counterparty_chains);
 };
@@ -39,7 +39,7 @@ let getFilterList = (~chainID, ()) => {
   let (result, _) =
     ApolloHooks.useSubscription(
       CounterpartyConfig.definition,
-      ~variables=CounterpartyConfig.makeVariables(~chainID="%%" ++ chainID ++ "%%", ()),
+      ~variables=CounterpartyConfig.makeVariables(~chainID={j|%$chainID%|j}, ()),
     );
 
   result
