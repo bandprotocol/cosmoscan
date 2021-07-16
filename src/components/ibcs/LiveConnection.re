@@ -9,6 +9,7 @@ module Styles = {
       background(`hex("5FD3C8")),
       marginRight(`px(8)),
     ]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module ConnectionListDesktop = {
@@ -21,6 +22,7 @@ module ConnectionListDesktop = {
         background(theme.headerBg),
         borderRadius(`px(12)),
         marginBottom(`px(8)),
+        overflow(`hidden),
       ]);
 
     let toggleButton = {
@@ -222,10 +224,11 @@ module ConnectionListMobile = {
 
 [@react.component]
 let make = (~counterpartyChainID) => {
-  // TODO
   let (searchTerm, setSearchTerm) = React.useState(_ => "");
   let isMobile = Media.isMobile();
-  let conntectionsSub = ConnectionSub.getList(~chainID=counterpartyChainID, ());
+  let conntectionsSub =
+    ConnectionSub.getList(~chainID=counterpartyChainID, ~connectionID=searchTerm, ());
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <>
     <Row alignItems=Row.Center marginTop=80 marginTopSm=36>
@@ -238,11 +241,7 @@ let make = (~counterpartyChainID) => {
     </Row>
     <Row marginTop=32 marginBottom=32>
       <Col col=Col.Twelve>
-        <SearchInput
-          placeholder="Search Port / Connection ID / Channel ID"
-          onChange=setSearchTerm
-          maxWidth=370
-        />
+        <SearchInput placeholder="Search Connection ID" onChange=setSearchTerm maxWidth=370 />
       </Col>
     </Row>
     // Table Head
@@ -274,6 +273,20 @@ let make = (~counterpartyChainID) => {
        : React.null}
     // Table List
     {switch (conntectionsSub) {
+     | Data(connections) when connections->Belt.Array.length == 0 =>
+       <EmptyContainer backgroundColor={theme.mainBg}>
+         <img
+           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+           className=Styles.noDataImage
+         />
+         <Heading
+           size=Heading.H4
+           value="No Connections"
+           align=Heading.Center
+           weight=Heading.Regular
+           color={theme.textSecondary}
+         />
+       </EmptyContainer>
      | Data(connections) =>
        connections
        ->Belt.Array.map(connection =>
