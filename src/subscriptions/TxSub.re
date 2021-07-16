@@ -124,8 +124,8 @@ module MultiConfig = [%graphql
 
 module MultiByHeightConfig = [%graphql
   {|
-  subscription TransactionsByHeight($height: Int!, $limit: Int!, $offset: Int!) {
-    transactions(where: {block_height: {_eq: $height}}, offset: $offset, limit: $limit, order_by: {id: desc}) @bsRecord {
+  subscription TransactionsByHeight($height: Int!) {
+    transactions(where: {block_height: {_eq: $height}}, order_by: {id: desc}) @bsRecord {
       id
       txHash: hash @bsDecoder(fn: "GraphQLParser.hash")
       blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
@@ -249,18 +249,11 @@ let getListBySender = (sender, ~page, ~pageSize, ()) => {
      });
 };
 
-let getListByBlockHeight = (height, ~page, ~pageSize, ()) => {
-  let offset = (page - 1) * pageSize;
+let getListByBlockHeight = (height, ()) => {
   let (result, _) =
     ApolloHooks.useSubscription(
       MultiByHeightConfig.definition,
-      ~variables=
-        MultiByHeightConfig.makeVariables(
-          ~height=height |> ID.Block.toInt,
-          ~limit=pageSize,
-          ~offset,
-          (),
-        ),
+      ~variables=MultiByHeightConfig.makeVariables(~height=height |> ID.Block.toInt, ()),
     );
   result |> Sub.map(_, x => x##transactions->Belt_Array.map(toExternal));
 };

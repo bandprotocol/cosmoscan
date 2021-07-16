@@ -1272,7 +1272,80 @@ type decoded_t =
 type t = {
   raw: Js.Json.t,
   decoded: decoded_t,
+  isIBC: bool,
 };
+
+let isIBC =
+  fun
+  | SendMsgSuccess(_)
+  | SendMsgFail(_)
+  | ReceiveMsg(_)
+  | CreateDataSourceMsgSuccess(_)
+  | CreateDataSourceMsgFail(_)
+  | EditDataSourceMsgSuccess(_)
+  | EditDataSourceMsgFail(_)
+  | CreateOracleScriptMsgSuccess(_)
+  | CreateOracleScriptMsgFail(_)
+  | EditOracleScriptMsgSuccess(_)
+  | EditOracleScriptMsgFail(_)
+  | RequestMsgSuccess(_)
+  | RequestMsgFail(_)
+  | ReportMsgSuccess(_)
+  | ReportMsgFail(_)
+  | AddReporterMsgSuccess(_)
+  | AddReporterMsgFail(_)
+  | RemoveReporterMsgSuccess(_)
+  | RemoveReporterMsgFail(_)
+  | CreateValidatorMsgSuccess(_)
+  | CreateValidatorMsgFail(_)
+  | EditValidatorMsgSuccess(_)
+  | EditValidatorMsgFail(_)
+  | DelegateMsgSuccess(_)
+  | DelegateMsgFail(_)
+  | UndelegateMsgSuccess(_)
+  | UndelegateMsgFail(_)
+  | RedelegateMsgSuccess(_)
+  | RedelegateMsgFail(_)
+  | WithdrawRewardMsgSuccess(_)
+  | WithdrawRewardMsgFail(_)
+  | UnjailMsgSuccess(_)
+  | UnjailMsgFail(_)
+  | SetWithdrawAddressMsgSuccess(_)
+  | SetWithdrawAddressMsgFail(_)
+  | SubmitProposalMsgSuccess(_)
+  | SubmitProposalMsgFail(_)
+  | DepositMsgSuccess(_)
+  | DepositMsgFail(_)
+  | VoteMsgSuccess(_)
+  | VoteMsgFail(_)
+  | WithdrawCommissionMsgSuccess(_)
+  | WithdrawCommissionMsgFail(_)
+  | MultiSendMsgSuccess(_)
+  | MultiSendMsgFail(_)
+  | ActivateMsgSuccess(_)
+  | ActivateMsgFail(_)
+  | UnknownMsg => false
+  // IBC
+  | CreateClientMsg(_)
+  | UpdateClientMsg(_)
+  | UpgradeClientMsg(_)
+  | SubmitClientMisbehaviourMsg(_)
+  | ConnectionOpenInitMsg(_)
+  | ConnectionOpenTryMsg(_)
+  | ConnectionOpenAckMsg(_)
+  | ConnectionOpenConfirmMsg(_)
+  | ChannelOpenInitMsg(_)
+  | ChannelOpenTryMsg(_)
+  | ChannelOpenAckMsg(_)
+  | ChannelOpenConfirmMsg(_)
+  | ChannelCloseInitMsg(_)
+  | ChannelCloseConfirmMsg(_)
+  | AcknowledgePacketMsg(_)
+  | RecvPacketMsgSuccess(_)
+  | RecvPacketMsgFail(_)
+  | TimeoutMsg(_)
+  | TimeoutOnCloseMsg(_)
+  | TransferMsg(_) => true;
 
 let getCreator = msg => {
   switch (msg.decoded) {
@@ -1535,7 +1608,7 @@ let decodeAction = json => {
       | TransferBadge => TransferMsg(json |> Transfer.decode)
       }
     );
-  {raw: json, decoded};
+  {raw: json, decoded, isIBC: decoded |> isIBC};
 };
 
 let decodeFailAction = json => {
@@ -1593,5 +1666,5 @@ let decodeFailAction = json => {
       | TransferBadge => TransferMsg(json |> Transfer.decode)
       }
     );
-  {raw: json, decoded};
+  {raw: json, decoded, isIBC: decoded |> isIBC};
 };
