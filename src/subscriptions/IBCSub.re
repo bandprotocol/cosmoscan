@@ -292,10 +292,10 @@ let getList =
             ~variables=
               IncomingPacketsConfig.makeVariables(
                 ~limit=pageSize,
-                ~packetType="%%" ++ packetType ++ "%%",
-                ~port="%%" ++ port ++ "%%",
-                ~channel="%%" ++ channel ++ "%%",
-                ~chainID="%%" ++ chainID ++ "%%",
+                ~packetType={j|%$packetType%|j},
+                ~port={j|%$port%|j},
+                ~channel={j|%$channel%|j},
+                ~chainID={j|%$chainID%|j},
                 ~sequence,
                 (),
               ),
@@ -308,10 +308,10 @@ let getList =
             ~variables=
               IncomingPacketsWithoutSequenceConfig.makeVariables(
                 ~limit=pageSize,
-                ~packetType="%%" ++ packetType ++ "%%",
-                ~port="%%" ++ port ++ "%%",
-                ~channel="%%" ++ channel ++ "%%",
-                ~chainID="%%" ++ chainID ++ "%%",
+                ~packetType={j|%$packetType%|j},
+                ~port={j|%$port%|j},
+                ~channel={j|%$channel%|j},
+                ~chainID={j|%$chainID%|j},
                 (),
               ),
           );
@@ -326,10 +326,10 @@ let getList =
             ~variables=
               OutgoingPacketsConfig.makeVariables(
                 ~limit=pageSize,
-                ~packetType="%%" ++ packetType ++ "%%",
-                ~port="%%" ++ port ++ "%%",
-                ~channel="%%" ++ channel ++ "%%",
-                ~chainID="%%" ++ chainID ++ "%%",
+                ~packetType={j|%$packetType%|j},
+                ~port={j|%$port%|j},
+                ~channel={j|%$channel%|j},
+                ~chainID={j|%$chainID%|j},
                 ~sequence,
                 (),
               ),
@@ -342,10 +342,10 @@ let getList =
             ~variables=
               OutgoingPacketsWithoutSequenceConfig.makeVariables(
                 ~limit=pageSize,
-                ~packetType="%%" ++ packetType ++ "%%",
-                ~port="%%" ++ port ++ "%%",
-                ~channel="%%" ++ channel ++ "%%",
-                ~chainID="%%" ++ chainID ++ "%%",
+                ~packetType={j|%$packetType%|j},
+                ~port={j|%$port%|j},
+                ~channel={j|%$channel%|j},
+                ~chainID={j|%$chainID%|j},
                 (),
               ),
           );

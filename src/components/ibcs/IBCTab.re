@@ -43,11 +43,13 @@ module Styles = {
       selector("> i", [marginRight(`px(8))]),
       Media.mobile([paddingLeft(`px(24))]),
     ]);
+
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 [@react.component]
 let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let (packetType, setPacketType) = React.useState(_ => "");
   let (packetPort, setPacketPort) = React.useState(_ => "");
@@ -162,6 +164,20 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
     </Row>
     <Row marginTop=32>
       {switch (packetsSub) {
+       | Data(packets) when packets->Belt.Array.length == 0 =>
+         <EmptyContainer backgroundColor={theme.mainBg}>
+           <img
+             src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
+             className=Styles.noDataImage
+           />
+           <Heading
+             size=Heading.H4
+             value="No Packets"
+             align=Heading.Center
+             weight=Heading.Regular
+             color={theme.textSecondary}
+           />
+         </EmptyContainer>
        | Data(packets) =>
          packets
          ->Belt_Array.mapWithIndex((i, e) =>
