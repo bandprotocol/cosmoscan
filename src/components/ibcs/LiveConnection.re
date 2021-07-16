@@ -23,7 +23,7 @@ module ConnectionListDesktop = {
         marginBottom(`px(8)),
       ]);
 
-    let toggle = {
+    let toggleButton = {
       style([
         display(`flex),
         alignItems(`center),
@@ -44,53 +44,179 @@ module ConnectionListDesktop = {
       <Row alignItems=Row.Center>
         <Col col=Col.Two>
           {switch (connectionSub) {
-           | Data(connection) =>
+           | Data({connectionID}) =>
              <div className={CssHelper.flexBox()}>
-               <Text value={connection.connectionID} color={theme.textPrimary} />
+               <Text value=connectionID color={theme.textPrimary} />
              </div>
            | _ => <LoadingCensorBar width=80 height=15 />
            }}
         </Col>
         <Col col=Col.Three>
           {switch (connectionSub) {
-           | Data(connection) =>
-             <div className={CssHelper.flexBox()}>
-               <Text value={connection.counterpartyChainID} />
-             </div>
+           | Data({counterpartyChainID}) =>
+             <div className={CssHelper.flexBox()}> <Text value=counterpartyChainID /> </div>
            | _ => <LoadingCensorBar width=80 height=15 />
            }}
         </Col>
         <Col col=Col.Two>
           {switch (connectionSub) {
-           | Data(connection) =>
-             <div className={CssHelper.flexBox()}> <Text value={connection.clientID} /> </div>
+           | Data({clientID}) =>
+             <div className={CssHelper.flexBox()}> <Text value=clientID /> </div>
            | _ => <LoadingCensorBar width=80 height=15 />
            }}
         </Col>
         <Col col=Col.Two>
           {switch (connectionSub) {
-           | Data(connection) =>
-             <div className={CssHelper.flexBox()}>
-               <Text value={connection.counterpartyClientID} />
-             </div>
+           | Data({counterpartyClientID}) =>
+             <div className={CssHelper.flexBox()}> <Text value=counterpartyClientID /> </div>
            | _ => <LoadingCensorBar width=80 height=15 />
            }}
         </Col>
         <Col col=Col.Three>
           <div className={CssHelper.flexBox(~justify=`flexEnd, ())} onClick={_ => toggle()}>
-            <div className=Styles.toggle>
+            <div className=Styles.toggleButton>
               <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.textPrimary} />
               <HSpacing size=Spacing.sm />
-              <Icon name="fas fa-caret-down" color={theme.textSecondary} />
+              <Icon
+                name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
+                color={theme.textSecondary}
+              />
             </div>
           </div>
         </Col>
       </Row>
       {switch (connectionSub) {
-       | Data(connection) => <ChannelTable channels={connection.channels} show />
+       | Data({channels}) => <ChannelTable channels show />
        | _ => React.null
        }}
     </div>;
+  };
+};
+
+module ConnectionListMobile = {
+  module Styles = {
+    open Css;
+
+    let root =
+      style([
+        marginBottom(`px(8)),
+        Media.mobile([
+          padding4(~top=`px(22), ~left=`px(16), ~right=`px(16), ~bottom=`px(5)),
+        ]),
+      ]);
+
+    let cardContainer =
+      style([position(`relative), selector("> div + div", [marginTop(`px(12))])]);
+
+    let labelWrapper =
+      style([
+        display(`flex),
+        flexDirection(`column),
+        flexGrow(0.),
+        flexShrink(0.),
+        flexBasis(`percent(30.)),
+        paddingRight(`px(10)),
+      ]);
+
+    let valueWrapper =
+      style([
+        display(`flex),
+        flexDirection(`column),
+        flexGrow(0.),
+        flexShrink(0.),
+        flexBasis(`percent(70.)),
+        selector("i", [margin2(~v=`zero, ~h=`px(8))]),
+      ]);
+
+    let toggleButton = {
+      style([
+        display(`flex),
+        width(`percent(100.)),
+        justifyContent(`center),
+        alignItems(`center),
+        cursor(`pointer),
+        padding2(~v=`px(10), ~h=`zero),
+        marginTop(`px(11)),
+      ]);
+    };
+  };
+
+  [@react.component]
+  let make = (~connectionSub: ApolloHooks.Subscription.variant(ConnectionSub.t)) => {
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+    let (show, setShow) = React.useState(_ => false);
+
+    let toggle = () => setShow(prev => !prev);
+
+    <InfoContainer style=Styles.root>
+      <div className=Styles.cardContainer>
+        <div className={CssHelper.flexBox(~align=`center, ())}>
+          <div className=Styles.labelWrapper>
+            <Text value="Connection" size=Text.Sm transform=Text.Uppercase weight=Text.Semibold />
+          </div>
+          <div className=Styles.valueWrapper>
+            {switch (connectionSub) {
+             | Data({connectionID}) => <Text value=connectionID color={theme.textPrimary} />
+             | _ => <LoadingCensorBar width=60 height=15 />
+             }}
+          </div>
+        </div>
+        <div className={CssHelper.flexBox(~align=`flexStart, ())}>
+          <div className=Styles.labelWrapper>
+            <Text
+              value="Counterparty Chain ID"
+              size=Text.Sm
+              transform=Text.Uppercase
+              weight=Text.Semibold
+            />
+          </div>
+          <div className=Styles.valueWrapper>
+            {switch (connectionSub) {
+             | Data({counterpartyChainID}) =>
+               <Text value=counterpartyChainID color={theme.textSecondary} />
+             | _ => <LoadingCensorBar width=60 height=15 />
+             }}
+          </div>
+        </div>
+        <div className={CssHelper.flexBox(~align=`center, ())}>
+          <div className=Styles.labelWrapper>
+            <Text value="Client ID" size=Text.Sm transform=Text.Uppercase weight=Text.Semibold />
+          </div>
+          <div className=Styles.valueWrapper>
+            {switch (connectionSub) {
+             | Data({clientID}) => <Text value=clientID color={theme.textSecondary} />
+             | _ => <LoadingCensorBar width=60 height=15 />
+             }}
+          </div>
+        </div>
+        <div className={CssHelper.flexBox(~align=`flexStart, ())}>
+          <div className=Styles.labelWrapper>
+            <Text
+              value="Counterparty Client ID"
+              size=Text.Sm
+              transform=Text.Uppercase
+              weight=Text.Semibold
+            />
+          </div>
+          <div className=Styles.valueWrapper>
+            {switch (connectionSub) {
+             | Data({counterpartyClientID}) =>
+               <Text value=counterpartyClientID color={theme.textSecondary} />
+             | _ => <LoadingCensorBar width=60 height=15 />
+             }}
+          </div>
+        </div>
+      </div>
+      {switch (connectionSub) {
+       | Data({channels}) => <ChannelTable channels show />
+       | _ => React.null
+       }}
+      <div className=Styles.toggleButton onClick={_ => toggle()}>
+        <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.textPrimary} />
+        <HSpacing size=Spacing.sm />
+        <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color={theme.textSecondary} />
+      </div>
+    </InfoContainer>;
   };
 };
 
@@ -120,44 +246,53 @@ let make = (~counterpartyChainID) => {
       </Col>
     </Row>
     // Table Head
-    <div className={CssHelper.px(~size=32, ())}>
-      <Row alignItems=Row.Center minHeight={`px(32)}>
-        <Col col=Col.Two>
-          <div className={CssHelper.flexBox()}>
-            <Text value="Connection" size=Text.Sm transform=Text.Uppercase />
-          </div>
-        </Col>
-        <Col col=Col.Three>
-          <div className={CssHelper.flexBox()}>
-            <Text value="Counterparty Chain ID" size=Text.Sm transform=Text.Uppercase />
-          </div>
-        </Col>
-        <Col col=Col.Two>
-          <div className={CssHelper.flexBox()}>
-            <Text value="Client ID" size=Text.Sm transform=Text.Uppercase />
-          </div>
-        </Col>
-        <Col col=Col.Two>
-          <div className={CssHelper.flexBox()}>
-            <Text value="Counterparty Client ID" size=Text.Sm transform=Text.Uppercase />
-          </div>
-        </Col>
-      </Row>
-    </div>
+    {!isMobile
+       ? <div className={CssHelper.px(~size=32, ())}>
+           <Row alignItems=Row.Center minHeight={`px(32)}>
+             <Col col=Col.Two>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Connection" size=Text.Sm transform=Text.Uppercase />
+               </div>
+             </Col>
+             <Col col=Col.Three>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Counterparty Chain ID" size=Text.Sm transform=Text.Uppercase />
+               </div>
+             </Col>
+             <Col col=Col.Two>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Client ID" size=Text.Sm transform=Text.Uppercase />
+               </div>
+             </Col>
+             <Col col=Col.Two>
+               <div className={CssHelper.flexBox()}>
+                 <Text value="Counterparty Client ID" size=Text.Sm transform=Text.Uppercase />
+               </div>
+             </Col>
+           </Row>
+         </div>
+       : React.null}
     // Table List
     {switch (conntectionsSub) {
      | Data(connections) =>
        connections
        ->Belt.Array.map(connection =>
-           <ConnectionListDesktop
-             key={connection.connectionID}
-             connectionSub={Sub.resolve(connection)}
-           />
+           isMobile
+             ? <ConnectionListMobile
+                 key={connection.connectionID}
+                 connectionSub={Sub.resolve(connection)}
+               />
+             : <ConnectionListDesktop
+                 key={connection.connectionID}
+                 connectionSub={Sub.resolve(connection)}
+               />
          )
        ->React.array
      | _ =>
        Belt.Array.makeBy(3, i =>
-         <ConnectionListDesktop key={i |> string_of_int} connectionSub=NoData />
+         isMobile
+           ? <ConnectionListMobile key={i |> string_of_int} connectionSub=NoData />
+           : <ConnectionListDesktop key={i |> string_of_int} connectionSub=NoData />
        )
        ->React.array
      }}
