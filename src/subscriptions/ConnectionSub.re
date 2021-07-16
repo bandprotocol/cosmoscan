@@ -42,8 +42,8 @@ let parseOrder =
 
 module MultiConfig = [%graphql
   {|
-  subscription Blocks($chainID: String!) {
-    connections(where: {counterparty_chain: {chain_id: {_eq: $chainID}}}) @bsRecord {
+  subscription Connections($chainID: String!, $connectionID: String!) {
+    connections(where: {counterparty_chain: {chain_id: {_ilike: $chainID}}, connection_id: {_ilike: $connectionID}}) @bsRecord {
       connectionID: connection_id
       clientID: client_id
       counterpartyClientID: counterparty_client_id
@@ -62,11 +62,16 @@ module MultiConfig = [%graphql
 |}
 ];
 
-let getList = (~chainID, ()) => {
+let getList = (~chainID, ~connectionID, ()) => {
   let (result, _) =
     ApolloHooks.useSubscription(
       MultiConfig.definition,
-      ~variables=MultiConfig.makeVariables(~chainID, ()),
+      ~variables=
+        MultiConfig.makeVariables(
+          ~chainID={j|%$chainID%|j},
+          ~connectionID={j|%$connectionID%|j},
+          (),
+        ),
     );
   result |> Sub.map(_, internal => internal##connections);
 };

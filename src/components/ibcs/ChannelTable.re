@@ -3,11 +3,11 @@ module Styles = {
 
   let container = (show, theme: Theme.t) =>
     style([
-      background(theme.secondaryTableBg),
+      background(theme.tableRowBorderColor),
       padding2(~h=`px(32), ~v=`zero),
       width(`percent(100.)),
       marginTop(show ? `px(20) : `zero),
-      transition(~duration=300, "all"),
+      transition(~duration=200, "all"),
       opacity(show ? 1. : 0.),
       pointerEvents(show ? `auto : `none),
       height(show ? `auto : `zero),

@@ -177,6 +177,7 @@ let make = () => {
           </Tab.StateFilter>
         </Col>
       </Row>
+      // TODO: change hard-coded counterparty chainid
       <LiveConnection counterpartyChainID="consumer" />
     </div>
   </Section>;
