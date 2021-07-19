@@ -57733,235 +57733,6 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "incoming_packets_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "description": "distinct select on columns"
-              },
-              {
-                "name": "limit",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "description": "limit the number of rows returned"
-              },
-              {
-                "name": "offset",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "description": "skip the first n rows. Use only with order_by"
-              },
-              {
-                "name": "order_by",
-                "defaultValue": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "incoming_packets_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "description": "sort the rows by one or more columns"
-              },
-              {
-                "name": "where",
-                "defaultValue": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "incoming_packets_bool_exp",
-                  "ofType": null
-                },
-                "description": "filter the rows returned"
-              }
-            ],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "incoming_packets",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "incoming_packets",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "description": "fetch data from the table: \"incoming_packets\""
-          },
-          {
-            "args": [
-              {
-                "name": "distinct_on",
-                "defaultValue": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "incoming_packets_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "description": "distinct select on columns"
-              },
-              {
-                "name": "limit",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "description": "limit the number of rows returned"
-              },
-              {
-                "name": "offset",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "description": "skip the first n rows. Use only with order_by"
-              },
-              {
-                "name": "order_by",
-                "defaultValue": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "incoming_packets_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "description": "sort the rows by one or more columns"
-              },
-              {
-                "name": "where",
-                "defaultValue": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "incoming_packets_bool_exp",
-                  "ofType": null
-                },
-                "description": "filter the rows returned"
-              }
-            ],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "incoming_packets_aggregate",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "incoming_packets_aggregate",
-                "ofType": null
-              }
-            },
-            "description": "fetch aggregated fields from the table: \"incoming_packets\""
-          },
-          {
-            "args": [
-              {
-                "name": "dst_channel",
-                "defaultValue": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "description": null
-              },
-              {
-                "name": "dst_port",
-                "defaultValue": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "description": null
-              },
-              {
-                "name": "sequence",
-                "defaultValue": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "description": null
-              }
-            ],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "incoming_packets_by_pk",
-            "type": {
-              "kind": "OBJECT",
-              "name": "incoming_packets",
-              "ofType": null
-            },
-            "description": "fetch data from the table: \"incoming_packets\" using primary key columns"
-          },
-          {
-            "args": [
-              {
-                "name": "distinct_on",
-                "defaultValue": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
                       "name": "non_validator_vote_proposals_view_select_column",
                       "ofType": null
                     }
@@ -68186,7 +67957,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator",
+            "name": "validatorByValidatorDstId",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -68195,18 +67966,6 @@
                 "name": "validators",
                 "ofType": null
               }
-            },
-            "description": "An object relationship"
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "validatorByValidatorDstId",
-            "type": {
-              "kind": "OBJECT",
-              "name": "validators",
-              "ofType": null
             },
             "description": "An object relationship"
           },
@@ -68824,16 +68583,6 @@
             "description": null
           },
           {
-            "name": "validator",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "validators_bool_exp",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "validatorByValidatorDstId",
             "defaultValue": null,
             "type": {
@@ -68971,16 +68720,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "validator",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "validators_obj_rel_insert_input",
               "ofType": null
             },
             "description": null
@@ -69412,16 +69151,6 @@
             "type": {
               "kind": "ENUM",
               "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "validator",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "validators_order_by",
               "ofType": null
             },
             "description": null
