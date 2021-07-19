@@ -1,254 +1,201 @@
 module Styles = {
   open Css;
 
-  let title = style([display(`flex), flexDirection(`row), alignItems(`center)]);
+  let selectContainer = style([maxWidth(px(285))]);
+  let buttonContainer = style([height(`percent(100.))]);
+};
 
-  let logo = style([width(`px(50)), marginRight(`px(10))]);
-  let dirArrow = dir =>
-    style([
-      width(`px(20)),
-      transforms([
-        translateX(`px(5)),
-        translateY(`px(-5)),
-        rotate(
-          `deg(
-            switch (dir) {
-            | IBCSub.Incoming => 0.
-            | IBCSub.Outgoing => 180.
-            },
-          ),
-        ),
-      ]),
-    ]);
+module CounterPartySelect = {
+  type control_t = {
+    display: string,
+    height: string,
+    width: string,
+    fontSize: string,
+    backgroundColor: string,
+    borderRadius: string,
+    border: string,
+    color: string,
+  };
 
-  let seperatedLine =
-    style([
-      width(`px(13)),
-      height(`px(1)),
-      marginLeft(`px(10)),
-      marginRight(`px(10)),
-      backgroundColor(Colors.gray7),
-    ]);
+  type option_t = {
+    display: string,
+    alignItems: string,
+    height: string,
+    fontSize: string,
+    paddingLeft: string,
+    cursor: string,
+    color: string,
+    backgroundColor: string,
+  };
 
-  let badge = color =>
-    style([
-      display(`inlineFlex),
-      backgroundColor(color),
-      alignItems(`center),
-      maxHeight(`px(16)),
-      padding(`px(5)),
-      borderRadius(`px(16)),
-      transform(translateY(`px(-5))),
-    ]);
+  type input_t = {color: string};
 
-  let vFlex = style([display(`flex), flexDirection(`column), width(`percent(100.))]);
-  let hFlex = style([display(`flex), flexDirection(`row), width(`percent(100.))]);
+  type menu_t = {
+    backgroundColor: string,
+    overflowY: string,
+    maxHeight: string,
+  };
 
-  let minWidth = x => style([minWidth(`px(x))]);
+  type container_t = {
+    width: string,
+    position: string,
+    boxSizing: string,
+  };
+
+  type singleValue_t = {
+    margin: string,
+    maxWidth: string,
+    overflow: string,
+    position: string,
+    textOverflow: string,
+    whiteSpace: string,
+    top: string,
+    transform: string,
+    boxSizing: string,
+    fontWeight: string,
+    lineHeight: string,
+  };
+
+  type indicatorSeparator_t = {display: string};
+
+  [@react.component]
+  let make = (~filterChainIDList: array(IBCFilterSub.filter_counterparty_t), ~setChainID) => {
+    let ({ThemeContext.isDarkMode}, _) = React.useContext(ThemeContext.context);
+
+    let (selectedChainID, setSelectedChainID) =
+      React.useState(_ => ReactSelect.{value: "N/A", label: "Select Counterparty Chain"});
+    let validatorList =
+      filterChainIDList->Belt_Array.map(({chainID}) =>
+        ReactSelect.{value: chainID, label: chainID}
+      );
+
+    // TODO: Hack styles for react-select
+    <div
+      className={CssHelper.flexBox(~align=`flexStart, ~direction=`column, ())}
+      id="counterPartySelection">
+      <ReactSelect
+        options=validatorList
+        onChange={newOption => {
+          let newVal = newOption;
+          setSelectedChainID(_ => newVal);
+          setChainID(_ => newVal.value);
+        }}
+        value=selectedChainID
+        styles={
+          ReactSelect.control: _ => {
+            display: "flex",
+            height: "37px",
+            width: "100%",
+            fontSize: "14px",
+            color: isDarkMode ? "#ffffff" : "#303030",
+            backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
+            borderRadius: "8px",
+            border:
+              "1px solid"
+              ++ {
+                isDarkMode ? "#353535" : "#EDEDED";
+              },
+          },
+          ReactSelect.option: _ => {
+            fontSize: "14px",
+            height: "37px",
+            display: "flex",
+            alignItems: "center",
+            paddingLeft: "10px",
+            cursor: "pointer",
+            color: isDarkMode ? "#ffffff" : "#303030",
+            backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
+          },
+          ReactSelect.container: _ => {
+            width: "100%",
+            position: "relative",
+            boxSizing: "border-box",
+          },
+          ReactSelect.singleValue: _ => {
+            margin: "0px 2px",
+            maxWidth: "calc(100% - 8px)",
+            overflow: "hidden",
+            position: "absolute",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            top: "50%",
+            transform: "translateY(-50%)",
+            boxSizing: "border-box",
+            fontWeight: "300",
+            lineHeight: "1.3em",
+          },
+          ReactSelect.indicatorSeparator: _ => {display: "none"},
+          ReactSelect.input: _ => {color: isDarkMode ? "#ffffff" : "#303030"},
+          ReactSelect.menuList: _ => {
+            backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
+            overflowY: "scroll",
+            maxHeight: "230px",
+          },
+        }
+      />
+    </div>;
+  };
 };
 
 [@react.component]
-let make = () =>
-  {
-    let (page, setPage) = React.useState(_ => 1);
-    let pageSize = 10;
+let make = () => {
+  let (tabIndex, setTabIndex) = React.useState(_ => 0);
+  let setTab = index => setTabIndex(_ => index);
+  let (chainID, setChainID) = React.useState(_ => "");
+  let chainIDFilterSub = IBCFilterSub.getChainFilterList();
 
-    let packetsSub = IBCSub.getList(~pageSize, ~page, ());
-    let packetsCountSub = IBCSub.count();
+  let scrollTo = () => {
+    let y =
+      Webapi.Dom.document
+      |> Webapi.Dom.Document.querySelector("#live-connections")
+      |> Belt.Option.getExn
+      |> Webapi.Dom.Element.asHtmlElement
+      |> Belt.Option.getExn
+      |> Webapi.Dom.HtmlElement.offsetTop;
 
-    let%Sub packets = packetsSub;
-    let%Sub packetsCount = packetsCountSub;
+    Webapi.Dom.window |> Webapi.Dom.Window.scrollTo(0., y - 40 |> float_of_int);
+  };
 
-    let pageCount = Page.getPageCount(packetsCount, pageSize);
-
-    React.null
-    // TODO: Revisit
-    // <Section>
-    //   <div className=CssHelper.container>
-    //     <Row>
-    //       <Col> <img src=Images.ibcLogo className=Styles.logo /> </Col>
-    //       <Col>
-    //         <div className=Styles.title>
-    //           <Text
-    //             value="ALL IBC PACKETS"
-    //             weight=Text.Semibold
-    //             color=Colors.gray7
-    //             nowrap=true
-    //             spacing={Text.Em(0.06)}
-    //           />
-    //           <div className=Styles.seperatedLine />
-    //           <Text value={(packetsCount |> Format.iPretty) ++ " in total"} />
-    //         </div>
-    //       </Col>
-    //     </Row>
-    //     <VSpacing size=Spacing.xl />
-    //     <THead>
-    //       <div className=Styles.hFlex>
-    //         <Col> <HSpacing size=Spacing.md /> </Col>
-    //         <Col size=9.7>
-    //           <Text
-    //             block=true
-    //             value="PACKET"
-    //             size=Text.Sm
-    //             weight=Text.Semibold
-    //             color=Colors.gray5
-    //             spacing={Text.Em(0.1)}
-    //           />
-    //         </Col>
-    //         <Col size=18.3>
-    //           <Text
-    //             block=true
-    //             value="PEER INFO"
-    //             size=Text.Sm
-    //             weight=Text.Semibold
-    //             color=Colors.gray5
-    //             spacing={Text.Em(0.1)}
-    //           />
-    //         </Col>
-    //         <Col size=8.1>
-    //           <Text
-    //             block=true
-    //             value="BLOCK"
-    //             size=Text.Sm
-    //             weight=Text.Semibold
-    //             color=Colors.gray5
-    //             spacing={Text.Em(0.1)}
-    //           />
-    //         </Col>
-    //         <Col size=44.2>
-    //           <Text
-    //             block=true
-    //             value="DETAIL"
-    //             size=Text.Sm
-    //             weight=Text.Semibold
-    //             color=Colors.gray5
-    //             spacing={Text.Em(0.1)}
-    //           />
-    //         </Col>
-    //         <Col> <HSpacing size=Spacing.md /> </Col>
-    //       </div>
-    //     </THead>
-    //     {packets
-    //      ->Belt_Array.mapWithIndex(
-    //          (
-    //            i,
-    //            {
-    //              direction,
-    //              channel,
-    //              port,
-    //              yourChainID,
-    //              yourChannel,
-    //              yourPort,
-    //              blockHeight,
-    //              packet,
-    //            },
-    //          ) => {
-    //          <TBody key={i |> string_of_int} paddingV={`px(20)}>
-    //            <Row alignItems=`flexStart>
-    //              <Col> <HSpacing size=Spacing.md /> </Col>
-    //              <Col size=9.7>
-    //                <div className={Styles.badge(Colors.orange1)}>
-    //                  <Text
-    //                    value={
-    //                      switch (packet) {
-    //                      | Request(_) => "ORACLE REQUEST"
-    //                      | Response(_) => "ORACLE RESPONSE"
-    //                      | Unknown => "Unknown"
-    //                      }
-    //                    }
-    //                    size=Text.Xs
-    //                    color=Colors.orange6
-    //                    spacing={Text.Em(0.07)}
-    //                  />
-    //                </div>
-    //                <VSpacing size=Spacing.md />
-    //                <div className={Styles.badge(Colors.blue1)}>
-    //                  <Text
-    //                    value={
-    //                      switch (direction) {
-    //                      | Incoming => "INCOMING"
-    //                      | Outgoing => "OUTGOING"
-    //                      }
-    //                    }
-    //                    size=Text.Xs
-    //                    color=Colors.blue7
-    //                    spacing={Text.Em(0.07)}
-    //                  />
-    //                </div>
-    //                <VSpacing size=Spacing.md />
-    //                <img src=Images.ibcDirArrow className={Styles.dirArrow(direction)} />
-    //              </Col>
-    //              <Col size=18.3>
-    //                <div className=Styles.hFlex>
-    //                  <Text
-    //                    value={j|ChainID:‌‌ ‌‌ |j}
-    //                    size=Text.Sm
-    //                    code=true
-    //                    height={Text.Px(16)}
-    //                  />
-    //                  <Text value=yourChainID size=Text.Sm code=true height={Text.Px(16)} />
-    //                </div>
-    //                <VSpacing size=Spacing.md />
-    //                <div className=Styles.hFlex>
-    //                  <Text
-    //                    value={j|Channel:‌‌ ‌‌ |j}
-    //                    size=Text.Sm
-    //                    code=true
-    //                    height={Text.Px(16)}
-    //                  />
-    //                  <Text
-    //                    value={
-    //                      switch (packet) {
-    //                      | Request(_) => channel
-    //                      | Response(_) => yourChannel
-    //                      | Unknown => "Unknown"
-    //                      }
-    //                    }
-    //                    size=Text.Sm
-    //                    code=true
-    //                    height={Text.Px(16)}
-    //                  />
-    //                </div>
-    //                <VSpacing size=Spacing.md />
-    //                <div className=Styles.hFlex>
-    //                  <Text
-    //                    value={j|Port:‌‌ ‌‌ ‌‌ ‌‌ ‌‌ |j}
-    //                    size=Text.Sm
-    //                    code=true
-    //                    height={Text.Px(16)}
-    //                  />
-    //                  <Text
-    //                    value={
-    //                      switch (packet) {
-    //                      | Request(_) => port
-    //                      | Response(_) => yourPort
-    //                      | Unknown => "Unknown"
-    //                      }
-    //                    }
-    //                    size=Text.Sm
-    //                    code=true
-    //                    height={Text.Px(16)}
-    //                  />
-    //                </div>
-    //              </Col>
-    //              <Col size=8.1> <TypeID.Block id=blockHeight /> </Col>
-    //              <Col size=44.2>
-    //                {switch (packet) {
-    //                 | Request({oracleScriptID}) => <Packet packet oracleScriptID />
-    //                 | Response({oracleScriptID}) => <Packet packet oracleScriptID />
-    //                 | Unknown => React.null
-    //                 }}
-    //              </Col>
-    //              <Col> <HSpacing size=Spacing.md /> </Col>
-    //            </Row>
-    //          </TBody>
-    //        })
-    //      ->React.array}
-    //     <VSpacing size=Spacing.lg />
-    //     <Pagination currentPage=page pageCount onPageChange={newPage => setPage(_ => newPage)} />
-    //     <VSpacing size=Spacing.lg />
-    //   </div>
-    // </Section>
-    |> Sub.resolve;
-  }
-  |> Sub.default(_, React.null);
+  <Section ptSm=32 pbSm=32>
+    <div className=CssHelper.container id="ibcSection">
+      <Row alignItems=Row.Center marginBottom=40 marginBottomSm=24>
+        <Col col=Col.Twelve> <Heading value="IBCs" size=Heading.H2 /> </Col>
+      </Row>
+      <Row marginBottom=40 marginBottomSm=24>
+        <Col col=Col.Six colSm=Col.Six>
+          <div className=Styles.selectContainer>
+            <div className={CssHelper.mb(~size=8, ())}> <Text value="Counterparty Chain" /> </div>
+            {switch (chainIDFilterSub) {
+             | Data(chainIDList) =>
+               <CounterPartySelect setChainID filterChainIDList=chainIDList />
+             | _ => <LoadingCensorBar width=285 height=37 radius=8 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Six colSm=Col.Six>
+          <div
+            className={Css.merge([
+              CssHelper.flexBox(~justify=`flexEnd, ~align=`flexEnd, ()),
+              Styles.buttonContainer,
+            ])}>
+            <Button variant=Button.Outline px=24 py=8 onClick={_ => {scrollTo()}}>
+              {"View Live Connection" |> React.string}
+            </Button>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col col=Col.Twelve>
+          <Tab.State tabs=[|"Incoming", "Outgoing"|] tabIndex setTab>
+            {switch (tabIndex) {
+             | 0 => <IBCTab direction=Incoming chainID />
+             | 1 => <IBCTab direction=Outgoing chainID />
+             | _ => React.null
+             }}
+          </Tab.State>
+        </Col>
+      </Row>
+      <div id="live-connections"> <LiveConnection counterpartyChainID=chainID /> </div>
+    </div>
+  </Section>;
+};

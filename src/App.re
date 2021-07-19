@@ -5,14 +5,13 @@ module Styles = {
     style([
       width(`percent(100.)),
       position(`relative),
-      height(`vh(100.)),
       overflow(`auto),
       backgroundColor(theme.mainBg),
     ]);
 
   let routeContainer =
     style([
-      minHeight(`calc((`sub, `vh(100.), `px(194)))),
+      minHeight(`calc((`sub, `vh(100.), `px(193)))),
       Media.mobile([paddingBottom(`zero)]),
     ]);
 };

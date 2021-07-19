@@ -44,7 +44,7 @@ module DstValidatorSelection = {
   type menu_t = {
     backgroundColor: string,
     overflowY: string,
-    height: string,
+    maxHeight: string,
   };
 
   type container_t = {
@@ -142,7 +142,7 @@ module DstValidatorSelection = {
           ReactSelect.menuList: _ => {
             backgroundColor: isDarkMode ? "#2C2C2C" : "#ffffff",
             overflowY: "scroll",
-            height: "230px",
+            maxHeight: "230px",
           },
         }
       />

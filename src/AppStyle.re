@@ -202,6 +202,7 @@ html,
 body {
   max-width: 100vw;
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -228,7 +229,6 @@ code {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 
 .container {

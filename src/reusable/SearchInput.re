@@ -2,7 +2,7 @@ module Styles = {
   open Css;
   let searchContainer = style([display(`flex), alignItems(`center), position(`relative)]);
   let iconContainer = style([position(`absolute), top(`percent(5.))]);
-  let searchBar = (theme: Theme.t) =>
+  let searchBar = (theme: Theme.t, maxWidth_) =>
     style([
       backgroundColor(`transparent),
       borderRadius(`zero),
@@ -14,13 +14,13 @@ module Styles = {
       paddingBottom(`px(10)),
       focus([outlineStyle(`none)]),
       width(`percent(100.)),
-      maxWidth(`px(240)),
+      maxWidth(`px(maxWidth_)),
       fontSize(`px(12)),
     ]);
 };
 
 [@react.component]
-let make = (~placeholder, ~onChange, ~debounce=500) => {
+let make = (~placeholder, ~onChange, ~debounce=500, ~maxWidth=240) => {
   let (changeValue, setChangeValue) = React.useState(_ => "");
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
@@ -38,7 +38,7 @@ let make = (~placeholder, ~onChange, ~debounce=500) => {
     </div>
     <input
       type_="text"
-      className={Styles.searchBar(theme)}
+      className={Styles.searchBar(theme, maxWidth)}
       placeholder
       onChange={event => {
         let newVal =
