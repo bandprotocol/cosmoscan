@@ -142,8 +142,19 @@ let make = () => {
   let (tabIndex, setTabIndex) = React.useState(_ => 0);
   let setTab = index => setTabIndex(_ => index);
   let (chainID, setChainID) = React.useState(_ => "");
-
   let chainIDFilterSub = IBCFilterSub.getChainFilterList();
+
+  let scrollTo = () => {
+    let y =
+      Webapi.Dom.document
+      |> Webapi.Dom.Document.querySelector("#live-connections")
+      |> Belt.Option.getExn
+      |> Webapi.Dom.Element.asHtmlElement
+      |> Belt.Option.getExn
+      |> Webapi.Dom.HtmlElement.offsetTop;
+
+    Webapi.Dom.window |> Webapi.Dom.Window.scrollTo(0., y - 40 |> float_of_int);
+  };
 
   <Section ptSm=32 pbSm=32>
     <div className=CssHelper.container id="ibcSection">
@@ -167,7 +178,7 @@ let make = () => {
               CssHelper.flexBox(~justify=`flexEnd, ~align=`flexEnd, ()),
               Styles.buttonContainer,
             ])}>
-            <Button variant=Button.Outline px=24 py=8 onClick={_ => ()}>
+            <Button variant=Button.Outline px=24 py=8 onClick={_ => {scrollTo()}}>
               {"View Live Connection" |> React.string}
             </Button>
           </div>
@@ -184,8 +195,7 @@ let make = () => {
           </Tab.State>
         </Col>
       </Row>
-      // TODO: change hard-coded counterparty chainid
-      <LiveConnection counterpartyChainID=chainID />
+      <div id="live-connections"> <LiveConnection counterpartyChainID=chainID /> </div>
     </div>
   </Section>;
 };
