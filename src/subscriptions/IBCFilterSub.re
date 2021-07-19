@@ -39,7 +39,13 @@ let getFilterList = (~chainID, ()) => {
   let (result, _) =
     ApolloHooks.useSubscription(
       CounterpartyConfig.definition,
-      ~variables=CounterpartyConfig.makeVariables(~chainID={j|%$chainID%|j}, ()),
+      ~variables=
+        CounterpartyConfig.makeVariables(
+          ~chainID={
+            chainID !== "" ? chainID : "%%";
+          },
+          (),
+        ),
     );
 
   result
