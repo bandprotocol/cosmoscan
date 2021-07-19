@@ -74,7 +74,7 @@ let getPacketTypeText =
 let fromLabel =
   fun
   | "Oracle Request" => "oracle_request"
-  | "Oracle Reponse" => "oracle_response"
+  | "Oracle Response" => "oracle_response"
   | "Fungible Token" => "fungible_token"
   | _ => "";
 

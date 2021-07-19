@@ -140,6 +140,7 @@ module CounterPartySelect = {
 [@react.component]
 let make = () => {
   let (tabIndex, setTabIndex) = React.useState(_ => 0);
+  let setTab = index => setTabIndex(_ => index);
   let (chainID, setChainID) = React.useState(_ => "");
 
   let chainIDFilterSub = IBCFilterSub.getChainFilterList();
@@ -174,19 +175,17 @@ let make = () => {
       </Row>
       <Row>
         <Col col=Col.Twelve>
-          <Tab.StateFilter
-            tabs=[|{name: "Incoming", index: 0}, {name: "Outgoing", index: 1}|]
-            currentIndex=tabIndex
-            setIndex=setTabIndex>
+          <Tab.State tabs=[|"Incoming", "Outgoing"|] tabIndex setTab>
             {switch (tabIndex) {
              | 0 => <IBCTab direction=Incoming chainID />
              | 1 => <IBCTab direction=Outgoing chainID />
+             | _ => React.null
              }}
-          </Tab.StateFilter>
+          </Tab.State>
         </Col>
       </Row>
       // TODO: change hard-coded counterparty chainid
-      <LiveConnection counterpartyChainID="consumer" />
+      <LiveConnection counterpartyChainID=chainID />
     </div>
   </Section>;
 };
