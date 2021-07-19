@@ -68,7 +68,9 @@ let getList = (~chainID, ~connectionID, ()) => {
       MultiConfig.definition,
       ~variables=
         MultiConfig.makeVariables(
-          ~chainID={j|%$chainID%|j},
+          ~chainID={
+            chainID !== "" ? chainID : "%%";
+          },
           ~connectionID={j|%$connectionID%|j},
           (),
         ),

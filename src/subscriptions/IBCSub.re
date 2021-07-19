@@ -293,9 +293,15 @@ let getList =
               IncomingPacketsConfig.makeVariables(
                 ~limit=pageSize,
                 ~packetType={j|%$packetType%|j},
-                ~port={j|%$port%|j},
-                ~channel={j|%$channel%|j},
-                ~chainID={j|%$chainID%|j},
+                ~port={
+                  port !== "" ? port : "%%";
+                },
+                ~channel={
+                  channel !== "" ? channel : "%%";
+                },
+                ~chainID={
+                  chainID !== "" ? chainID : "%%";
+                },
                 ~sequence,
                 (),
               ),
@@ -309,9 +315,15 @@ let getList =
               IncomingPacketsWithoutSequenceConfig.makeVariables(
                 ~limit=pageSize,
                 ~packetType={j|%$packetType%|j},
-                ~port={j|%$port%|j},
-                ~channel={j|%$channel%|j},
-                ~chainID={j|%$chainID%|j},
+                ~port={
+                  port !== "" ? port : "%%";
+                },
+                ~channel={
+                  channel !== "" ? channel : "%%";
+                },
+                ~chainID={
+                  chainID !== "" ? chainID : "%%";
+                },
                 (),
               ),
           );
@@ -327,9 +339,15 @@ let getList =
               OutgoingPacketsConfig.makeVariables(
                 ~limit=pageSize,
                 ~packetType={j|%$packetType%|j},
-                ~port={j|%$port%|j},
-                ~channel={j|%$channel%|j},
-                ~chainID={j|%$chainID%|j},
+                ~port={
+                  port !== "" ? port : "%%";
+                },
+                ~channel={
+                  channel !== "" ? channel : "%%";
+                },
+                ~chainID={
+                  chainID !== "" ? chainID : "%%";
+                },
                 ~sequence,
                 (),
               ),
@@ -343,9 +361,15 @@ let getList =
               OutgoingPacketsWithoutSequenceConfig.makeVariables(
                 ~limit=pageSize,
                 ~packetType={j|%$packetType%|j},
-                ~port={j|%$port%|j},
-                ~channel={j|%$channel%|j},
-                ~chainID={j|%$chainID%|j},
+                ~port={
+                  port !== "" ? port : "%%";
+                },
+                ~channel={
+                  channel !== "" ? channel : "%%";
+                },
+                ~chainID={
+                  chainID !== "" ? chainID : "%%";
+                },
                 (),
               ),
           );
