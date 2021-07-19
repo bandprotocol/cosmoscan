@@ -42,8 +42,8 @@ let parseOrder =
 
 module MultiConfig = [%graphql
   {|
-  subscription Connections($chainID: String!, $connectionID: String!) {
-    connections(where: {counterparty_chain: {chain_id: {_ilike: $chainID}}, connection_id: {_ilike: $connectionID}}) @bsRecord {
+  subscription Connections($limit: Int!, $offset: Int!, $chainID: String!, $connectionID: String!) {
+    connections(offset: $offset, limit: $limit, where: {counterparty_chain: {chain_id: {_ilike: $chainID}}, connection_id: {_ilike: $connectionID}}) @bsRecord {
       connectionID: connection_id
       clientID: client_id
       counterpartyClientID: counterparty_client_id
@@ -62,18 +62,46 @@ module MultiConfig = [%graphql
 |}
 ];
 
-let getList = (~chainID, ~connectionID, ()) => {
+module ConnectionCountConfig = [%graphql
+  {|
+    subscription ConnectionCount($chainID: String!, $connectionID: String!) {
+       connections_aggregate(where: {counterparty_chain: {chain_id: {_ilike: $chainID}}, connection_id: {_ilike: $connectionID}}) {
+        aggregate {
+          count @bsDecoder(fn: "Belt_Option.getExn")
+        }
+      }
+    }
+  |}
+];
+
+let getList = (~counterpartyChainID, ~connectionID, ~page, ~pageSize, ()) => {
+  let offset = (page - 1) * pageSize;
   let (result, _) =
     ApolloHooks.useSubscription(
       MultiConfig.definition,
       ~variables=
         MultiConfig.makeVariables(
-          ~chainID={
-            chainID !== "" ? chainID : "%%";
-          },
+          ~chainID={j|%$counterpartyChainID%|j},
           ~connectionID={j|%$connectionID%|j},
+          ~limit=pageSize,
+          ~offset,
           (),
         ),
     );
   result |> Sub.map(_, internal => internal##connections);
+};
+
+let getCount = (~counterpartyChainID, ~connectionID, ()) => {
+  let (result, _) =
+    ApolloHooks.useSubscription(
+      ConnectionCountConfig.definition,
+      ~variables=
+        ConnectionCountConfig.makeVariables(
+          ~chainID={j|%$counterpartyChainID%|j},
+          ~connectionID={j|%$connectionID%|j},
+          (),
+        ),
+    );
+  result
+  |> Sub.map(_, x => x##connections_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };

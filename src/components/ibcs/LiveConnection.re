@@ -226,9 +226,21 @@ module ConnectionListMobile = {
 let make = (~counterpartyChainID) => {
   let (searchTerm, setSearchTerm) = React.useState(_ => "");
   let isMobile = Media.isMobile();
+  let (page, setPage) = React.useState(_ => 1);
+  let pageSize = 10;
+  let connectionCountSub =
+    ConnectionSub.getCount(~counterpartyChainID, ~connectionID=searchTerm, ());
   let conntectionsSub =
-    ConnectionSub.getList(~chainID=counterpartyChainID, ~connectionID=searchTerm, ());
+    ConnectionSub.getList(~counterpartyChainID, ~connectionID=searchTerm, ~pageSize, ~page, ());
   let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
+  React.useEffect1(
+    () => {
+      setPage(_ => 1);
+      None;
+    },
+    [|searchTerm, counterpartyChainID|],
+  );
 
   <>
     <Row alignItems=Row.Center marginTop=80 marginTopSm=36>
@@ -302,12 +314,18 @@ let make = (~counterpartyChainID) => {
          )
        ->React.array
      | _ =>
-       Belt.Array.makeBy(3, i =>
+       Belt.Array.makeBy(pageSize, i =>
          isMobile
            ? <ConnectionListMobile key={i |> string_of_int} connectionSub=NoData />
            : <ConnectionListDesktop key={i |> string_of_int} connectionSub=NoData />
        )
        ->React.array
+     }}
+    {switch (connectionCountSub) {
+     | Data(connectionCount) =>
+       let pageCount = Page.getPageCount(connectionCount, pageSize);
+       <Pagination currentPage=page pageCount onPageChange={newPage => setPage(_ => newPage)} />;
+     | _ => React.null
      }}
   </>;
 };
