@@ -2,7 +2,7 @@ module Styles = {
   open Css;
 
   let container =
-    style([width(`percent(100.)), height(`px(200)), margin2(~v=`zero, ~h=`auto)]);
+    style([width(`percent(100.)), height(`px(250)), margin2(~v=`zero, ~h=`auto)]);
 
   let chart = show => style([important(display(show ? `block : `none))]);
 };
@@ -156,14 +156,13 @@ let make = (~operatorAddress) => {
     <div className=Styles.container>
       <canvas id="historicalBonded" className={Styles.chart(show)} />
       <EmptyContainer height={`percent(100.)} display={!show}>
-        <Icon name="fal fa-clock" size=40 color=Colors.bandBlue />
+        <Icon name="fal fa-clock" size=40 color=Theme.baseBlue />
         <VSpacing size={`px(16)} />
         <Heading
           size=Heading.H4
           value="Insufficient data to visualize"
           align=Heading.Center
           weight=Heading.Regular
-          color=Colors.bandBlue
         />
       </EmptyContainer>
     </div>;

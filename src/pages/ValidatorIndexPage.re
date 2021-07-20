@@ -32,6 +32,9 @@ module Styles = {
   };
 
   let customContainer = style([height(`percent(100.))]);
+
+  let chartWrapper =
+    style([minHeight(px(220)), selector("> div", [width(`percent(100.))])]);
 };
 
 module UptimePercentage = {
@@ -63,7 +66,6 @@ module UptimePercentage = {
 [@react.component]
 let make = (~address, ~hashtag: Route.validator_tab_t) => {
   let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
-  let isMobile = Media.isMobile();
   let validatorSub = ValidatorSub.get(address);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
   let oracleReportsCountSub = ReportSub.ValidatorReport.count(address);
@@ -271,6 +273,11 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
           </InfoContainer>
         </Col>
       </Row>
+      {isMobile
+         ? React.null
+         : <Row marginBottom=24>
+             <Col> <ValidatorStakingInfo validatorAddress=address /> </Col>
+           </Row>}
       // Validator Information
       <Row marginBottom=24>
         <Col>
@@ -417,7 +424,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
       </Row>
       // Bondded token & staking section
       <Row marginBottom=24>
-        <Col col=Col.Four>
+        <Col col=Col.Four mbSm=24>
           <InfoContainer style=Styles.bondedTokenContainer>
             <div className={Css.merge([CssHelper.flexBox()])}>
               <Heading value="Bonded Token" size=Heading.H4 />
@@ -427,7 +434,11 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               </CTooltip>
             </div>
             <SeperatedLine mt=32 mb=24 />
-            <div className={CssHelper.flexBox()}>
+            <div
+              className={Css.merge([
+                CssHelper.flexBox(~justify=`center, ()),
+                Styles.chartWrapper,
+              ])}>
               {switch (allSub) {
                | Data(({operatorAddress}, _, _)) => <HistoricalBondedGraph operatorAddress />
                | _ => <LoadingCensorBar.CircleSpin height=180 />
@@ -435,12 +446,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
             </div>
           </InfoContainer>
         </Col>
-        {isMobile
-           ? React.null
-           : <Col col=Col.Eight> <ValidatorStakingInfo validatorAddress=address /> </Col>}
-      </Row>
-      <Row marginBottom=24>
-        <Col col=Col.Six mbSm=24>
+        <Col col=Col.Four mbSm=24>
           <InfoContainer style=Styles.customContainer>
             <div className={CssHelper.flexBox()}>
               <Heading value="Block Uptime" size=Heading.H4 />
@@ -449,14 +455,20 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                 <Icon name="fal fa-info-circle" size=10 />
               </CTooltip>
             </div>
-            <SeperatedLine mt=32 mb=32 />
-            {switch (allSub) {
-             | Data(({consensusAddress}, _, _)) => <BlockUptimeChart consensusAddress />
-             | _ => <LoadingCensorBar.CircleSpin height=90 />
-             }}
+            <SeperatedLine mt=32 mb=24 />
+            <div
+              className={Css.merge([
+                CssHelper.flexBox(~justify=`center, ()),
+                Styles.chartWrapper,
+              ])}>
+              {switch (allSub) {
+               | Data(({consensusAddress}, _, _)) => <BlockUptimeChart consensusAddress />
+               | _ => <LoadingCensorBar.CircleSpin height=90 />
+               }}
+            </div>
           </InfoContainer>
         </Col>
-        <Col col=Col.Six>
+        <Col col=Col.Four>
           <InfoContainer style=Styles.customContainer>
             <div className={CssHelper.flexBox()}>
               <Heading value="Oracle Data Report" size=Heading.H4 />
@@ -466,11 +478,17 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               </CTooltip>
             </div>
             <SeperatedLine mt=32 mb=24 />
-            {switch (allSub) {
-             | Data(({oracleStatus}, _, _)) =>
-               <OracleDataReportChart oracleStatus operatorAddress=address />
-             | _ => <LoadingCensorBar.CircleSpin height=90 />
-             }}
+            <div
+              className={Css.merge([
+                CssHelper.flexBox(~justify=`center, ()),
+                Styles.chartWrapper,
+              ])}>
+              {switch (allSub) {
+               | Data(({oracleStatus}, _, _)) =>
+                 <OracleDataReportChart oracleStatus operatorAddress=address />
+               | _ => <LoadingCensorBar.CircleSpin height=90 />
+               }}
+            </div>
           </InfoContainer>
         </Col>
       </Row>
