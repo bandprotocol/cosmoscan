@@ -40,7 +40,7 @@ let make = (~options, ~setSelectOption, ~selectLabel, ~selectedOption, ~disabled
           let newVal = ReactEvent.Form.target(event)##value;
           setSelectOption(newVal);
         }}>
-        <option value=""> {"Select " ++ selectLabel |> React.string} </option>
+        <option value=""> {"All " ++ selectLabel ++ "s" |> React.string} </option>
         {options |> Belt.Array.length > 0
            ? options
              |> Belt.Array.map(_, value =>
