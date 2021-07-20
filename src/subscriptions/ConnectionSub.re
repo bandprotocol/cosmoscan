@@ -81,7 +81,7 @@ let getList = (~counterpartyChainID, ~connectionID, ~page, ~pageSize, ()) => {
       MultiConfig.definition,
       ~variables=
         MultiConfig.makeVariables(
-          ~chainID={j|%$counterpartyChainID%|j},
+          ~chainID=counterpartyChainID !== "" ? counterpartyChainID : "%%",
           ~connectionID={j|%$connectionID%|j},
           ~limit=pageSize,
           ~offset,
