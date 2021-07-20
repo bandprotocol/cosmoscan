@@ -97,7 +97,7 @@ let getCount = (~counterpartyChainID, ~connectionID, ()) => {
       ConnectionCountConfig.definition,
       ~variables=
         ConnectionCountConfig.makeVariables(
-          ~chainID={j|%$counterpartyChainID%|j},
+          ~chainID=counterpartyChainID !== "" ? counterpartyChainID : "%%",
           ~connectionID={j|%$connectionID%|j},
           (),
         ),
