@@ -19,6 +19,8 @@ module RenderBody = {
                  moniker
                  identity
                  width={`px(300)}
+                 avatarWidth=30
+                 size=Text.Lg
                />
              </div>
            | _ => <LoadingCensorBar width=200 height=20 />
@@ -95,7 +97,7 @@ let make = (~address) => {
     React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
 
   let (page, setPage) = React.useState(_ => 1);
-  let pageSize = 10;
+  let pageSize = 5;
 
   let unbondingListSub =
     UnbondingSub.getUnbondingByDelegator(address, currentTime, ~pageSize, ~page, ());
