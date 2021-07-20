@@ -15,6 +15,8 @@ module Styles = {
       selector("> button + button", [marginLeft(`px(15))]),
       selector("> div + div", [marginLeft(`px(15))]),
     ]);
+
+  let linkStyle = style([color(`currentColor), transition(~duration=0, "all")]);
 };
 
 module ButtonSection = {
@@ -200,23 +202,30 @@ module StakingInfo = {
              | _ => <DisplayBalance.Loading />
              }}
           </div>
-          <Button
-            px=20
-            py=8
-            variant=Button.Outline
-            onClick={event => {
-              let route = Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding);
-              if (!event->ReactEvent.Mouse.defaultPrevented
-                  && event->ReactEvent.Mouse.button == 0
-                  && !event->ReactEvent.Mouse.altKey
-                  && !event->ReactEvent.Mouse.ctrlKey
-                  && !event->ReactEvent.Mouse.metaKey
-                  && !event->ReactEvent.Mouse.shiftKey) {
-                event->ReactEvent.Mouse.preventDefault;
-                route->Route.redirect;
-              };
-            }}>
-            {"View Entries" |> React.string}
+          // <Button
+          //   px=20
+          //   py=8
+          //   variant=Button.Outline
+          //   onClick={event => {
+          //     let route = Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding);
+          //     if (!event->ReactEvent.Mouse.defaultPrevented
+          //         && event->ReactEvent.Mouse.button == 0
+          //         && !event->ReactEvent.Mouse.altKey
+          //         && !event->ReactEvent.Mouse.ctrlKey
+          //         && !event->ReactEvent.Mouse.metaKey
+          //         && !event->ReactEvent.Mouse.shiftKey) {
+          //       event->ReactEvent.Mouse.preventDefault;
+          //       route->Route.redirect;
+          //     };
+          //   }}>
+          //   {"View Entries" |> React.string}
+          // </Button>
+          <Button px=20 py=8 variant=Button.Outline onClick={_ => ()}>
+            <Link
+              className=Styles.linkStyle
+              route={Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding)}>
+              {"View Entries" |> React.string}
+            </Link>
           </Button>
         </Col>
         <Col col=Col.Three>
