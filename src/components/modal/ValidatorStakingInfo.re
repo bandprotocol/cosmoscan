@@ -2,7 +2,7 @@ module Styles = {
   open Css;
 
   let connectContainer = (theme: Theme.t) =>
-    style([height(`px(200)), backgroundColor(theme.secondaryBg)]);
+    style([height(`px(145)), backgroundColor(theme.secondaryBg)]);
   let rewardContainer = (theme: Theme.t) =>
     style([
       backgroundColor(theme.tableRowBorderColor),
@@ -169,7 +169,7 @@ module StakingInfo = {
           />
         </Col>
       </Row>
-      <Row marginBottom=24>
+      <Row>
         <Col col=Col.Six>
           <div className={CssHelper.mb(~size=16, ())}>
             <Heading
@@ -202,24 +202,6 @@ module StakingInfo = {
              | _ => <DisplayBalance.Loading />
              }}
           </div>
-          // <Button
-          //   px=20
-          //   py=8
-          //   variant=Button.Outline
-          //   onClick={event => {
-          //     let route = Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding);
-          //     if (!event->ReactEvent.Mouse.defaultPrevented
-          //         && event->ReactEvent.Mouse.button == 0
-          //         && !event->ReactEvent.Mouse.altKey
-          //         && !event->ReactEvent.Mouse.ctrlKey
-          //         && !event->ReactEvent.Mouse.metaKey
-          //         && !event->ReactEvent.Mouse.shiftKey) {
-          //       event->ReactEvent.Mouse.preventDefault;
-          //       route->Route.redirect;
-          //     };
-          //   }}>
-          //   {"View Entries" |> React.string}
-          // </Button>
           <Button px=20 py=8 variant=Button.Outline onClick={_ => ()}>
             <Link
               className=Styles.linkStyle
