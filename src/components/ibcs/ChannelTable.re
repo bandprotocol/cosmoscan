@@ -26,17 +26,21 @@ module RenderBody = {
     <Row alignItems=Row.Center minHeight={`px(40)} style={Styles.thead(theme)}>
       <Col col=Col.Five>
         <div className={CssHelper.flexBox()}>
-          <Text value={channel.port} size=Text.Sm transform=Text.Uppercase />
+          <Text value={channel.port} size=Text.Sm />
           <Icon name="fal fa-long-arrow-right" ml=8 mr=8 />
-          <Text value={channel.counterpartyPort} size=Text.Sm transform=Text.Uppercase />
+          <Text value={channel.counterpartyPort} size=Text.Sm />
         </div>
       </Col>
       <Col col=Col.Four>
-        <div className={CssHelper.flexBox()}>
-          <Text value={channel.channelID} size=Text.Sm transform=Text.Uppercase />
-          <Icon name="fal fa-long-arrow-right" ml=8 mr=8 />
-          <Text value={channel.counterpartyChannelID} size=Text.Sm transform=Text.Uppercase />
-        </div>
+        {switch (channel.state) {
+         | Open =>
+           <div className={CssHelper.flexBox()}>
+             <Text value={channel.channelID} size=Text.Sm />
+             <Icon name="fal fa-long-arrow-right" ml=8 mr=8 />
+             <Text value={channel.counterpartyChannelID} size=Text.Sm />
+           </div>
+         | _ => <Text value="Unconnected" size=Text.Sm />
+         }}
       </Col>
       <Col col=Col.Two>
         <div className={CssHelper.flexBox()}>
@@ -136,11 +140,15 @@ module RenderMobile = {
           </div>
         </div>
         <div className=Styles.valueWrapper>
-          <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
-            <Text value={channel.counterpartyChannelID} size=Text.Sm />
-            <Icon name="fal fa-arrow-down" color={theme.textSecondary} mt=4 mb=4 />
-            <Text value={channel.counterpartyChannelID} size=Text.Sm />
-          </div>
+          {switch (channel.state) {
+           | Open =>
+             <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
+               <Text value={channel.channelID} size=Text.Sm />
+               <Icon name="fal fa-arrow-down" color={theme.textSecondary} mt=4 mb=4 />
+               <Text value={channel.counterpartyChannelID} size=Text.Sm />
+             </div>
+           | _ => <Text value="Unconnected" size=Text.Sm />
+           }}
         </div>
       </div>
       <div className={CssHelper.flexBox(~align=`center, ())}>
