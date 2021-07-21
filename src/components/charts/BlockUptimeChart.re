@@ -1,21 +1,17 @@
 module Styles = {
   open Css;
+  let chartWrapper = style([minHeight(px(220))]);
   let chartContainer =
-    style([
-      width(`percent(100.)),
-      maxWidth(`px(400)),
-      margin2(~v=`zero, ~h=`auto),
-      Media.smallMobile([maxWidth(`px(260))]),
-    ]);
+    style([width(`percent(100.)), maxWidth(`px(210)), margin2(~v=`zero, ~h=`auto)]);
   let statusLabel = style([height(`px(8)), width(`px(8))]);
 
   let blockContainer =
     style([
       flexGrow(0.),
       flexShrink(0.),
-      flexBasis(`calc((`sub, `percent(5.), `px(2)))),
+      flexBasis(`calc((`sub, `percent(10.), `px(2)))),
       margin(`px(1)),
-      height(`px(16)),
+      height(`px(18)),
       display(`block),
       Media.smallMobile([height(`px(10))]),
     ]);
@@ -77,16 +73,18 @@ let make = (~consensusAddress) => {
   <>
     <Row marginBottom=24>
       <Col>
-        <div className={Css.merge([CssHelper.flexBox(), Styles.chartContainer])}>
-          {switch (getUptimeSub) {
-           | Data({validatorVotes}) =>
-             validatorVotes
-             ->Belt.Array.map(({blockHeight, status}) =>
-                 <UptimeBlock key={blockHeight |> ID.Block.toString} status height=blockHeight />
-               )
-             ->React.array
-           | _ => <LoadingCensorBar.CircleSpin height=90 />
-           }}
+        <div className={Css.merge([CssHelper.flexBox(), Styles.chartWrapper])}>
+          <div className={Css.merge([CssHelper.flexBox(), Styles.chartContainer])}>
+            {switch (getUptimeSub) {
+             | Data({validatorVotes}) =>
+               validatorVotes
+               ->Belt.Array.map(({blockHeight, status}) =>
+                   <UptimeBlock key={blockHeight |> ID.Block.toString} status height=blockHeight />
+                 )
+               ->React.array
+             | _ => <LoadingCensorBar.CircleSpin height=90 />
+             }}
+          </div>
         </div>
       </Col>
     </Row>

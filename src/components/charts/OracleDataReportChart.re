@@ -1,12 +1,13 @@
 module Styles = {
   open Css;
+  let chartWrapper = style([minHeight(px(220))]);
   let chartContainer =
     style([width(`percent(100.)), minHeight(`px(90)), margin2(~v=`zero, ~h=`px(-2))]);
   let blockContainer =
     style([
       flexGrow(0.),
       flexShrink(0.),
-      flexBasis(`calc((`sub, `percent(2.22), `px(2)))),
+      flexBasis(`calc((`sub, `percent(3.33), `px(2)))),
       margin(`px(1)),
       height(`px(40)),
       display(`block),
@@ -66,20 +67,22 @@ let make = (~oracleStatus, ~operatorAddress) => {
   <>
     <Row marginBottom=24>
       <Col>
-        <div className={Css.merge([CssHelper.flexBox(), Styles.chartContainer])}>
-          {switch (historicalOracleStatusSub) {
-           | Data({oracleStatusReports}) =>
-             oracleStatusReports
-             ->Belt.Array.mapWithIndex((i, {timestamp, status}) =>
-                 <Item
-                   key={(i |> string_of_int) ++ (timestamp |> string_of_int)}
-                   status
-                   timestamp
-                 />
-               )
-             ->React.array
-           | _ => <LoadingCensorBar.CircleSpin height=90 />
-           }}
+        <div className={Css.merge([CssHelper.flexBox(), Styles.chartWrapper])}>
+          <div className={Css.merge([CssHelper.flexBox(), Styles.chartContainer])}>
+            {switch (historicalOracleStatusSub) {
+             | Data({oracleStatusReports}) =>
+               oracleStatusReports
+               ->Belt.Array.mapWithIndex((i, {timestamp, status}) =>
+                   <Item
+                     key={(i |> string_of_int) ++ (timestamp |> string_of_int)}
+                     status
+                     timestamp
+                   />
+                 )
+               ->React.array
+             | _ => <LoadingCensorBar.CircleSpin height=90 />
+             }}
+          </div>
         </div>
       </Col>
     </Row>

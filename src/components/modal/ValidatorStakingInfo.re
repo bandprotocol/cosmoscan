@@ -2,13 +2,21 @@ module Styles = {
   open Css;
 
   let connectContainer = (theme: Theme.t) =>
-    style([height(`px(200)), backgroundColor(theme.secondaryBg)]);
+    style([height(`px(145)), backgroundColor(theme.secondaryBg)]);
   let rewardContainer = (theme: Theme.t) =>
     style([
       backgroundColor(theme.tableRowBorderColor),
       padding2(~v=`px(16), ~h=`px(24)),
       borderRadius(`px(8)),
     ]);
+
+  let buttonContainer =
+    style([
+      selector("> button + button", [marginLeft(`px(15))]),
+      selector("> div + div", [marginLeft(`px(15))]),
+    ]);
+
+  let linkStyle = style([color(`currentColor), transition(~duration=0, "all")]);
 };
 
 module ButtonSection = {
@@ -30,11 +38,14 @@ module ButtonSection = {
     | Data((validatorInfo, {balance}, {amount: {amount}})) =>
       let disableNoBalance = balance |> Coin.getBandAmountFromCoins == 0.;
       let disableNoStake = amount == 0.;
-      <div className={CssHelper.flexBox()} id="validatorDelegationinfoDlegate">
+      <div
+        className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}
+        id="validatorDelegationinfoDlegate">
         <Button
           px=20
-          py=5
+          py=8
           disabled=disableNoBalance
+          variant=Button.Outline
           onClick={_ => {
             validatorInfo.commission == 100.
               ? Webapi.Dom.(
@@ -45,18 +56,21 @@ module ButtonSection = {
           }}>
           {"Delegate" |> React.string}
         </Button>
-        <HSpacing size=Spacing.md />
         <Button
-          px=20 py=5 variant=Button.Outline disabled=disableNoStake onClick={_ => undelegate()}>
+          px=20 py=8 variant=Button.Outline disabled=disableNoStake onClick={_ => undelegate()}>
           {"Undelegate" |> React.string}
         </Button>
-        <HSpacing size=Spacing.md />
         <Button
-          px=20 py=5 variant=Button.Outline disabled=disableNoStake onClick={_ => redelegate()}>
+          px=20 py=8 variant=Button.Outline disabled=disableNoStake onClick={_ => redelegate()}>
           {"Redelegate" |> React.string}
         </Button>
       </div>;
-    | _ => React.null
+    | _ =>
+      <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
+        <LoadingCensorBar width=100 height=33 />
+        <LoadingCensorBar width=100 height=33 />
+        <LoadingCensorBar width=100 height=33 />
+      </div>
     };
   };
 };
@@ -155,70 +169,86 @@ module StakingInfo = {
           />
         </Col>
       </Row>
-      <Row marginBottom=24>
+      <Row>
         <Col col=Col.Six>
-          <div>
-            <Heading value="Balance at Stake" size=Heading.H5 />
-            <VSpacing size={`px(8)} />
+          <div className={CssHelper.mb(~size=16, ())}>
+            <Heading
+              value="Balance at Stake"
+              size=Heading.H5
+              color={theme.textSecondary}
+              marginBottom=8
+            />
             {switch (allSub) {
              | Data(({financial: {usdPrice}}, balanceAtStake, _)) =>
                <DisplayBalance amount={balanceAtStake.amount} usdPrice />
              | _ => <DisplayBalance.Loading />
              }}
           </div>
+          <ButtonSection validatorAddress delegatorAddress />
         </Col>
-        <Col col=Col.Six>
-          <div>
+        <Col col=Col.Three>
+          <div className={CssHelper.mb(~size=16, ())}>
             <div className={CssHelper.flexBox()}>
-              <Heading value="Unbonding Amount" size=Heading.H5 />
-              <HSpacing size=Spacing.sm />
-              <Link
-                className={CssHelper.flexBox()}
-                route={Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding)}>
-                <Text value="View Entries" color=Colors.bandBlue weight=Text.Medium />
-              </Link>
+              <Heading
+                value="Unbonding Amount"
+                size=Heading.H5
+                marginBottom=8
+                color={theme.textSecondary}
+              />
             </div>
-            <VSpacing size={`px(8)} />
             {switch (allSub) {
              | Data(({financial: {usdPrice}}, _, unbonding)) =>
                <DisplayBalance amount=unbonding usdPrice />
              | _ => <DisplayBalance.Loading />
              }}
           </div>
+          <Button px=20 py=8 variant=Button.Outline onClick={_ => ()}>
+            <Link
+              className=Styles.linkStyle
+              route={Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding)}>
+              {"View Entries" |> React.string}
+            </Link>
+          </Button>
         </Col>
-      </Row>
-      <Row style={Styles.rewardContainer(theme)} alignItems=Row.Center>
-        <Col>
-          <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
-            <div>
-              <Heading value="Reward" size=Heading.H5 />
-              <VSpacing size={`px(8)} />
-              {switch (allSub) {
-               | Data(({financial: {usdPrice}}, balanceAtStake, _)) =>
-                 <DisplayBalance amount={balanceAtStake.reward} usdPrice isCountup=true />
-               | _ => <DisplayBalance.Loading />
-               }}
-            </div>
-            <div className={CssHelper.flexBox()} id="withdrawRewardContainer">
-              {let (disable, reward) =
-                 switch (allSub) {
-                 | Data((_, balanceAtStake, _)) => (
-                     balanceAtStake.reward.amount <= 0.,
-                     balanceAtStake.reward.amount,
-                   )
-                 | _ => (true, 0.)
-                 };
+        <Col col=Col.Three>
+          <div className={CssHelper.mb(~size=16, ())}>
+            <Heading value="Reward" size=Heading.H5 color={theme.textSecondary} marginBottom=8 />
+            {switch (allSub) {
+             | Data(({financial: {usdPrice}}, balanceAtStake, _)) =>
+               <DisplayBalance amount={balanceAtStake.reward} usdPrice isCountup=true />
+             | _ => <DisplayBalance.Loading />
+             }}
+          </div>
+          <div
+            className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}
+            id="withdrawRewardContainer">
+            {let (disable, reward) =
+               switch (allSub) {
+               | Data((_, balanceAtStake, _)) => (
+                   balanceAtStake.reward.amount <= 0.,
+                   balanceAtStake.reward.amount,
+                 )
+               | _ => (true, 0.)
+               };
 
-               <>
-                 <Button px=20 py=5 onClick={_ => withdrawReward()} disabled=disable>
-                   {"Withdraw Reward" |> React.string}
-                 </Button>
-                 <HSpacing size=Spacing.sm />
-                 <Button px=20 py=5 onClick={_ => reinvest(reward)} disabled=disable>
-                   {"Reinvest" |> React.string}
-                 </Button>
-               </>}
-            </div>
+             <>
+               <Button
+                 px=20
+                 py=8
+                 variant=Button.Outline
+                 onClick={_ => withdrawReward()}
+                 disabled=disable>
+                 {"Claim" |> React.string}
+               </Button>
+               <Button
+                 px=20
+                 py=8
+                 variant=Button.Outline
+                 onClick={_ => reinvest(reward)}
+                 disabled=disable>
+                 {"Reinvest" |> React.string}
+               </Button>
+             </>}
           </div>
         </Col>
       </Row>
@@ -244,10 +274,6 @@ let make = (~validatorAddress) => {
           <Icon name="fal fa-info-circle" size=10 />
         </CTooltip>
       </div>
-      {switch (accountOpt) {
-       | Some({address: delegatorAddress}) => <ButtonSection validatorAddress delegatorAddress />
-       | None => <VSpacing size={`px(28)} />
-       }}
     </div>
     <SeperatedLine mt=32 mb=24 />
     {switch (accountOpt) {
