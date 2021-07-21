@@ -23,8 +23,8 @@ module RenderBody = {
         ~rank,
         ~validatorSub: ApolloHooks.Subscription.variant(ValidatorSub.t),
         ~votingPower,
-        ~accountOpt: option(AccountContext.t),
         ~dispatchModal: ModalContext.a => unit,
+        ~isLogin,
       ) => {
     <TBody>
       <Row alignItems=Row.Center>
@@ -75,7 +75,7 @@ module RenderBody = {
            | _ => <LoadingCensorBar width=70 height=15 />
            }}
         </Col>
-        <Col col={accountOpt |> Belt.Option.isNone ? Col.Three : Two}>
+        <Col col={isLogin ? Col.Two : Three}>
           {switch (validatorSub) {
            | Data({uptime}) =>
              switch (uptime) {
@@ -95,12 +95,8 @@ module RenderBody = {
              </>
            }}
         </Col>
-        <Col col={accountOpt |> Belt.Option.isNone ? Col.Two : Three}>
-          <div
-            className={CssHelper.flexBox(
-              ~justify=accountOpt |> Belt.Option.isNone ? `center : `spaceBetween,
-              (),
-            )}>
+        <Col col={isLogin ? Col.Three : Two}>
+          <div className={CssHelper.flexBox(~justify=isLogin ? `spaceBetween : `center, ())}>
             <div className=Styles.oracleStatus>
               {switch (validatorSub) {
                | Data({oracleStatus}) =>
@@ -108,32 +104,30 @@ module RenderBody = {
                | _ => <LoadingCensorBar width=20 height=20 radius=50 />
                }}
             </div>
-            {switch (accountOpt) {
-             | Some(_) =>
-               <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-                 {switch (validatorSub) {
-                  | Data({operatorAddress, commission}) =>
-                    let delegate = () =>
-                      operatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
-                    <Button
-                      variant=Button.Outline
-                      onClick={_ => {
-                        commission == 100.
-                          ? Webapi.Dom.(
-                              window
-                              |> Window.alert(
-                                   "Delegation to foundation validator nodes is not advised.",
-                                 )
-                            )
-                          : delegate()
-                      }}>
-                      {"Delegate" |> React.string}
-                    </Button>;
-                  | _ => <LoadingCensorBar width=20 height=20 radius=50 />
-                  }}
-               </div>
-             | None => React.null
-             }}
+            {isLogin
+               ? <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+                   {switch (validatorSub) {
+                    | Data({operatorAddress, commission}) =>
+                      let delegate = () =>
+                        operatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
+                      <Button
+                        variant=Button.Outline
+                        onClick={_ => {
+                          commission == 100.
+                            ? Webapi.Dom.(
+                                window
+                                |> Window.alert(
+                                     "Delegation to foundation validator nodes is not advised.",
+                                   )
+                              )
+                            : delegate()
+                        }}>
+                        {"Delegate" |> React.string}
+                      </Button>;
+                    | _ => <LoadingCensorBar width=90 height=33 radius=8 />
+                    }}
+                 </div>
+               : React.null}
           </div>
         </Col>
       </Row>
@@ -341,6 +335,9 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
   let (accountOpt, _) = React.useContext(AccountContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let ({ThemeContext.isDarkMode, theme}, _) = React.useContext(ThemeContext.context);
+
+  let isLogin = accountOpt |> Belt.Option.isSome;
+
   <>
     {isMobile
        ? React.null
@@ -385,7 +382,7 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
                  tooltipItem="Validator service fees charged to delegators"
                />
              </Col>
-             <Col col={accountOpt |> Belt.Option.isNone ? Col.Three : Two}>
+             <Col col={isLogin ? Col.Two : Three}>
                <SortableTHead
                  title="Uptime (%)"
                  asc=UptimeAsc
@@ -402,7 +399,7 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
                  transform=Text.Uppercase
                  size=Text.Sm
                  weight=Text.Semibold
-                 align={accountOpt |> Belt.Option.isNone ? Text.Center : Left}
+                 align={isLogin ? Text.Left : Center}
                  value="Oracle Status"
                  tooltipItem={"The validator's Oracle status" |> React.string}
                />
@@ -440,8 +437,8 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
                         rank={e.rank}
                         validatorSub={Sub.resolve(e)}
                         votingPower
-                        accountOpt
                         dispatchModal
+                        isLogin
                       />;
                 })
               ->React.array
@@ -474,7 +471,7 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
                  rank=i
                  validatorSub=noData
                  votingPower=1.0
-                 accountOpt=None
+                 isLogin
                  dispatchModal={_ => ()}
                />
          )
