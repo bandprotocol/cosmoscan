@@ -3,14 +3,19 @@ module Styles = {
 
   let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
   let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let actionText = style([cursor(`pointer), marginTop(`px(8)), marginRight(`px(24))]);
 };
 
 module RenderBody = {
   [@react.component]
   let make = (~delegationsSub: ApolloHooks.Subscription.variant(DelegationSub.stake_t)) => {
+    let (_, dispatchModal) = React.useContext(ModalContext.context);
+    let (accountOpt, _) = React.useContext(AccountContext.context);
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+
     <TBody>
       <Row alignItems=Row.Center>
-        <Col col=Col.Six>
+        <Col col=Col.Four>
           {switch (delegationsSub) {
            | Data({moniker, operatorAddress, identity}) =>
              <div className={CssHelper.flexBox()}>
@@ -19,26 +24,75 @@ module RenderBody = {
                  moniker
                  identity
                  width={`px(300)}
+                 avatarWidth=30
+                 size=Text.Lg
                />
              </div>
            | _ => <LoadingCensorBar width=200 height=20 />
            }}
         </Col>
-        <Col col=Col.Three>
-          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+        <Col col=Col.Four>
+          <div className={CssHelper.flexBox(~justify=`flexStart, ())}>
             {switch (delegationsSub) {
-             | Data({amount}) =>
-               <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+             | Data({amount, operatorAddress}) =>
+               let delegate = () =>
+                 operatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
+               let undelegate = () =>
+                 operatorAddress->SubmitMsg.Undelegate->SubmitTx->OpenModal->dispatchModal;
+               let redelegate = () =>
+                 operatorAddress->SubmitMsg.Redelegate->SubmitTx->OpenModal->dispatchModal;
 
+               <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
+                 <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+                 {switch (accountOpt) {
+                  | Some(_) =>
+                    <div className={CssHelper.flexBox()}>
+                      <div className=Styles.actionText onClick={_ => delegate()}>
+                        <Text value="Delegate" underline=true color={theme.textPrimary} />
+                      </div>
+                      <div className=Styles.actionText onClick={_ => redelegate()}>
+                        <Text value="Redelegate" underline=true color={theme.textPrimary} />
+                      </div>
+                      <div className=Styles.actionText onClick={_ => undelegate()}>
+                        <Text value="Undelegate" underline=true color={theme.textPrimary} />
+                      </div>
+                    </div>
+                  | None => React.null
+                  }}
+               </div>;
              | _ => <LoadingCensorBar width=200 height=20 />
              }}
           </div>
         </Col>
-        <Col col=Col.Three>
-          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+        <Col col=Col.Four>
+          <div className={CssHelper.flexBox(~justify=`flexStart, ())}>
             {switch (delegationsSub) {
-             | Data({reward}) =>
-               <Text value={reward |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+             | Data({reward, operatorAddress}) =>
+               let withdrawReward = () => {
+                 operatorAddress->SubmitMsg.WithdrawReward->SubmitTx->OpenModal->dispatchModal;
+               };
+               let reinvest = _ =>
+                 (operatorAddress, reward.amount)
+                 ->SubmitMsg.Reinvest
+                 ->SubmitTx
+                 ->OpenModal
+                 ->dispatchModal;
+
+               <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
+                 <Text value={reward |> Coin.getBandAmountFromCoin |> Format.fPretty} />
+                 {switch (accountOpt) {
+                  | Some(_) =>
+                    <div className={CssHelper.flexBox()}>
+                      <div className=Styles.actionText onClick={_ => withdrawReward()}>
+                        <Text value="Claim" underline=true color={theme.textPrimary} />
+                      </div>
+                      <div className=Styles.actionText onClick={_ => reinvest()}>
+                        <Text value="Reinvest" underline=true color={theme.textPrimary} />
+                      </div>
+                    </div>
+                  | None => React.null
+                  }}
+               </div>;
              | _ => <LoadingCensorBar width=200 height=20 />
              }}
           </div>
@@ -86,7 +140,7 @@ module RenderBodyMobile = {
 let make = (~address) => {
   let isMobile = Media.isMobile();
   let (page, setPage) = React.useState(_ => 1);
-  let pageSize = 10;
+  let pageSize = 5;
   let delegationsCountSub = DelegationSub.getStakeCountByDelegator(address);
   let delegationsSub = DelegationSub.getStakeList(address, ~pageSize, ~page, ());
 
@@ -121,7 +175,7 @@ let make = (~address) => {
          </Row>
        : <THead>
            <Row alignItems=Row.Center>
-             <Col col=Col.Six>
+             <Col col=Col.Four>
                {switch (delegationsCountSub) {
                 | Data(delegationsCount) =>
                   <div className={CssHelper.flexBox()}>
@@ -144,24 +198,22 @@ let make = (~address) => {
                 | _ => <LoadingCensorBar width=100 height=15 />
                 }}
              </Col>
-             <Col col=Col.Three>
+             <Col col=Col.Four>
                <Text
                  block=true
                  value="Amount (BAND)"
                  weight=Text.Semibold
                  size=Text.Sm
                  transform=Text.Uppercase
-                 align=Text.Right
                />
              </Col>
-             <Col col=Col.Three>
+             <Col col=Col.Four>
                <Text
                  block=true
                  value="Reward (BAND)"
                  weight=Text.Semibold
                  size=Text.Sm
                  transform=Text.Uppercase
-                 align=Text.Right
                />
              </Col>
            </Row>

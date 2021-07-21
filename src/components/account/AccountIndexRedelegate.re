@@ -25,6 +25,8 @@ module RenderBody = {
                moniker=srcMoniker
                identity=srcIdentity
                width={`px(200)}
+               avatarWidth=30
+               size=Text.Lg
              />
            | _ => <LoadingCensorBar width=200 height=20 />
            }}
@@ -130,7 +132,7 @@ let make = (~address) => {
     React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
 
   let (page, setPage) = React.useState(_ => 1);
-  let pageSize = 10;
+  let pageSize = 5;
 
   let redelegateCountSub = RedelegateSub.getRedelegateCountByDelegator(address, currentTime);
   let redelegateListSub =
