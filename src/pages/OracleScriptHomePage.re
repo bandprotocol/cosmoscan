@@ -6,7 +6,7 @@ module Styles = {
       borderRadius(`px(12)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       padding3(~top=`px(24), ~h=`px(24), ~bottom=`px(16)),
-      height(`calc((`sub, `percent(100.), `px(24)))),
+      height(`calc((`sub, `percent(100.), `px(23)))),
       marginBottom(`px(24)),
     ]);
   let requestResponseBox = style([flexShrink(0.), flexGrow(0.), flexBasis(`percent(50.))]);
@@ -128,7 +128,7 @@ module RenderMostRequestedCard = {
            }}
         </div>
         <SeperatedLine />
-        <div className={CssHelper.flexBox()}>
+        <div className={Css.merge([CssHelper.flexBox()])}>
           <div className=Styles.requestResponseBox>
             <Heading
               size=Heading.H5
