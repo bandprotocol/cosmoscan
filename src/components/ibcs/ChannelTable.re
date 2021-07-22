@@ -26,20 +26,20 @@ module RenderBody = {
     <Row alignItems=Row.Center minHeight={`px(40)} style={Styles.thead(theme)}>
       <Col col=Col.Five>
         <div className={CssHelper.flexBox()}>
-          <Text value={channel.port} size=Text.Sm />
+          <Text value={channel.port} />
           <Icon name="fal fa-long-arrow-right" ml=8 mr=8 />
-          <Text value={channel.counterpartyPort} size=Text.Sm />
+          <Text value={channel.counterpartyPort} />
         </div>
       </Col>
       <Col col=Col.Four>
         {switch (channel.state) {
          | Open =>
            <div className={CssHelper.flexBox()}>
-             <Text value={channel.channelID} size=Text.Sm />
+             <Text value={channel.channelID} />
              <Icon name="fal fa-long-arrow-right" ml=8 mr=8 />
-             <Text value={channel.counterpartyChannelID} size=Text.Sm />
+             <Text value={channel.counterpartyChannelID} />
            </div>
-         | _ => <Text value="Unconnected" size=Text.Sm />
+         | _ => <Text value="Unconnected" />
          }}
       </Col>
       <Col col=Col.Two>
@@ -51,7 +51,7 @@ module RenderBody = {
         </div>
       </Col>
       <Col col=Col.One>
-        <div className={CssHelper.flexBox()}> <Text value={channel.order} size=Text.Sm /> </div>
+        <div className={CssHelper.flexBox()}> <Text value={channel.order} /> </div>
       </Col>
     </Row>;
   };
