@@ -128,7 +128,7 @@ module RenderMostRequestedCard = {
            }}
         </div>
         <SeperatedLine />
-        <div className={Css.merge([CssHelper.flexBox()])}>
+        <div className={CssHelper.flexBox()}>
           <div className=Styles.requestResponseBox>
             <Heading
               size=Heading.H5
