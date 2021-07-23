@@ -34,7 +34,7 @@ module RenderBody = {
         <Col col=Col.Four>
           <div className={CssHelper.flexBox(~justify=`flexStart, ())}>
             {switch (delegationsSub) {
-             | Data({amount, operatorAddress}) =>
+             | Data({amount, operatorAddress, delegatorAddress}) =>
                let delegate = () =>
                  operatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
                let undelegate = () =>
@@ -45,7 +45,7 @@ module RenderBody = {
                <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
                  <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
                  {switch (accountOpt) {
-                  | Some(_) =>
+                  | Some({address}) when Address.isEqual(address, delegatorAddress) =>
                     <div className={CssHelper.flexBox()}>
                       <div className=Styles.actionText onClick={_ => delegate()}>
                         <Text value="Delegate" underline=true color={theme.textPrimary} />
@@ -57,7 +57,7 @@ module RenderBody = {
                         <Text value="Undelegate" underline=true color={theme.textPrimary} />
                       </div>
                     </div>
-                  | None => React.null
+                  | _ => React.null
                   }}
                </div>;
              | _ => <LoadingCensorBar width=200 height=20 />
@@ -67,7 +67,7 @@ module RenderBody = {
         <Col col=Col.Four>
           <div className={CssHelper.flexBox(~justify=`flexStart, ())}>
             {switch (delegationsSub) {
-             | Data({reward, operatorAddress}) =>
+             | Data({reward, operatorAddress, delegatorAddress}) =>
                let withdrawReward = () => {
                  operatorAddress->SubmitMsg.WithdrawReward->SubmitTx->OpenModal->dispatchModal;
                };
@@ -81,7 +81,7 @@ module RenderBody = {
                <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
                  <Text value={reward |> Coin.getBandAmountFromCoin |> Format.fPretty} />
                  {switch (accountOpt) {
-                  | Some(_) =>
+                  | Some({address}) when Address.isEqual(address, delegatorAddress) =>
                     <div className={CssHelper.flexBox()}>
                       <div className=Styles.actionText onClick={_ => withdrawReward()}>
                         <Text value="Claim" underline=true color={theme.textPrimary} />
@@ -90,7 +90,7 @@ module RenderBody = {
                         <Text value="Reinvest" underline=true color={theme.textPrimary} />
                       </div>
                     </div>
-                  | None => React.null
+                  | _ => React.null
                   }}
                </div>;
              | _ => <LoadingCensorBar width=200 height=20 />

@@ -8,7 +8,7 @@ let transform = (account, {raw, decoded}: MsgDecoder.t) => {
   let transformDecoded =
     switch (decoded) {
     | SendMsgSuccess({toAddress, fromAddress, amount})
-    | SendMsgFail({toAddress, fromAddress, amount}) when toAddress == account =>
+    | SendMsgFail({toAddress, fromAddress, amount}) when Address.isEqual(toAddress, account) =>
       MsgDecoder.ReceiveMsg({toAddress, fromAddress, amount})
     | _ => decoded
     };
