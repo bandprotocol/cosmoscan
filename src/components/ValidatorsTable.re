@@ -182,7 +182,7 @@ let addUptimeOnValidators =
     let signedBlock =
       votesBlock
       ->Belt.Array.keep(({consensusAddress, voted}) =>
-          validator.consensusAddress == consensusAddress && voted == true
+          Address.isEqual(validator.consensusAddress, consensusAddress) && voted == true
         )
       ->Belt.Array.get(0)
       ->Belt.Option.mapWithDefault(0, ({count}) => count)
@@ -191,7 +191,7 @@ let addUptimeOnValidators =
     let missedBlock =
       votesBlock
       ->Belt.Array.keep(({consensusAddress, voted}) =>
-          validator.consensusAddress == consensusAddress && voted == false
+          Address.isEqual(validator.consensusAddress, consensusAddress) && voted == false
         )
       ->Belt.Array.get(0)
       ->Belt.Option.mapWithDefault(0, ({count}) => count)
