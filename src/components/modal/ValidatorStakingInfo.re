@@ -163,7 +163,7 @@ module StakingInfo = {
       <Row marginBottom=24>
         <Col>
           <Text
-            value="Note: You have non-zero pending reward on this validator. Any additional staking actions will automatically withdraw that reward your balance."
+            value="Note: You have a non-zero pending reward on this validator. Any additional staking actions will automatically withdraw that reward balance."
             color=Colors.gray6
             weight=Text.Thin
           />
