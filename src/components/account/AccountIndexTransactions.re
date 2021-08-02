@@ -25,6 +25,14 @@ let make = (~accountAddress: Address.t) => {
 
   let isMobile = Media.isMobile();
 
+  React.useEffect1(
+    () => {
+      setPage(_ => 1);
+      None;
+    },
+    [|accountAddress |> Address.toBech32|],
+  );
+
   <div className=Styles.tableWrapper>
     {isMobile
        ? <Row marginBottom=16>
