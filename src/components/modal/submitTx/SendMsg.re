@@ -72,11 +72,13 @@ let make = (~address, ~receiver, ~setMsgsOpt) => {
          inputData=amount
          setInputData=setAmount
          parse={Parse.getBandAmount(maxValInUband)}
-         maxValue={maxValInUband /. 1e6 |> Js.Float.toString}
+         maxValue={
+           ((maxValInUband /. 1e6 *. 1e4)->int_of_float->float_of_int /. 1e4)->Js.Float.toString
+         }
          msg="Send Amount (BAND)"
          inputType="number"
          code=true
-         placeholder="0.000000"
+         placeholder="0.0000"
          autoFocus={
            switch (toAddress.text) {
            | "" => false
