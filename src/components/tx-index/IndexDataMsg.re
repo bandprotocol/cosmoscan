@@ -292,6 +292,16 @@ module RequestMsg = {
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
+          value="Fee Limit"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={request.feeLimit} pos=AmountRender.TxIndex />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
           value="Prepare Gas"
           size=Heading.H4
           weight=Heading.Regular
@@ -408,10 +418,40 @@ module RequestFailMsg = {
           color={theme.textSecondary}
         />
         <div className={CssHelper.flexBox()}>
-          <Text value={request.calldata |> JsBuffer.toHex} size=Text.Lg />
+          <Text value={request.calldata |> JsBuffer.toHex} size=Text.Lg breakAll=true />
           <HSpacing size=Spacing.sm />
           <CopyRender width=14 message={request.calldata |> JsBuffer.toHex} />
         </div>
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Fee Limit"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={request.feeLimit} pos=AmountRender.TxIndex />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Prepare Gas"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <Text value={request.prepareGas |> string_of_int} size=Text.Lg />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Execute Gas"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <Text value={request.executeGas |> string_of_int} size=Text.Lg />
       </Col>
       <Col col=Col.Six mbSm=24>
         <Heading
