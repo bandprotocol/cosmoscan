@@ -70,4 +70,4 @@ let make = (~url: string) =>
       </div>,
     );
   }
-  |> Belt.Option.getWithDefault(_, React.null);
+  |> Belt.Option.getWithDefault(_, <LoadingCensorBar.CircleSpin height=400 />);

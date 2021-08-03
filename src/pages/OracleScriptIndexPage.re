@@ -222,19 +222,17 @@ module Content = {
              | OracleScriptExecute =>
                switch (oracleScriptSub) {
                | Data({schema}) => <OracleScriptExecute id=oracleScriptID schema />
-               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               | _ => <LoadingCensorBar.CircleSpin height=400 />
                }
-
              | OracleScriptCode =>
                switch (oracleScriptSub) {
                | Data({sourceCodeURL}) => <OracleScriptCode url=sourceCodeURL />
-               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               | _ => <LoadingCensorBar.CircleSpin height=400 />
                }
-
              | OracleScriptBridgeCode =>
                switch (oracleScriptSub) {
                | Data({schema}) => <OracleScriptBridgeCode schema />
-               | _ => <LoadingCensorBar fullWidth=true height=400 />
+               | _ => <LoadingCensorBar.CircleSpin height=400 />
                }
              | OracleScriptRequests => <OracleScriptRequestTable oracleScriptID />
              | OracleScriptRevisions => <OracleScriptRevisionTable id=oracleScriptID />
