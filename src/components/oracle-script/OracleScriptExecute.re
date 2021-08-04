@@ -217,6 +217,34 @@ module ClientIDInput = {
   };
 };
 
+module ValueInput = {
+  [@react.component]
+  let make = (~value, ~setValue, ~title, ~info=?) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <div className=Styles.listContainer>
+      <div className={CssHelper.flexBox()}>
+        <Text value=title weight=Text.Semibold transform=Text.Capitalize />
+        <HSpacing size=Spacing.xs />
+        <Text value={info->Belt.Option.getWithDefault("")} weight=Text.Semibold />
+      </div>
+      <VSpacing size=Spacing.sm />
+      <input
+        className={Styles.input(theme)}
+        type_="number"
+        onChange={event => {
+          let newVal = ReactEvent.Form.target(event)##value;
+          switch (newVal |> int_of_string_opt, newVal) {
+          | (Some(parsedVal), _) => setValue(_ => parsedVal)
+          | (None, "") => setValue(_ => 0)
+          | _ => ()
+          };
+        }}
+        value={value |> string_of_int}
+      />
+    </div>;
+  };
+};
+
 type result_t =
   | Nothing
   | Loading
@@ -279,6 +307,9 @@ module ExecutionPart = {
 
     let (callDataArr, setCallDataArr) = React.useState(_ => Belt_Array.make(numParams, ""));
     let (clientID, setClientID) = React.useState(_ => "from_scan");
+    let (feeLimit, setFeeLimit) = React.useState(_ => 100);
+    let (prepareGas, setPrepareGas) = React.useState(_ => 30000);
+    let (executeGas, setExecuteGas) = React.useState(_ => 50000);
     let (askCount, setAskCount) = React.useState(_ => "1");
     let (minCount, setMinCount) = React.useState(_ => "1");
     let (result, setResult) = React.useState(_ => Nothing);
@@ -348,12 +379,20 @@ module ExecutionPart = {
                      <div className={CssHelper.flexBox(~direction=`column, ())}>
                        {paramsInput
                         ->Belt_Array.mapWithIndex((i, params) =>
-                            <ParameterInput params index=i setCallDataArr />
+                            <ParameterInput
+                              params
+                              index=i
+                              setCallDataArr
+                              key={params.fieldName ++ params.fieldType}
+                            />
                           )
                         ->React.array}
                      </div>
                    </div>}
               <ClientIDInput clientID setClientID />
+              <ValueInput value=feeLimit setValue=setFeeLimit title="Fee Limit" info="(uband)" />
+              <ValueInput value=prepareGas setValue=setPrepareGas title="Prepare Gas" />
+              <ValueInput value=executeGas setValue=setExecuteGas title="Execute Gas" />
               <SeperatedLine />
               {switch (validatorCount) {
                | Data(count) =>
@@ -398,6 +437,9 @@ module ExecutionPart = {
                                  | true => "from_scan"
                                  };
                                },
+                               feeLimit,
+                               prepareGas,
+                               executeGas,
                              }),
                            );
                            ();

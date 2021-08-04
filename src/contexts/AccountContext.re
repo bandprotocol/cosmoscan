@@ -12,6 +12,9 @@ type send_request_t = {
   askCount: string,
   minCount: string,
   clientID: string,
+  feeLimit: int,
+  prepareGas: int,
+  executeGas: int,
 };
 
 type a =
@@ -29,7 +32,17 @@ let reducer = state =>
       };
       None;
     }
-  | SendRequest({oracleScriptID, calldata, callback, askCount, minCount, clientID}) =>
+  | SendRequest({
+      oracleScriptID,
+      calldata,
+      callback,
+      askCount,
+      minCount,
+      clientID,
+      feeLimit,
+      prepareGas,
+      executeGas,
+    }) =>
     switch (state) {
     | Some({address, wallet, pubKey, chainID}) =>
       callback(
@@ -37,7 +50,19 @@ let reducer = state =>
           let%Promise rawTx =
             TxCreator.createRawTx(
               ~address,
-              ~msgs=[|Request(oracleScriptID, calldata, askCount, minCount, address, clientID)|],
+              ~msgs=[|
+                Request(
+                  oracleScriptID,
+                  calldata,
+                  askCount,
+                  minCount,
+                  address,
+                  clientID,
+                  {amount: feeLimit |> string_of_int, denom: "uband"},
+                  prepareGas |> string_of_int,
+                  executeGas |> string_of_int,
+                ),
+              |],
               ~chainID,
               ~gas="700000",
               ~feeAmount="0",
