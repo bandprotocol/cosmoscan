@@ -122,7 +122,7 @@ function(data, isDarkMode) {
               let dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' });
               let [{ value: month },,{ value: day },,{ value: year }] = dateTimeFormat .formatToParts(date );
 
-              return `${month} ${day},${year}`;
+              return `${day}-${month}-${year}`;
             },
           }
 				},
