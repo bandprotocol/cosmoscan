@@ -12,7 +12,13 @@ module Styles = {
     ]);
 
   let innerCard =
-    style([width(`percent(100.)), height(`px(220)), margin2(~v=`zero, ~h=`auto)]);
+    style([
+      width(`percent(100.)),
+      height(`px(260)),
+      margin2(~v=`zero, ~h=`auto),
+      display(`flex),
+      justifyContent(`center),
+    ]);
 
   let requestCount = style([marginTop(`px(8))]);
 
@@ -68,7 +74,7 @@ function(data, isDarkMode) {
                 unit: 'day',
                 unitStepSize: 1,
                 displayFormats: {
-                  'day': 'MMM DD',
+                  'day': 'DD-MMM-YY',
                 },
               },
               ticks: {
@@ -137,9 +143,9 @@ function(data, isDarkMode) {
             label: function(tooltipItem, data) {
               let date = new Date(tooltipItem.label);
               let dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' });
-              let [{ value: month },,{ value: day },,{ value: year }] = dateTimeFormat .formatToParts(date );
+              let [{ value: month },,{ value: day },,{ value: year }] = dateTimeFormat.formatToParts(date);
 
-              return `${month} ${day},${year}`;
+              return `${day}-${month}-${year}`;
             },
           }
 				},
