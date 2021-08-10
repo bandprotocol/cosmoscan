@@ -57,6 +57,7 @@
     "bsb-js": "^1.1.7",
     "cypress": "^6.8.0",
     "parcel-bundler": "^1.12.4",
+    "rescript": "9",
     "serve": "^11.3.0",
     "start-server-and-test": "^1.12.0"
   },
