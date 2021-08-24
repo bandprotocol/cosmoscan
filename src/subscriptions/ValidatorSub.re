@@ -7,6 +7,7 @@ module Mini = {
   };
 };
 
+// Remove consensus_pubkey for laozi testnet3
 type internal_t = {
   operatorAddress: Address.t,
   consensusAddress: Address.t,
@@ -17,7 +18,7 @@ type internal_t = {
   commissionRate: float,
   commissionMaxChange: float,
   commissionMaxRate: float,
-  consensusPubKey: PubKey.t,
+  // consensusPubKey: PubKey.t,
   jailed: bool,
   oracleStatus: bool,
   details: string,
@@ -29,7 +30,7 @@ type t = {
   oracleStatus: bool,
   operatorAddress: Address.t,
   consensusAddress: Address.t,
-  consensusPubKey: PubKey.t,
+  // consensusPubKey: PubKey.t,
   votingPower: float,
   moniker: string,
   identity: string,
@@ -52,7 +53,7 @@ let toExternal =
         website,
         tokens,
         commissionRate,
-        consensusPubKey,
+        // consensusPubKey,
         commissionMaxChange,
         commissionMaxRate,
         jailed,
@@ -66,7 +67,7 @@ let toExternal =
   oracleStatus,
   operatorAddress,
   consensusAddress,
-  consensusPubKey,
+  // consensusPubKey,
   votingPower: tokens.amount,
   moniker,
   identity,
@@ -121,7 +122,6 @@ module SingleConfig = [%graphql
           commissionRate: commission_rate @bsDecoder(fn: "float_of_string")
           commissionMaxChange: commission_max_change @bsDecoder(fn: "float_of_string")
           commissionMaxRate: commission_max_rate @bsDecoder(fn: "float_of_string")
-          consensusPubKey: consensus_pubkey @bsDecoder(fn: "PubKey.fromBech32")
           jailed
           details
           oracleStatus: status
@@ -143,7 +143,6 @@ module MultiConfig = [%graphql
           commissionRate: commission_rate @bsDecoder(fn: "float_of_string")
           commissionMaxChange: commission_max_change @bsDecoder(fn: "float_of_string")
           commissionMaxRate: commission_max_rate @bsDecoder(fn: "float_of_string")
-          consensusPubKey: consensus_pubkey @bsDecoder(fn: "PubKey.fromBech32")
           jailed
           details
           oracleStatus: status

@@ -7,8 +7,9 @@ type badge_t =
   | EditOracleScriptBadge
   | RequestBadge
   | ReportBadge
-  | AddReporterBadge
-  | RemoveReporterBadge
+  | GrantBadge
+  | RevokeBadge
+  | ExecBadge
   | CreateValidatorBadge
   | EditValidatorBadge
   | DelegateBadge
@@ -58,48 +59,49 @@ type msg_cat_t =
 
 let getBadgeVariantFromString = badge => {
   switch (badge) {
-  | "send" => SendBadge
+  | "/cosmos.bank.v1beta1.MsgSend" => SendBadge
   | "receive" => raise(Not_found)
-  | "create_data_source" => CreateDataSourceBadge
-  | "edit_data_source" => EditDataSourceBadge
-  | "create_oracle_script" => CreateOracleScriptBadge
-  | "edit_oracle_script" => EditOracleScriptBadge
-  | "request" => RequestBadge
-  | "report" => ReportBadge
-  | "add_reporter" => AddReporterBadge
-  | "remove_reporter" => RemoveReporterBadge
-  | "create_validator" => CreateValidatorBadge
-  | "edit_validator" => EditValidatorBadge
-  | "delegate" => DelegateBadge
-  | "begin_unbonding" => UndelegateBadge
-  | "begin_redelegate" => RedelegateBadge
-  | "withdraw_delegator_reward" => WithdrawRewardBadge
-  | "unjail" => UnjailBadge
-  | "set_withdraw_address" => SetWithdrawAddressBadge
+  | "/oracle.v1.MsgCreateDataSource" => CreateDataSourceBadge
+  | "/oracle.v1.MsgEditDataSource" => EditDataSourceBadge
+  | "/oracle.v1.MsgCreateOracleScript" => CreateOracleScriptBadge
+  | "/oracle.v1.MsgEditOracleScript" => EditOracleScriptBadge
+  | "/oracle.v1.MsgRequestData" => RequestBadge
+  | "/oracle.v1.MsgReportData" => ReportBadge
+  | "/cosmos.authz.v1beta1.MsgGrant" => GrantBadge
+  | "/cosmos.authz.v1beta1.MsgRevoke" => RevokeBadge
+  | "/cosmos.authz.v1beta1.MsgExec" => ExecBadge
+  | "/cosmos.staking.v1beta1.MsgCreateValidator" => CreateValidatorBadge
+  | "/cosmos.staking.v1beta1.MsgEditValidator" => EditValidatorBadge
+  | "/cosmos.staking.v1beta1.MsgDelegate" => DelegateBadge
+  | "/cosmos.staking.v1beta1.MsgUndelegate" => UndelegateBadge
+  | "/cosmos.staking.v1beta1.MsgBeginRedelegate" => RedelegateBadge
+  | "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward" => WithdrawRewardBadge
+  | "/cosmos.slashing.v1beta1.MsgUnjail" => UnjailBadge
+  | "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" => SetWithdrawAddressBadge
   | "submit_proposal" => SubmitProposalBadge
   | "deposit" => DepositBadge
   | "vote" => VoteBadge
-  | "withdraw_validator_commission" => WithdrawCommissionBadge
-  | "multisend" => MultiSendBadge
-  | "activate" => ActivateBadge
-  | "create_client" => CreateClientBadge
-  | "update_client" => UpdateClientBadge
-  | "upgrade_client" => UpgradeClientBadge
-  | "submit_client_misbehaviour" => SubmitClientMisbehaviourBadge
-  | "connection_open_init" => ConnectionOpenInitBadge
-  | "connection_open_try" => ConnectionOpenTryBadge
-  | "connection_open_ack" => ConnectionOpenAckBadge
-  | "connection_open_confirm" => ConnectionOpenConfirmBadge
-  | "channel_open_init" => ChannelOpenInitBadge
-  | "channel_open_try" => ChannelOpenTryBadge
-  | "channel_open_ack" => ChannelOpenAckBadge
-  | "channel_open_confirm" => ChannelOpenConfirmBadge
-  | "channel_close_init" => ChannelCloseInitBadge
-  | "channel_close_confirm" => ChannelCloseConfirmBadge
+  | "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission" => WithdrawCommissionBadge
+  | "/cosmos.bank.v1beta1.MsgMultiSend" => MultiSendBadge
+  | "/oracle.v1.MsgActivate" => ActivateBadge
+  | "/ibc.core.client.v1.MsgCreateClient" => CreateClientBadge
+  | "/ibc.core.client.v1.MsgUpdateClient" => UpdateClientBadge
+  | "/ibc.core.client.v1.MsgUpgradeClient" => UpgradeClientBadge
+  | "/ibc.core.client.v1.MsgSubmitClientMisbehaviour" => SubmitClientMisbehaviourBadge
+  | "/ibc.core.connection.v1.MsgConnectionOpenInit" => ConnectionOpenInitBadge
+  | "/ibc.core.connection.v1.MsgConnectionOpenTry" => ConnectionOpenTryBadge
+  | "/ibc.core.connection.v1.MsgConnectionOpenAck" => ConnectionOpenAckBadge
+  | "/ibc.core.connection.v1.MsgConnectionOpenConfirm" => ConnectionOpenConfirmBadge
+  | "/ibc.core.channel.v1.MsgChannelOpenInit" => ChannelOpenInitBadge
+  | "/ibc.core.channel.v1.MsgChannelOpenTry" => ChannelOpenTryBadge
+  | "/ibc.core.channel.v1.MsgChannelOpenAck" => ChannelOpenAckBadge
+  | "/ibc.core.channel.v1.MsgChannelOpenConfirm" => ChannelOpenConfirmBadge
+  | "/ibc.core.channel.v1.MsgChannelCloseInit" => ChannelCloseInitBadge
+  | "/ibc.core.channel.v1.MsgChannelCloseConfirm" => ChannelCloseConfirmBadge
   | "timeout" => TimeoutBadge
   | "timeout_on_close" => TimeoutOnCloseBadge
-  | "recv_packet" => RecvPacketBadge
-  | "acknowledge_packet" => AcknowledgePacketBadge
+  | "/ibc.core.channel.v1.MsgRecvPacket" => RecvPacketBadge
+  | "/ibc.core.channel.v1.MsgAcknowledgement" => AcknowledgePacketBadge
   | "transfer" => TransferBadge
   | _ => UnknownBadge
   };
@@ -336,55 +338,29 @@ module Report = {
       reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
     };
 };
-module AddReporter = {
-  type success_t = {
-    validator: Address.t,
-    reporter: Address.t,
-    validatorMoniker: string,
-  };
-
-  type fail_t = {
+module Grant = {
+  type t = {
     validator: Address.t,
     reporter: Address.t,
   };
 
-  let decodeSuccess = json =>
+  let decode = json =>
     JsonUtils.Decode.{
-      validator: json |> at(["msg", "validator"], string) |> Address.fromBech32,
-      reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
-      validatorMoniker: json |> at(["msg", "validator_moniker"], string),
-    };
-
-  let decodeFail = json =>
-    JsonUtils.Decode.{
-      validator: json |> at(["msg", "validator"], string) |> Address.fromBech32,
-      reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
+      validator: json |> at(["msg", "granter"], string) |> Address.fromBech32,
+      reporter: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
     };
 };
 
-module RemoveReporter = {
-  type success_t = {
-    validator: Address.t,
-    reporter: Address.t,
-    validatorMoniker: string,
-  };
-
-  type fail_t = {
+module Revoke = {
+  type t = {
     validator: Address.t,
     reporter: Address.t,
   };
 
-  let decodeSuccess = json =>
+  let decode = json =>
     JsonUtils.Decode.{
-      validator: json |> at(["msg", "validator"], string) |> Address.fromBech32,
-      reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
-      validatorMoniker: json |> at(["msg", "validator_moniker"], string),
-    };
-
-  let decodeFail = json =>
-    JsonUtils.Decode.{
-      validator: json |> at(["msg", "validator"], string) |> Address.fromBech32,
-      reporter: json |> at(["msg", "reporter"], string) |> Address.fromBech32,
+      validator: json |> at(["msg", "granter"], string) |> Address.fromBech32,
+      reporter: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
     };
 };
 
@@ -1198,6 +1174,29 @@ module Activate = {
   };
 };
 
+module Exec = {
+  type success_t = {
+    grantee: Address.t,
+    // msgs: list(decoded_t),
+  };
+
+  type fail_t = {
+    grantee: Address.t,
+    // msgs: list(decoded_t),
+  };
+
+  let decodeSuccess = json => {
+    JsonUtils.Decode.{
+      grantee: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
+      // msgs: json |> at(["msg", "msgs"], list(decodeAction.decoded)),
+    };
+  };
+
+  let decodeFail = json => {
+    JsonUtils.Decode.{grantee: json |> at(["msg", "grantee"], string) |> Address.fromBech32};
+  };
+};
+
 type decoded_t =
   | SendMsgSuccess(Send.t)
   | SendMsgFail(Send.t)
@@ -1214,10 +1213,10 @@ type decoded_t =
   | RequestMsgFail(Request.fail_t)
   | ReportMsgSuccess(Report.t)
   | ReportMsgFail(Report.t)
-  | AddReporterMsgSuccess(AddReporter.success_t)
-  | AddReporterMsgFail(AddReporter.fail_t)
-  | RemoveReporterMsgSuccess(RemoveReporter.success_t)
-  | RemoveReporterMsgFail(RemoveReporter.fail_t)
+  | GrantMsg(Grant.t)
+  | RevokeMsg(Revoke.t)
+  | ExecMsgSuccess(Exec.success_t)
+  | ExecMsgFail(Exec.fail_t)
   | CreateValidatorMsgSuccess(CreateValidator.t)
   | CreateValidatorMsgFail(CreateValidator.t)
   | EditValidatorMsgSuccess(EditValidator.t)
@@ -1292,10 +1291,10 @@ let isIBC =
   | RequestMsgFail(_)
   | ReportMsgSuccess(_)
   | ReportMsgFail(_)
-  | AddReporterMsgSuccess(_)
-  | AddReporterMsgFail(_)
-  | RemoveReporterMsgSuccess(_)
-  | RemoveReporterMsgFail(_)
+  | GrantMsg(_)
+  | RevokeMsg(_)
+  | ExecMsgSuccess(_)
+  | ExecMsgFail(_)
   | CreateValidatorMsgSuccess(_)
   | CreateValidatorMsgFail(_)
   | EditValidatorMsgSuccess(_)
@@ -1364,10 +1363,10 @@ let getCreator = msg => {
   | RequestMsgFail(request) => request.sender
   | ReportMsgSuccess(report)
   | ReportMsgFail(report) => report.reporter
-  | AddReporterMsgSuccess(address) => address.validator
-  | AddReporterMsgFail(address) => address.validator
-  | RemoveReporterMsgSuccess(address) => address.validator
-  | RemoveReporterMsgFail(address) => address.validator
+  | GrantMsg(address) => address.validator
+  | RevokeMsg(address) => address.validator
+  | ExecMsgSuccess(address) => address.grantee
+  | ExecMsgFail(address) => address.grantee
   | CreateValidatorMsgSuccess(validator)
   | CreateValidatorMsgFail(validator) => validator.delegatorAddress
   | EditValidatorMsgSuccess(validator)
@@ -1438,8 +1437,9 @@ let getBadge = badgeVariant => {
   | EditOracleScriptBadge => {name: "Edit Oracle Script", category: DataMsg}
   | RequestBadge => {name: "Request", category: DataMsg}
   | ReportBadge => {name: "Report", category: DataMsg}
-  | AddReporterBadge => {name: "Add Reporter", category: ValidatorMsg}
-  | RemoveReporterBadge => {name: "Remove Reporter", category: ValidatorMsg}
+  | GrantBadge => {name: "Grant", category: ValidatorMsg}
+  | RevokeBadge => {name: "Revoke", category: ValidatorMsg}
+  | ExecBadge => {name: "Exec", category: ValidatorMsg}
   | CreateValidatorBadge => {name: "Create Validator", category: ValidatorMsg}
   | EditValidatorBadge => {name: "Edit Validator", category: ValidatorMsg}
   | DelegateBadge => {name: "Delegate", category: TokenMsg}
@@ -1495,10 +1495,10 @@ let getBadgeTheme = msg => {
   | RequestMsgFail(_) => getBadge(RequestBadge)
   | ReportMsgSuccess(_)
   | ReportMsgFail(_) => getBadge(ReportBadge)
-  | AddReporterMsgSuccess(_)
-  | AddReporterMsgFail(_) => getBadge(AddReporterBadge)
-  | RemoveReporterMsgSuccess(_)
-  | RemoveReporterMsgFail(_) => getBadge(RemoveReporterBadge)
+  | ExecMsgSuccess(_)
+  | ExecMsgFail(_) => getBadge(ExecBadge)
+  | GrantMsg(_) => getBadge(GrantBadge)
+  | RevokeMsg(_) => getBadge(RevokeBadge)
   | CreateValidatorMsgSuccess(_)
   | CreateValidatorMsgFail(_) => getBadge(CreateValidatorBadge)
   | EditValidatorMsgSuccess(_)
@@ -1566,8 +1566,9 @@ let decodeAction = json => {
       | EditOracleScriptBadge => EditOracleScriptMsgSuccess(json |> EditOracleScript.decode)
       | RequestBadge => RequestMsgSuccess(json |> Request.decodeSuccess)
       | ReportBadge => ReportMsgSuccess(json |> Report.decode)
-      | AddReporterBadge => AddReporterMsgSuccess(json |> AddReporter.decodeSuccess)
-      | RemoveReporterBadge => RemoveReporterMsgSuccess(json |> RemoveReporter.decodeSuccess)
+      | GrantBadge => GrantMsg(json |> Grant.decode)
+      | RevokeBadge => RevokeMsg(json |> Revoke.decode)
+      | ExecBadge => ExecMsgFail(json |> Exec.decodeSuccess)
       | CreateValidatorBadge => CreateValidatorMsgSuccess(json |> CreateValidator.decode)
       | EditValidatorBadge => EditValidatorMsgSuccess(json |> EditValidator.decode)
       | DelegateBadge => DelegateMsgSuccess(json |> Delegate.decodeSuccess)
@@ -1624,8 +1625,9 @@ let decodeFailAction = json => {
       | EditOracleScriptBadge => EditOracleScriptMsgFail(json |> EditOracleScript.decode)
       | RequestBadge => RequestMsgFail(json |> Request.decodeFail)
       | ReportBadge => ReportMsgFail(json |> Report.decode)
-      | AddReporterBadge => AddReporterMsgFail(json |> AddReporter.decodeFail)
-      | RemoveReporterBadge => RemoveReporterMsgFail(json |> RemoveReporter.decodeFail)
+      | GrantBadge => GrantMsg(json |> Grant.decode)
+      | RevokeBadge => RevokeMsg(json |> Revoke.decode)
+      | ExecBadge => ExecMsgFail(json |> Exec.decodeFail)
       | CreateValidatorBadge => CreateValidatorMsgFail(json |> CreateValidator.decode)
       | EditValidatorBadge => EditValidatorMsgFail(json |> EditValidator.decode)
       | DelegateBadge => DelegateMsgFail(json |> Delegate.decodeFail)

@@ -32,7 +32,7 @@ module EditValidator = {
   };
 };
 
-module AddReporter = {
+module Grant = {
   [@react.component]
   let make = (~reporter) => {
     <div
@@ -46,7 +46,7 @@ module AddReporter = {
   };
 };
 
-module RemoveReporter = {
+module Revoke = {
   [@react.component]
   let make = (~reporter) => {
     <div
