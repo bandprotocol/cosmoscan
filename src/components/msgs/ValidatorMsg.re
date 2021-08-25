@@ -60,6 +60,28 @@ module Revoke = {
   };
 };
 
+module Exec = {
+  [@react.component]
+  let make = (~messages) => {
+    <div
+      className={Css.merge([
+        CssHelper.flexBox(~wrap=`nowrap, ()),
+        CssHelper.overflowHidden,
+        Styles.msgContainer,
+      ])}>
+      {messages
+       ->Belt.List.mapWithIndex((index, msg) => {
+           <Text
+             key={(msg |> ExecDecoder.getName) ++ (index |> string_of_int)}
+             value={msg |> ExecDecoder.getName}
+           />
+         })
+       ->Belt.List.toArray
+       ->React.array}
+    </div>;
+  };
+};
+
 module SetWithdrawAddress = {
   [@react.component]
   let make = (~withdrawAddress) => {

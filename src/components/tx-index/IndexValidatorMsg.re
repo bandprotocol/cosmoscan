@@ -276,9 +276,9 @@ module GrantMsg = {
   let make = (~address: MsgDecoder.Grant.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
-      <Col col=Col.Six mbSm=24>
+      <Col col=Col.Six mb=24>
         <Heading
-          value="Validator"
+          value="Granter"
           size=Heading.H4
           weight=Heading.Regular
           color={theme.textSecondary}
@@ -290,15 +290,35 @@ module GrantMsg = {
           accountType=`validator
         />
       </Col>
-      <Col col=Col.Six>
+      <Col col=Col.Six mb=24>
         <Heading
-          value="Reporter Address"
+          value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
           color={theme.textSecondary}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
+      </Col>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Authorization URL"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <Text size=Text.Lg value={address.url} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Expiration Date"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <Timestamp time={address.expiration} size=Text.Lg />
       </Col>
     </Row>;
   };
@@ -342,9 +362,9 @@ module RevokeMsg = {
   let make = (~address: MsgDecoder.Revoke.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
-      <Col col=Col.Six mbSm=24>
+      <Col col=Col.Six mb=24>
         <Heading
-          value="Validator"
+          value="Granter"
           size=Heading.H4
           weight=Heading.Regular
           color={theme.textSecondary}
@@ -356,15 +376,25 @@ module RevokeMsg = {
           accountType=`validator
         />
       </Col>
-      <Col col=Col.Six>
+      <Col col=Col.Six mb=24>
         <Heading
-          value="Reporter Address"
+          value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
           color={theme.textSecondary}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Message Type URL"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <Text size=Text.Lg value={address.msgTypeUrl} />
       </Col>
     </Row>;
   };
@@ -454,6 +484,63 @@ module SetWithdrawAddressMsg = {
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={set.withdrawAddress} />
+      </Col>
+    </Row>;
+  };
+};
+
+module ExecSuccessMsg = {
+  [@react.component]
+  let make = (~address: MsgDecoder.Exec.success_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Grantee Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <AddressRender position=AddressRender.Subtitle address={address.grantee} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Executed Messages"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        {address.msgs
+         ->Belt.List.mapWithIndex((index, msg) => {
+             <Text
+               key={(msg |> ExecDecoder.getName) ++ (index |> string_of_int)}
+               size=Text.Lg
+               value={msg |> ExecDecoder.getName}
+             />
+           })
+         ->Belt.List.toArray
+         ->React.array}
+      </Col>
+    </Row>;
+  };
+};
+
+module ExecFailMsg = {
+  [@react.component]
+  let make = (~address: MsgDecoder.Exec.fail_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Grantee Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <AddressRender position=AddressRender.Subtitle address={address.grantee} />
       </Col>
     </Row>;
   };

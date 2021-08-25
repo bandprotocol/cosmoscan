@@ -342,12 +342,16 @@ module Grant = {
   type t = {
     validator: Address.t,
     reporter: Address.t,
+    url: string,
+    expiration: MomentRe.Moment.t,
   };
 
   let decode = json =>
     JsonUtils.Decode.{
       validator: json |> at(["msg", "granter"], string) |> Address.fromBech32,
       reporter: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
+      url: json |> at(["msg", "url"], string),
+      expiration: json |> at(["msg", "grant", "expiration"], GraphQLParser.timestamp),
     };
 };
 
@@ -355,12 +359,14 @@ module Revoke = {
   type t = {
     validator: Address.t,
     reporter: Address.t,
+    msgTypeUrl: string,
   };
 
   let decode = json =>
     JsonUtils.Decode.{
       validator: json |> at(["msg", "granter"], string) |> Address.fromBech32,
       reporter: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
+      msgTypeUrl: json |> at(["msg", "msg_type_url"], string),
     };
 };
 
@@ -1177,18 +1183,15 @@ module Activate = {
 module Exec = {
   type success_t = {
     grantee: Address.t,
-    // msgs: list(decoded_t),
+    msgs: list(ExecDecoder.t),
   };
 
-  type fail_t = {
-    grantee: Address.t,
-    // msgs: list(decoded_t),
-  };
+  type fail_t = {grantee: Address.t};
 
   let decodeSuccess = json => {
     JsonUtils.Decode.{
       grantee: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
-      // msgs: json |> at(["msg", "msgs"], list(decodeAction.decoded)),
+      msgs: json |> at(["msg", "msgs"], list(ExecDecoder.decode)),
     };
   };
 
@@ -1568,7 +1571,7 @@ let decodeAction = json => {
       | ReportBadge => ReportMsgSuccess(json |> Report.decode)
       | GrantBadge => GrantMsg(json |> Grant.decode)
       | RevokeBadge => RevokeMsg(json |> Revoke.decode)
-      | ExecBadge => ExecMsgFail(json |> Exec.decodeSuccess)
+      | ExecBadge => ExecMsgSuccess(json |> Exec.decodeSuccess)
       | CreateValidatorBadge => CreateValidatorMsgSuccess(json |> CreateValidator.decode)
       | EditValidatorBadge => EditValidatorMsgSuccess(json |> EditValidator.decode)
       | DelegateBadge => DelegateMsgSuccess(json |> Delegate.decodeSuccess)

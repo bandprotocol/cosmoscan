@@ -87,6 +87,7 @@ let make = (~msg: MsgDecoder.t) => {
      | ReportMsgSuccess({requestID}) => <DataMsg.ReportMsg requestID />
      | GrantMsg({reporter}) => <ValidatorMsg.Grant reporter />
      | RevokeMsg({reporter}) => <ValidatorMsg.Revoke reporter />
+     | ExecMsgSuccess({msgs}) => <ValidatorMsg.Exec messages=msgs />
      | CreateValidatorMsgSuccess({moniker}) => <ValidatorMsg.CreateValidator moniker />
      | EditValidatorMsgSuccess({moniker}) => <ValidatorMsg.EditValidator moniker />
      | UnjailMsgSuccess(_) => React.null
