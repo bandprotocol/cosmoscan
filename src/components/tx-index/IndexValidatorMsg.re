@@ -100,16 +100,6 @@ module CreateValidatorMsg = {
           accountType=`validator
         />
       </Col>
-      <Col mb=24>
-        <Heading
-          value="Public Key"
-          size=Heading.H4
-          weight=Heading.Regular
-          color={theme.textSecondary}
-          marginBottom=8
-        />
-        <PubKeyRender pubKey={validator.publicKey} alignLeft=true position=PubKeyRender.Subtitle />
-      </Col>
       <Col col=Col.Six mb=24>
         <Heading
           value="Min Self Delegation"
