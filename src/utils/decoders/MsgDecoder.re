@@ -381,7 +381,6 @@ module CreateValidator = {
     commissionMaxChange: float,
     delegatorAddress: Address.t,
     validatorAddress: Address.t,
-    publicKey: PubKey.t,
     minSelfDelegation: Coin.t,
     selfDelegation: Coin.t,
   };
@@ -396,7 +395,6 @@ module CreateValidator = {
       commissionMaxChange: json |> at(["msg", "commission", "max_change_rate"], floatstr),
       delegatorAddress: json |> at(["msg", "delegator_address"], string) |> Address.fromBech32,
       validatorAddress: json |> at(["msg", "validator_address"], string) |> Address.fromBech32,
-      publicKey: json |> at(["msg", "pubkey"], string) |> PubKey.fromBech32,
       minSelfDelegation:
         json |> at(["msg", "min_self_delegation"], floatstr) |> Coin.newUBANDFromAmount,
       selfDelegation: json |> at(["msg", "value"], Coin.decodeCoin),

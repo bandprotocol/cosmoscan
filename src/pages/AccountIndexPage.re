@@ -188,10 +188,6 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let (accountOpt, _) = React.useContext(AccountContext.context);
 
-  Js.log2("accountSub", accountSub);
-  Js.log2("balanceAtStakeSub", balanceAtStakeSub);
-  Js.log2("unbondingSub", unbondingSub);
-
   let topPartAllSub = Sub.all5(infoSub, accountSub, balanceAtStakeSub, unbondingSub, trackingSub);
 
   let sumBalance = (balance, amount, unbonding, reward, commission) => {
