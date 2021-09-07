@@ -27618,13 +27618,9 @@
             "deprecationReason": null,
             "name": "data",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "json",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "json",
+              "ofType": null
             },
             "description": null
           },
@@ -27738,13 +27734,9 @@
             "deprecationReason": null,
             "name": "type",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "description": null
           }
@@ -49056,13 +49048,9 @@
             "deprecationReason": null,
             "name": "data",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "json",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "json",
+              "ofType": null
             },
             "description": null
           },
@@ -49176,13 +49164,9 @@
             "deprecationReason": null,
             "name": "type",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "description": null
           }

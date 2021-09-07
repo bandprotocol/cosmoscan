@@ -61,7 +61,7 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
     IBCSub.getList(
       ~pageSize=10,
       ~direction,
-      ~packetType=packetType |> IBCSub.fromLabel,
+      ~packetType,
       ~port=packetPort,
       ~channel=packetChannel,
       ~sequence=packetSequence |> int_of_string_opt,
@@ -71,7 +71,7 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
 
   let filters = IBCFilterSub.getFilterList(~chainID, ());
 
-  let packetTypes = [|"Oracle Request", "Oracle Response", "Fungible Token"|];
+  let packetTypes = [|"Oracle Request", "Oracle Response", "Fungible Token", "Unknown"|];
   let packetPorts = [|"oracle", "transfer"|];
 
   let handlePacketPort = newVal => {
