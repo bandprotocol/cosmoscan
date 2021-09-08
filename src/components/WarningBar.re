@@ -17,7 +17,7 @@ let make = () => {
     <div className={Css.merge([CssHelper.flexBox(~wrap=`nowrap, ()), Styles.innerBar])}>
       <Icon name="fal fa-exclamation-circle" size=24 color={theme.failColor} />
       <Text
-        value="Sending transactions (token transfers, delegations, etc.) through the explorer is currently under maintenance. A patch will be released within the next week"
+        value="Sending transactions (token transfers, delegations, etc.) through the explorer is currently under maintenance. A patch will be released soon."
         block=true
         color={theme.failColor}
         size=Text.Lg
