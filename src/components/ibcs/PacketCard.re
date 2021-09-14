@@ -17,7 +17,7 @@ type t = {
 };
 
 [@react.component]
-let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.Internal.t)) => {
+let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.t)) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
 
   let errorMsg = reason => reason->IBCPacketError->OpenModal->dispatchModal;
