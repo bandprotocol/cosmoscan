@@ -230,16 +230,12 @@ module ValueInput = {
       <VSpacing size=Spacing.sm />
       <input
         className={Styles.input(theme)}
-        type_="number"
+        type_="text"
         onChange={event => {
           let newVal = ReactEvent.Form.target(event)##value;
-          switch (newVal |> int_of_string_opt, newVal) {
-          | (Some(parsedVal), _) => setValue(_ => parsedVal)
-          | (None, "") => setValue(_ => 0)
-          | _ => ()
-          };
+          setValue(_ => newVal);
         }}
-        value={value |> string_of_int}
+        value
       />
     </div>;
   };
@@ -249,7 +245,7 @@ type result_t =
   | Nothing
   | Loading
   | Error(string)
-  | Success(TxCreator.tx_response_t);
+  | Success(TxCreator2.tx_response_t);
 
 let loadingRender = (wDiv, wImg, h) => {
   <div className={Styles.withWH(wDiv, h)}> <LoadingCensorBar.CircleSpin size=wImg /> </div>;
@@ -295,6 +291,7 @@ module ExecutionPart = {
   let make = (~id: ID.OracleScript.t, ~schema: string, ~paramsInput: array(Obi.field_key_type_t)) => {
     let isMobile = Media.isMobile();
 
+    let client = React.useContext(ClientContext.context);
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     let (accountOpt, dispatch) = React.useContext(AccountContext.context);
@@ -307,9 +304,9 @@ module ExecutionPart = {
 
     let (callDataArr, setCallDataArr) = React.useState(_ => Belt_Array.make(numParams, ""));
     let (clientID, setClientID) = React.useState(_ => "from_scan");
-    let (feeLimit, setFeeLimit) = React.useState(_ => 100);
-    let (prepareGas, setPrepareGas) = React.useState(_ => 30000);
-    let (executeGas, setExecuteGas) = React.useState(_ => 50000);
+    let (feeLimit, setFeeLimit) = React.useState(_ => "100");
+    let (prepareGas, setPrepareGas) = React.useState(_ => "30000");
+    let (executeGas, setExecuteGas) = React.useState(_ => "50000");
     let (askCount, setAskCount) = React.useState(_ => "1");
     let (minCount, setMinCount) = React.useState(_ => "1");
     let (result, setResult) = React.useState(_ => Nothing);
@@ -332,7 +329,7 @@ module ExecutionPart = {
           requestPromise
           |> Js.Promise.then_(res =>
                switch (res) {
-               | TxCreator.Tx(txResponse) =>
+               | TxCreator2.Tx(txResponse) =>
                  setResult(_ => Success(txResponse));
                  Js.Promise.resolve();
                | _ =>
@@ -352,6 +349,7 @@ module ExecutionPart = {
         );
         ();
       });
+
     isMobile
       ? <MobileBlock>
           <Icon name="fal fa-exclamation-circle" size=32 color={theme.textPrimary} />
@@ -425,22 +423,25 @@ module ExecutionPart = {
                          | Some(encoded) =>
                            setResult(_ => Loading);
                            dispatch(
-                             AccountContext.SendRequest({
-                               oracleScriptID: id,
-                               calldata: encoded,
-                               callback: requestCallback,
-                               askCount,
-                               minCount,
-                               clientID: {
-                                 switch (clientID |> String.trim == "") {
-                                 | false => clientID |> String.trim
-                                 | true => "from_scan"
-                                 };
+                             AccountContext.SendRequest(
+                               {
+                                 oracleScriptID: id,
+                                 calldata: encoded,
+                                 callback: requestCallback,
+                                 askCount,
+                                 minCount,
+                                 clientID: {
+                                   switch (clientID |> String.trim == "") {
+                                   | false => clientID |> String.trim
+                                   | true => "from_scan"
+                                   };
+                                 },
+                                 feeLimit,
+                                 prepareGas,
+                                 executeGas,
                                },
-                               feeLimit,
-                               prepareGas,
-                               executeGas,
-                             }),
+                               client,
+                             ),
                            );
                            ();
                          | None =>
