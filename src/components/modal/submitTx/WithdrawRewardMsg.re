@@ -19,7 +19,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
   React.useEffect1(
     _ => {
       let msgsOpt = {
-        Some([|TxCreator.WithdrawReward(validator)|]);
+        Some([|TxCreator2.WithdrawReward(validator)|]);
       };
       setMsgsOpt(_ => msgsOpt);
       None;

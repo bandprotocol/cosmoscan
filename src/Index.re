@@ -20,13 +20,15 @@ setupSentry();
 
 ReactDOMRe.render(
   <ApolloClient>
-    <GlobalContext>
-      <TimeContext>
-        <ThemeContext>
-          <ModalContext> <AccountContext> <Checker /> <App /> </AccountContext> </ModalContext>
-        </ThemeContext>
-      </TimeContext>
-    </GlobalContext>
+    <ClientContext>
+      <GlobalContext>
+        <TimeContext>
+          <ThemeContext>
+            <ModalContext> <AccountContext> <Checker /> <App /> </AccountContext> </ModalContext>
+          </ThemeContext>
+        </TimeContext>
+      </GlobalContext>
+    </ClientContext>
   </ApolloClient>,
   document##getElementById("root"),
 );

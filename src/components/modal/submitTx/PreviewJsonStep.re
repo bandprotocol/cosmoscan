@@ -52,8 +52,9 @@ type state_t =
 let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let (state, setState) = React.useState(_ => Nothing);
-  let jsonTx = TxCreator.sortAndStringify(rawTx);
+  let jsonTxStr = rawTx->BandChainJS.Transaction.getSignMessage->JsBuffer.toUTF8;
 
+  let client = React.useContext(ClientContext.context);
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.container>
@@ -70,7 +71,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
          <textarea
            className=Styles.jsonDisplay
            disabled=true
-           defaultValue={rawTx |> TxCreator.stringifyWithSpaces}
+           defaultValue={jsonTxStr |> Js.Json.parseExn |> TxCreator2.stringifyWithSpaces}
          />
          <div id="broadcastButtonContainer">
            <Button
@@ -80,22 +81,19 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                dispatchModal(DisableExit);
                setState(_ => Signing);
                let _ =
-                 Wallet.sign(jsonTx, account.wallet)
+                 Wallet.sign(jsonTxStr, account.wallet)
                  |> Js.Promise.then_(signature => {
                       setState(_ => Broadcasting);
-                      let signedTx =
-                        TxCreator.createSignedTx(
-                          ~signature=signature |> JsBuffer.toBase64,
-                          ~pubKey=account.pubKey,
-                          ~tx=rawTx,
-                          ~mode="sync",
-                          (),
-                        );
+                      let pubKeyHex = account.pubKey->PubKey.toHex;
+                      let pubKey = pubKeyHex->BandChainJS.PubKey.fromHex;
+                      let txRawBytes =
+                        rawTx->BandChainJS.Transaction.getTxData(signature, pubKey, 127);
+
                       ignore(
-                        TxCreator.broadcast(signedTx)
-                        |> Js.Promise.then_(res =>
+                        TxCreator2.broadcast(client, txRawBytes)
+                        |> Js.Promise.then_(res => {
                              switch (res) {
-                             | TxCreator.Tx(txResponse) =>
+                             | TxCreator2.Tx(txResponse) =>
                                txResponse.success
                                  ? {
                                    setState(_ => Success(txResponse.txHash));
@@ -111,7 +109,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                                dispatchModal(EnableExit);
                                Js.Promise.resolve();
                              }
-                           )
+                           })
                         |> Js.Promise.catch(err => {
                              switch (Js.Json.stringifyAny(err)) {
                              | Some(errorValue) => setState(_ => Error(errorValue))
