@@ -30,6 +30,7 @@ module Mini = {
 
   type aggregate_wrapper_intenal_t = {aggregate: option(aggregate_internal_t)};
 
+  type raw_request_t = {fee: Coin.t};
   type request_internal = {
     id: ID.Request.t,
     sender: option(Address.t),
@@ -44,6 +45,7 @@ module Mini = {
     resolveStatus: resolve_status_t,
     requestedValidatorsAggregate: aggregate_wrapper_intenal_t,
     result: option(JsBuffer.t),
+    rawDataRequests: array(raw_request_t),
   };
 
   type t = {
@@ -63,6 +65,7 @@ module Mini = {
     askCount: int,
     resolveStatus: resolve_status_t,
     result: option(JsBuffer.t),
+    feeEarned: Coin.t,
   };
 
   module MultiMiniByDataSourceConfig = [%graphql
@@ -106,6 +109,9 @@ module Mini = {
             }
           }
           result @bsDecoder(fn: "GraphQLParser.optionBuffer")
+          rawDataRequests: raw_requests(order_by: {external_id: asc} , where: {data_source_id: {_eq: $id}}) @bsRecord {
+            fee @bsDecoder (fn: "GraphQLParser.coin")
+          }
         }
       }
     |}
@@ -152,6 +158,9 @@ module Mini = {
             }
           }
           result @bsDecoder(fn: "GraphQLParser.optionBuffer")
+          rawDataRequests: raw_requests(order_by: {external_id: asc}) @bsRecord {
+            fee @bsDecoder (fn: "GraphQLParser.coin")
+          }
         }
       }
     |}
@@ -193,6 +202,9 @@ module Mini = {
             }
           }
           result @bsDecoder(fn: "GraphQLParser.optionBuffer")
+          rawDataRequests: raw_requests(order_by: {external_id: asc}) @bsRecord {
+            fee @bsDecoder (fn: "GraphQLParser.coin")
+          }
         }
       }
     |}
@@ -214,6 +226,7 @@ module Mini = {
           resolveStatus,
           requestedValidatorsAggregate,
           result,
+          rawDataRequests,
         },
       ) => {
     id,
@@ -236,6 +249,9 @@ module Mini = {
       ->Belt_Option.getExn,
     resolveStatus,
     result,
+    feeEarned:
+      rawDataRequests->Belt_Array.reduce(0., (a, {fee: {amount}}) => a +. amount)
+      |> Coin.newUBANDFromAmount,
   };
 
   let getListByDataSource = (id, ~page, ~pageSize, ()) => {
@@ -329,6 +345,7 @@ type oracle_script_internal_t = {
 
 type raw_data_request_t = {
   externalID: string,
+  fee: Coin.t,
   dataSource: data_source_internal_t,
   calldata: JsBuffer.t,
 };
@@ -495,6 +512,7 @@ module SingleRequestConfig = [%graphql
         }
         rawDataRequests: raw_requests(order_by: {external_id: asc}) @bsRecord {
           externalID: external_id @bsDecoder (fn: "GraphQLParser.string")
+          fee @bsDecoder (fn: "GraphQLParser.coin")
           dataSource: data_source @bsRecord {
             dataSourceID: id @bsDecoder(fn: "ID.DataSource.fromInt")
             name
@@ -570,6 +588,7 @@ module MultiRequestConfig = [%graphql
         }
         rawDataRequests: raw_requests(order_by: {external_id: asc}) @bsRecord {
           externalID: external_id @bsDecoder (fn: "GraphQLParser.string")
+          fee @bsDecoder (fn: "GraphQLParser.coin")
           dataSource: data_source @bsRecord {
             dataSourceID: id @bsDecoder(fn: "ID.DataSource.fromInt")
             name
