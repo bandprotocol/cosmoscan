@@ -1185,10 +1185,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bandprotocol/bandchain.js@1.5.2-alpha.0":
-  version "1.5.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/@bandprotocol/bandchain.js/-/bandchain.js-1.5.2-alpha.0.tgz#5daef53d68a8b14c0c699a0172730d78ffe9b704"
-  integrity sha512-6DI1e1Yc8rV/GB59Oar4ZSWCcUpp8WtnrDwgfnVDdpVy/NZMNsuz4t1Ui3886rTyw3PUQ2VwKBXCLDPNGlsnhg==
+"@bandprotocol/bandchain.js@2.0.0-alpha.1":
+  version "2.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@bandprotocol/bandchain.js/-/bandchain.js-2.0.0-alpha.1.tgz#787ba51caef18acf7aebe2030e6e7740eacd9dfb"
+  integrity sha512-t7Z0vaXSY/uXmengrR+375TWI9gqpzJqVbnszEkHGSrZp84zf7OqkNNPDpEmObkxmYLtmPikuWISGLDkFcz2Ng==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     "@improbable-eng/grpc-web-node-http-transport" "^0.14.0"

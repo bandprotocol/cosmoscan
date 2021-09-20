@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
-    "@bandprotocol/bandchain.js": "1.5.2-alpha.0",
+    "@bandprotocol/bandchain.js": "2.0.0-alpha.1",
     "@cosmostation/cosmosjs": "^0.5.5",
     "@glennsl/bs-json": "^5.0.2",
     "@ledgerhq/hw-transport-webhid": "6.4.1",
