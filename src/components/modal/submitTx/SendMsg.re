@@ -1,6 +1,3 @@
-module Styles = {
-  open Css;
-};
 [@react.component]
 let make = (~address, ~receiver, ~setMsgsOpt) => {
   let accountSub = AccountSub.get(address);
@@ -19,12 +16,11 @@ let make = (~address, ~receiver, ~setMsgsOpt) => {
       let msgsOpt = {
         let%Opt toAddressValue = toAddress.value;
         let%Opt amountValue = amount.value;
-        Some([|
-          TxCreator.Send(
-            toAddressValue,
-            {amount: amountValue |> Js.Float.toString, denom: "uband"},
-          ),
-        |]);
+
+        let coin = BandChainJS.Coin.create();
+        coin->BandChainJS.Coin.setDenom("uband");
+        coin->BandChainJS.Coin.setAmount(amountValue |> Js.Float.toString);
+        Some([|TxCreator2.Send(toAddressValue, [|coin|])|]);
       };
       setMsgsOpt(_ => msgsOpt);
       None;

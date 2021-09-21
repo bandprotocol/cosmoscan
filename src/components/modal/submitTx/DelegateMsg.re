@@ -24,12 +24,11 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
     _ => {
       let msgsOpt = {
         let%Opt amountValue = amount.value;
-        Some([|
-          TxCreator.Delegate(
-            validator,
-            {amount: amountValue |> Js.Float.toString, denom: "uband"},
-          ),
-        |]);
+
+        let coin = BandChainJS.Coin.create();
+        coin->BandChainJS.Coin.setDenom("uband");
+        coin->BandChainJS.Coin.setAmount(amountValue |> Js.Float.toString);
+        Some([|TxCreator2.Delegate(validator, coin)|]);
       };
       setMsgsOpt(_ => msgsOpt);
       None;

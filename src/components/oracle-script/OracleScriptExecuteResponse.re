@@ -17,7 +17,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~txResponse: TxCreator.tx_response_t, ~schema: string) =>
+let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
   {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let requestsByTxHashSub = RequestSub.Mini.getListByTxHash(txResponse.txHash);

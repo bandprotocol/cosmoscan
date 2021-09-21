@@ -71,7 +71,7 @@ module DstValidatorSelection = {
 
   [@react.component]
   let make = (~filteredValidators: array(BandScan.ValidatorSub.t), ~setDstValidatorOpt) => {
-    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     let (selectedValidator, setSelectedValidator) =
       React.useState(_ =>
@@ -171,13 +171,11 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
       let msgsOpt = {
         let%Opt dstValidator = dstValidatorOpt;
         let%Opt amountValue = amount.value;
-        Some([|
-          TxCreator.Redelegate(
-            validator,
-            dstValidator,
-            {amount: amountValue |> Js.Float.toString, denom: "uband"},
-          ),
-        |]);
+
+        let coin = BandChainJS.Coin.create();
+        coin->BandChainJS.Coin.setDenom("uband");
+        coin->BandChainJS.Coin.setAmount(amountValue |> Js.Float.toString);
+        Some([|TxCreator2.Redelegate(validator, dstValidator, coin)|]);
       };
       setMsgsOpt(_ => msgsOpt);
       None;
