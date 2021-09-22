@@ -52,7 +52,7 @@ module RenderBody = {
         }
       }>
       <Row alignItems=Row.Center>
-        <Col col=Col.Five>
+        <Col col=Col.Three>
           {switch (dataSourcesSub) {
            | Data({id, name}) =>
              <div className={CssHelper.flexBox()}>
@@ -60,10 +60,19 @@ module RenderBody = {
                <HSpacing size=Spacing.sm />
                <Text value=name ellipsis=true color={theme.textPrimary} />
              </div>
-           | _ => <LoadingCensorBar width=300 height=15 />
+           | _ => <LoadingCensorBar width=220 height=15 />
            }}
         </Col>
-        <Col col=Col.Four>
+        <Col col=Col.Three>
+          {switch (dataSourcesSub) {
+           | Data({fee}) =>
+             <div className={CssHelper.flexBox()}>
+               <AmountRender coins=fee color={theme.textPrimary}/>
+             </div>
+           | _ => <LoadingCensorBar width=100 height=15 />
+           }}
+        </Col>
+        <Col col=Col.Three>
           {switch (dataSourcesSub) {
            | Data({description}) => <Text value=description block=true />
            | _ => <LoadingCensorBar width=270 height=15 />
@@ -110,10 +119,11 @@ module RenderBodyMobile = {
   [@react.component]
   let make = (~reserveIndex, ~dataSourcesSub: ApolloHooks.Subscription.variant(DataSourceSub.t)) => {
     switch (dataSourcesSub) {
-    | Data({id, timestamp: timestampOpt, description, name, requestCount}) =>
+    | Data({id, timestamp: timestampOpt, description, name, requestCount, fee}) =>
       <MobileCard
         values=InfoMobileCard.[
           ("Data Source", DataSource(id, name)),
+          ("Fee\n(BAND)", Coin({value: fee, hasDenom: false})),
           ("Description", Text(description)),
           ("Requests", Count(requestCount)),
           (
@@ -131,6 +141,7 @@ module RenderBodyMobile = {
       <MobileCard
         values=InfoMobileCard.[
           ("Data Source", Loading(70)),
+          ("Fee\n(BAND)", Loading(60)),
           ("Description", Loading(136)),
           ("Requests", Loading(20)),
           ("Timestamp", Loading(166)),
@@ -207,7 +218,7 @@ let make = () => {
              ? React.null
              : <THead>
                  <Row alignItems=Row.Center>
-                   <Col col=Col.Five>
+                   <Col col=Col.Three>
                      <div className=TElement.Styles.hashContainer>
                        <Text
                          block=true
@@ -218,7 +229,18 @@ let make = () => {
                        />
                      </div>
                    </Col>
-                   <Col col=Col.Four>
+                   <Col col=Col.Three>
+                     <div className=TElement.Styles.hashContainer>
+                       <Text
+                         block=true
+                         value="Fee"
+                         transform=Text.Uppercase
+                         size=Text.Sm
+                         weight=Text.Semibold
+                       />
+                     </div>
+                   </Col>
+                   <Col col=Col.Three>
                      <Text
                        block=true
                        value="Description"
