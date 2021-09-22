@@ -91,6 +91,23 @@ module Content = {
                    }}
                 </Col>
               </Row>
+              <Row marginBottom=24 alignItems=Row.Center>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Accumulated Revenue"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (dataSourceSub) {
+                   | Data({accumulatedRevenue}) =>
+                     <AmountRender coins=[accumulatedRevenue] pos=AmountRender.TxIndex />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
               <Row alignItems=Row.Center>
                 <Col col=Col.Four mbSm=8>
                   <Heading
