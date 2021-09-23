@@ -84,7 +84,7 @@ let getLink =
   fun
   | WenchangTestnet => "https://wenchang-testnet3.cosmoscan.io/"
   | WenchangMainnet => "https://wenchang-legacy.cosmoscan.io/"
-  | GuanYuMainnet => "https://cosmoscan.io/"
+  | GuanYuMainnet => "https://guanyu-legacy.cosmoscan.io/"
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
   | GuanYuTestnet => "https://guanyu-testnet4.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
@@ -133,7 +133,7 @@ let make = () =>
          ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
          : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
-        {[|GuanYuMainnet, LaoziTestnet, LaoziPOA|]
+        {[|LaoziMainnet, LaoziTestnet, LaoziPOA|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
