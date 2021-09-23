@@ -3,7 +3,7 @@ module Styles = {
 
   let bar =
     style([
-      backgroundColor(Css.rgba(232, 74, 75, `num(0.15))),
+      backgroundColor(Css.rgba(244, 210, 62, `num(0.3))),
       padding2(~v=`px(12), ~h=`px(20)),
     ]);
 
@@ -12,14 +12,14 @@ module Styles = {
 
 [@react.component]
 let make = () => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
   <div className={Css.merge([CssHelper.flexBox(~justify=`center, ()), Styles.bar])}>
     <div className={Css.merge([CssHelper.flexBox(~wrap=`nowrap, ()), Styles.innerBar])}>
-      <Icon name="fal fa-exclamation-circle" size=24 color={theme.failColor} />
+      <Icon name="fal fa-exclamation-circle" size=24 color={theme.pendingColor} />
       <Text
-        value="Sending transactions (token transfers, delegations, etc.) through the explorer is currently under maintenance. A patch will be released soon."
+        value="The Laozi mainnet migration has successfully concluded. As part of the migration process, all pending staking rewards have been automatically withdrawn to your wallet balance."
         block=true
-        color={theme.failColor}
+        color={isDarkMode ? theme.white : theme.black}
         size=Text.Lg
       />
     </div>
