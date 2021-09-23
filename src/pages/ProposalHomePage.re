@@ -113,11 +113,15 @@ module ProposalCard = {
               color={theme.textSecondary}
             />
             {switch (proposalSub) {
-             | Data({proposerAddressOpt}) =>
+             | Data({proposerAddressOpt, id}) =>
                switch (proposerAddressOpt) {
                | Some(proposerAddress) =>
                  <AddressRender address=proposerAddress position=AddressRender.Subtitle />
-               | None => <Text value="Proposed on Wenchang" />
+               | None =>
+                 switch (id) {
+                 | ID(1) => <Text value="Proposed on Wenchang" />
+                 | _ => <Text value="Proposed on GuanYu" />
+                 }
                }
              | _ => <LoadingCensorBar width=270 height=15 />
              }}
@@ -223,7 +227,8 @@ let make = () => {
                      /* if proposal id is 1 and 2, then use this value */
                      switch (proposal.id) {
                      | ID.Proposal.ID(1) => 71.59
-                     | ID(2) => 81.42
+                     | ID(2) => 81.51
+                     | ID(3) => 72.84
                      | id =>
                        (
                          voteStatSub->Belt_MapInt.get(id |> ID.Proposal.toInt)

@@ -107,11 +107,15 @@ let make = (~proposalID) => {
               </Col>
               <Col col=Col.Eight>
                 {switch (allSub) {
-                 | Data(({proposerAddressOpt}, _, _)) =>
+                 | Data(({proposerAddressOpt, id}, _, _)) =>
                    switch (proposerAddressOpt) {
                    | Some(proposerAddress) =>
                      <AddressRender address=proposerAddress position=AddressRender.Subtitle />
-                   | None => <Text value="Proposed on Wenchang" />
+                   | None =>
+                     switch (id) {
+                     | ID(1) => <Text value="Proposed on Wenchang" />
+                     | _ => <Text value="Proposed on GuanYu" />
+                     }
                    }
                  | _ => <LoadingCensorBar width=270 height=15 />
                  }}
@@ -209,7 +213,8 @@ let make = (~proposalID) => {
                            {let turnoutPercent =
                               {switch (proposalID) {
                                | ID.Proposal.ID(1) => 71.59
-                               | ID(2) => 81.42
+                               | ID(2) => 81.51
+                               | ID(3) => 72.84
                                | _ => total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.
                                }};
                             <div className=Styles.chartContainer>
@@ -303,7 +308,7 @@ let make = (~proposalID) => {
                </Col>
              </Row>
              // if proposal id is 1 or 2, then disable it.
-             {proposalID == ID.Proposal.ID(1) || proposalID == ID(2)
+             {proposalID == ID.Proposal.ID(1) || proposalID == ID(2) || proposalID == ID(3)
                 ? React.null
                 : <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>}
            </>
@@ -311,7 +316,7 @@ let make = (~proposalID) => {
        | _ => React.null
        }}
       // if proposal id is 1 or 2, then disable it.
-      {proposalID == ID.Proposal.ID(1) || proposalID == ID(2)
+      {proposalID == ID.Proposal.ID(1) || proposalID == ID(2) || proposalID == ID(3)
          ? React.null
          : <>
              <Row marginBottom=24>
