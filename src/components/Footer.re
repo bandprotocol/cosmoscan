@@ -48,7 +48,7 @@ let make = () => {
           <div className={CssHelper.flexBox(~justify={isMobile ? `center : `flexEnd}, ())}>
             <Text
               block=true
-              value="Cosmoscan"
+              value="CosmoScan"
               weight=Text.Semibold
               color={theme.white}
             />

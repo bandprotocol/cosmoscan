@@ -65,7 +65,7 @@ module DesktopRender = {
                     />
                     <br />
                     <Text
-                      value="Cosmoscan"
+                      value="CosmoScan"
                       nowrap=true
                       size=Text.Sm
                       weight=Text.Semibold
