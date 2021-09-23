@@ -72,68 +72,77 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            disabled=true
            defaultValue={rawTx |> TxCreator.stringifyWithSpaces}
          />
-         <div id="broadcastButtonContainer">
-           <Button
-             py=10
-             style={Css.merge([Styles.btn, CssHelper.mb(~size=16, ())])}
-             onClick={_ => {
-               dispatchModal(DisableExit);
-               setState(_ => Signing);
-               let _ =
-                 Wallet.sign(jsonTx, account.wallet)
-                 |> Js.Promise.then_(signature => {
-                      setState(_ => Broadcasting);
-                      let signedTx =
-                        TxCreator.createSignedTx(
-                          ~network=Env.network,
-                          ~signature=signature |> JsBuffer.toBase64,
-                          ~pubKey=account.pubKey,
-                          ~tx=rawTx,
-                          ~mode="sync",
-                          (),
-                        );
-                      ignore(
-                        TxCreator.broadcast(signedTx)
-                        |> Js.Promise.then_(res =>
-                             switch (res) {
-                             | TxCreator.Tx(txResponse) =>
-                               txResponse.success
-                                 ? {
-                                   setState(_ => Success(txResponse.txHash));
-                                 }
-                                 : {
-                                   Js.Console.error(txResponse);
-                                   setState(_ => Error(txResponse.code |> TxResError.parse));
-                                 };
-                               dispatchModal(EnableExit);
-                               Js.Promise.resolve();
-                             | _ =>
-                               setState(_ => Error("Fail to broadcast"));
-                               dispatchModal(EnableExit);
-                               Js.Promise.resolve();
-                             }
-                           )
-                        |> Js.Promise.catch(err => {
-                             switch (Js.Json.stringifyAny(err)) {
-                             | Some(errorValue) => setState(_ => Error(errorValue))
-                             | None => setState(_ => Error("Can not stringify error"))
-                             };
-                             dispatchModal(EnableExit);
-                             Js.Promise.resolve();
-                           }),
-                      );
-
-                      Promise.ret();
-                    })
-                 |> Js.Promise.catch(_ => {
-                      setState(_ => Error("Failed to sign message"));
-                      dispatchModal(EnableExit);
-                      Promise.ret();
-                    });
-               ();
-             }}>
-             {"Broadcast" |> React.string}
-           </Button>
+         //  <div id="broadcastButtonContainer">
+         //    <Button
+         //      py=10
+         //      style={Css.merge([Styles.btn, CssHelper.mb(~size=16, ())])}
+         //      onClick={_ => {
+         //        dispatchModal(DisableExit);
+         //        setState(_ => Signing);
+         //        let _ =
+         //          Wallet.sign(jsonTx, account.wallet)
+         //          |> Js.Promise.then_(signature => {
+         //               setState(_ => Broadcasting);
+         //               let signedTx =
+         //                 TxCreator.createSignedTx(
+         //                   ~network=Env.network,
+         //                   ~signature=signature |> JsBuffer.toBase64,
+         //                   ~pubKey=account.pubKey,
+         //                   ~tx=rawTx,
+         //                   ~mode="sync",
+         //                   (),
+         //                 );
+         //               ignore(
+         //                 TxCreator.broadcast(signedTx)
+         //                 |> Js.Promise.then_(res =>
+         //                      switch (res) {
+         //                      | TxCreator.Tx(txResponse) =>
+         //                        txResponse.success
+         //                          ? {
+         //                            setState(_ => Success(txResponse.txHash));
+         //                          }
+         //                          : {
+         //                            Js.Console.error(txResponse);
+         //                            setState(_ => Error(txResponse.code |> TxResError.parse));
+         //                          };
+         //                        dispatchModal(EnableExit);
+         //                        Js.Promise.resolve();
+         //                      | _ =>
+         //                        setState(_ => Error("Fail to broadcast"));
+         //                        dispatchModal(EnableExit);
+         //                        Js.Promise.resolve();
+         //                      }
+         //                    )
+         //                 |> Js.Promise.catch(err => {
+         //                      switch (Js.Json.stringifyAny(err)) {
+         //                      | Some(errorValue) => setState(_ => Error(errorValue))
+         //                      | None => setState(_ => Error("Can not stringify error"))
+         //                      };
+         //                      dispatchModal(EnableExit);
+         //                      Js.Promise.resolve();
+         //                    }),
+         //               );
+         //               Promise.ret();
+         //             })
+         //          |> Js.Promise.catch(_ => {
+         //               setState(_ => Error("Failed to sign message"));
+         //               dispatchModal(EnableExit);
+         //               Promise.ret();
+         //             });
+         //        ();
+         //      }}>
+         //      {"Broadcast" |> React.string}
+         //    </Button>
+         //  </div>
+         <div className={Css.merge([CssHelper.mb(~size=16, ()), CssHelper.flexBox()])}>
+           <Text
+             value="We've already migrated mainnet network from GuanYu to"
+             color={theme.textSecondary}
+           />
+           <HSpacing size=Spacing.sm />
+           <AbsoluteLink href="https://cosmoscan.io">
+             <Text value="Laozi" color={theme.baseBlue} nowrap=true weight=Text.Semibold />
+           </AbsoluteLink>
          </div>
          <Button py=10 style=Styles.btn onClick=onBack> {"Back" |> React.string} </Button>
        </div>

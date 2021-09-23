@@ -82,12 +82,12 @@ let getLink =
   fun
   | WenchangTestnet => "https://wenchang-testnet3.cosmoscan.io/"
   | WenchangMainnet
-  | GuanYuMainnet => "https://cosmoscan.io/"
+  | GuanYuMainnet => "https://guanyu-legacy.cosmoscan.io/"
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
   | GuanYuTestnet => "https://guanyu-testnet3.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
   | LaoziTestnet => "https://laozi-testnet4.cosmoscan.io/"
-  | LaoziMainnet
+  | LaoziMainnet => "https://cosmoscan.io"
   | Unknown => "";
 
 let getName =
@@ -97,7 +97,7 @@ let getName =
   | GuanYuDevnet => "guanyu-devnet"
   | GuanYuTestnet => "guanyu-testnet"
   | GuanYuPOA => "guanyu-poa"
-  | GuanYuMainnet => "guanyu-mainnet"
+  | GuanYuMainnet => "legacy-guanyu"
   | LaoziTestnet => "laozi-testnet"
   | LaoziMainnet => "laozi-mainnet"
   | Unknown => "unknown";
@@ -129,7 +129,7 @@ let make = () =>
          ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
          : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
-        {[|GuanYuMainnet, GuanYuTestnet, LaoziTestnet|]
+        {[|LaoziMainnet, GuanYuTestnet, LaoziTestnet|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
