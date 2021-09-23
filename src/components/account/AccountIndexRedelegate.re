@@ -195,7 +195,7 @@ let make = (~address) => {
              <Col col=Col.Three>
                <Text
                  block=true
-                 value="Desination Validator"
+                 value="Destination Validator"
                  weight=Text.Semibold
                  size=Text.Sm
                  transform=Text.Uppercase
