@@ -110,7 +110,7 @@ let make = (~chainID) => {
     <div className=Styles.innerContainer>
       <div className={Styles.modalTitle(theme)}>
         <Heading value="Connect with your wallet" size=Heading.H4 />
-        {chainID == "band-guanyu-mainnet"
+        {chainID == "laozi-mainnet"
            ? <>
                <VSpacing size=Spacing.md />
                <div className={CssHelper.flexBox()}>
