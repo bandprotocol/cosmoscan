@@ -7,7 +7,6 @@ module Mini = {
   };
 };
 
-// Remove consensus_pubkey for laozi testnet3
 type internal_t = {
   operatorAddress: Address.t,
   consensusAddress: Address.t,
@@ -18,7 +17,6 @@ type internal_t = {
   commissionRate: float,
   commissionMaxChange: float,
   commissionMaxRate: float,
-  // consensusPubKey: PubKey.t,
   jailed: bool,
   oracleStatus: bool,
   details: string,
@@ -30,7 +28,6 @@ type t = {
   oracleStatus: bool,
   operatorAddress: Address.t,
   consensusAddress: Address.t,
-  // consensusPubKey: PubKey.t,
   votingPower: float,
   moniker: string,
   identity: string,
@@ -53,7 +50,6 @@ let toExternal =
         website,
         tokens,
         commissionRate,
-        // consensusPubKey,
         commissionMaxChange,
         commissionMaxRate,
         jailed,
@@ -67,7 +63,6 @@ let toExternal =
   oracleStatus,
   operatorAddress,
   consensusAddress,
-  // consensusPubKey,
   votingPower: tokens.amount,
   moniker,
   identity,
