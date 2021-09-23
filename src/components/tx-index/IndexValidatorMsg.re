@@ -314,39 +314,6 @@ module GrantMsg = {
   };
 };
 
-// module GrantFailMsg = {
-//   [@react.component]
-//   let make = (~address: MsgDecoder.Grant.fail_t) => {
-//     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-//     <Row>
-//       <Col col=Col.Six mbSm=24>
-//         <Heading
-//           value="Validator"
-//           size=Heading.H4
-//           weight=Heading.Regular
-//           color={theme.textSecondary}
-//           marginBottom=8
-//         />
-//         <AddressRender
-//           position=AddressRender.Subtitle
-//           address={address.validator}
-//           accountType=`validator
-//         />
-//       </Col>
-//       <Col col=Col.Six>
-//         <Heading
-//           value="Reporter Address"
-//           size=Heading.H4
-//           weight=Heading.Regular
-//           color={theme.textSecondary}
-//           marginBottom=8
-//         />
-//         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
-//       </Col>
-//     </Row>;
-//   };
-// };
-
 module RevokeMsg = {
   [@react.component]
   let make = (~address: MsgDecoder.Revoke.t) => {
@@ -389,39 +356,6 @@ module RevokeMsg = {
     </Row>;
   };
 };
-
-// module RevokeFailMsg = {
-//   [@react.component]
-//   let make = (~address: MsgDecoder.Revoke.fail_t) => {
-//     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-//     <Row>
-//       <Col col=Col.Six mbSm=24>
-//         <Heading
-//           value="Validator"
-//           size=Heading.H4
-//           weight=Heading.Regular
-//           color={theme.textSecondary}
-//           marginBottom=8
-//         />
-//         <AddressRender
-//           position=AddressRender.Subtitle
-//           address={address.validator}
-//           accountType=`validator
-//         />
-//       </Col>
-//       <Col col=Col.Six>
-//         <Heading
-//           value="Reporter Address"
-//           size=Heading.H4
-//           weight=Heading.Regular
-//           color={theme.textSecondary}
-//           marginBottom=8
-//         />
-//         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
-//       </Col>
-//     </Row>;
-//   };
-// };
 
 module ActivateMsg = {
   [@react.component]
