@@ -28,7 +28,7 @@ let make = () => {
        ? <Section pt=16 pb=16 ptSm=24 pbSm=24>
            <div className=CssHelper.container> <SearchBar /> </div>
          </Section>
-       : React.null}
+       : <WarningBar />}
     <div className=Styles.routeContainer>
       {switch (currentRoute) {
        | HomePage => <HomePage />
