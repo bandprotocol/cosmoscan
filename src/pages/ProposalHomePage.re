@@ -142,11 +142,15 @@ module ProposalCard = {
               color={theme.textSecondary}
             />
             {switch (proposalSub) {
-             | Data({proposerAddressOpt}) =>
+             | Data({proposerAddressOpt, id}) =>
                switch (proposerAddressOpt) {
                | Some(proposerAddress) =>
                  <AddressRender address=proposerAddress position=AddressRender.Subtitle />
-               | None => <Text value="Proposed on Wenchang" />
+               | None =>
+                 switch (id) {
+                 | ID(1) => <Text value="Proposed on Wenchang" />
+                 | _ => <Text value="Proposed on GuanYu" />
+                 }
                }
              | _ => <LoadingCensorBar width=270 height=15 />
              }}

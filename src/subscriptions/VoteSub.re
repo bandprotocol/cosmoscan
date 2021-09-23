@@ -460,6 +460,19 @@ let getVoteStatByProposalID = proposalID => {
       totalAbstainPercent: 0.,
       total: 74267821.97,
     })
+  | ID(3) =>
+    Sub.resolve({
+      proposalID,
+      totalYes: 68725970.85,
+      totalYesPercent: 100.,
+      totalNo: 0.,
+      totalNoPercent: 0.,
+      totalNoWithVeto: 0.,
+      totalNoWithVetoPercent: 0.,
+      totalAbstain: 0.,
+      totalAbstainPercent: 0.,
+      total: 68725970.85,
+    })
   | _ =>
     Sub.resolve({
       proposalID,
