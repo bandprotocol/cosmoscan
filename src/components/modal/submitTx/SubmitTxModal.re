@@ -47,6 +47,7 @@ module Styles = {
 module SubmitTxStep = {
   [@react.component]
   let make = (~account: AccountContext.t, ~setRawTx, ~isActive, ~msg) => {
+    let client = React.useContext(ClientContext.context);
     let (msgsOpt, setMsgsOpt) = React.useState(_ => None);
 
     let gas = SubmitMsg.gasLimit(msg);
@@ -63,7 +64,8 @@ module SubmitTxStep = {
        | WithdrawReward(validator) =>
          <WithdrawRewardMsg validator setMsgsOpt address={account.address} />
        | Reinvest(validator, amount) => <ReinvestMsg validator setMsgsOpt amount />
-       | Vote(proposalID, proposalName) => <VoteMsg proposalID proposalName setMsgsOpt />
+       //  TODO
+       //  | Vote(proposalID, proposalName) => <VoteMsg proposalID proposalName setMsgsOpt />
        }}
       <EnhanceTxInput
         width=300
@@ -91,13 +93,14 @@ module SubmitTxStep = {
                let%Opt msgs = msgsOpt;
 
                Some(
-                 TxCreator.createRawTx(
-                   ~address=account.address,
+                 TxCreator2.createRawTx(
+                   ~sender=account.address,
                    ~msgs,
                    ~chainID=account.chainID,
                    ~feeAmount=fee |> Js.Float.toString,
-                   ~gas=gas |> string_of_int,
+                   ~gas,
                    ~memo=memo',
+                   ~client,
                    (),
                  ),
                )};

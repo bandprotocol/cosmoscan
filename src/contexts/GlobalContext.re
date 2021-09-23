@@ -4,7 +4,7 @@ let context = React.createContext(ContextHelper.default);
 
 [@react.component]
 let make = (~children) => {
-  let client = BandChainJS.createClient("https://api-gm-lb.bandchain.org");
+  let client = React.useContext(ClientContext.context);
   let (financialOpt, setFinancialOpt) = React.useState(_ => None);
 
   React.useEffect0(() => {

@@ -13,13 +13,11 @@ let make = (~validator, ~amount, ~setMsgsOpt) => {
   React.useEffect0(_ => {
     let msgsOpt = {
       let%Opt amountValue = Some(amount);
-      Some([|
-        TxCreator.WithdrawReward(validator),
-        TxCreator.Delegate(
-          validator,
-          {amount: amountValue->Js.Math.floor_float->Js.Float.toString, denom: "uband"},
-        ),
-      |]);
+
+      let coin = BandChainJS.Coin.create();
+      coin->BandChainJS.Coin.setDenom("uband");
+      coin->BandChainJS.Coin.setAmount(amountValue->Js.Math.floor_float->Js.Float.toString);
+      Some([|TxCreator2.WithdrawReward(validator), TxCreator2.Delegate(validator, coin)|]);
     };
     setMsgsOpt(_ => msgsOpt);
     None;

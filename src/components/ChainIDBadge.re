@@ -73,7 +73,9 @@ let parseChainID =
   | "band-guanyu-poa" => GuanYuPOA
   | "band-guanyu-mainnet" => GuanYuMainnet
   | "band-laozi-testnet1"
-  | "band-laozi-testnet2" => LaoziTestnet
+  | "band-laozi-testnet2"
+  | "band-laozi-testnet3"
+  | "band-laozi-testnet4" => LaoziTestnet
   | "band-laozi-mainnet" => LaoziMainnet
   | "band-laozi-poa" => LaoziPOA
   | _ => Unknown;
@@ -82,11 +84,11 @@ let getLink =
   fun
   | WenchangTestnet => "https://wenchang-testnet3.cosmoscan.io/"
   | WenchangMainnet => "https://wenchang-legacy.cosmoscan.io/"
-  | GuanYuMainnet => "https://guanyu-legacy.cosmoscan.io/"
+  | GuanYuMainnet => "https://cosmoscan.io/"
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
   | GuanYuTestnet => "https://guanyu-testnet4.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
-  | LaoziTestnet => "https://laozi-testnet2.cosmoscan.io/"
+  | LaoziTestnet => "https://laozi-testnet4.cosmoscan.io/"
   | LaoziMainnet => "https://cosmoscan.io/"
   | LaoziPOA => "https://laozi-poa.cosmoscan.io/"
   | Unknown => "";
@@ -98,7 +100,7 @@ let getName =
   | GuanYuDevnet => "guanyu-devnet"
   | GuanYuTestnet => "guanyu-testnet"
   | GuanYuPOA => "guanyu-poa"
-  | GuanYuMainnet => "legacy-guanyu"
+  | GuanYuMainnet => "guanyu-mainnet"
   | LaoziTestnet => "laozi-testnet"
   | LaoziMainnet => "laozi-mainnet"
   | LaoziPOA => "laozi-poa"

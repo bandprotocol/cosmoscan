@@ -85,8 +85,9 @@ let make = (~msg: MsgDecoder.t) => {
      | RequestMsgSuccess({id, oracleScriptID, oracleScriptName}) =>
        <DataMsg.RequestMsg id oracleScriptID oracleScriptName />
      | ReportMsgSuccess({requestID}) => <DataMsg.ReportMsg requestID />
-     | AddReporterMsgSuccess({reporter}) => <ValidatorMsg.AddReporter reporter />
-     | RemoveReporterMsgSuccess({reporter}) => <ValidatorMsg.RemoveReporter reporter />
+     | GrantMsg({reporter}) => <ValidatorMsg.Grant reporter />
+     | RevokeMsg({reporter}) => <ValidatorMsg.Revoke reporter />
+     | ExecMsgSuccess({msgs}) => <ValidatorMsg.Exec messages=msgs />
      | CreateValidatorMsgSuccess({moniker}) => <ValidatorMsg.CreateValidator moniker />
      | EditValidatorMsgSuccess({moniker}) => <ValidatorMsg.EditValidator moniker />
      | UnjailMsgSuccess(_) => React.null

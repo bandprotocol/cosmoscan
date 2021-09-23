@@ -89,6 +89,7 @@ let getPrices = () => {
 };
 
 let getBandInfo = client => {
+  // TODO
   // let ratesPromise = client->BandChainJS.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
   let ratesPromise = getPrices();
   let supplyPromise = getCirculatingSupply();

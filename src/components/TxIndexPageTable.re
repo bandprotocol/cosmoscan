@@ -55,10 +55,10 @@ let renderBody = (msg: MsgDecoder.t) =>
   | RequestMsgFail(request) => <IndexDataMsg.RequestFailMsg request />
   | ReportMsgSuccess(report)
   | ReportMsgFail(report) => <IndexDataMsg.ReportMsg report />
-  | AddReporterMsgSuccess(address) => <IndexValidatorMsg.AddReporterMsg address />
-  | AddReporterMsgFail(address) => <IndexValidatorMsg.AddReporterFailMsg address />
-  | RemoveReporterMsgSuccess(address) => <IndexValidatorMsg.RemoveReporterMsg address />
-  | RemoveReporterMsgFail(address) => <IndexValidatorMsg.RemoveReporterFailMsg address />
+  | GrantMsg(address) => <IndexValidatorMsg.GrantMsg address />
+  | RevokeMsg(address) => <IndexValidatorMsg.RevokeMsg address />
+  | ExecMsgSuccess(address) => <IndexValidatorMsg.ExecSuccessMsg address />
+  | ExecMsgFail(address) => <IndexValidatorMsg.ExecFailMsg address />
   | CreateValidatorMsgSuccess(validator)
   | CreateValidatorMsgFail(validator) => <IndexValidatorMsg.CreateValidatorMsg validator />
   | EditValidatorMsgSuccess(validator)

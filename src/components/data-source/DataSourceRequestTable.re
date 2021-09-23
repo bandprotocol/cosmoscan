@@ -24,7 +24,13 @@ module RenderBody = {
            | _ => <LoadingCensorBar width=135 height=15 />
            }}
         </Col>
-        <Col col=Col.Four>
+        <Col col=Col.Two>
+          {switch (requestsSub) {
+           | Data({feeEarned}) => <AmountRender coins=[feeEarned] color={theme.textPrimary} />
+           | _ => <LoadingCensorBar width=100 height=15 />
+           }}
+        </Col>
+        <Col col=Col.Three>
           {switch (requestsSub) {
            | Data({oracleScriptID, oracleScriptName}) =>
              <div className={CssHelper.flexBox()}>
@@ -35,7 +41,7 @@ module RenderBody = {
            | _ => <LoadingCensorBar width=270 height=15 />
            }}
         </Col>
-        <Col col=Col.Three>
+        <Col col=Col.Two>
           {switch (requestsSub) {
            | Data({minCount, askCount, reportsCount}) =>
              <ProgressBar
@@ -90,10 +96,12 @@ module RenderBodyMobile = {
         askCount,
         reportsCount,
         resolveStatus,
+        feeEarned,
       }) =>
       <MobileCard
         values=InfoMobileCard.[
           ("Request ID", RequestID(id)),
+          ("Fee Earned\n(BAND)", Coin({value: [feeEarned], hasDenom: false})),
           ("Oracle Script", OracleScript(oracleScriptID, oracleScriptName)),
           (
             "Report Status",
@@ -119,6 +127,7 @@ module RenderBodyMobile = {
       <MobileCard
         values=InfoMobileCard.[
           ("Request ID", Loading(70)),
+          ("Fee Earned\n(BAND)", Loading(80)),
           ("Oracle Script", Loading(136)),
           ("Report Status", Loading(20)),
           ("Timestamp", Loading(166)),
@@ -195,7 +204,16 @@ let make = (~dataSourceID: ID.DataSource.t) => {
                 | _ => <LoadingCensorBar width=100 height=15 />
                 }}
              </Col>
-             <Col col=Col.Four>
+             <Col col=Col.Two>
+               <Text
+                 block=true
+                 value="Fee Earned"
+                 weight=Text.Semibold
+                 transform=Text.Uppercase
+                 size=Text.Sm
+               />
+             </Col>
+             <Col col=Col.Three>
                <Text
                  block=true
                  value="Oracle Script"
@@ -204,7 +222,7 @@ let make = (~dataSourceID: ID.DataSource.t) => {
                  size=Text.Sm
                />
              </Col>
-             <Col col=Col.Four>
+             <Col col=Col.Three>
                <Text
                  block=true
                  value="Report Status"
