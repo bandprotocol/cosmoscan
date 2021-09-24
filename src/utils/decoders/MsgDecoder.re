@@ -1349,7 +1349,7 @@ let isIBC =
 
 let getCreator = msg => {
   switch (msg.decoded) {
-  | ReceiveMsg(receive) => receive.fromAddress
+  | ReceiveMsg(receive) => receive.toAddress // receiver
   | SendMsgSuccess(send)
   | SendMsgFail(send) => send.fromAddress
   | CreateDataSourceMsgSuccess(dataSource) => dataSource.sender
