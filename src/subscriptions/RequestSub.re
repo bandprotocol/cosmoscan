@@ -654,7 +654,7 @@ let countByOracleScript = id => {
       ~variables=
         RequestCountByOracleScriptConfig.makeVariables(~id=id |> ID.OracleScript.toInt, ()),
     );
-  result |> Sub.map(_, x => x##oracle_script_requests->Belt.Array.getExn(0)##count);
+  result |> Sub.map(_, x => x##oracle_script_requests->Belt_Array.length);
 };
 
 let countByDataSource = id => {
@@ -663,5 +663,5 @@ let countByDataSource = id => {
       RequestCountByDataSourceConfig.definition,
       ~variables=RequestCountByDataSourceConfig.makeVariables(~id=id |> ID.DataSource.toInt, ()),
     );
-  result |> Sub.map(_, x => x##data_source_requests->Belt.Array.getExn(0)##count);
+  result |> Sub.map(_, x => x##data_source_requests->Belt_Array.length);
 };
