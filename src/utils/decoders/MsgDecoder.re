@@ -79,8 +79,8 @@ let getBadgeVariantFromString = badge => {
   | "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward" => WithdrawRewardBadge
   | "/cosmos.slashing.v1beta1.MsgUnjail" => UnjailBadge
   | "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" => SetWithdrawAddressBadge
-  | "submit_proposal" => SubmitProposalBadge
-  | "deposit" => DepositBadge
+  | "/cosmos.gov.v1beta1.MsgSubmitProposal" => SubmitProposalBadge
+  | "/cosmos.gov.v1beta1.MsgDeposit" => DepositBadge
   | "/cosmos.gov.v1beta1.MsgVote" => VoteBadge
   | "/cosmos.gov.v1beta1.MsgVoteWeighted" => VoteWeightedBadge
   | "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission" => WithdrawCommissionBadge
