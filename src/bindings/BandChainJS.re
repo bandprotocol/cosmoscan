@@ -65,6 +65,11 @@ module MsgWithdrawReward = {
   external create: (string, string) => msg_t = "MsgWithdrawDelegatorReward";
 };
 
+module MsgVote = {
+  [@bs.module "@bandprotocol/bandchain.js"] [@bs.scope "Message"] [@bs.new]
+  external create: (int, string, int) => msg_t = "MsgVote";
+};
+
 module MsgRequest = {
   [@bs.module "@bandprotocol/bandchain.js"] [@bs.scope "Message"] [@bs.new]
   external create: (int, JsBuffer.t, int, int, string, string, array(Coin.t), int, int) => msg_t =
