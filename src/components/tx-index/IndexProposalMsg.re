@@ -287,7 +287,7 @@ module VoteWeightedMsg = {
         />
         <TypeID.Proposal position=TypeID.Subtitle id={vote.proposalID} />
       </Col>
-      <Col col=Col.Six mbSm=24>
+      <Col col=Col.Twelve mb=24>
         <Heading
           value="Title"
           size=Heading.H4
@@ -297,26 +297,40 @@ module VoteWeightedMsg = {
         />
         <Text size=Text.Lg value={vote.title} />
       </Col>
-      <Col col=Col.Twelve>
+      <Col col=Col.Six colSm=Col.Six>
         <Heading
-          value="Options"
+          value="Option"
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
-        {{
-           vote.options
-           ->Belt.List.mapWithIndex((index, {weight, option}) => {
-               <div key={index |> string_of_int} className={CssHelper.flexBox()}>
-                 <Text size=Text.Lg value=option />
-                 <Text size=Text.Lg value={weight |> string_of_float} />
-               </div>
-             });
-         }
-         ->Belt.List.toArray
-         ->React.array}
       </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading
+          value="Weight"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+      </Col>
+      {{
+         vote.options
+         ->Belt.List.mapWithIndex((index, {weight, option}) => {
+             let optionCount = vote.options |> Belt.List.toArray |> Belt_Array.length;
+             let mb = index == optionCount ? 0 : 8;
+
+             <React.Fragment key={index |> string_of_int}>
+               <Col col=Col.Six colSm=Col.Six mb> <Text size=Text.Lg value=option /> </Col>
+               <Col col=Col.Six colSm=Col.Six mb>
+                 <Text size=Text.Lg value={weight |> Js.Float.toString} />
+               </Col>
+             </React.Fragment>;
+           });
+       }
+       ->Belt.List.toArray
+       ->React.array}
     </Row>;
   };
 };
@@ -336,7 +350,7 @@ module VoteWeightedFailMsg = {
         />
         <AddressRender position=AddressRender.Subtitle address={vote.voterAddress} />
       </Col>
-      <Col col=Col.Six mb=24>
+      <Col col=Col.Twelve mb=24>
         <Heading
           value="Proposal ID"
           size=Heading.H4
@@ -346,26 +360,40 @@ module VoteWeightedFailMsg = {
         />
         <TypeID.Proposal position=TypeID.Subtitle id={vote.proposalID} />
       </Col>
-      <Col col=Col.Six>
+      <Col col=Col.Six colSm=Col.Six>
         <Heading
-          value="Options"
+          value="Option"
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
           color={theme.textSecondary}
         />
-        {{
-           vote.options
-           ->Belt.List.mapWithIndex((index, {weight, option}) => {
-               <div key={index |> string_of_int} className={CssHelper.flexBox()}>
-                 <Text size=Text.Lg value=option />
-                 <Text size=Text.Lg value={weight |> string_of_float} />
-               </div>
-             });
-         }
-         ->Belt.List.toArray
-         ->React.array}
       </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading
+          value="Weight"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+      </Col>
+      {{
+         vote.options
+         ->Belt.List.mapWithIndex((index, {weight, option}) => {
+             let optionCount = vote.options |> Belt.List.toArray |> Belt_Array.length;
+             let mb = index == optionCount ? 0 : 8;
+
+             <React.Fragment key={index |> string_of_int}>
+               <Col col=Col.Six colSm=Col.Six mb> <Text size=Text.Lg value=option /> </Col>
+               <Col col=Col.Six colSm=Col.Six mb>
+                 <Text size=Text.Lg value={weight |> Js.Float.toString} />
+               </Col>
+             </React.Fragment>;
+           });
+       }
+       ->Belt.List.toArray
+       ->React.array}
     </Row>;
   };
 };

@@ -1118,7 +1118,7 @@ module Vote = {
     JsonUtils.Decode.{
       voterAddress: json |> at(["msg", "voter"], string) |> Address.fromBech32,
       proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
-      option: json |> at(["msg", "option"], string),
+      option: json |> at(["msg", "option"], int) |> parse,
     };
   };
 };

@@ -93,19 +93,6 @@ let getAnswer = json => {
   };
 };
 
-// let getValVote = (valVotes, answer) =>
-//   valVotes->Belt_Array.reduce(0., (a, {validatorPower, validatorAns}) =>
-//     switch (validatorAns) {
-//     | Some(vote) => vote == answer ? a +. validatorPower : a
-//     | None => a
-//     }
-//   );
-
-// let getDelVote = (delVotes, answer_) =>
-//   delVotes->Belt_Array.reduce(0., (a, {power, answer}) =>
-//     answer == answer_ ? a +. (power |> Coin.getBandAmountFromCoin) : a
-//   );
-
 module YesVoteConfig = [%graphql
   {|
     subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
@@ -274,34 +261,33 @@ module DelegatorVoteByProposalIDConfig = [%graphql
   |}
 ];
 
-// module ValidatorVotesConfig = [%graphql
-//   {|
-//     subscription ValidatorVoteByProposalID {
-//       validator_vote_proposals_view @bsRecord {
-//         yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         noVote: no_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
-//       }
-//     }
-//   |}
-// ];
+module ValidatorVotesConfig = [%graphql
+  {|
+    subscription ValidatorVoteByProposalID {
+      validator_vote_proposals_view @bsRecord {
+        yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
+      }
+    }
+  |}
+];
 
-// module DelegatorVotesConfig = [%graphql
-//   {|
-//     subscription DelegatorVoteByProposalID {
-//       non_validator_vote_proposals_view @bsRecord {
-//         validatorID: validator_id @bsDecoder(fn: "Belt_Option.getExn")
-//         yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         noVote: no_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.coinExn")
-//         proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
-//       }
-//     }
-//   |}
-// ];
+module DelegatorVotesConfig = [%graphql
+  {|
+    subscription DelegatorVoteByProposalID {
+      non_validator_vote_proposals_view @bsRecord {
+        yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
+      }
+    }
+  |}
+];
 
 let getList = (proposalID, answer, ~page, ~pageSize, ()) => {
   let offset = (page - 1) * pageSize;
@@ -478,49 +464,3 @@ let getVoteStatByProposalID = proposalID => {
     total: totalPower /. 1e6,
   });
 };
-
-// let getVoteStats = () => {
-//   let (validatorVotes, _) = ApolloHooks.useSubscription(ValidatorVotesConfig.definition);
-//   let (delegatorVotes, _) = ApolloHooks.useSubscription(DelegatorVotesConfig.definition);
-
-//   let%Sub valVotes = validatorVotes;
-//   let%Sub delVotes = delegatorVotes;
-
-//   //TODO: Used too many mapping, revisit later.
-//   let parsedData =
-//     parse(valVotes##validator_vote_proposals_view, delVotes##non_validator_vote_proposals_view);
-
-//   let parsedMap =
-//     parsedData
-//     ->Belt_Array.reduce(Belt_MapInt.empty, (acc, {validatorID, proposalID}) =>
-//         acc->Belt_MapInt.set(
-//           proposalID |> ID.Proposal.toInt,
-//           {
-//             proposalID,
-//             validatorID,
-//             validatorPower:
-//               parsedData->Belt_Array.reduce(0., (a, {validatorPower, proposalID: delProposalID}) => {
-//                 proposalID == delProposalID ? a +. validatorPower : a
-//               }),
-//             validatorAns: None,
-//           },
-//         )
-//       )
-//     ->Belt_MapInt.valuesToArray;
-
-//   let voteMap =
-//     parsedMap->Belt_Array.reduce(Belt_MapInt.empty, (acc, {proposalID, validatorPower}) =>
-//       acc->Belt_MapInt.set(
-//         proposalID |> ID.Proposal.toInt,
-//         {
-//           validatorPower
-//           +. delVotes##non_validator_vote_proposals_view
-//              ->Belt_Array.reduce(0., (a, {power, proposalID: delProposalID}) => {
-//                  proposalID == delProposalID ? a +. (power |> Coin.getBandAmountFromCoin) : a
-//                });
-//         },
-//       )
-//     );
-
-//   Sub.resolve(voteMap);
-// };
