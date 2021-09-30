@@ -54,9 +54,10 @@ type answer_vote_t = {
 };
 
 type internal_vote_t = {
-  validatorID: int,
-  answer: vote_t,
-  power: Coin.t,
+  yesVote: float,
+  noVote: float,
+  noWithVetoVote: float,
+  abstainVote: float,
   proposalID: ID.Proposal.t,
 };
 
@@ -92,23 +93,23 @@ let getAnswer = json => {
   };
 };
 
-let getValVote = (valVotes, answer) =>
-  valVotes->Belt_Array.reduce(0., (a, {validatorPower, validatorAns}) =>
-    switch (validatorAns) {
-    | Some(vote) => vote == answer ? a +. validatorPower : a
-    | None => a
-    }
-  );
+// let getValVote = (valVotes, answer) =>
+//   valVotes->Belt_Array.reduce(0., (a, {validatorPower, validatorAns}) =>
+//     switch (validatorAns) {
+//     | Some(vote) => vote == answer ? a +. validatorPower : a
+//     | None => a
+//     }
+//   );
 
-let getDelVote = (delVotes, answer_) =>
-  delVotes->Belt_Array.reduce(0., (a, {power, answer}) =>
-    answer == answer_ ? a +. (power |> Coin.getBandAmountFromCoin) : a
-  );
+// let getDelVote = (delVotes, answer_) =>
+//   delVotes->Belt_Array.reduce(0., (a, {power, answer}) =>
+//     answer == answer_ ? a +. (power |> Coin.getBandAmountFromCoin) : a
+//   );
 
-module MultiConfig = [%graphql
+module YesVoteConfig = [%graphql
   {|
-    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, $answer: voteoption!) {
-      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, answer: {_eq: $answer}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, yes: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
         account @bsRecord {
           address @bsDecoder(fn:"Address.fromBech32")
           validator @bsRecord {
@@ -128,10 +129,115 @@ module MultiConfig = [%graphql
   |}
 ];
 
-module VoteCountConfig = [%graphql
+module NoVoteConfig = [%graphql
   {|
-    subscription DepositCount($proposal_id: Int!, $answer: voteoption!) {
-      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, answer: {_eq: $answer}}) {
+    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, no: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+        account @bsRecord {
+          address @bsDecoder(fn:"Address.fromBech32")
+          validator @bsRecord {
+            moniker
+            operatorAddress: operator_address @bsDecoder(fn: "Address.fromBech32")
+            identity
+          }
+        }
+        transactionOpt: transaction @bsRecord {
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+          block @bsRecord {
+            timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
+          }
+        }
+      }
+    }
+  |}
+];
+
+module NoWithVetoVoteConfig = [%graphql
+  {|
+    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, no_with_veto: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+        account @bsRecord {
+          address @bsDecoder(fn:"Address.fromBech32")
+          validator @bsRecord {
+            moniker
+            operatorAddress: operator_address @bsDecoder(fn: "Address.fromBech32")
+            identity
+          }
+        }
+        transactionOpt: transaction @bsRecord {
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+          block @bsRecord {
+            timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
+          }
+        }
+      }
+    }
+  |}
+];
+
+module AbstainVoteConfig = [%graphql
+  {|
+    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, abstain: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+        account @bsRecord {
+          address @bsDecoder(fn:"Address.fromBech32")
+          validator @bsRecord {
+            moniker
+            operatorAddress: operator_address @bsDecoder(fn: "Address.fromBech32")
+            identity
+          }
+        }
+        transactionOpt: transaction @bsRecord {
+          hash @bsDecoder(fn: "GraphQLParser.hash")
+          block @bsRecord {
+            timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
+          }
+        }
+      }
+    }
+  |}
+];
+
+module YesVoteCountConfig = [%graphql
+  {|
+    subscription DepositCount($proposal_id: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, yes: {_gt: "0"}}) {
+        aggregate {
+          count
+        }
+      }
+    }
+  |}
+];
+
+module NoVoteCountConfig = [%graphql
+  {|
+    subscription DepositCount($proposal_id: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, no: {_gt: "0"}}) {
+        aggregate {
+          count
+        }
+      }
+    }
+  |}
+];
+
+module NoWithVetoVoteCountConfig = [%graphql
+  {|
+    subscription DepositCount($proposal_id: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, no_with_veto: {_gt: "0"}}) {
+        aggregate {
+          count
+        }
+      }
+    }
+  |}
+];
+
+module AbstainVoteCountConfig = [%graphql
+  {|
+    subscription DepositCount($proposal_id: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, abstain: {_gt: "0"}}) {
         aggregate {
           count
         }
@@ -144,9 +250,10 @@ module ValidatorVoteByProposalIDConfig = [%graphql
   {|
     subscription ValidatorVoteByProposalID($proposal_id: Int!) {
       validator_vote_proposals_view(where: {proposal_id: {_eq: $proposal_id}}) @bsRecord {
-        validatorID: id @bsDecoder(fn: "Belt_Option.getExn")
-        answer @bsDecoder(fn: "getAnswer")
-        power: tokens @bsDecoder(fn: "GraphQLParser.coinExn")
+        yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
       }
     }
@@ -157,139 +264,135 @@ module DelegatorVoteByProposalIDConfig = [%graphql
   {|
     subscription DelegatorVoteByProposalID($proposal_id: Int!) {
       non_validator_vote_proposals_view(where: {proposal_id: {_eq: $proposal_id}}) @bsRecord {
-        validatorID: validator_id @bsDecoder(fn: "Belt_Option.getExn")
-        answer @bsDecoder(fn: "getAnswer")
-        power: tokens @bsDecoder(fn: "GraphQLParser.coinExn")
+        yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+        abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
       }
     }
   |}
 ];
 
-module ValidatorVotesConfig = [%graphql
-  {|
-    subscription ValidatorVoteByProposalID {
-      validator_vote_proposals_view @bsRecord {
-        validatorID: id @bsDecoder(fn: "Belt_Option.getExn")
-        answer @bsDecoder(fn: "getAnswer")
-        power: tokens @bsDecoder(fn: "GraphQLParser.coinExn")
-        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
-      }
-    }
-  |}
-];
+// module ValidatorVotesConfig = [%graphql
+//   {|
+//     subscription ValidatorVoteByProposalID {
+//       validator_vote_proposals_view @bsRecord {
+//         yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         noVote: no_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
+//       }
+//     }
+//   |}
+// ];
 
-module DelegatorVotesConfig = [%graphql
-  {|
-    subscription DelegatorVoteByProposalID {
-      non_validator_vote_proposals_view @bsRecord {
-        validatorID: validator_id @bsDecoder(fn: "Belt_Option.getExn")
-        answer @bsDecoder(fn: "getAnswer")
-        power: tokens @bsDecoder(fn: "GraphQLParser.coinExn")
-        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
-      }
-    }
-  |}
-];
+// module DelegatorVotesConfig = [%graphql
+//   {|
+//     subscription DelegatorVoteByProposalID {
+//       non_validator_vote_proposals_view @bsRecord {
+//         validatorID: validator_id @bsDecoder(fn: "Belt_Option.getExn")
+//         yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         noVote: no_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.coinExn")
+//         proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
+//       }
+//     }
+//   |}
+// ];
 
 let getList = (proposalID, answer, ~page, ~pageSize, ()) => {
   let offset = (page - 1) * pageSize;
+
   let (result, _) =
-    ApolloHooks.useSubscription(
-      MultiConfig.definition,
-      ~variables=
-        MultiConfig.makeVariables(
-          ~proposal_id=proposalID |> ID.Proposal.toInt,
-          ~answer=answer |> toString |> Js.Json.string,
-          ~limit=pageSize,
-          ~offset,
-          (),
-        ),
-    );
+    switch (answer) {
+    | Yes =>
+      ApolloHooks.useSubscription(
+        YesVoteConfig.definition,
+        ~variables=
+          YesVoteConfig.makeVariables(
+            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~limit=pageSize,
+            ~offset,
+            (),
+          ),
+      )
+    | No =>
+      ApolloHooks.useSubscription(
+        NoVoteConfig.definition,
+        ~variables=
+          NoVoteConfig.makeVariables(
+            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~limit=pageSize,
+            ~offset,
+            (),
+          ),
+      )
+    | NoWithVeto =>
+      ApolloHooks.useSubscription(
+        NoWithVetoVoteConfig.definition,
+        ~variables=
+          NoWithVetoVoteConfig.makeVariables(
+            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~limit=pageSize,
+            ~offset,
+            (),
+          ),
+      )
+    | Abstain =>
+      ApolloHooks.useSubscription(
+        AbstainVoteConfig.definition,
+        ~variables=
+          AbstainVoteConfig.makeVariables(
+            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~limit=pageSize,
+            ~offset,
+            (),
+          ),
+      )
+    };
+
   result |> Sub.map(_, x => x##votes->Belt.Array.map(toExternal));
 };
 
 let count = (proposalID, answer) => {
   let (result, _) =
-    ApolloHooks.useSubscription(
-      VoteCountConfig.definition,
-      ~variables=
-        VoteCountConfig.makeVariables(
-          ~proposal_id=proposalID |> ID.Proposal.toInt,
-          ~answer=answer |> toString |> Js.Json.string,
-          (),
-        ),
-    );
+    switch (answer) {
+    | Yes =>
+      ApolloHooks.useSubscription(
+        YesVoteCountConfig.definition,
+        ~variables=
+          YesVoteCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
+      )
+    | No =>
+      ApolloHooks.useSubscription(
+        NoVoteCountConfig.definition,
+        ~variables=
+          NoVoteCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
+      )
+    | NoWithVeto =>
+      ApolloHooks.useSubscription(
+        NoWithVetoVoteCountConfig.definition,
+        ~variables=
+          NoWithVetoVoteCountConfig.makeVariables(
+            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            (),
+          ),
+      )
+    | Abstain =>
+      ApolloHooks.useSubscription(
+        AbstainVoteCountConfig.definition,
+        ~variables=
+          AbstainVoteCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
+      )
+    };
 
   result
   |> Sub.map(_, x =>
        x##votes_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count) |> Belt.Option.getExn
      );
-};
-
-let parse = (valVotes, delVotes) => {
-  let valVotesMap =
-    valVotes->Belt_Array.reduce(
-      Belt_MapString.empty, (acc, {validatorID, answer, power, proposalID}) => {
-      acc->Belt_MapString.set(
-        (validatorID |> string_of_int) ++ (proposalID |> ID.Proposal.toString),
-        {
-          validatorID,
-          valPower: power |> Coin.getBandAmountFromCoin,
-          valVote: Some(answer),
-          delVotes: _ => 0.,
-          proposalID,
-        },
-      )
-    });
-  let valVotesWithDelVotesMap =
-    delVotes
-    ->Belt_Array.reduce(valVotesMap, (acc, {validatorID, answer, power, proposalID}) => {
-        acc->Belt_MapString.update(
-          (validatorID |> string_of_int) ++ (proposalID |> ID.Proposal.toString),
-          v => {
-            let entry =
-              v->Belt_Option.getWithDefault({
-                validatorID,
-                valPower: 0.,
-                valVote: None,
-                delVotes: _ => 0.,
-                proposalID,
-              });
-            Some({
-              ...entry,
-              delVotes: ans =>
-                ans == answer ? power |> Coin.getBandAmountFromCoin : entry.delVotes(ans),
-            });
-          },
-        )
-      })
-    ->Belt_MapString.valuesToArray;
-  let parsedData =
-    valVotesWithDelVotesMap
-    ->Belt_Array.reduce(
-        Belt_MapString.empty, (acc, {validatorID, valPower, valVote, delVotes, proposalID}) => {
-        acc->Belt_MapString.set(
-          (validatorID |> string_of_int) ++ (proposalID |> ID.Proposal.toString),
-          {
-            validatorID,
-            validatorPower:
-              switch (valVote) {
-              | Some(_) =>
-                valPower
-                -. delVotes(Yes)
-                -. delVotes(No)
-                -. delVotes(NoWithVeto)
-                -. delVotes(Abstain)
-              | None => 0.
-              },
-            validatorAns: valVote,
-            proposalID,
-          },
-        )
-      })
-    ->Belt_MapString.valuesToArray;
-  parsedData;
 };
 
 let getVoteStatByProposalID = proposalID => {
@@ -315,82 +418,109 @@ let getVoteStatByProposalID = proposalID => {
   let%Sub valVotes = validatorVotes;
   let%Sub delVotes = delegatorVotes;
 
-  let parsedData =
-    parse(valVotes##validator_vote_proposals_view, delVotes##non_validator_vote_proposals_view);
+  let validatorVotePower =
+    valVotes##validator_vote_proposals_view
+    ->Belt_Array.reduce(
+        {
+          proposalID: ID.Proposal.ID(0),
+          yesVote: 0.,
+          noVote: 0.,
+          noWithVetoVote: 0.,
+          abstainVote: 0.,
+        },
+        (vote, {yesVote, noVote, noWithVetoVote, abstainVote}) =>
+        {
+          proposalID: ID.Proposal.ID(0),
+          yesVote: vote.yesVote +. yesVote,
+          noVote: vote.noVote +. noVote,
+          noWithVetoVote: vote.noWithVetoVote +. noWithVetoVote,
+          abstainVote: vote.abstainVote +. abstainVote,
+        }
+      );
 
-  let delegatorData = delVotes##non_validator_vote_proposals_view;
-
-  let validatorPower =
-    parsedData->Belt_Array.reduce(0., (a, {validatorPower}) => a +. validatorPower);
-
-  let delegatorPower =
+  let delegatorVotePower =
     delVotes##non_validator_vote_proposals_view
-    ->Belt_Array.reduce(0., (a, {power}) => a +. (power |> Coin.getBandAmountFromCoin));
+    ->Belt_Array.reduce(
+        {
+          proposalID: ID.Proposal.ID(0),
+          yesVote: 0.,
+          noVote: 0.,
+          noWithVetoVote: 0.,
+          abstainVote: 0.,
+        },
+        (vote, {yesVote, noVote, noWithVetoVote, abstainVote}) =>
+        {
+          proposalID: ID.Proposal.ID(0),
+          yesVote: vote.yesVote +. yesVote,
+          noVote: vote.noVote +. noVote,
+          noWithVetoVote: vote.noWithVetoVote +. noWithVetoVote,
+          abstainVote: vote.abstainVote +. abstainVote,
+        }
+      );
 
-  let totalPower = validatorPower +. delegatorPower;
-
-  let totalYesPower = parsedData->getValVote(Yes) +. delegatorData->getDelVote(Yes);
-  let totalNoPower = parsedData->getValVote(No) +. delegatorData->getDelVote(No);
+  let totalYesPower = validatorVotePower.yesVote +. delegatorVotePower.yesVote;
+  let totalNoPower = validatorVotePower.noVote +. delegatorVotePower.noVote;
   let totalNoWithVetoPower =
-    parsedData->getValVote(NoWithVeto) +. delegatorData->getDelVote(NoWithVeto);
-  let totalAbstainPower = parsedData->getValVote(Abstain) +. delegatorData->getDelVote(Abstain);
+    validatorVotePower.noWithVetoVote +. delegatorVotePower.noWithVetoVote;
+  let totalAbstainPower = validatorVotePower.abstainVote +. delegatorVotePower.abstainVote;
+  let totalPower = totalYesPower +. totalNoPower +. totalNoWithVetoPower +. totalAbstainPower;
 
   Sub.resolve({
     proposalID,
-    totalYes: totalYesPower,
+    totalYes: totalYesPower /. 1e6,
     totalYesPercent: totalPower == 0. ? 0. : totalYesPower /. totalPower *. 100.,
-    totalNo: totalNoPower,
+    totalNo: totalNoPower /. 1e6,
     totalNoPercent: totalPower == 0. ? 0. : totalNoPower /. totalPower *. 100.,
-    totalNoWithVeto: totalNoWithVetoPower,
+    totalNoWithVeto: totalNoWithVetoPower /. 1e6,
     totalNoWithVetoPercent: totalPower == 0. ? 0. : totalNoWithVetoPower /. totalPower *. 100.,
-    totalAbstain: totalAbstainPower,
+    totalAbstain: totalAbstainPower /. 1e6,
     totalAbstainPercent: totalPower == 0. ? 0. : totalAbstainPower /. totalPower *. 100.,
-    total: totalPower,
+    total: totalPower /. 1e6,
   });
 };
 
-let getVoteStats = () => {
-  let (validatorVotes, _) = ApolloHooks.useSubscription(ValidatorVotesConfig.definition);
-  let (delegatorVotes, _) = ApolloHooks.useSubscription(DelegatorVotesConfig.definition);
+// let getVoteStats = () => {
+//   let (validatorVotes, _) = ApolloHooks.useSubscription(ValidatorVotesConfig.definition);
+//   let (delegatorVotes, _) = ApolloHooks.useSubscription(DelegatorVotesConfig.definition);
 
-  let%Sub valVotes = validatorVotes;
-  let%Sub delVotes = delegatorVotes;
+//   let%Sub valVotes = validatorVotes;
+//   let%Sub delVotes = delegatorVotes;
 
-  //TODO: Used too many mapping, revisit later.
-  let parsedData =
-    parse(valVotes##validator_vote_proposals_view, delVotes##non_validator_vote_proposals_view);
+//   //TODO: Used too many mapping, revisit later.
+//   let parsedData =
+//     parse(valVotes##validator_vote_proposals_view, delVotes##non_validator_vote_proposals_view);
 
-  let parsedMap =
-    parsedData
-    ->Belt_Array.reduce(Belt_MapInt.empty, (acc, {validatorID, proposalID}) =>
-        acc->Belt_MapInt.set(
-          proposalID |> ID.Proposal.toInt,
-          {
-            proposalID,
-            validatorID,
-            validatorPower:
-              parsedData->Belt_Array.reduce(0., (a, {validatorPower, proposalID: delProposalID}) => {
-                proposalID == delProposalID ? a +. validatorPower : a
-              }),
-            validatorAns: None,
-          },
-        )
-      )
-    ->Belt_MapInt.valuesToArray;
+//   let parsedMap =
+//     parsedData
+//     ->Belt_Array.reduce(Belt_MapInt.empty, (acc, {validatorID, proposalID}) =>
+//         acc->Belt_MapInt.set(
+//           proposalID |> ID.Proposal.toInt,
+//           {
+//             proposalID,
+//             validatorID,
+//             validatorPower:
+//               parsedData->Belt_Array.reduce(0., (a, {validatorPower, proposalID: delProposalID}) => {
+//                 proposalID == delProposalID ? a +. validatorPower : a
+//               }),
+//             validatorAns: None,
+//           },
+//         )
+//       )
+//     ->Belt_MapInt.valuesToArray;
 
-  let voteMap =
-    parsedMap->Belt_Array.reduce(Belt_MapInt.empty, (acc, {proposalID, validatorPower}) =>
-      acc->Belt_MapInt.set(
-        proposalID |> ID.Proposal.toInt,
-        {
-          validatorPower
-          +. delVotes##non_validator_vote_proposals_view
-             ->Belt_Array.reduce(0., (a, {power, proposalID: delProposalID}) => {
-                 proposalID == delProposalID ? a +. (power |> Coin.getBandAmountFromCoin) : a
-               });
-        },
-      )
-    );
+//   let voteMap =
+//     parsedMap->Belt_Array.reduce(Belt_MapInt.empty, (acc, {proposalID, validatorPower}) =>
+//       acc->Belt_MapInt.set(
+//         proposalID |> ID.Proposal.toInt,
+//         {
+//           validatorPower
+//           +. delVotes##non_validator_vote_proposals_view
+//              ->Belt_Array.reduce(0., (a, {power, proposalID: delProposalID}) => {
+//                  proposalID == delProposalID ? a +. (power |> Coin.getBandAmountFromCoin) : a
+//                });
+//         },
+//       )
+//     );
 
-  Sub.resolve(voteMap);
-};
+//   Sub.resolve(voteMap);
+// };

@@ -73,6 +73,8 @@ let renderBody = (msg: MsgDecoder.t) =>
   | DepositMsgFail(deposit) => <IndexProposalMsg.DepositFailMsg deposit />
   | VoteMsgSuccess(vote) => <IndexProposalMsg.VoteMsg vote />
   | VoteMsgFail(vote) => <IndexProposalMsg.VoteFailMsg vote />
+  | VoteWeightedMsgSuccess(vote) => <IndexProposalMsg.VoteWeightedMsg vote />
+  | VoteWeightedMsgFail(vote) => <IndexProposalMsg.VoteWeightedFailMsg vote />
   | ActivateMsgSuccess(activate)
   | ActivateMsgFail(activate) => <IndexValidatorMsg.ActivateMsg activate />
   | UnknownMsg => renderUnknownMessage()

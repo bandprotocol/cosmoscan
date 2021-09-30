@@ -21,6 +21,7 @@ type badge_t =
   | SubmitProposalBadge
   | DepositBadge
   | VoteBadge
+  | VoteWeightedBadge
   | WithdrawCommissionBadge
   | MultiSendBadge
   | ActivateBadge
@@ -80,7 +81,8 @@ let getBadgeVariantFromString = badge => {
   | "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" => SetWithdrawAddressBadge
   | "submit_proposal" => SubmitProposalBadge
   | "deposit" => DepositBadge
-  | "vote" => VoteBadge
+  | "/cosmos.gov.v1beta1.MsgVote" => VoteBadge
+  | "/cosmos.gov.v1beta1.MsgVoteWeighted" => VoteWeightedBadge
   | "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission" => WithdrawCommissionBadge
   | "/cosmos.bank.v1beta1.MsgMultiSend" => MultiSendBadge
   | "/oracle.v1.MsgActivate" => ActivateBadge
@@ -1120,6 +1122,60 @@ module Vote = {
     };
   };
 };
+
+module VoteWeighted = {
+  exception ParseVoteNotMatch;
+  let voteParse =
+    fun
+    | 0 => "Unspecified"
+    | 1 => "Yes"
+    | 2 => "Abstain"
+    | 3 => "No"
+    | 4 => "NoWithVeto"
+    | _ => raise(ParseVoteNotMatch);
+
+  type option_t = {
+    option: string,
+    weight: float,
+  };
+
+  let parse = json => {
+    JsonUtils.Decode.{
+      option: json |> at(["option"], int) |> voteParse,
+      weight: json |> at(["weight"], string) |> float_of_string,
+    };
+  };
+
+  type success_t = {
+    voterAddress: Address.t,
+    proposalID: ID.Proposal.t,
+    options: list(option_t),
+    title: string,
+  };
+
+  type fail_t = {
+    voterAddress: Address.t,
+    proposalID: ID.Proposal.t,
+    options: list(option_t),
+  };
+
+  let decodeSuccess = json => {
+    JsonUtils.Decode.{
+      voterAddress: json |> at(["msg", "voter"], string) |> Address.fromBech32,
+      proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
+      options: json |> at(["msg", "options"], list(parse)),
+      title: json |> at(["msg", "title"], string),
+    };
+  };
+
+  let decodeFail = json => {
+    JsonUtils.Decode.{
+      voterAddress: json |> at(["msg", "voter"], string) |> Address.fromBech32,
+      proposalID: json |> at(["msg", "proposal_id"], ID.Proposal.fromJson),
+      options: json |> at(["msg", "options"], list(parse)),
+    };
+  };
+};
 module WithdrawCommission = {
   type success_t = {
     validatorAddress: Address.t,
@@ -1240,6 +1296,8 @@ type decoded_t =
   | DepositMsgFail(Deposit.fail_t)
   | VoteMsgSuccess(Vote.success_t)
   | VoteMsgFail(Vote.fail_t)
+  | VoteWeightedMsgSuccess(VoteWeighted.success_t)
+  | VoteWeightedMsgFail(VoteWeighted.fail_t)
   | WithdrawCommissionMsgSuccess(WithdrawCommission.success_t)
   | WithdrawCommissionMsgFail(WithdrawCommission.fail_t)
   | MultiSendMsgSuccess(MultiSend.t)
@@ -1318,6 +1376,8 @@ let isIBC =
   | DepositMsgFail(_)
   | VoteMsgSuccess(_)
   | VoteMsgFail(_)
+  | VoteWeightedMsgSuccess(_)
+  | VoteWeightedMsgFail(_)
   | WithdrawCommissionMsgSuccess(_)
   | WithdrawCommissionMsgFail(_)
   | MultiSendMsgSuccess(_)
@@ -1390,6 +1450,8 @@ let getCreator = msg => {
   | DepositMsgFail(deposit) => deposit.depositor
   | VoteMsgSuccess(vote) => vote.voterAddress
   | VoteMsgFail(vote) => vote.voterAddress
+  | VoteWeightedMsgSuccess(vote) => vote.voterAddress
+  | VoteWeightedMsgFail(vote) => vote.voterAddress
   | WithdrawCommissionMsgSuccess(withdrawal) => withdrawal.validatorAddress
   | WithdrawCommissionMsgFail(withdrawal) => withdrawal.validatorAddress
   | MultiSendMsgSuccess(tx)
@@ -1447,6 +1509,7 @@ let getBadge = badgeVariant => {
   | UndelegateBadge => {name: "Undelegate", category: TokenMsg}
   | RedelegateBadge => {name: "Redelegate", category: TokenMsg}
   | VoteBadge => {name: "Vote", category: ProposalMsg}
+  | VoteWeightedBadge => {name: "VoteWeighted", category: ProposalMsg}
   | WithdrawRewardBadge => {name: "Withdraw Reward", category: TokenMsg}
   | UnjailBadge => {name: "Unjail", category: ValidatorMsg}
   | SetWithdrawAddressBadge => {name: "Set Withdraw Address", category: ValidatorMsg}
@@ -1512,6 +1575,8 @@ let getBadgeTheme = msg => {
   | RedelegateMsgFail(_) => getBadge(RedelegateBadge)
   | VoteMsgSuccess(_)
   | VoteMsgFail(_) => getBadge(VoteBadge)
+  | VoteWeightedMsgSuccess(_)
+  | VoteWeightedMsgFail(_) => getBadge(VoteWeightedBadge)
   | WithdrawRewardMsgSuccess(_)
   | WithdrawRewardMsgFail(_) => getBadge(WithdrawRewardBadge)
   | UnjailMsgSuccess(_)
@@ -1581,6 +1646,7 @@ let decodeAction = json => {
       | SubmitProposalBadge => SubmitProposalMsgSuccess(json |> SubmitProposal.decodeSuccess)
       | DepositBadge => DepositMsgSuccess(json |> Deposit.decodeSuccess)
       | VoteBadge => VoteMsgSuccess(json |> Vote.decodeSuccess)
+      | VoteWeightedBadge => VoteWeightedMsgSuccess(json |> VoteWeighted.decodeSuccess)
       | WithdrawCommissionBadge =>
         WithdrawCommissionMsgSuccess(json |> WithdrawCommission.decodeSuccess)
       | MultiSendBadge => MultiSendMsgSuccess(json |> MultiSend.decode)
@@ -1640,6 +1706,7 @@ let decodeFailAction = json => {
       | SubmitProposalBadge => SubmitProposalMsgFail(json |> SubmitProposal.decodeFail)
       | DepositBadge => DepositMsgFail(json |> Deposit.decodeFail)
       | VoteBadge => VoteMsgFail(json |> Vote.decodeFail)
+      | VoteWeightedBadge => VoteWeightedMsgFail(json |> VoteWeighted.decodeFail)
       | WithdrawCommissionBadge =>
         WithdrawCommissionMsgFail(json |> WithdrawCommission.decodeFail)
       | MultiSendBadge => MultiSendMsgFail(json |> MultiSend.decode)

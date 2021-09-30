@@ -50,3 +50,18 @@ module Vote = {
     </div>;
   };
 };
+
+module VoteWeighted = {
+  [@react.component]
+  let make = (~proposalID, ~title) => {
+    <div
+      className={Css.merge([
+        CssHelper.flexBox(~wrap=`nowrap, ()),
+        CssHelper.overflowHidden,
+        Styles.msgContainer,
+      ])}>
+      <TypeID.Proposal id=proposalID />
+      <Text value=title size=Text.Md nowrap=true block=true />
+    </div>;
+  };
+};

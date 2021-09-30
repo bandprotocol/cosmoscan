@@ -215,7 +215,7 @@ let make = (~proposalID) => {
                        <Row justify=Row.Center marginTopSm=32>
                          <Col mb=24>
                            <Heading
-                             value="Total"
+                             value="Total Vote"
                              size=Heading.H5
                              color={theme.textSecondary}
                              marginBottom=4
@@ -296,7 +296,7 @@ let make = (~proposalID) => {
                  </InfoContainer>
                </Col>
              </Row>
-             <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
+              <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
            </>
          }
        | _ => React.null

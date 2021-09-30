@@ -261,3 +261,111 @@ module VoteFailMsg = {
     </Row>;
   };
 };
+
+module VoteWeightedMsg = {
+  [@react.component]
+  let make = (~vote: MsgDecoder.VoteWeighted.success_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Voter"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={vote.voterAddress} />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Proposal ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <TypeID.Proposal position=TypeID.Subtitle id={vote.proposalID} />
+      </Col>
+      <Col col=Col.Six mbSm=24>
+        <Heading
+          value="Title"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <Text size=Text.Lg value={vote.title} />
+      </Col>
+      <Col col=Col.Twelve>
+        <Heading
+          value="Options"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        {{
+           vote.options
+           ->Belt.List.mapWithIndex((index, {weight, option}) => {
+               <div key={index |> string_of_int} className={CssHelper.flexBox()}>
+                 <Text size=Text.Lg value=option />
+                 <Text size=Text.Lg value={weight |> string_of_float} />
+               </div>
+             });
+         }
+         ->Belt.List.toArray
+         ->React.array}
+      </Col>
+    </Row>;
+  };
+};
+
+module VoteWeightedFailMsg = {
+  [@react.component]
+  let make = (~vote: MsgDecoder.VoteWeighted.fail_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Voter"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={vote.voterAddress} />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Proposal ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <TypeID.Proposal position=TypeID.Subtitle id={vote.proposalID} />
+      </Col>
+      <Col col=Col.Six>
+        <Heading
+          value="Options"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        {{
+           vote.options
+           ->Belt.List.mapWithIndex((index, {weight, option}) => {
+               <div key={index |> string_of_int} className={CssHelper.flexBox()}>
+                 <Text size=Text.Lg value=option />
+                 <Text size=Text.Lg value={weight |> string_of_float} />
+               </div>
+             });
+         }
+         ->Belt.List.toArray
+         ->React.array}
+      </Col>
+    </Row>;
+  };
+};

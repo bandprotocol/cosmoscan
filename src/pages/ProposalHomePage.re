@@ -201,10 +201,10 @@ module ProposalCard = {
 let make = () => {
   let pageSize = 10;
   let proposalsSub = ProposalSub.getList(~pageSize, ~page=1, ());
-  let voteStatSub = VoteSub.getVoteStats();
+  // let voteStatSub = VoteSub.getVoteStats();
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
 
-  let allSub = Sub.all3(proposalsSub, bondedTokenCountSub, voteStatSub);
+  let allSub = Sub.all2(proposalsSub, bondedTokenCountSub);
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
@@ -215,17 +215,18 @@ let make = () => {
       </Row>
       <Row>
         {switch (allSub) {
-         | Data((proposals, bondedTokenCount, voteStatSub)) =>
+         | Data((proposals, bondedTokenCount)) =>
            proposals->Belt.Array.size > 0
              ? proposals
                ->Belt_Array.mapWithIndex((i, proposal) => {
-                   let turnoutRate =
-                     (
-                       voteStatSub->Belt_MapInt.get(proposal.id |> ID.Proposal.toInt)
-                       |> Belt_Option.getWithDefault(_, 0.)
-                     )
-                     /. (bondedTokenCount |> Coin.getBandAmountFromCoin)
-                     *. 100.;
+                   //  let turnoutRate =
+                   //    (
+                   //      voteStatSub->Belt_MapInt.get(proposal.id |> ID.Proposal.toInt)
+                   //      |> Belt_Option.getWithDefault(_, 0.)
+                   //    )
+                   //    /. (bondedTokenCount |> Coin.getBandAmountFromCoin)
+                   //    *. 100.;
+                   let turnoutRate = 0.;
                    <ProposalCard
                      key={i |> string_of_int}
                      reserveIndex=i
