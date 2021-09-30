@@ -1509,7 +1509,7 @@ let getBadge = badgeVariant => {
   | UndelegateBadge => {name: "Undelegate", category: TokenMsg}
   | RedelegateBadge => {name: "Redelegate", category: TokenMsg}
   | VoteBadge => {name: "Vote", category: ProposalMsg}
-  | VoteWeightedBadge => {name: "VoteWeighted", category: ProposalMsg}
+  | VoteWeightedBadge => {name: "WeightedVote", category: ProposalMsg}
   | WithdrawRewardBadge => {name: "Withdraw Reward", category: TokenMsg}
   | UnjailBadge => {name: "Unjail", category: ValidatorMsg}
   | SetWithdrawAddressBadge => {name: "Set Withdraw Address", category: ValidatorMsg}
