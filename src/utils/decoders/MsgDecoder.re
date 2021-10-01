@@ -1124,8 +1124,6 @@ module Vote = {
 };
 
 module VoteWeighted = {
-  exception ParseVoteNotMatch;
-
   type option_t = {
     option: string,
     weight: float,
