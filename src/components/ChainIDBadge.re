@@ -133,7 +133,7 @@ let make = () =>
          ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
          : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
-        {[|GuanYuMainnet, LaoziTestnet, LaoziPOA|]
+        {[|LaoziMainnet, LaoziTestnet, LaoziPOA|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
