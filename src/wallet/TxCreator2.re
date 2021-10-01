@@ -26,9 +26,8 @@ type msg_input_t =
   | Undelegate(Address.t, BandChainJS.Coin.t)
   | Redelegate(Address.t, Address.t, BandChainJS.Coin.t)
   | WithdrawReward(Address.t)
-  | Request(request_params_t);
-// TODO
-// | Vote(ID.Proposal.t, int);
+  | Request(request_params_t)
+  | Vote(ID.Proposal.t, int);
 
 let createMsg = (sender, msg: msg_input_t) => {
   BandChainJS.(
@@ -47,6 +46,7 @@ let createMsg = (sender, msg: msg_input_t) => {
       )
     | WithdrawReward(validator) =>
       MsgWithdrawReward.create(sender, validator |> Address.toOperatorBech32)
+    | Vote(ID.Proposal.ID(proposalID), answer) => MsgVote.create(proposalID, sender, answer)
     | Request({
         osID: ID.OracleScript.ID(oracleScriptID),
         calldata,

@@ -98,6 +98,8 @@ let make = (~msg: MsgDecoder.t) => {
      | DepositMsgSuccess({amount, proposalID, title}) =>
        <ProposalMsg.Deposit amount proposalID title />
      | VoteMsgSuccess({proposalID, title}) => <ProposalMsg.Vote proposalID title />
+     | VoteWeightedMsgSuccess({proposalID, title}) =>
+       <ProposalMsg.VoteWeighted proposalID title />
      | ActivateMsgSuccess(_) => React.null
      | CreateClientMsg(_) => React.null
      | UpdateClientMsg({clientID})

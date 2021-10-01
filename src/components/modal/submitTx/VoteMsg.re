@@ -95,7 +95,7 @@ let make = (~proposalID, ~proposalName, ~setMsgsOpt) => {
     _ => {
       let msgsOpt = {
         let%Opt answer = answerOpt;
-        Some([|TxCreator.Vote(proposalID, answer)|]);
+        Some([|TxCreator2.Vote(proposalID, answer)|]);
       };
       setMsgsOpt(_ => msgsOpt);
       None;

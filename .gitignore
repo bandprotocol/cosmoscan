@@ -7,3 +7,4 @@
 /.graphql_ppx_cache/
 /lib/bs/
 /coverage/
+*.icloud
