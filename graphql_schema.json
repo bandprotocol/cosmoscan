@@ -38264,10 +38264,34 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "abstain_vote",
             "type": {
               "kind": "SCALAR",
-              "name": "voteoption",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -38288,10 +38312,10 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
-              "name": "numeric",
+              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -38300,10 +38324,10 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -38663,6 +38687,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -38675,7 +38735,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -38687,7 +38747,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -38700,6 +38760,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -38710,7 +38800,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -38720,7 +38810,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -38779,11 +38869,31 @@
             "description": null
           },
           {
-            "name": "answer",
+            "name": "abstain_vote",
             "defaultValue": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "voteoption_comparison_exp",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
               "ofType": null
             },
             "description": null
@@ -38799,21 +38909,21 @@
             "description": null
           },
           {
-            "name": "tokens",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "numeric_comparison_exp",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
               "ofType": null
             },
             "description": null
@@ -38840,19 +38950,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "proposal_id",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "tokens",
+            "name": "abstain_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -38864,10 +38962,58 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "proposal_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -38876,6 +39022,36 @@
       },
       {
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
           {
             "name": "proposal_id",
             "defaultValue": null,
@@ -38887,7 +39063,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -38897,7 +39073,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -38928,19 +39104,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "proposal_id",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "tokens",
+            "name": "abstain_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -38952,10 +39116,58 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "proposal_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -38964,6 +39176,36 @@
       },
       {
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
           {
             "name": "proposal_id",
             "defaultValue": null,
@@ -38975,7 +39217,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -38985,7 +39227,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39006,7 +39248,27 @@
       {
         "inputFields": [
           {
-            "name": "answer",
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39026,7 +39288,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39036,7 +39298,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39064,7 +39326,19 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "abstain_vote",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "description": "column name"
           },
           {
@@ -39076,13 +39350,13 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "description": "column name"
           },
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "description": "column name"
           }
         ],
@@ -39102,6 +39376,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -39114,7 +39424,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39126,7 +39436,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39139,6 +39449,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -39149,7 +39489,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39159,7 +39499,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39190,6 +39530,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -39202,7 +39578,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39214,7 +39590,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39227,6 +39603,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -39237,7 +39643,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39247,7 +39653,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39278,6 +39684,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -39290,7 +39732,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39302,7 +39744,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39315,6 +39757,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -39325,7 +39797,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39335,7 +39807,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39366,19 +39838,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "proposal_id",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "tokens",
+            "name": "abstain_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -39390,10 +39850,58 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "proposal_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -39402,6 +39910,36 @@
       },
       {
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
           {
             "name": "proposal_id",
             "defaultValue": null,
@@ -39413,7 +39951,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39423,7 +39961,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39454,6 +39992,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -39466,7 +40040,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39478,7 +40052,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39491,6 +40065,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -39501,7 +40105,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39511,7 +40115,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39542,6 +40146,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -39554,7 +40194,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39566,7 +40206,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39579,6 +40219,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -39589,7 +40259,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39599,7 +40269,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39630,6 +40300,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -39642,7 +40348,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "validator_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39654,7 +40360,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator_id",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -39667,6 +40373,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -39677,7 +40413,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "validator_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -39687,7 +40423,7 @@
             "description": null
           },
           {
-            "name": "validator_id",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -107678,10 +108414,10 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "abstain_vote",
             "type": {
               "kind": "SCALAR",
-              "name": "voteoption",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -107702,6 +108438,30 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -107714,7 +108474,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -108077,7 +108837,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108101,7 +108897,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108114,7 +108910,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108134,7 +108960,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108193,11 +109019,11 @@
             "description": null
           },
           {
-            "name": "answer",
+            "name": "abstain_vote",
             "defaultValue": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "voteoption_comparison_exp",
+              "name": "numeric_comparison_exp",
               "ofType": null
             },
             "description": null
@@ -108213,6 +109039,26 @@
             "description": null
           },
           {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -108223,7 +109069,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -108254,10 +109100,46 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -108278,7 +109160,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -108291,7 +109173,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108311,7 +109223,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108342,10 +109254,46 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -108366,7 +109314,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -108379,7 +109327,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108399,7 +109377,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108420,7 +109398,7 @@
       {
         "inputFields": [
           {
-            "name": "answer",
+            "name": "abstain_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108440,6 +109418,26 @@
             "description": null
           },
           {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -108450,7 +109448,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108478,7 +109476,7 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "abstain_vote",
             "description": "column name"
           },
           {
@@ -108490,13 +109488,25 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "no_vote",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "description": "column name"
           },
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "description": "column name"
           }
         ],
@@ -108516,7 +109526,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108540,7 +109586,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108553,7 +109599,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108573,7 +109649,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108604,7 +109680,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108628,7 +109740,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108641,7 +109753,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108661,7 +109803,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108692,7 +109834,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108716,7 +109894,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108729,7 +109907,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108749,7 +109957,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108780,10 +109988,46 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -108804,7 +110048,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
@@ -108817,7 +110061,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108837,7 +110111,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108868,7 +110142,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108892,7 +110202,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108905,7 +110215,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108925,7 +110265,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -108956,7 +110296,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108980,7 +110356,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -108993,7 +110369,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -109013,7 +110419,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -109044,7 +110450,43 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_vote",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -109068,7 +110510,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "tokens",
+            "name": "yes_vote",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -109081,7 +110523,37 @@
       {
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_vote",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -109101,7 +110573,7 @@
             "description": null
           },
           {
-            "name": "tokens",
+            "name": "yes_vote",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -116855,133 +118327,6 @@
       },
       {
         "inputFields": null,
-        "kind": "SCALAR",
-        "possibleTypes": null,
-        "interfaces": null,
-        "name": "voteoption",
-        "enumValues": null,
-        "description": null,
-        "fields": null
-      },
-      {
-        "inputFields": [
-          {
-            "name": "_eq",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "voteoption",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_gt",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "voteoption",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_gte",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "voteoption",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_in",
-            "defaultValue": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "voteoption",
-                  "ofType": null
-                }
-              }
-            },
-            "description": null
-          },
-          {
-            "name": "_is_null",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_lt",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "voteoption",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_lte",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "voteoption",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_neq",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "voteoption",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "_nin",
-            "defaultValue": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "voteoption",
-                  "ofType": null
-                }
-              }
-            },
-            "description": null
-          }
-        ],
-        "kind": "INPUT_OBJECT",
-        "possibleTypes": null,
-        "interfaces": null,
-        "name": "voteoption_comparison_exp",
-        "enumValues": null,
-        "description": "expression to compare columns of type voteoption. All fields are combined with logical 'AND'.",
-        "fields": null
-      },
-      {
-        "inputFields": null,
         "kind": "OBJECT",
         "possibleTypes": null,
         "interfaces": [],
@@ -116989,6 +118334,22 @@
         "enumValues": null,
         "description": "columns and relationships of \"votes\"",
         "fields": [
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "numeric",
+                "ofType": null
+              }
+            },
+            "description": null
+          },
           {
             "args": [],
             "isDeprecated": false,
@@ -117009,13 +118370,29 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "no",
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "voteoption",
+                "name": "numeric",
+                "ofType": null
+              }
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "numeric",
                 "ofType": null
               }
             },
@@ -117088,6 +118465,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "numeric",
                 "ofType": null
               }
             },
@@ -117491,6 +118884,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -117516,6 +118945,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -117528,6 +118969,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -117549,6 +119020,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -117607,6 +119088,16 @@
             "description": null
           },
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "account",
             "defaultValue": null,
             "type": {
@@ -117617,11 +119108,21 @@
             "description": null
           },
           {
-            "name": "answer",
+            "name": "no",
             "defaultValue": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "voteoption_comparison_exp",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
               "ofType": null
             },
             "description": null
@@ -117675,6 +119176,16 @@
               "ofType": null
             },
             "description": null
+          },
+          {
+            "name": "yes",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -117705,6 +119216,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -117733,6 +119274,16 @@
               "ofType": null
             },
             "description": null
+          },
+          {
+            "name": "yes",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -117746,6 +119297,16 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "account",
             "defaultValue": null,
             "type": {
@@ -117756,11 +119317,21 @@
             "description": null
           },
           {
-            "name": "answer",
+            "name": "no",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
-              "name": "voteoption",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -117814,6 +119385,16 @@
               "ofType": null
             },
             "description": null
+          },
+          {
+            "name": "yes",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -117837,6 +119418,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -117865,6 +119482,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -117874,6 +119503,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -117895,6 +119554,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -117925,6 +119594,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -117953,6 +119658,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -117962,6 +119679,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -117983,6 +119730,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118146,6 +119903,16 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "account",
             "defaultValue": null,
             "type": {
@@ -118156,7 +119923,17 @@
             "description": null
           },
           {
-            "name": "answer",
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118207,6 +119984,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118273,7 +120060,19 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "abstain",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
             "description": "column name"
           },
           {
@@ -118292,6 +120091,12 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "description": "column name"
           }
         ],
@@ -118301,11 +120106,31 @@
       {
         "inputFields": [
           {
-            "name": "answer",
+            "name": "abstain",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
-              "name": "voteoption",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -118336,6 +120161,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
+            "defaultValue": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -118362,6 +120197,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118387,6 +120258,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -118399,6 +120282,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118420,6 +120333,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118450,6 +120373,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118475,6 +120434,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -118487,6 +120458,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118508,6 +120509,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118538,6 +120549,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118563,6 +120610,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -118575,6 +120634,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118596,6 +120685,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118626,6 +120725,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118654,6 +120789,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -118663,6 +120810,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118684,6 +120861,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118711,7 +120898,19 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "answer",
+            "name": "abstain",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
             "description": "column name"
           },
           {
@@ -118730,6 +120929,12 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "description": "column name"
+          },
+          {
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "description": "column name"
           }
         ],
@@ -118749,6 +120954,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118774,6 +121015,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -118786,6 +121039,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118807,6 +121090,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118837,6 +121130,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118862,6 +121191,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -118874,6 +121215,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118895,6 +121266,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -118925,6 +121306,42 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
+            "name": "abstain",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "no_with_veto",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -118950,6 +121367,18 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "voter_id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "yes",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -118962,6 +121391,36 @@
       {
         "inputFields": [
           {
+            "name": "abstain",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "no_with_veto",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "proposal_id",
             "defaultValue": null,
             "type": {
@@ -118983,6 +121442,16 @@
           },
           {
             "name": "voter_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "yes",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",

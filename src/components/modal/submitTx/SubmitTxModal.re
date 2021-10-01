@@ -64,8 +64,7 @@ module SubmitTxStep = {
        | WithdrawReward(validator) =>
          <WithdrawRewardMsg validator setMsgsOpt address={account.address} />
        | Reinvest(validator, amount) => <ReinvestMsg validator setMsgsOpt amount />
-       //  TODO
-       //  | Vote(proposalID, proposalName) => <VoteMsg proposalID proposalName setMsgsOpt />
+       | Vote(proposalID, proposalName) => <VoteMsg proposalID proposalName setMsgsOpt />
        }}
       <EnhanceTxInput
         width=300

@@ -261,3 +261,141 @@ module VoteFailMsg = {
     </Row>;
   };
 };
+
+module VoteWeightedMsg = {
+  [@react.component]
+  let make = (~vote: MsgDecoder.VoteWeighted.success_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Voter"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={vote.voterAddress} />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Proposal ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <TypeID.Proposal position=TypeID.Subtitle id={vote.proposalID} />
+      </Col>
+      <Col col=Col.Twelve mb=24>
+        <Heading
+          value="Title"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <Text size=Text.Lg value={vote.title} />
+      </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading
+          value="Option"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+      </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading
+          value="Weight"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+      </Col>
+      {{
+         vote.options
+         ->Belt.List.mapWithIndex((index, {weight, option}) => {
+             let optionCount = vote.options |> Belt.List.toArray |> Belt_Array.length;
+             let mb = index == optionCount ? 0 : 8;
+
+             <React.Fragment
+               key={(index |> string_of_int) ++ (weight |> Js.Float.toString) ++ option}>
+               <Col col=Col.Six colSm=Col.Six mb> <Text size=Text.Lg value=option /> </Col>
+               <Col col=Col.Six colSm=Col.Six mb>
+                 <Text size=Text.Lg value={weight |> Js.Float.toString} />
+               </Col>
+             </React.Fragment>;
+           });
+       }
+       ->Belt.List.toArray
+       ->React.array}
+    </Row>;
+  };
+};
+
+module VoteWeightedFailMsg = {
+  [@react.component]
+  let make = (~vote: MsgDecoder.VoteWeighted.fail_t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Voter"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <AddressRender position=AddressRender.Subtitle address={vote.voterAddress} />
+      </Col>
+      <Col col=Col.Twelve mb=24>
+        <Heading
+          value="Proposal ID"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+        <TypeID.Proposal position=TypeID.Subtitle id={vote.proposalID} />
+      </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading
+          value="Option"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+      </Col>
+      <Col col=Col.Six colSm=Col.Six>
+        <Heading
+          value="Weight"
+          size=Heading.H4
+          weight=Heading.Regular
+          marginBottom=8
+          color={theme.textSecondary}
+        />
+      </Col>
+      {{
+         vote.options
+         ->Belt.List.mapWithIndex((index, {weight, option}) => {
+             let optionCount = vote.options |> Belt.List.toArray |> Belt_Array.length;
+             let mb = index == optionCount ? 0 : 8;
+
+             <React.Fragment
+               key={(index |> string_of_int) ++ (weight |> Js.Float.toString) ++ option}>
+               <Col col=Col.Six colSm=Col.Six mb> <Text size=Text.Lg value=option /> </Col>
+               <Col col=Col.Six colSm=Col.Six mb>
+                 <Text size=Text.Lg value={weight |> Js.Float.toString} />
+               </Col>
+             </React.Fragment>;
+           });
+       }
+       ->Belt.List.toArray
+       ->React.array}
+    </Row>;
+  };
+};
