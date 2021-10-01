@@ -432,7 +432,7 @@ let getVoteStatByProposalID = proposalID => {
   let totalAbstainPower = validatorVotePower.abstainVote +. delegatorVotePower.abstainVote;
   let totalPower = totalYesPower +. totalNoPower +. totalNoWithVetoPower +. totalAbstainPower;
 
-  // If proposal id is 1 or 2, use these value.
+  // If proposal id is 1 or 2 or 3, use these value.
   switch (proposalID) {
   | ID.Proposal.ID(1) =>
     Sub.resolve({
@@ -476,15 +476,15 @@ let getVoteStatByProposalID = proposalID => {
   | _ =>
     Sub.resolve({
       proposalID,
-      totalYes: totalYesPower,
+      totalYes: totalYesPower /. 1e6,
       totalYesPercent: totalPower == 0. ? 0. : totalYesPower /. totalPower *. 100.,
-      totalNo: totalNoPower,
+      totalNo: totalNoPower /. 1e6,
       totalNoPercent: totalPower == 0. ? 0. : totalNoPower /. totalPower *. 100.,
-      totalNoWithVeto: totalNoWithVetoPower,
+      totalNoWithVeto: totalNoWithVetoPower /. 1e6,
       totalNoWithVetoPercent: totalPower == 0. ? 0. : totalNoWithVetoPower /. totalPower *. 100.,
-      totalAbstain: totalAbstainPower,
+      totalAbstain: totalAbstainPower /. 1e6,
       totalAbstainPercent: totalPower == 0. ? 0. : totalAbstainPower /. totalPower *. 100.,
-      total: totalPower,
+      total: totalPower /. 1e6,
     })
   };
 };

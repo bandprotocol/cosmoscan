@@ -36,7 +36,14 @@ module Turnout = {
     <>
       {switch (allSub) {
        | Data(({total}, bondedTokenCount)) =>
-         let turnoutRate = total /. (bondedTokenCount |> Coin.getBandAmountFromCoin) *. 100.;
+         let turnoutRate =
+           /* if proposal id is 1 and 2, then use this value */
+           switch (id) {
+           | ID.Proposal.ID(1) => 71.59
+           | ID(2) => 81.51
+           | ID(3) => 72.84
+           | _ => total /. (bondedTokenCount |> Coin.getBandAmountFromCoin) *. 100.
+           };
 
          <Col col=Col.Four colSm=Col.Five>
            <Heading
