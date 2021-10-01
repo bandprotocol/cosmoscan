@@ -13,6 +13,9 @@ module Styles = {
     | Failed => style([visibility(`hidden)]);
 
   let chartContainer = style([paddingRight(`px(20)), Media.mobile([paddingRight(`zero)])]);
+
+  let parameterChanges = (theme: Theme.t) =>
+    style([padding2(~v=`px(16), ~h=`px(24)), backgroundColor(theme.secondaryTableBg)]);
 };
 
 module VoteButton = {
@@ -150,7 +153,7 @@ let make = (~proposalID) => {
                  }}
               </Col>
             </Row>
-            <Row>
+            <Row marginBottom=24>
               <Col col=Col.Four mbSm=8>
                 <Heading
                   value="Description"
@@ -166,6 +169,26 @@ let make = (~proposalID) => {
                  }}
               </Col>
             </Row>
+            // Display when related to Enable IBC
+            {switch (allSub) {
+             | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC") =>
+               <Row>
+                 <Col col=Col.Four mbSm=8>
+                   <Heading
+                     value="Parameter Changes"
+                     size=Heading.H4
+                     weight=Heading.Thin
+                     color={theme.textSecondary}
+                   />
+                 </Col>
+                 <Col col=Col.Eight>
+                   <div className={Styles.parameterChanges(theme)}>
+                     <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
+                   </div>
+                 </Col>
+               </Row>
+             | _ => React.null
+             }}
           </InfoContainer>
         </Col>
       </Row>
@@ -296,7 +319,7 @@ let make = (~proposalID) => {
                  </InfoContainer>
                </Col>
              </Row>
-              <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
+             <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
            </>
          }
        | _ => React.null
