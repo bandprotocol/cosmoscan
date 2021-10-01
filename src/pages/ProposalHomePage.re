@@ -24,14 +24,50 @@ module Styles = {
     ]);
 };
 
+//TODO: Will refactor to have only one Sub
+module Turnout = {
+  [@react.component]
+  let make = (~id) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let voteSub = VoteSub.getVoteStatByProposalID(id);
+    let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
+
+    let allSub = Sub.all2(voteSub, bondedTokenCountSub);
+    <>
+      {switch (allSub) {
+       | Data(({total}, bondedTokenCount)) =>
+         let turnoutRate =
+           /* if proposal id is 1 and 2, then use this value */
+           switch (id) {
+           | ID.Proposal.ID(1) => 71.59
+           | ID(2) => 81.51
+           | ID(3) => 72.84
+           | _ => total /. (bondedTokenCount |> Coin.getBandAmountFromCoin) *. 100.
+           };
+
+         <Col col=Col.Four colSm=Col.Five>
+           <Heading
+             value="Turnout"
+             size=Heading.H5
+             marginBottom=8
+             color={theme.textSecondary}
+             weight=Heading.Thin
+           />
+           <Text
+             value={turnoutRate |> Format.fPercent(~digits=2)}
+             size=Text.Lg
+             color={theme.textPrimary}
+           />
+         </Col>;
+       | _ => React.null
+       }}
+    </>;
+  };
+};
+
 module ProposalCard = {
   [@react.component]
-  let make =
-      (
-        ~reserveIndex,
-        ~proposalSub: ApolloHooks.Subscription.variant(ProposalSub.t),
-        ~turnoutRate,
-      ) => {
+  let make = (~reserveIndex, ~proposalSub: ApolloHooks.Subscription.variant(ProposalSub.t)) => {
     let isMobile = Media.isMobile();
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
@@ -167,27 +203,13 @@ module ProposalCard = {
              }}
           </Col>
           {switch (proposalSub) {
-           | Data({status}) =>
+           | Data({status, id}) =>
              switch (status) {
              | Deposit => React.null
              | Voting
              | Passed
              | Rejected
-             | Failed =>
-               <Col col=Col.Four colSm=Col.Five>
-                 <Heading
-                   value="Turnout"
-                   size=Heading.H5
-                   marginBottom=8
-                   color={theme.textSecondary}
-                   weight=Heading.Thin
-                 />
-                 <Text
-                   value={turnoutRate |> Format.fPercent(~digits=2)}
-                   size=Text.Lg
-                   color={theme.textPrimary}
-                 />
-               </Col>
+             | Failed => <Turnout id />
              }
            | _ =>
              <Col col=Col.Four colSm=Col.Five>
@@ -205,10 +227,6 @@ module ProposalCard = {
 let make = () => {
   let pageSize = 10;
   let proposalsSub = ProposalSub.getList(~pageSize, ~page=1, ());
-  let voteStatSub = VoteSub.getVoteStats();
-  let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
-
-  let allSub = Sub.all3(proposalsSub, bondedTokenCountSub, voteStatSub);
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
@@ -218,31 +236,16 @@ let make = () => {
         <Col col=Col.Twelve> <Heading value="All Proposals" size=Heading.H2 /> </Col>
       </Row>
       <Row>
-        {switch (allSub) {
-         | Data((proposals, bondedTokenCount, voteStatSub)) =>
+        {switch (proposalsSub) {
+         | Data(proposals) =>
            proposals->Belt.Array.size > 0
              ? proposals
                ->Belt_Array.mapWithIndex((i, proposal) => {
-                   let turnoutRate =
-                     /* if proposal id is 1 and 2, then use this value */
-                     switch (proposal.id) {
-                     | ID.Proposal.ID(1) => 71.59
-                     | ID(2) => 81.51
-                     | ID(3) => 72.84
-                     | id =>
-                       (
-                         voteStatSub->Belt_MapInt.get(id |> ID.Proposal.toInt)
-                         |> Belt_Option.getWithDefault(_, 0.)
-                       )
-                       /. (bondedTokenCount |> Coin.getBandAmountFromCoin)
-                       *. 100.
-                     };
                    <ProposalCard
                      key={i |> string_of_int}
                      reserveIndex=i
                      proposalSub={Sub.resolve(proposal)}
-                     turnoutRate
-                   />;
+                   />
                  })
                ->React.array
              : <EmptyContainer>
@@ -261,12 +264,7 @@ let make = () => {
          | _ =>
            Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
            ->Belt_Array.mapWithIndex((i, noData) =>
-               <ProposalCard
-                 key={i |> string_of_int}
-                 reserveIndex=i
-                 proposalSub=noData
-                 turnoutRate=0.
-               />
+               <ProposalCard key={i |> string_of_int} reserveIndex=i proposalSub=noData />
              )
            ->React.array
          }}
