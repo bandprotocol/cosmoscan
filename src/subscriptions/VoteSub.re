@@ -58,7 +58,6 @@ type internal_vote_t = {
   noVote: float,
   noWithVetoVote: float,
   abstainVote: float,
-  proposalID: ID.Proposal.t,
 };
 
 type result_val_t = {
@@ -95,8 +94,8 @@ let getAnswer = json => {
 
 module YesVoteConfig = [%graphql
   {|
-    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
-      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, yes: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+    subscription Votes($limit: Int!, $offset: Int!, $proposalID: Int! ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposalID}, yes: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
         account @bsRecord {
           address @bsDecoder(fn:"Address.fromBech32")
           validator @bsRecord {
@@ -118,8 +117,8 @@ module YesVoteConfig = [%graphql
 
 module NoVoteConfig = [%graphql
   {|
-    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
-      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, no: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+    subscription Votes($limit: Int!, $offset: Int!, $proposalID: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposalID}, no: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
         account @bsRecord {
           address @bsDecoder(fn:"Address.fromBech32")
           validator @bsRecord {
@@ -141,8 +140,8 @@ module NoVoteConfig = [%graphql
 
 module NoWithVetoVoteConfig = [%graphql
   {|
-    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
-      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, no_with_veto: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+    subscription Votes($limit: Int!, $offset: Int!, $proposalID: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposalID}, no_with_veto: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
         account @bsRecord {
           address @bsDecoder(fn:"Address.fromBech32")
           validator @bsRecord {
@@ -164,8 +163,8 @@ module NoWithVetoVoteConfig = [%graphql
 
 module AbstainVoteConfig = [%graphql
   {|
-    subscription Votes($limit: Int!, $offset: Int!, $proposal_id: Int!, ) {
-      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposal_id}, abstain: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
+    subscription Votes($limit: Int!, $offset: Int!, $proposalID: Int!, ) {
+      votes(limit: $limit, offset: $offset, where: {proposal_id: {_eq: $proposalID}, abstain: {_gt: "0"}}, order_by: {transaction: {block_height: desc}}) @bsRecord {
         account @bsRecord {
           address @bsDecoder(fn:"Address.fromBech32")
           validator @bsRecord {
@@ -187,8 +186,8 @@ module AbstainVoteConfig = [%graphql
 
 module YesVoteCountConfig = [%graphql
   {|
-    subscription DepositCount($proposal_id: Int!) {
-      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, yes: {_gt: "0"}}) {
+    subscription DepositCount($proposalID: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposalID}, yes: {_gt: "0"}}) {
         aggregate {
           count
         }
@@ -199,8 +198,8 @@ module YesVoteCountConfig = [%graphql
 
 module NoVoteCountConfig = [%graphql
   {|
-    subscription DepositCount($proposal_id: Int!) {
-      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, no: {_gt: "0"}}) {
+    subscription DepositCount($proposalID: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposalID}, no: {_gt: "0"}}) {
         aggregate {
           count
         }
@@ -211,8 +210,8 @@ module NoVoteCountConfig = [%graphql
 
 module NoWithVetoVoteCountConfig = [%graphql
   {|
-    subscription DepositCount($proposal_id: Int!) {
-      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, no_with_veto: {_gt: "0"}}) {
+    subscription DepositCount($proposalID: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposalID}, no_with_veto: {_gt: "0"}}) {
         aggregate {
           count
         }
@@ -223,8 +222,8 @@ module NoWithVetoVoteCountConfig = [%graphql
 
 module AbstainVoteCountConfig = [%graphql
   {|
-    subscription DepositCount($proposal_id: Int!) {
-      votes_aggregate(where: {proposal_id: {_eq: $proposal_id}, abstain: {_gt: "0"}}) {
+    subscription DepositCount($proposalID: Int!) {
+      votes_aggregate(where: {proposal_id: {_eq: $proposalID}, abstain: {_gt: "0"}}) {
         aggregate {
           count
         }
@@ -235,13 +234,12 @@ module AbstainVoteCountConfig = [%graphql
 
 module ValidatorVoteByProposalIDConfig = [%graphql
   {|
-    subscription ValidatorVoteByProposalID($proposal_id: Int!) {
-      validator_vote_proposals_view(where: {proposal_id: {_eq: $proposal_id}}) @bsRecord {
+    subscription ValidatorVoteByProposalID($proposalID: Int!) {
+      validator_vote_proposals_view(where: {proposal_id: {_eq: $proposalID}}) @bsRecord {
         yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
-        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
       }
     }
   |}
@@ -249,13 +247,12 @@ module ValidatorVoteByProposalIDConfig = [%graphql
 
 module DelegatorVoteByProposalIDConfig = [%graphql
   {|
-    subscription DelegatorVoteByProposalID($proposal_id: Int!) {
-      non_validator_vote_proposals_view(where: {proposal_id: {_eq: $proposal_id}}) @bsRecord {
+    subscription DelegatorVoteByProposalID($proposalID: Int!) {
+      non_validator_vote_proposals_view(where: {proposal_id: {_eq: $proposalID}}) @bsRecord {
         yesVote: yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
-        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
       }
     }
   |}
@@ -269,7 +266,6 @@ module ValidatorVotesConfig = [%graphql
         noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
-        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
       }
     }
   |}
@@ -283,7 +279,6 @@ module DelegatorVotesConfig = [%graphql
         noVote: no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         noWithVetoVote: no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
         abstainVote: abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
-        proposalID: proposal_id @bsDecoder(fn: "ID.Proposal.fromIntExn")
       }
     }
   |}
@@ -299,7 +294,7 @@ let getList = (proposalID, answer, ~page, ~pageSize, ()) => {
         YesVoteConfig.definition,
         ~variables=
           YesVoteConfig.makeVariables(
-            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~proposalID=proposalID |> ID.Proposal.toInt,
             ~limit=pageSize,
             ~offset,
             (),
@@ -310,7 +305,7 @@ let getList = (proposalID, answer, ~page, ~pageSize, ()) => {
         NoVoteConfig.definition,
         ~variables=
           NoVoteConfig.makeVariables(
-            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~proposalID=proposalID |> ID.Proposal.toInt,
             ~limit=pageSize,
             ~offset,
             (),
@@ -321,7 +316,7 @@ let getList = (proposalID, answer, ~page, ~pageSize, ()) => {
         NoWithVetoVoteConfig.definition,
         ~variables=
           NoWithVetoVoteConfig.makeVariables(
-            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~proposalID=proposalID |> ID.Proposal.toInt,
             ~limit=pageSize,
             ~offset,
             (),
@@ -332,7 +327,7 @@ let getList = (proposalID, answer, ~page, ~pageSize, ()) => {
         AbstainVoteConfig.definition,
         ~variables=
           AbstainVoteConfig.makeVariables(
-            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~proposalID=proposalID |> ID.Proposal.toInt,
             ~limit=pageSize,
             ~offset,
             (),
@@ -350,20 +345,20 @@ let count = (proposalID, answer) => {
       ApolloHooks.useSubscription(
         YesVoteCountConfig.definition,
         ~variables=
-          YesVoteCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
+          YesVoteCountConfig.makeVariables(~proposalID=proposalID |> ID.Proposal.toInt, ()),
       )
     | No =>
       ApolloHooks.useSubscription(
         NoVoteCountConfig.definition,
         ~variables=
-          NoVoteCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
+          NoVoteCountConfig.makeVariables(~proposalID=proposalID |> ID.Proposal.toInt, ()),
       )
     | NoWithVeto =>
       ApolloHooks.useSubscription(
         NoWithVetoVoteCountConfig.definition,
         ~variables=
           NoWithVetoVoteCountConfig.makeVariables(
-            ~proposal_id=proposalID |> ID.Proposal.toInt,
+            ~proposalID=proposalID |> ID.Proposal.toInt,
             (),
           ),
       )
@@ -371,7 +366,7 @@ let count = (proposalID, answer) => {
       ApolloHooks.useSubscription(
         AbstainVoteCountConfig.definition,
         ~variables=
-          AbstainVoteCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
+          AbstainVoteCountConfig.makeVariables(~proposalID=proposalID |> ID.Proposal.toInt, ()),
       )
     };
 
@@ -387,7 +382,7 @@ let getVoteStatByProposalID = proposalID => {
       ValidatorVoteByProposalIDConfig.definition,
       ~variables=
         ValidatorVoteByProposalIDConfig.makeVariables(
-          ~proposal_id=proposalID |> ID.Proposal.toInt,
+          ~proposalID=proposalID |> ID.Proposal.toInt,
           (),
         ),
     );
@@ -396,7 +391,7 @@ let getVoteStatByProposalID = proposalID => {
       DelegatorVoteByProposalIDConfig.definition,
       ~variables=
         DelegatorVoteByProposalIDConfig.makeVariables(
-          ~proposal_id=proposalID |> ID.Proposal.toInt,
+          ~proposalID=proposalID |> ID.Proposal.toInt,
           (),
         ),
     );
@@ -407,16 +402,9 @@ let getVoteStatByProposalID = proposalID => {
   let validatorVotePower =
     valVotes##validator_vote_proposals_view
     ->Belt_Array.reduce(
-        {
-          proposalID: ID.Proposal.ID(0),
-          yesVote: 0.,
-          noVote: 0.,
-          noWithVetoVote: 0.,
-          abstainVote: 0.,
-        },
+        {yesVote: 0., noVote: 0., noWithVetoVote: 0., abstainVote: 0.},
         (vote, {yesVote, noVote, noWithVetoVote, abstainVote}) =>
         {
-          proposalID: ID.Proposal.ID(0),
           yesVote: vote.yesVote +. yesVote,
           noVote: vote.noVote +. noVote,
           noWithVetoVote: vote.noWithVetoVote +. noWithVetoVote,
@@ -427,16 +415,9 @@ let getVoteStatByProposalID = proposalID => {
   let delegatorVotePower =
     delVotes##non_validator_vote_proposals_view
     ->Belt_Array.reduce(
-        {
-          proposalID: ID.Proposal.ID(0),
-          yesVote: 0.,
-          noVote: 0.,
-          noWithVetoVote: 0.,
-          abstainVote: 0.,
-        },
+        {yesVote: 0., noVote: 0., noWithVetoVote: 0., abstainVote: 0.},
         (vote, {yesVote, noVote, noWithVetoVote, abstainVote}) =>
         {
-          proposalID: ID.Proposal.ID(0),
           yesVote: vote.yesVote +. yesVote,
           noVote: vote.noVote +. noVote,
           noWithVetoVote: vote.noWithVetoVote +. noWithVetoVote,

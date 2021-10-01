@@ -321,7 +321,8 @@ module VoteWeightedMsg = {
              let optionCount = vote.options |> Belt.List.toArray |> Belt_Array.length;
              let mb = index == optionCount ? 0 : 8;
 
-             <React.Fragment key={index |> string_of_int}>
+             <React.Fragment
+               key={(index |> string_of_int) ++ (weight |> Js.Float.toString) ++ option}>
                <Col col=Col.Six colSm=Col.Six mb> <Text size=Text.Lg value=option /> </Col>
                <Col col=Col.Six colSm=Col.Six mb>
                  <Text size=Text.Lg value={weight |> Js.Float.toString} />
@@ -384,7 +385,8 @@ module VoteWeightedFailMsg = {
              let optionCount = vote.options |> Belt.List.toArray |> Belt_Array.length;
              let mb = index == optionCount ? 0 : 8;
 
-             <React.Fragment key={index |> string_of_int}>
+             <React.Fragment
+               key={(index |> string_of_int) ++ (weight |> Js.Float.toString) ++ option}>
                <Col col=Col.Six colSm=Col.Six mb> <Text size=Text.Lg value=option /> </Col>
                <Col col=Col.Six colSm=Col.Six mb>
                  <Text size=Text.Lg value={weight |> Js.Float.toString} />

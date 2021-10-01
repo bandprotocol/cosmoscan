@@ -1125,14 +1125,6 @@ module Vote = {
 
 module VoteWeighted = {
   exception ParseVoteNotMatch;
-  let voteParse =
-    fun
-    | 0 => "Unspecified"
-    | 1 => "Yes"
-    | 2 => "Abstain"
-    | 3 => "No"
-    | 4 => "NoWithVeto"
-    | _ => raise(ParseVoteNotMatch);
 
   type option_t = {
     option: string,
@@ -1141,7 +1133,7 @@ module VoteWeighted = {
 
   let parse = json => {
     JsonUtils.Decode.{
-      option: json |> at(["option"], int) |> voteParse,
+      option: json |> at(["option"], int) |> Vote.parse,
       weight: json |> at(["weight"], string) |> float_of_string,
     };
   };
