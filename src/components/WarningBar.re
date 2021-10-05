@@ -17,17 +17,11 @@ let make = () => {
     <div className={Css.merge([CssHelper.flexBox(~wrap=`nowrap, ()), Styles.innerBar])}>
       <Icon name="fal fa-exclamation-circle" size=24 color={theme.pendingColor} />
       <Text
-        value="Bandchain is operating normally. Only CosmoScan is facing an issue and we are fixing it at the moment. This does not affect other explorers or 3rd party wallets."
+        value="The Laozi mainnet migration has successfully concluded. As part of the migration process, all pending staking rewards have been automatically withdrawn to your wallet balance."
         block=true
         color={isDarkMode ? theme.white : theme.black}
         size=Text.Lg
       />
     </div>
   </div>;
-  // <Text
-  //   value="The Laozi mainnet migration has successfully concluded. As part of the migration process, all pending staking rewards have been automatically withdrawn to your wallet balance."
-  //   block=true
-  //   color={isDarkMode ? theme.white : theme.black}
-  //   size=Text.Lg
-  // />
 };
