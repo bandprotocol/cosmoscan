@@ -1,6 +1,7 @@
 module Decode = {
   include Json.Decode;
   let intstr = string |> map(int_of_string);
+  let uamountInt = int |> map(float_of_int);
   let uamount = string |> map(float_of_string);
   let moment = string |> map(MomentRe.moment);
   let floatstr = string |> map(float_of_string);

@@ -9,6 +9,13 @@ let decodeCoin = json =>
     amount: json |> field("amount", uamount),
   };
 
+
+let decodeCoinInt = json =>
+  JsonUtils.Decode.{
+    denom: json |> field("denom", string),
+    amount: json |> field("amount", uamountInt),
+  };
+
 let newUBANDFromAmount = amount => {denom: "uband", amount};
 
 let newCoin = (denom, amount) => {denom, amount};

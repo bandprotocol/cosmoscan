@@ -104,7 +104,7 @@ let getBadgeVariantFromString = badge => {
   | "timeout_on_close" => TimeoutOnCloseBadge
   | "/ibc.core.channel.v1.MsgRecvPacket" => RecvPacketBadge
   | "/ibc.core.channel.v1.MsgAcknowledgement" => AcknowledgePacketBadge
-  | "transfer" => TransferBadge
+  | "/ibc.applications.transfer.v1.MsgTransfer" => TransferBadge
   | _ => UnknownBadge
   };
 };
@@ -829,24 +829,33 @@ module Transfer = {
   type t = {
     sender: Address.t,
     receiver: string,
-    sourcePort: string,
     sourceChannel: string,
     token: Coin.t,
     timeoutHeight: Height.t,
     timeoutTimestamp: MomentRe.Moment.t,
   };
 
-  let decode = json => {
+  let decodeSuccess = json => {
     JsonUtils.Decode.{
       sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
       receiver: json |> at(["msg", "receiver"], string),
-      sourcePort: json |> at(["msg", "source_port"], string),
       sourceChannel: json |> at(["msg", "source_channel"], string),
-      token: json |> at(["msg", "token"], Coin.decodeCoin),
+      token: json |> at(["msg", "decoded_data"], Coin.decodeCoinInt),
       timeoutHeight: json |> at(["msg", "timeout_height"], Height.decode),
       timeoutTimestamp: json |> at(["msg", "timeout_timestamp"], GraphQLParser.timeNS),
     };
   };
+
+  let decodeFail = json => {
+    JsonUtils.Decode.{
+      sender: json |> at(["msg", "sender"], string) |> Address.fromBech32,
+      receiver: json |> at(["msg", "receiver"], string),
+      sourceChannel: json |> at(["msg", "source_channel"], string),
+      token: json |> at(["msg", "token"], Coin.decodeCoin),
+      timeoutHeight: json |> at(["msg", "timeout_height"], Height.decode),
+      timeoutTimestamp: json |> at(["msg", "timeout_timestamp"], GraphQLParser.timeNS),
+    }
+  }
 };
 
 module Delegate = {
@@ -1663,7 +1672,7 @@ let decodeAction = json => {
       | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
       | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
       | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
-      | TransferBadge => TransferMsg(json |> Transfer.decode)
+      | TransferBadge => TransferMsg(json |> Transfer.decodeSuccess)
       }
     );
   {raw: json, decoded, isIBC: decoded |> isIBC};
@@ -1723,7 +1732,7 @@ let decodeFailAction = json => {
       | AcknowledgePacketBadge => AcknowledgePacketMsg(json |> AcknowledgePacket.decode)
       | TimeoutBadge => TimeoutMsg(json |> Timeout.decode)
       | TimeoutOnCloseBadge => TimeoutOnCloseMsg(json |> TimeoutOnClose.decode)
-      | TransferBadge => TransferMsg(json |> Transfer.decode)
+      | TransferBadge => TransferMsg(json |> Transfer.decodeFail)
       }
     );
   {raw: json, decoded, isIBC: decoded |> isIBC};

@@ -26,16 +26,6 @@ module Transfer = {
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
-          value="Source Port"
-          size=Heading.H4
-          weight=Heading.Regular
-          marginBottom=8
-          color={theme.textSecondary}
-        />
-        <Text size=Text.Lg value={msg.sourcePort} />
-      </Col>
-      <Col col=Col.Six mb=24>
-        <Heading
           value="Source Channel"
           size=Heading.H4
           weight=Heading.Regular
