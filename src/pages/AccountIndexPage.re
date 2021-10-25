@@ -2,12 +2,20 @@ module Styles = {
   open Css;
 
   let squareIcon = color =>
-    style([width(`px(8)), marginRight(`px(8)), height(`px(8)), backgroundColor(color)]);
+    style([
+      width(`px(8)),
+      marginRight(`px(8)),
+      height(`px(8)),
+      backgroundColor(color),
+    ]);
 
   let balance = style([minWidth(`px(150)), justifyContent(`flexEnd)]);
 
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
+  let infoHeader = (theme: Theme.t) =>
+    style([
+      borderBottom(`px(1), `solid, theme.dropdownHover),
+      paddingBottom(`px(16)),
+    ]);
 
   let totalBalance =
     style([
@@ -43,15 +51,20 @@ module Styles = {
 
   let detailContainer = style([height(`percent(100.))]);
 
-  let addressContainer = style([width(`percent(100.)), maxWidth(`px(420))]);
+  let addressContainer =
+    style([width(`percent(100.)), maxWidth(`px(420))]);
 
   let buttonContainer =
-    style([marginTop(`px(24)), selector("> button + *", [marginLeft(`px(16))])]);
+    style([
+      marginTop(`px(24)),
+      selector("> button + *", [marginLeft(`px(16))]),
+    ]);
 };
 
 module BalanceDetails = {
   [@react.component]
-  let make = (~title, ~description, ~amount, ~usdPrice, ~color, ~isCountup=false) => {
+  let make =
+      (~title, ~description, ~amount, ~usdPrice, ~color, ~isCountup=false) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <Row>
       <Col col=Col.Six colSm=Col.Five>
@@ -68,7 +81,12 @@ module BalanceDetails = {
         </div>
       </Col>
       <Col col=Col.Six colSm=Col.Seven>
-        <div className={CssHelper.flexBox(~direction=`column, ~align=`flexEnd, ())}>
+        <div
+          className={CssHelper.flexBox(
+            ~direction=`column,
+            ~align=`flexEnd,
+            (),
+          )}>
           <div className={CssHelper.flexBox()}>
             {isCountup
                ? <NumberCountup
@@ -131,9 +149,16 @@ module BalanceDetailLoading = {
   [@react.component]
   let make = () => {
     <Row>
-      <Col col=Col.Six colSm=Col.Five> <LoadingCensorBar width=130 height=18 /> </Col>
+      <Col col=Col.Six colSm=Col.Five>
+        <LoadingCensorBar width=130 height=18 />
+      </Col>
       <Col col=Col.Six colSm=Col.Seven>
-        <div className={CssHelper.flexBox(~direction=`column, ~align=`flexEnd, ())}>
+        <div
+          className={CssHelper.flexBox(
+            ~direction=`column,
+            ~align=`flexEnd,
+            (),
+          )}>
           <LoadingCensorBar width=120 height=20 />
           <VSpacing size=Spacing.xs />
           <LoadingCensorBar width=120 height=16 />
@@ -153,9 +178,20 @@ module TotalBalanceRender = {
           CssHelper.flexBox(~align=`flexEnd, ()),
           CssHelper.mb(~size=16, ()),
         ])}>
-        <NumberCountup value=amountBAND size=Text.Xxxl weight=Text.Regular smallNumber=true />
+        <NumberCountup
+          value=amountBAND
+          size=Text.Xxxl
+          weight=Text.Regular
+          smallNumber=true
+        />
         <HSpacing size=Spacing.sm />
-        <Text value="BAND" size=Text.Lg code=false weight=Text.Thin color={theme.textPrimary} />
+        <Text
+          value="BAND"
+          size=Text.Lg
+          code=false
+          weight=Text.Thin
+          color={theme.textPrimary}
+        />
       </div>
       <div className={CssHelper.flexBox()}>
         <NumberCountup
@@ -166,7 +202,9 @@ module TotalBalanceRender = {
         />
         <HSpacing size=Spacing.sm />
         <Text
-          value={" USD " ++ "($" ++ (usdPrice |> Js.Float.toString) ++ " / BAND)"}
+          value={
+            " USD " ++ "($" ++ (usdPrice |> Js.Float.toString) ++ " / BAND)"
+          }
           size=Text.Lg
           weight=Text.Thin
         />
@@ -178,7 +216,8 @@ module TotalBalanceRender = {
 [@react.component]
 let make = (~address, ~hashtag: Route.account_tab_t) => {
   let currentTime =
-    React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
+    React.useContext(TimeContext.context)
+    |> MomentRe.Moment.format(Config.timestampUseFormat);
   let isMobile = Media.isMobile();
   let accountSub = AccountSub.get(address);
   let trackingSub = TrackingSub.use();
@@ -188,7 +227,14 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let (accountOpt, _) = React.useContext(AccountContext.context);
 
-  let topPartAllSub = Sub.all5(infoSub, accountSub, balanceAtStakeSub, unbondingSub, trackingSub);
+  let topPartAllSub =
+    Sub.all5(
+      infoSub,
+      accountSub,
+      balanceAtStakeSub,
+      unbondingSub,
+      trackingSub,
+    );
 
   let sumBalance = (balance, amount, unbonding, reward, commission) => {
     let availableBalance = balance->Coin.getBandAmountFromCoins;
@@ -197,14 +243,24 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
     let rewardAmount = reward->Coin.getBandAmountFromCoin;
     let commissionAmount = commission->Coin.getBandAmountFromCoins;
 
-    availableBalance +. balanceAtStakeAmount +. rewardAmount +. unbondingAmount +. commissionAmount;
+    availableBalance
+    +. balanceAtStakeAmount
+    +. rewardAmount
+    +. unbondingAmount
+    +. commissionAmount;
   };
   let send = chainID => {
     switch (accountOpt) {
     | Some({address: sender}) =>
-      let openSendModal = () => Some(address)->SubmitMsg.Send->SubmitTx->OpenModal->dispatchModal;
+      let openSendModal = () =>
+        Some(address)->SubmitMsg.Send->SubmitTx->OpenModal->dispatchModal;
       if (sender == address) {
-        Webapi.Dom.(window |> Window.confirm("Are you sure you want to send tokens to yourself?"))
+        Webapi.Dom.(
+          window
+          |> Window.confirm(
+               "Are you sure you want to send tokens to yourself?",
+             )
+        )
           ? openSendModal() : ();
       } else {
         openSendModal();
@@ -226,13 +282,23 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
         <Col col=Col.Six>
           <div
             className={Css.merge([
-              CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
+              CssHelper.flexBox(
+                ~direction=`column,
+                ~justify=`spaceBetween,
+                ~align=`stretch,
+                (),
+              ),
               Styles.infoLeft,
             ])}>
             <InfoContainer>
               <div
                 className={Css.merge([
-                  CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`flexStart, ()),
+                  CssHelper.flexBox(
+                    ~direction=`column,
+                    ~justify=`center,
+                    ~align=`flexStart,
+                    (),
+                  ),
                   Styles.detailContainer,
                 ])}>
                 <div className=Styles.addressContainer>
@@ -246,8 +312,13 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                     />
                   </div>
                 </div>
-                <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
-                  <Button variant=Button.Outline py=5 onClick={_ => {qrCode()}}>
+                <div
+                  className={Css.merge([
+                    CssHelper.flexBox(),
+                    Styles.buttonContainer,
+                  ])}>
+                  <Button
+                    variant=Button.Outline py=5 onClick={_ => {qrCode()}}>
                     <div className={CssHelper.flexBox()}>
                       <Icon size=20 name="far fa-qrcode" mr=8 />
                       {"QR Code" |> React.string}
@@ -258,7 +329,9 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      : {
                        switch (topPartAllSub) {
                        | Data((_, _, _, _, {chainID})) =>
-                         <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
+                         <Button
+                           variant=Button.Outline
+                           onClick={_ => {send(chainID)}}>
                            {"Send BAND" |> React.string}
                          </Button>
                        | _ => <LoadingCensorBar width=90 height=26 />
@@ -270,14 +343,35 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
             <InfoContainer>
               <div
                 className={Css.merge([
-                  CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`flexStart, ()),
+                  CssHelper.flexBox(
+                    ~direction=`column,
+                    ~justify=`center,
+                    ~align=`flexStart,
+                    (),
+                  ),
                   Styles.detailContainer,
                 ])}>
-                <Heading size=Heading.H4 value="Total Balance" marginBottom=24 />
+                <Heading
+                  size=Heading.H4
+                  value="Total Balance"
+                  marginBottom=24
+                />
                 {switch (topPartAllSub) {
-                 | Data(({financial}, {balance, commission}, {amount, reward}, unbonding, _)) =>
+                 | Data((
+                     {financial},
+                     {balance, commission},
+                     {amount, reward},
+                     unbonding,
+                     _,
+                   )) =>
                    <TotalBalanceRender
-                     amountBAND={sumBalance(balance, amount, unbonding, reward, commission)}
+                     amountBAND={sumBalance(
+                       balance,
+                       amount,
+                       unbonding,
+                       reward,
+                       commission,
+                     )}
                      usdPrice={financial.usdPrice}
                    />
 
@@ -296,12 +390,19 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
             <Heading value="Balance" size=Heading.H4 marginBottom=40 />
             <div className=Styles.amountBoxes>
               {switch (topPartAllSub) {
-               | Data((_, {balance, commission}, {amount, reward}, unbonding, _)) =>
+               | Data((
+                   _,
+                   {balance, commission},
+                   {amount, reward},
+                   unbonding,
+                   _,
+                 )) =>
                  let availableBalance = balance->Coin.getBandAmountFromCoins;
                  let balanceAtStakeAmount = amount->Coin.getBandAmountFromCoin;
                  let unbondingAmount = unbonding->Coin.getBandAmountFromCoin;
                  let rewardAmount = reward->Coin.getBandAmountFromCoin;
-                 let commissionAmount = commission->Coin.getBandAmountFromCoins;
+                 let commissionAmount =
+                   commission->Coin.getBandAmountFromCoins;
                  <AccountBarChart
                    availableBalance
                    balanceAtStake=balanceAtStakeAmount
@@ -366,7 +467,8 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
               </div>
               {switch (topPartAllSub) {
                | Data(({financial}, {commission}, _, _, _)) =>
-                 let commissionAmount = commission->Coin.getBandAmountFromCoins;
+                 let commissionAmount =
+                   commission->Coin.getBandAmountFromCoins;
                  commissionAmount == 0.
                    ? React.null
                    : <div>
@@ -393,15 +495,18 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
               tabs=[|
                 {
                   name: "Delegations",
-                  route: Route.AccountIndexPage(address, Route.AccountDelegations),
+                  route:
+                    Route.AccountIndexPage(address, Route.AccountDelegations),
                 },
                 {
                   name: "Unbonding",
-                  route: Route.AccountIndexPage(address, Route.AccountUnbonding),
+                  route:
+                    Route.AccountIndexPage(address, Route.AccountUnbonding),
                 },
                 {
                   name: "Redelegate",
-                  route: Route.AccountIndexPage(address, Route.AccountRedelegate),
+                  route:
+                    Route.AccountIndexPage(address, Route.AccountRedelegate),
                 },
               |]
               currentRoute={Route.AccountIndexPage(address, hashtag)}>

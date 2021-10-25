@@ -30,10 +30,13 @@ module Styles = {
       minWidth(`zero),
     ]);
   let vFlex = style([display(`flex), alignItems(`center)]);
-  let addressContainer = maxwidth_ => style([alignItems(`center), maxWidth(`px(maxwidth_))]);
-  let datasourcesContainer = style([display(`flex), alignItems(`center), flexWrap(`wrap)]);
+  let addressContainer = maxwidth_ =>
+    style([alignItems(`center), maxWidth(`px(maxwidth_))]);
+  let datasourcesContainer =
+    style([display(`flex), alignItems(`center), flexWrap(`wrap)]);
   let oracleScriptContainer = style([display(`flex), width(`px(240))]);
-  let validatorsContainer = style([display(`flex), flexDirection(`column), flexWrap(`wrap)]);
+  let validatorsContainer =
+    style([display(`flex), flexDirection(`column), flexWrap(`wrap)]);
   let sourceContainer =
     style([
       display(`inlineFlex),
@@ -47,11 +50,12 @@ module Styles = {
 
 [@react.component]
 let make = (~info, ~header, ~isLeft=true) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let infoSub = React.useContext(GlobalContext.context);
   <div className={Styles.mainContainer(isLeft)}>
     <Text
       value=header
-      color=Colors.gray7
+      color={theme.textSecondary}
       size=Text.Sm
       weight=Text.Thin
       height={Text.Px(18)}
@@ -59,7 +63,9 @@ let make = (~info, ~header, ~isLeft=true) => {
     />
     {switch (info) {
      | Height(height) =>
-       <div className=Styles.vFlex> <TypeID.Block id=height position=TypeID.Subtitle /> </div>
+       <div className=Styles.vFlex>
+         <TypeID.Block id=height position=TypeID.Subtitle />
+       </div>
      | Float(value) =>
        <Text
          value={value |> Format.fPretty}
@@ -117,20 +123,33 @@ let make = (~info, ~header, ~isLeft=true) => {
            size=Text.Md
            weight=Text.Thin
            spacing={Text.Em(0.06)}
-           color=Colors.gray7
+           color={theme.textSecondary}
          />
        </div>
      | Fee(fee) =>
        <div className=Styles.vFlex>
-         <Text value={fee |> Format.fPretty} size=Text.Lg weight=Text.Bold code=true />
+         <Text
+           value={fee |> Format.fPretty}
+           size=Text.Lg
+           weight=Text.Bold
+           code=true
+         />
          <HSpacing size=Spacing.md />
-         <Text value="BAND" size=Text.Lg weight=Text.Regular spacing={Text.Em(0.02)} code=true />
+         <Text
+           value="BAND"
+           size=Text.Lg
+           weight=Text.Regular
+           spacing={Text.Em(0.02)}
+           code=true
+         />
          <HSpacing size=Spacing.xs />
          <HSpacing size=Spacing.xs />
          {switch (infoSub) {
           | Data(info) =>
             let feeInUsd =
-              info.financial.usdPrice *. fee |> Js.Float.toFixedWithPrecision(~digits=2);
+              info.financial.usdPrice
+              *. fee
+              |> Js.Float.toFixedWithPrecision(~digits=2);
             <Text
               value={j|(\$$feeInUsd)|j}
               size=Text.Lg
@@ -143,7 +162,13 @@ let make = (~info, ~header, ~isLeft=true) => {
        </div>
      | DataSources(ids) =>
        switch (ids |> Belt_List.size) {
-       | 0 => <Text value="TBD" size=Text.Lg spacing={Text.Em(0.06)} height={Text.Px(17)} />
+       | 0 =>
+         <Text
+           value="TBD"
+           size=Text.Lg
+           spacing={Text.Em(0.06)}
+           height={Text.Px(17)}
+         />
        | _ =>
          <div className=Styles.datasourcesContainer>
            {ids
@@ -181,7 +206,11 @@ let make = (~info, ~header, ~isLeft=true) => {
        />
      | Fraction(x, y, space) =>
        <Text
-         value={(x |> Format.iPretty) ++ (space ? " / " : "/") ++ (y |> Format.iPretty)}
+         value={
+           (x |> Format.iPretty)
+           ++ (space ? " / " : "/")
+           ++ (y |> Format.iPretty)
+         }
          size=Text.Lg
          weight=Text.Semibold
          spacing={Text.Em(0.02)}
@@ -203,7 +232,9 @@ let make = (~info, ~header, ~isLeft=true) => {
        <div className=Styles.validatorsContainer>
          {validators
           ->Belt_Array.map(validator =>
-              <div key={validator.operatorAddress |> Address.toBech32} className=Styles.vFlex>
+              <div
+                key={validator.operatorAddress |> Address.toBech32}
+                className=Styles.vFlex>
                 <Text value={j|●|j} />
                 <HSpacing size=Spacing.md />
                 <ValidatorMonikerLink

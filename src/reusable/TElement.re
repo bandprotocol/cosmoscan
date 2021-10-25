@@ -3,14 +3,17 @@ module Styles = {
 
   let typeContainer = w => style([marginRight(`px(20)), width(w)]);
 
-  let resolveIcon = style([width(`px(20)), height(`px(20)), marginLeft(Spacing.sm)]);
+  let resolveIcon =
+    style([width(`px(20)), height(`px(20)), marginLeft(Spacing.sm)]);
 
   let hashContainer = style([maxWidth(`px(220))]);
   let feeContainer = style([display(`flex), justifyContent(`flexEnd)]);
-  let timeContainer = style([display(`flex), alignItems(`center), maxWidth(`px(150))]);
+  let timeContainer =
+    style([display(`flex), alignItems(`center), maxWidth(`px(150))]);
   let textContainer = style([display(`flex)]);
   let countContainer = style([maxWidth(`px(80))]);
-  let proposerBox = style([maxWidth(`px(270)), display(`flex), flexDirection(`column)]);
+  let proposerBox =
+    style([maxWidth(`px(270)), display(`flex), flexDirection(`column)]);
   let idContainer = style([display(`flex), maxWidth(`px(200))]);
   let dataSourcesContainer = style([display(`flex)]);
   let dataSourceContainer = style([display(`flex), width(`px(170))]);
@@ -56,13 +59,22 @@ let renderAddress = address => {
 };
 
 let renderFee = fee => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div className=Styles.feeContainer>
-    <Text value={fee->Format.fPretty} color=Colors.gray7 code=true block=true nowrap=true />
+    <Text
+      value={fee->Format.fPretty}
+      color={theme.textSecondary}
+      code=true
+      block=true
+      nowrap=true
+    />
   </div>;
 };
 
 let renderHeight = blockHeight => {
-  <div className=Styles.textContainer> <TypeID.Block id={ID.Block.ID(blockHeight)} /> </div>;
+  <div className=Styles.textContainer>
+    <TypeID.Block id={ID.Block.ID(blockHeight)} />
+  </div>;
 };
 
 let renderHeightWithTime = (height, time) => {
@@ -71,7 +83,14 @@ let renderHeightWithTime = (height, time) => {
 
 let renderName = name => {
   <div className=Styles.hashContainer>
-    <Text block=true code=true value=name size=Text.Lg weight=Text.Bold ellipsis=true />
+    <Text
+      block=true
+      code=true
+      value=name
+      size=Text.Lg
+      weight=Text.Bold
+      ellipsis=true
+    />
   </div>;
 };
 
@@ -86,8 +105,15 @@ let renderCount = count => {
 };
 
 let renderProposer = (moniker, proposer) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div className=Styles.proposerBox>
-    <Text block=true value=moniker size=Text.Sm weight=Text.Regular color=Colors.gray7 />
+    <Text
+      block=true
+      value=moniker
+      size=Text.Sm
+      weight=Text.Regular
+      color={theme.textSecondary}
+    />
     <VSpacing size=Spacing.sm />
     <Text
       block=true
@@ -96,7 +122,7 @@ let renderProposer = (moniker, proposer) => {
       weight=Text.Bold
       code=true
       ellipsis=true
-      color=Colors.gray8
+      color={theme.textSecondary}
     />
   </div>;
 };
@@ -138,7 +164,8 @@ let renderRelatedDataSources = ids => {
     <div className=Styles.dataSourcesContainer>
       {ids
        ->Belt_List.map(id => {
-           <div className=Styles.idContainer key={id |> ID.DataSource.toString}>
+           <div
+             className=Styles.idContainer key={id |> ID.DataSource.toString}>
              <TypeID.DataSource id position=TypeID.Text />
              <HSpacing size=Spacing.sm />
            </div>
@@ -150,7 +177,9 @@ let renderRelatedDataSources = ids => {
 };
 
 let renderRequest = id => {
-  <div className=Styles.idContainer> <TypeID.Request id position=TypeID.Text /> </div>;
+  <div className=Styles.idContainer>
+    <TypeID.Request id position=TypeID.Text />
+  </div>;
 };
 
 let renderRequestStatus = status => {
@@ -209,7 +238,8 @@ type t =
 let make = (~elementType) => {
   switch (elementType) {
   | Height(height) => renderHeight(height)
-  | HeightWithTime(height, timestamp) => renderHeightWithTime(height, timestamp)
+  | HeightWithTime(height, timestamp) =>
+    renderHeightWithTime(height, timestamp)
   | Name(name) => renderName(name)
   | Timestamp(time) => renderTime(time)
   | TxHash(hash, timestamp) => renderTxHash(hash, timestamp)

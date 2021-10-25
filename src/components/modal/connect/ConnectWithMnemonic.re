@@ -21,14 +21,14 @@ module Styles = {
       color(theme.textPrimary),
     ]);
 
-  let mnemonicHelper =
+  let mnemonicHelper = (theme: Theme.t) =>
     style([
       width(`px(130)),
       height(`px(16)),
       display(`flex),
       justifyContent(`spaceBetween),
       alignContent(`center),
-      color(Css.hex("5269FF")),
+      color(theme.baseBlue),
     ]);
 
   let connectBtn = style([width(`percent(100.)), height(`px(37))]);
@@ -83,13 +83,16 @@ let make = (~chainID) => {
       }
     />
     <VSpacing size=Spacing.xl />
-    <div id="mnemonicConnectButton" className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-      <Button px=20 py=8 onClick={_ => createMnemonic()} style=Styles.connectBtn>
+    <div
+      id="mnemonicConnectButton"
+      className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+      <Button
+        px=20 py=8 onClick={_ => createMnemonic()} style=Styles.connectBtn>
         {"Connect" |> React.string}
       </Button>
     </div>
     <VSpacing size=Spacing.lg />
-    <Text value=errMsg color=Colors.red6 />
+    <Text value=errMsg color={theme.failColor} />
   </div>;
   // </Col>
   //   </div>

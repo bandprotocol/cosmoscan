@@ -17,9 +17,11 @@ type log_t = {message: string};
 
 type err_t = {log: option(string)};
 
-let decodeLog = json => JsonUtils.Decode.{message: json |> field("message", string)};
+let decodeLog = json =>
+  JsonUtils.Decode.{message: json |> field("message", string)};
 
-let decode = json => JsonUtils.Decode.{log: json |> optional(field("log", string))};
+let decode = json =>
+  JsonUtils.Decode.{log: json |> optional(field("log", string))};
 
 let parseErr = msg => {
   let err =
@@ -46,7 +48,7 @@ module Full = {
         Styles.errorContainer(theme),
         CssHelper.flexBox(~wrap=`nowrap, ()),
       ])}>
-      <Icon name="fal fa-exclamation-circle" size=14 color=Colors.red5 />
+      <Icon name="fal fa-exclamation-circle" size=14 color={theme.failColor} />
       <Text
         value={msg |> parseErr}
         size=Text.Lg
@@ -63,6 +65,12 @@ module Mini = {
   let make = (~msg) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-    <Text value={msg |> parseErr} code=true size=Text.Sm breakAll=true color={theme.failColor} />;
+    <Text
+      value={msg |> parseErr}
+      code=true
+      size=Text.Sm
+      breakAll=true
+      color={theme.failColor}
+    />;
   };
 };

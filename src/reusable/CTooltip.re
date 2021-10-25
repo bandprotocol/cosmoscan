@@ -15,22 +15,24 @@ module Styles = {
       position(`relative),
       display(`block),
       hover([
-        selector("> div:nth-child(1)", [opacity(1.), zIndex(99), pointerEvents(`unset)]),
+        selector(
+          "> div:nth-child(1)",
+          [opacity(1.), zIndex(99), pointerEvents(`unset)],
+        ),
       ]),
     ]);
-
   let hiddenTooltipSm = style([Media.mobile([display(`none)])]);
-  let tooltipItem = (maxWidth_, padding_, align_, fsize_) =>
+  let tooltipItem = (maxWidth_, padding_, align_, fsize_, theme: Theme.t) =>
     style([
       position(`absolute),
       display(`block),
       fontSize(`px(fsize_)),
       textAlign(align_),
-      backgroundColor(Colors.gray7),
+      backgroundColor(`rgba((85, 85, 85, `num(1.0)))),
       borderRadius(`px(4)),
       maxWidth(`px(maxWidth_)),
       unsafe("width", "max-content"),
-      color(Colors.white),
+      color(theme.white),
       padding(`px(padding_)),
       opacity(0.),
       pointerEvents(`none),
@@ -40,9 +42,13 @@ module Styles = {
         pointerEvents(`none),
         display(`block),
         position(`absolute),
-        border(`px(5), `solid, Colors.transparent),
+        border(`px(5), `solid, `rgba((0, 0, 0, `num(0.)))),
       ]),
-      Media.mobile([padding(`px(12)), fontSize(`px(12)), maxWidth(`px(150))]),
+      Media.mobile([
+        padding(`px(12)),
+        fontSize(`px(12)),
+        maxWidth(`px(150)),
+      ]),
     ]);
 
   let placement =
@@ -57,7 +63,7 @@ module Styles = {
           top(`percent(50.)),
           transform(`translateY(`percent(-50.))),
           right(`px(-10)),
-          borderLeftColor(Colors.gray7),
+          borderLeftColor(`rgba((85, 85, 85, `num(1.0)))),
         ]),
       ])
     | Right =>
@@ -70,7 +76,7 @@ module Styles = {
           top(`percent(50.)),
           transform(`translateY(`percent(-50.))),
           left(`px(-10)),
-          borderRightColor(Colors.gray7),
+          borderRightColor(`rgba((85, 85, 85, `num(1.0)))),
         ]),
       ])
     | Top =>
@@ -83,7 +89,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(50.)),
           bottom(`px(-10)),
-          borderTopColor(Colors.gray7),
+          borderTopColor(`rgba((85, 85, 85, `num(1.0)))),
         ]),
       ])
     | Bottom =>
@@ -96,7 +102,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(50.)),
           top(`px(-10)),
-          borderBottomColor(Colors.gray7),
+          borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
         ]),
       ])
     | BottomLeft =>
@@ -108,7 +114,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(30.)),
           top(`px(-10)),
-          borderBottomColor(Colors.gray7),
+          borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
         ]),
       ])
     | BottomRight =>
@@ -120,7 +126,7 @@ module Styles = {
           transform(`translateX(`percent(-70.))),
           left(`percent(70.)),
           top(`px(-10)),
-          borderBottomColor(Colors.gray7),
+          borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
         ]),
       ]);
 
@@ -136,7 +142,7 @@ module Styles = {
             top(`percent(50.)),
             transform(`translateY(`percent(-50.))),
             right(`px(-10)),
-            borderLeftColor(Colors.gray7),
+            borderLeftColor(`rgba((85, 85, 85, `num(1.0)))),
           ]),
         ]),
       ])
@@ -150,7 +156,7 @@ module Styles = {
             top(`percent(50.)),
             transform(`translateY(`percent(-50.))),
             left(`px(-10)),
-            borderRightColor(Colors.gray7),
+            borderRightColor(`rgba((85, 85, 85, `num(1.0)))),
           ]),
         ]),
       ])
@@ -164,7 +170,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(50.)),
             bottom(`px(-10)),
-            borderTopColor(Colors.gray7),
+            borderTopColor(`rgba((85, 85, 85, `num(1.0)))),
           ]),
         ]),
       ])
@@ -178,7 +184,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(50.)),
             top(`px(-10)),
-            borderBottomColor(Colors.gray7),
+            borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
           ]),
         ]),
       ])
@@ -192,7 +198,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(30.)),
             top(`px(-10)),
-            borderBottomColor(Colors.gray7),
+            borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
           ]),
         ]),
       ])
@@ -206,7 +212,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(70.)),
             top(`px(-10)),
-            borderBottomColor(Colors.gray7),
+            borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
           ]),
         ]),
       ]);
@@ -226,10 +232,11 @@ let make =
       ~styles="",
       ~children,
     ) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div className={Css.merge([Styles.tooltipContainer, styles])}>
     <div
       className={Css.merge([
-        Styles.tooltipItem(width, pd, align, fsize),
+        Styles.tooltipItem(width, pd, align, fsize, theme),
         Styles.placement(tooltipPlacement),
         Styles.placementSm(tooltipPlacementSm),
         mobile ? "" : Styles.hiddenTooltipSm,

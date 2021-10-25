@@ -1,6 +1,7 @@
 open Css;
 
-let flexBox = (~align=`center, ~justify=`flexStart, ~wrap=`wrap, ~direction=`row, ()) =>
+let flexBox =
+    (~align=`center, ~justify=`flexStart, ~wrap=`wrap, ~direction=`row, ()) =>
   style([
     display(`flex),
     alignItems(align),
@@ -8,7 +9,8 @@ let flexBox = (~align=`center, ~justify=`flexStart, ~wrap=`wrap, ~direction=`row
     flexDirection(direction),
     flexWrap(wrap),
   ]);
-let flexBoxSm = (~align=`center, ~justify=`flexStart, ~wrap=`wrap, ~direction=`row, ()) =>
+let flexBoxSm =
+    (~align=`center, ~justify=`flexStart, ~wrap=`wrap, ~direction=`row, ()) =>
   style([
     Media.mobile([
       display(`flex),
@@ -45,12 +47,22 @@ let px = (~size=0, ()) => {
 };
 
 let pxSm = (~size=0, ()) => {
-  style([Media.mobile([paddingLeft(`px(size)), paddingRight(`px(size))])]);
+  style([
+    Media.mobile([paddingLeft(`px(size)), paddingRight(`px(size))]),
+  ]);
 };
 
 // Angle Icon on select input
 
-let selectWrapper = (~size=14, ~pRight=16, ~pRightSm=pRight, ~mW=500, ~fontColor=Theme.black, ()) => {
+let selectWrapper =
+    (
+      ~size=14,
+      ~pRight=16,
+      ~pRightSm=pRight,
+      ~mW=500,
+      ~fontColor=Theme.black,
+      (),
+    ) => {
   style([
     position(`relative),
     width(`percent(100.)),
@@ -76,8 +88,15 @@ let selectWrapper = (~size=14, ~pRight=16, ~pRightSm=pRight, ~mW=500, ~fontColor
 
 let infoContainer =
   style([
-    backgroundColor(Colors.white),
-    boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08)))),
+    backgroundColor(rgba(255, 255, 255, `num(1.))),
+    boxShadow(
+      Shadow.box(
+        ~x=`zero,
+        ~y=`px(2),
+        ~blur=`px(4),
+        Css.rgba(0, 0, 0, `num(0.08)),
+      ),
+    ),
     padding(`px(24)),
     Media.mobile([padding(`px(16))]),
   ]);

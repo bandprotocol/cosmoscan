@@ -1,14 +1,18 @@
 module Styles = {
   open Css;
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
+  let infoHeader = (theme: Theme.t) =>
+    style([
+      borderBottom(`px(1), `solid, theme.tableRowBorderColor),
+      paddingBottom(`px(16)),
+    ]);
 };
 
 module Content = {
   [@react.component]
   let make =
       (
-        ~dataSourceSub: ApolloHooks.Subscription.variant(BandScan.DataSourceSub.t),
+        ~dataSourceSub:
+           ApolloHooks.Subscription.variant(BandScan.DataSourceSub.t),
         ~dataSourceID,
         ~hashtag,
       ) => {
@@ -18,7 +22,12 @@ module Content = {
       <div className=CssHelper.container>
         <Row marginBottom=40 marginBottomSm=16>
           <Col>
-            <Heading value="Data Source" size=Heading.H2 marginBottom=32 marginBottomSm=8 />
+            <Heading
+              value="Data Source"
+              size=Heading.H2
+              marginBottom=32
+              marginBottomSm=8
+            />
             {switch (dataSourceSub) {
              | Data({id, name}) =>
                <div className={CssHelper.flexBox()}>
@@ -46,14 +55,21 @@ module Content = {
                     />
                     <HSpacing size=Spacing.xs />
                     <CTooltip tooltipText="The owner of the data source">
-                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                      <Icon
+                        name="fal fa-info-circle"
+                        size=10
+                        color={theme.textSecondary}
+                      />
                     </CTooltip>
                   </div>
                 </Col>
                 <Col col=Col.Eight>
                   {switch (dataSourceSub) {
                    | Data({owner}) =>
-                     <AddressRender address=owner position=AddressRender.Subtitle />
+                     <AddressRender
+                       address=owner
+                       position=AddressRender.Subtitle
+                     />
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
@@ -70,7 +86,10 @@ module Content = {
                 <Col col=Col.Eight>
                   {switch (dataSourceSub) {
                    | Data({treasury}) =>
-                     <AddressRender address=treasury position=AddressRender.Subtitle />
+                     <AddressRender
+                       address=treasury
+                       position=AddressRender.Subtitle
+                     />
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
@@ -86,7 +105,8 @@ module Content = {
                 </Col>
                 <Col col=Col.Eight>
                   {switch (dataSourceSub) {
-                   | Data({fee}) => <AmountRender coins=fee pos=AmountRender.TxIndex />
+                   | Data({fee}) =>
+                     <AmountRender coins=fee pos=AmountRender.TxIndex />
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
@@ -103,7 +123,10 @@ module Content = {
                 <Col col=Col.Eight>
                   {switch (dataSourceSub) {
                    | Data({accumulatedRevenue}) =>
-                     <AmountRender coins=[accumulatedRevenue] pos=AmountRender.TxIndex />
+                     <AmountRender
+                       coins=[accumulatedRevenue]
+                       pos=AmountRender.TxIndex
+                     />
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
@@ -119,7 +142,8 @@ module Content = {
                 </Col>
                 <Col col=Col.Eight>
                   {switch (dataSourceSub) {
-                   | Data({description}) => <Text size=Text.Lg value=description />
+                   | Data({description}) =>
+                     <Text size=Text.Lg value=description />
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
@@ -132,22 +156,33 @@ module Content = {
             tabs=[|
               {
                 name: "Requests",
-                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRequests),
+                route:
+                  dataSourceID
+                  |> ID.DataSource.getRouteWithTab(
+                       _,
+                       Route.DataSourceRequests,
+                     ),
               },
               {
                 name: "Code",
-                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceCode),
+                route:
+                  dataSourceID
+                  |> ID.DataSource.getRouteWithTab(_, Route.DataSourceCode),
               },
               {
                 name: "Test Execution",
-                route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceExecute),
+                route:
+                  dataSourceID
+                  |> ID.DataSource.getRouteWithTab(_, Route.DataSourceExecute),
               },
               // {
               //   name: "Revisions",
               //   route: dataSourceID |> ID.DataSource.getRouteWithTab(_, Route.DataSourceRevisions),
               // },
             |]
-            currentRoute={dataSourceID |> ID.DataSource.getRouteWithTab(_, hashtag)}>
+            currentRoute={
+              dataSourceID |> ID.DataSource.getRouteWithTab(_, hashtag)
+            }>
             {switch (hashtag) {
              | DataSourceExecute =>
                switch (dataSourceSub) {
@@ -160,7 +195,8 @@ module Content = {
                | _ => <LoadingCensorBar.CircleSpin height=300 />
                }
              | DataSourceRequests => <DataSourceRequestTable dataSourceID />
-             | DataSourceRevisions => <DataSourceRevisionTable id=dataSourceID />
+             | DataSourceRevisions =>
+               <DataSourceRevisionTable id=dataSourceID />
              }}
           </Tab.Route>
         </Table>

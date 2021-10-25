@@ -60,7 +60,11 @@ module Styles = {
             color(isDarkMode ? Theme.black : Theme.white),
             selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
           ]),
-          active([backgroundColor(Colors.buttonOutlineActive)]),
+          active([
+            backgroundColor(theme.textPrimary),
+            color(isDarkMode ? Theme.black : Theme.white),
+            selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
+          ]),
           disabled([
             borderColor(theme.textSecondary),
             color(theme.textSecondary),
@@ -87,11 +91,22 @@ let make =
       ~style="",
       ~disabled=false,
     ) => {
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
 
   <button
     className={Css.merge([
-      Styles.btn(~variant, ~px, ~py, ~pxSm, ~pySm, ~fsize, theme, isDarkMode, ()),
+      Styles.btn(
+        ~variant,
+        ~px,
+        ~py,
+        ~pxSm,
+        ~pySm,
+        ~fsize,
+        theme,
+        isDarkMode,
+        (),
+      ),
       CssHelper.flexBox(~align=`center, ~justify=`center, ()),
       style,
     ])}

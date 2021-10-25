@@ -1,6 +1,5 @@
 module Styles = {
   open Css;
-
   let container =
     style([
       display(`flex),
@@ -19,12 +18,15 @@ module Styles = {
       justifyContent(`spaceBetween),
     ]);
 
-  let oval =
+  let oval = (theme: Theme.t) =>
     style([
       backgroundImage(
         `linearGradient((
           `deg(180.),
-          [(`percent(0.), Colors.blue2), (`percent(100.), Colors.bandBlue)],
+          [
+            (`percent(0.), Css.hex("CED4FD")),
+            (`percent(100.), theme.baseBlue),
+          ],
         )),
       ),
       width(`px(30)),
@@ -35,7 +37,8 @@ module Styles = {
       alignItems(`center),
     ]);
 
-  let rFlex = style([display(`flex), flexDirection(`row), alignItems(`center)]);
+  let rFlex =
+    style([display(`flex), flexDirection(`row), alignItems(`center)]);
 
   let resultContainer =
     style([
@@ -85,7 +88,11 @@ module Styles = {
     ]);
 
   let connectingBtnContainer =
-    style([width(`px(104)), display(`flex), justifyContent(`spaceBetween)]);
+    style([
+      width(`px(104)),
+      display(`flex),
+      justifyContent(`spaceBetween),
+    ]);
 };
 
 module InstructionCard = {
@@ -136,7 +143,11 @@ let make = (~chainID, ~ledgerApp) => {
 
   <div className=Styles.container>
     <VSpacing size=Spacing.xl />
-    <Text value="1. Select HD Derivation Path" weight=Text.Semibold color={theme.textPrimary} />
+    <Text
+      value="1. Select HD Derivation Path"
+      weight=Text.Semibold
+      color={theme.textPrimary}
+    />
     <VSpacing size=Spacing.md />
     <div className={Styles.selectWrapper(theme)}>
       <div
@@ -150,12 +161,14 @@ let make = (~chainID, ~ledgerApp) => {
         <select
           className={Styles.selectContent(theme)}
           onChange={event => {
-            let newAccountIndex = ReactEvent.Form.target(event)##value |> int_of_string;
+            let newAccountIndex =
+              ReactEvent.Form.target(event)##value |> int_of_string;
             setAccountIndex(_ => newAccountIndex);
           }}>
           {[|0, 1, 2, 3, 4, 5, 6, 7, 8, 9|]
            |> Belt.Array.map(_, index =>
-                <option key={index |> string_of_int} value={index |> string_of_int}>
+                <option
+                  key={index |> string_of_int} value={index |> string_of_int}>
                   {let prefixPath =
                      switch (ledgerApp) {
                      | Ledger.Cosmos => "44/118/0/0/"
@@ -169,18 +182,34 @@ let make = (~chainID, ~ledgerApp) => {
       </div>
     </div>
     <VSpacing size=Spacing.xl />
-    <Text value="2. On Your Ledger" weight=Text.Semibold color={theme.textPrimary} />
+    <Text
+      value="2. On Your Ledger"
+      weight=Text.Semibold
+      color={theme.textPrimary}
+    />
     <VSpacing size=Spacing.xl />
     <InstructionCard title="1. Enter Pin Code" url=Images.ledgerStep1 />
     <VSpacing size=Spacing.lg />
     {switch (ledgerApp) {
-     | Ledger.Cosmos => <InstructionCard title="2. Open Cosmos" url=Images.ledgerStep2Cosmos />
-     | BandChain => <InstructionCard title="2. Open BandChain" url=Images.ledgerStep2BandChain />
+     | Ledger.Cosmos =>
+       <InstructionCard title="2. Open Cosmos" url=Images.ledgerStep2Cosmos />
+     | BandChain =>
+       <InstructionCard
+         title="2. Open BandChain"
+         url=Images.ledgerStep2BandChain
+       />
      }}
     <div className=Styles.resultContainer>
       {switch (result) {
-       | Loading => <Text value="Please accept with ledger" weight=Text.Medium />
-       | Error(err) => <Text value=err color=Theme.failColor weight=Text.Medium size=Text.Lg />
+       | Loading =>
+         <Text value="Please accept with ledger" weight=Text.Medium />
+       | Error(err) =>
+         <Text
+           value=err
+           color=Theme.failColor
+           weight=Text.Medium
+           size=Text.Lg
+         />
        | Nothing => React.null
        }}
     </div>
@@ -204,7 +233,10 @@ let make = (~chainID, ~ledgerApp) => {
                       )
                  );
                isConfirm
-                 ? Copy.copy("chrome://flags/#enable-experimental-web-platform-features") : ();
+                 ? Copy.copy(
+                     "chrome://flags/#enable-experimental-web-platform-features",
+                   )
+                 : ();
              | (_, _) => createLedger(accountIndex)
              }
            }}>
