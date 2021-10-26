@@ -85,7 +85,7 @@ let make = (~id) =>
                             block=true
                             value=name
                             weight=Text.Medium
-                            color={Css.hex("#555555")}
+                            color={Css.hex("555555")}
                             nowrap=true
                             ellipsis=true
                           />
@@ -122,7 +122,7 @@ let make = (~id) =>
                              value="Genesis transaction"
                              weight=Text.Medium
                              code=true
-                             color={Css.hex("#555555")}
+                             color={Css.hex("555555")}
                              ellipsis=true
                              nowrap=true
                            />
