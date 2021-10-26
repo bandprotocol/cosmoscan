@@ -40,14 +40,14 @@ let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.t)) => 
            switch (acknowledgement) {
            | Some({status, reason}) =>
              switch (status) {
-             | Success => <img src=Images.success />
-             | Pending => <img src=Images.pending />
+             | Success => <img alt="Success icon" src=Images.success />
+             | Pending => <img alt="Pending icon" src=Images.pending />
              | Fail =>
                <div
                  className={Css.merge([CssHelper.flexBox(), Styles.failText])}
                  onClick={_ => errorMsg(reason |> Belt.Option.getExn)}>
                  <Text value="View Error Message" color=Theme.failColor />
-                 <img src=Images.fail />
+                 <img alt="Fail icon" src=Images.fail />
                </div>
              }
            | _ => React.null

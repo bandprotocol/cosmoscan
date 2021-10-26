@@ -140,7 +140,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            CssHelper.flexBox(~direction=`column, ~justify=`center, ()),
            Styles.resultContainer,
          ])}>
-         <img src=Images.success className=Styles.resultIcon />
+         <img alt="Success icon" src=Images.success className=Styles.resultIcon />
          <div id="successMsgContainer" className={CssHelper.mb(~size=16, ())}>
            <Text
              value="Broadcast transaction success"
@@ -196,7 +196,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            CssHelper.flexBox(~direction=`column, ~justify=`center, ()),
            Styles.resultContainer,
          ])}>
-         <img src=Images.fail className=Styles.resultIcon />
+         <img alt="Fail icon" src=Images.fail className=Styles.resultIcon />
          <div className={CssHelper.mb()}>
            <Text
              value="Broadcast transaction fail"

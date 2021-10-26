@@ -1,7 +1,8 @@
 module Styles = {
   open Css;
 
-  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage =
+    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 type sort_by_t =
@@ -41,7 +42,11 @@ let sorting = (dataSources: array(DataSourceSub.t), sortedBy) => {
 
 module RenderBody = {
   [@react.component]
-  let make = (~reserveIndex, ~dataSourcesSub: ApolloHooks.Subscription.variant(DataSourceSub.t)) => {
+  let make =
+      (
+        ~reserveIndex,
+        ~dataSourcesSub: ApolloHooks.Subscription.variant(DataSourceSub.t),
+      ) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <TBody
@@ -67,7 +72,7 @@ module RenderBody = {
           {switch (dataSourcesSub) {
            | Data({fee}) =>
              <div className={CssHelper.flexBox()}>
-               <AmountRender coins=fee color={theme.textPrimary}/>
+               <AmountRender coins=fee color={theme.textPrimary} />
              </div>
            | _ => <LoadingCensorBar width=100 height=15 />
            }}
@@ -117,9 +122,20 @@ module RenderBody = {
 
 module RenderBodyMobile = {
   [@react.component]
-  let make = (~reserveIndex, ~dataSourcesSub: ApolloHooks.Subscription.variant(DataSourceSub.t)) => {
+  let make =
+      (
+        ~reserveIndex,
+        ~dataSourcesSub: ApolloHooks.Subscription.variant(DataSourceSub.t),
+      ) => {
     switch (dataSourcesSub) {
-    | Data({id, timestamp: timestampOpt, description, name, requestCount, fee}) =>
+    | Data({
+        id,
+        timestamp: timestampOpt,
+        description,
+        name,
+        requestCount,
+        fee,
+      }) =>
       <MobileCard
         values=InfoMobileCard.[
           ("Data Source", DataSource(id, name)),
@@ -162,11 +178,13 @@ let make = () => {
   let isMobile = Media.isMobile();
 
   let dataSourcesCountSub = DataSourceSub.count(~searchTerm, ());
-  let dataSourcesSub = DataSourceSub.getList(~pageSize, ~page, ~searchTerm, ());
+  let dataSourcesSub =
+    DataSourceSub.getList(~pageSize, ~page, ~searchTerm, ());
 
   let allSub = Sub.all2(dataSourcesSub, dataSourcesCountSub);
 
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
 
   React.useEffect1(
     () => {
@@ -183,7 +201,12 @@ let make = () => {
       <div className=CssHelper.mobileSpacing>
         <Row alignItems=Row.Center marginBottom=40 marginBottomSm=24>
           <Col col=Col.Twelve>
-            <Heading value="All Data Sources" size=Heading.H2 marginBottom=16 marginBottomSm=8 />
+            <Heading
+              value="All Data Sources"
+              size=Heading.H2
+              marginBottom=16
+              marginBottomSm=8
+            />
             {switch (allSub) {
              | Data((_, dataSourcesCount)) =>
                <Heading
@@ -199,7 +222,10 @@ let make = () => {
         <Table>
           <Row alignItems=Row.Center marginTop=32 marginBottom=16>
             <Col col=Col.Six colSm=Col.Eight>
-              <SearchInput placeholder="Search Data Source" onChange=setSearchTerm />
+              <SearchInput
+                placeholder="Search Data Source"
+                onChange=setSearchTerm
+              />
             </Col>
             <Col col=Col.Six colSm=Col.Four>
               <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
@@ -293,7 +319,11 @@ let make = () => {
                     ->React.array
                   : <EmptyContainer>
                       <img
-                        src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
+                        alt="No Data Source"
+                        src={
+                          isDarkMode
+                            ? Images.noOracleDark : Images.noOracleLight
+                        }
                         className=Styles.noDataImage
                       />
                       <Heading
@@ -321,7 +351,11 @@ let make = () => {
                        reserveIndex=i
                        dataSourcesSub=noData
                      />
-                   : <RenderBody key={i |> string_of_int} reserveIndex=i dataSourcesSub=noData />
+                   : <RenderBody
+                       key={i |> string_of_int}
+                       reserveIndex=i
+                       dataSourcesSub=noData
+                     />
                )
              ->React.array
            }}

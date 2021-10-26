@@ -124,6 +124,7 @@ let make = (~address) => {
               ->React.array
             : <EmptyContainer>
                 <img
+                  alt="No Reporter"
                   src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                   className=Styles.noDataImage
                 />

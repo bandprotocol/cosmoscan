@@ -245,12 +245,13 @@ let make = (~address) => {
            ->React.array
          : <EmptyContainer>
              <img
+               alt="No Redelegation"
                src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                className=Styles.noDataImage
              />
              <Heading
                size=Heading.H4
-               value="No redelegation"
+               value="No Redelegation"
                align=Heading.Center
                weight=Heading.Regular
                color={theme.textSecondary}

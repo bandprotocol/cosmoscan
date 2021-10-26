@@ -101,6 +101,12 @@ module TargetPlatformIcon = {
   let make = (~icon) => {
     <div className={CssHelper.flexBox(~justify=`center, ())}>
       <img
+        alt={
+          switch (icon) {
+          | Ethereum => "Ethereum icon"
+          | CosmosIBC => "Cosmos IBC icon"
+          }
+        }
         className=Styles.iconBody
         src={
           switch (icon) {
@@ -119,6 +125,12 @@ module LanguageIcon = {
   let make = (~icon) => {
     <div className={CssHelper.flexBox(~justify=`center, ())}>
       <img
+        alt={
+          switch (icon) {
+          | Solidity => "Solidity icon"
+          | Go => "Golang icon"
+          }
+        }
         className=Styles.iconBody
         src={
           switch (icon) {

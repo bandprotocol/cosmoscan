@@ -23,10 +23,12 @@ let make = () => {
     {!isMobile
        ? <>
            <img
+             alt="Homepage dot background"
              src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
              className={Css.merge([Styles.baseBg, Styles.left])}
            />
            <img
+             alt="Homepage dot background"
              src={isDarkMode ? Images.bgLeftDark : Images.bgLeftLight}
              className={Css.merge([Styles.baseBg, Styles.right])}
            />

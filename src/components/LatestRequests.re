@@ -10,7 +10,14 @@ module Styles = {
     ]);
   let container =
     style([
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
+      boxShadow(
+        Shadow.box(
+          ~x=`zero,
+          ~y=`px(2),
+          ~blur=`px(4),
+          Css.rgba(0, 0, 0, `num(0.2)),
+        ),
+      ),
     ]);
 
   let allRequestLink = (theme: Theme.t) =>
@@ -68,7 +75,11 @@ module RenderBody = {
 
 module RenderBodyMobile = {
   [@react.component]
-  let make = (~reserveIndex, ~requestSub: ApolloHooks.Subscription.variant(RequestSub.t)) => {
+  let make =
+      (
+        ~reserveIndex,
+        ~requestSub: ApolloHooks.Subscription.variant(RequestSub.t),
+      ) => {
     switch (requestSub) {
     | Data({
         id,
@@ -106,10 +117,16 @@ module RenderBodyMobile = {
 [@react.component]
 let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
   let isMobile = Media.isMobile();
-  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let (ThemeContext.{theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
 
   <Table>
-    <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0 alignItems=Row.Center>
+    <Row
+      marginTop=30
+      marginBottom=25
+      marginTopSm=24
+      marginBottomSm=0
+      alignItems=Row.Center>
       <Col col=Col.Six colSm=Col.Six>
         {isMobile
            ? <>
@@ -121,7 +138,9 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
                     value={
                       requests
                       ->Belt.Array.get(0)
-                      ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt)
+                      ->Belt.Option.mapWithDefault(0, ({id}) =>
+                          id |> ID.Request.toInt
+                        )
                       ->Format.iPretty
                     }
                     size=Text.Lg
@@ -134,9 +153,12 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
       </Col>
       <Col col=Col.Six colSm=Col.Six>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          {isMobile ? React.null : <Heading value="More Requests" size=Heading.H4 />}
+          {isMobile
+             ? React.null : <Heading value="More Requests" size=Heading.H4 />}
           <HSpacing size=Spacing.md />
-          <Link className={CssHelper.flexBox(~align=`center, ())} route=Route.RequestHomePage>
+          <Link
+            className={CssHelper.flexBox(~align=`center, ())}
+            route=Route.RequestHomePage>
             <div
               className={Css.merge([
                 Styles.allRequestLink(theme),
@@ -193,11 +215,16 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
                      reserveIndex=i
                      requestSub={Sub.resolve(e)}
                    />
-                 : <RenderBody key={e.id |> ID.Request.toString} requestSub={Sub.resolve(e)} />
+                 : <RenderBody
+                     key={e.id |> ID.Request.toString}
+                     requestSub={Sub.resolve(e)}
+                   />
              )
            ->React.array
-         : <EmptyContainer height={`calc((`sub, `percent(100.), `px(86)))} boxShadow=true>
+         : <EmptyContainer
+             height={`calc((`sub, `percent(100.), `px(86)))} boxShadow=true>
              <img
+               alt="No Request"
                src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                className=Styles.noDataImage
              />
@@ -212,7 +239,11 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
        Belt_Array.make(5, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
-             ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestSub=noData />
+             ? <RenderBodyMobile
+                 key={i |> string_of_int}
+                 reserveIndex=i
+                 requestSub=noData
+               />
              : <RenderBody key={i |> string_of_int} requestSub=noData />
          )
        ->React.array

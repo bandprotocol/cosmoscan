@@ -16,7 +16,11 @@ module Styles = {
     ]);
 
   let bandLogo =
-    style([width(`px(40)), marginRight(`px(5)), Media.mobile([width(`px(34))])]);
+    style([
+      width(`px(40)),
+      marginRight(`px(5)),
+      Media.mobile([width(`px(34))]),
+    ]);
 
   let blockImage = style([display(`block)]);
 
@@ -27,7 +31,12 @@ module Styles = {
   let boxShadow =
     style([
       boxShadow(
-        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
+        Shadow.box(
+          ~x=`zero,
+          ~y=`px(2),
+          ~blur=`px(4),
+          Css.rgba(0, 0, 0, `num(0.08)),
+        ),
       ),
       position(`relative),
       zIndex(4),
@@ -53,7 +62,11 @@ module DesktopRender = {
             <div className={CssHelper.flexBox(~align=`center, ())}>
               <LinkToHome>
                 <div className={CssHelper.flexBox(~align=`center, ())}>
-                  <img src=Images.bandLogo className=Styles.bandLogo />
+                  <img
+                    alt="Band Protocol"
+                    src=Images.bandLogo
+                    className=Styles.bandLogo
+                  />
                   <div>
                     <Text
                       value="BANDCHAIN"
@@ -79,7 +92,12 @@ module DesktopRender = {
             </div>
           </Col>
           <Col col=Col.Six>
-            <div className={CssHelper.flexBox(~align=`center, ~justify=`flexEnd, ())}>
+            <div
+              className={CssHelper.flexBox(
+                ~align=`center,
+                ~justify=`flexEnd,
+                (),
+              )}>
               <SearchBar />
             </div>
           </Col>
@@ -114,13 +132,19 @@ module MobileRender = {
           <div className={CssHelper.flexBox(~align=`flexEnd, ())}>
             <LinkToHome>
               <img
+                alt="Band Protocol"
                 src=Images.bandLogo
                 className={Css.merge([Styles.bandLogo, Styles.blockImage])}
               />
             </LinkToHome>
             <HSpacing size=Spacing.sm />
             <LinkToHome>
-              <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
+              <div
+                className={CssHelper.flexBox(
+                  ~direction=`column,
+                  ~align=`flexStart,
+                  (),
+                )}>
                 <Text
                   value="BANDCHAIN"
                   size=Text.Md
@@ -142,7 +166,12 @@ module MobileRender = {
           </div>
         </Col>
         <Col colSm=Col.Six>
-          <div className={CssHelper.flexBox(~justify=`flexEnd, ~wrap=`nowrap, ())}>
+          <div
+            className={CssHelper.flexBox(
+              ~justify=`flexEnd,
+              ~wrap=`nowrap,
+              (),
+            )}>
             <ChainIDBadge />
             <NavBar />
           </div>

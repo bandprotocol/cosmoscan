@@ -33,7 +33,11 @@ module RenderBody = {
           <div className={CssHelper.flexBox(~justify=`center, ~align=`center, ())}>
             {switch (txSub) {
              | Data({success}) =>
-               <img src={success ? Images.success : Images.fail} className=Styles.statusImg />
+               <img
+                 alt="Status icon"
+                 src={success ? Images.success : Images.fail}
+                 className=Styles.statusImg
+               />
              | _ => <LoadingCensorBar width=20 height=20 radius=20 />
              }}
           </div>

@@ -7,13 +7,21 @@ module Styles = {
 };
 
 let mapImages = [|
-  [|"https:/\/github.com/bandprotocol", Images.githubSvg|],
-  [|"https:/\/medium.com/bandprotocol", Images.mediumSvg|],
-  [|"https:/\/twitter.com/BandProtocol", Images.twitterSvg|],
-  [|"https:/\/t.me/bandprotocol", Images.telegramSvg|],
-  [|"https:/\/discord.com/invite/3t4bsY7", Images.discordSvg|],
-  [|"https:/\/coinmarketcap.com/currencies/band-protocol/", Images.coinmarketcapWhiteSvg|],
-  [|"https:/\/www.coingecko.com/en/coins/band-protocol", Images.coingeckoSvg|],
+  [|"https:/\/github.com/bandprotocol", Images.githubSvg, "Github"|],
+  [|"https:/\/medium.com/bandprotocol", Images.mediumSvg, "Medium"|],
+  [|"https:/\/twitter.com/BandProtocol", Images.twitterSvg, "Twitter"|],
+  [|"https:/\/t.me/bandprotocol", Images.telegramSvg, "Telegram"|],
+  [|"https:/\/discord.com/invite/3t4bsY7", Images.discordSvg, "Discord"|],
+  [|
+    "https:/\/coinmarketcap.com/currencies/band-protocol/",
+    Images.coinmarketcapWhiteSvg,
+    "CoinMarketCap",
+  |],
+  [|
+    "https:/\/www.coingecko.com/en/coins/band-protocol",
+    Images.coingeckoSvg,
+    "CoinGecko",
+  |],
 |];
 
 [@react.component]
@@ -38,14 +46,22 @@ let make = () => {
             {mapImages
              ->Belt.Array.mapWithIndex((i, e) =>
                  <AbsoluteLink key={string_of_int(i)} href={Array.get(e, 0)}>
-                   <img src={Array.get(e, 1)} className=Styles.socialImg />
+                   <img
+                     alt={e[2] ++ " icon"}
+                     src={Array.get(e, 1)}
+                     className=Styles.socialImg
+                   />
                  </AbsoluteLink>
                )
              ->React.array}
           </div>
         </Col>
         <Col col=Col.Six>
-          <div className={CssHelper.flexBox(~justify={isMobile ? `center : `flexEnd}, ())}>
+          <div
+            className={CssHelper.flexBox(
+              ~justify={isMobile ? `center : `flexEnd},
+              (),
+            )}>
             <Text
               block=true
               value="CosmoScan"

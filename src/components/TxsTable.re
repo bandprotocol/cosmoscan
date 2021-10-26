@@ -2,7 +2,8 @@ module Styles = {
   open Css;
 
   let statusImg = style([width(`px(20)), marginTop(`px(-3))]);
-  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage =
+    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
@@ -31,7 +32,11 @@ module RenderBody = {
           <div className={CssHelper.flexBox(~justify=`center, ())}>
             {switch (txSub) {
              | Data({success}) =>
-               <img src={success ? Images.success : Images.fail} className=Styles.statusImg />
+               <img
+                 alt="Status icon"
+                 src={success ? Images.success : Images.fail}
+                 className=Styles.statusImg
+               />
              | _ => <LoadingCensorBar width=20 height=20 radius=20 />
              }}
           </div>
@@ -121,7 +126,8 @@ let make =
     ) => {
   let isMobile = Media.isMobile();
 
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
   <>
     {switch (txsSub) {
      | Data(txs) =>
@@ -135,11 +141,16 @@ let make =
                      txSub={Sub.resolve(e)}
                      msgTransform
                    />
-                 : <RenderBody key={e.txHash |> Hash.toHex} txSub={Sub.resolve(e)} msgTransform />
+                 : <RenderBody
+                     key={e.txHash |> Hash.toHex}
+                     txSub={Sub.resolve(e)}
+                     msgTransform
+                   />
              )
            ->React.array
          : <EmptyContainer>
              <img
+               alt="No Transaction"
                src={isDarkMode ? Images.noTxDark : Images.noTxLight}
                className=Styles.noDataImage
              />

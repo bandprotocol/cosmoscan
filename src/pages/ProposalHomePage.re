@@ -7,12 +7,17 @@ module Styles = {
         [
           marginLeft(`px(10)),
           marginRight(`px(10)),
-          Media.mobile([marginLeft(`zero), marginTop(`px(8)), marginBottom(`px(8))]),
+          Media.mobile([
+            marginLeft(`zero),
+            marginTop(`px(8)),
+            marginBottom(`px(8)),
+          ]),
         ],
       ),
     ]);
   };
-  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage =
+    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 
   let proposalLink = (theme: Theme.t) =>
     style([
@@ -36,7 +41,8 @@ module Turnout = {
     <>
       {switch (allSub) {
        | Data(({total}, bondedTokenCount)) =>
-         let turnoutRate = total /. (bondedTokenCount |> Coin.getBandAmountFromCoin) *. 100.;
+         let turnoutRate =
+           total /. (bondedTokenCount |> Coin.getBandAmountFromCoin) *. 100.;
 
          <Col col=Col.Four colSm=Col.Five>
            <Heading
@@ -60,7 +66,11 @@ module Turnout = {
 
 module ProposalCard = {
   [@react.component]
-  let make = (~reserveIndex, ~proposalSub: ApolloHooks.Subscription.variant(ProposalSub.t)) => {
+  let make =
+      (
+        ~reserveIndex,
+        ~proposalSub: ApolloHooks.Subscription.variant(ProposalSub.t),
+      ) => {
     let isMobile = Media.isMobile();
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
@@ -71,7 +81,11 @@ module ProposalCard = {
             <div
               className={Css.merge([
                 CssHelper.flexBox(),
-                CssHelper.flexBoxSm(~direction=`column, ~align=`flexStart, ()),
+                CssHelper.flexBoxSm(
+                  ~direction=`column,
+                  ~align=`flexStart,
+                  (),
+                ),
                 Styles.idContainer,
               ])}>
               {switch (proposalSub) {
@@ -145,7 +159,10 @@ module ProposalCard = {
              | Data({proposerAddressOpt}) =>
                switch (proposerAddressOpt) {
                | Some(proposerAddress) =>
-                 <AddressRender address=proposerAddress position=AddressRender.Subtitle />
+                 <AddressRender
+                   address=proposerAddress
+                   position=AddressRender.Subtitle
+                 />
                | None => <Text value="Proposed on Wenchang" />
                }
              | _ => <LoadingCensorBar width=270 height=15 />
@@ -217,12 +234,15 @@ let make = () => {
   let pageSize = 10;
   let proposalsSub = ProposalSub.getList(~pageSize, ~page=1, ());
 
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
 
   <Section>
     <div className=CssHelper.container id="proposalsSection">
       <Row alignItems=Row.Center marginBottom=40 marginBottomSm=24>
-        <Col col=Col.Twelve> <Heading value="All Proposals" size=Heading.H2 /> </Col>
+        <Col col=Col.Twelve>
+          <Heading value="All Proposals" size=Heading.H2 />
+        </Col>
       </Row>
       <Row>
         {switch (proposalsSub) {
@@ -239,6 +259,7 @@ let make = () => {
                ->React.array
              : <EmptyContainer>
                  <img
+                   alt="No Proposal"
                    src={isDarkMode ? Images.noTxDark : Images.noTxLight}
                    className=Styles.noDataImage
                  />
@@ -253,7 +274,11 @@ let make = () => {
          | _ =>
            Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
            ->Belt_Array.mapWithIndex((i, noData) =>
-               <ProposalCard key={i |> string_of_int} reserveIndex=i proposalSub=noData />
+               <ProposalCard
+                 key={i |> string_of_int}
+                 reserveIndex=i
+                 proposalSub=noData
+               />
              )
            ->React.array
          }}

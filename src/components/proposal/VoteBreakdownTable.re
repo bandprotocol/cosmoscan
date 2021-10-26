@@ -247,6 +247,7 @@ let make = (~proposalID) => {
                  ->React.array
                : <EmptyContainer height={`px(250)}>
                    <img
+                     alt="No Voters"
                      src={isDarkMode ? Images.noDelegatorDark : Images.noDelegatorLight}
                      className=Styles.noDataImage
                    />

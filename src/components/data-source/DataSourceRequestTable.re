@@ -1,7 +1,8 @@
 module Styles = {
   open Css;
 
-  let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
+  let tableWrapper =
+    style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
   let icon = style([width(`px(80)), height(`px(80))]);
   let iconWrapper =
     style([
@@ -10,12 +11,17 @@ module Styles = {
       flexDirection(`column),
       alignItems(`center),
     ]);
-  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage =
+    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
   [@react.component]
-  let make = (~requestsSub: ApolloHooks.Subscription.variant(RequestSub.Mini.t), ~theme: Theme.t) => {
+  let make =
+      (
+        ~requestsSub: ApolloHooks.Subscription.variant(RequestSub.Mini.t),
+        ~theme: Theme.t,
+      ) => {
     <TBody>
       <Row alignItems=Row.Center>
         <Col col=Col.Two>
@@ -26,7 +32,8 @@ module RenderBody = {
         </Col>
         <Col col=Col.Two>
           {switch (requestsSub) {
-           | Data({feeEarned}) => <AmountRender coins=[feeEarned] color={theme.textPrimary} />
+           | Data({feeEarned}) =>
+             <AmountRender coins=[feeEarned] color={theme.textPrimary} />
            | _ => <LoadingCensorBar width=100 height=15 />
            }}
         </Col>
@@ -36,7 +43,11 @@ module RenderBody = {
              <div className={CssHelper.flexBox()}>
                <TypeID.OracleScript id=oracleScriptID />
                <HSpacing size=Spacing.sm />
-               <Text value=oracleScriptName ellipsis=true color={theme.textPrimary} />
+               <Text
+                 value=oracleScriptName
+                 ellipsis=true
+                 color={theme.textPrimary}
+               />
              </div>
            | _ => <LoadingCensorBar width=270 height=15 />
            }}
@@ -85,7 +96,11 @@ module RenderBody = {
 
 module RenderBodyMobile = {
   [@react.component]
-  let make = (~reserveIndex, ~requestsSub: ApolloHooks.Subscription.variant(RequestSub.Mini.t)) => {
+  let make =
+      (
+        ~reserveIndex,
+        ~requestsSub: ApolloHooks.Subscription.variant(RequestSub.Mini.t),
+      ) => {
     switch (requestsSub) {
     | Data({
         id,
@@ -101,7 +116,10 @@ module RenderBodyMobile = {
       <MobileCard
         values=InfoMobileCard.[
           ("Request ID", RequestID(id)),
-          ("Fee Earned\n(BAND)", Coin({value: [feeEarned], hasDenom: false})),
+          (
+            "Fee Earned\n(BAND)",
+            Coin({value: [feeEarned], hasDenom: false}),
+          ),
           ("Oracle Script", OracleScript(oracleScriptID, oracleScriptName)),
           (
             "Report Status",
@@ -144,14 +162,16 @@ let make = (~dataSourceID: ID.DataSource.t) => {
   let (page, setPage) = React.useState(_ => 1);
   let pageSize = 5;
 
-  let requestsSub = RequestSub.Mini.getListByDataSource(dataSourceID, ~pageSize, ~page, ());
+  let requestsSub =
+    RequestSub.Mini.getListByDataSource(dataSourceID, ~pageSize, ~page, ());
   let totalRequestCountSub = RequestSub.countByDataSource(dataSourceID);
 
   let allSub = Sub.all2(requestsSub, totalRequestCountSub);
 
   let isMobile = Media.isMobile();
 
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
     {isMobile
@@ -265,6 +285,7 @@ let make = (~dataSourceID: ID.DataSource.t) => {
               ->React.array
             : <EmptyContainer>
                 <img
+                  alt="No Request"
                   src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                   className=Styles.noDataImage
                 />
@@ -288,7 +309,11 @@ let make = (~dataSourceID: ID.DataSource.t) => {
        Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
-             ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestsSub=noData />
+             ? <RenderBodyMobile
+                 key={i |> string_of_int}
+                 reserveIndex=i
+                 requestsSub=noData
+               />
              : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
          )
        ->React.array

@@ -1,7 +1,8 @@
 module Styles = {
   open Css;
 
-  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage =
+    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
@@ -44,7 +45,8 @@ module RenderBody = {
 
 module RenderBodyMobile = {
   [@react.component]
-  let make = (~reserveIndex, ~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
+  let make =
+      (~reserveIndex, ~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
     switch (txSub) {
     | Data({txHash, gasFee, success, messages, errMsg}) =>
       <MobileCard
@@ -72,7 +74,8 @@ module RenderBodyMobile = {
 [@react.component]
 let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
   let isMobile = Media.isMobile();
-  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) =
+    React.useContext(ThemeContext.context);
 
   <>
     {isMobile
@@ -121,11 +124,15 @@ let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
                      txSub={Sub.resolve(e)}
                      key={e.txHash |> Hash.toHex}
                    />
-                 : <RenderBody txSub={Sub.resolve(e)} key={e.txHash |> Hash.toHex} />
+                 : <RenderBody
+                     txSub={Sub.resolve(e)}
+                     key={e.txHash |> Hash.toHex}
+                   />
              )
            ->React.array
          : <EmptyContainer>
              <img
+               alt="No Transaction"
                src={isDarkMode ? Images.noTxDark : Images.noTxLight}
                className=Styles.noDataImage
              />
@@ -141,7 +148,11 @@ let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
        Belt_Array.make(isMobile ? 1 : 10, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
-             ? <RenderBodyMobile reserveIndex=i txSub=noData key={i |> string_of_int} />
+             ? <RenderBodyMobile
+                 reserveIndex=i
+                 txSub=noData
+                 key={i |> string_of_int}
+               />
              : <RenderBody txSub=noData key={i |> string_of_int} />
          )
        ->React.array
