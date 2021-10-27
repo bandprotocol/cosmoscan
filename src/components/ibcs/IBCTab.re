@@ -33,9 +33,7 @@ module Styles = {
   let filterSelector =
     style([
       selector("> div + div", [marginLeft(`px(24))]),
-      Media.mobile([
-        selector("> div + div", [marginLeft(`zero), marginTop(`px(24))]),
-      ]),
+      Media.mobile([selector("> div + div", [marginLeft(`zero), marginTop(`px(24))])]),
     ]);
 
   let resetButton =
@@ -46,14 +44,12 @@ module Styles = {
       Media.mobile([paddingLeft(`px(24))]),
     ]);
 
-  let noDataImage =
-    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 [@react.component]
 let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
-  let ({ThemeContext.theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let (packetType, setPacketType) = React.useState(_ => "");
   let (packetPort, setPacketPort) = React.useState(_ => "");
@@ -75,12 +71,7 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
 
   let filters = IBCFilterSub.getFilterList(~chainID, ());
 
-  let packetTypes = [|
-    "Oracle Request",
-    "Oracle Response",
-    "Fungible Token",
-    "Unknown",
-  |];
+  let packetTypes = [|"Oracle Request", "Oracle Response", "Fungible Token", "Unknown"|];
   let packetPorts = [|"oracle", "transfer"|];
 
   let handlePacketPort = newVal => {
@@ -105,11 +96,7 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
 
   React.useEffect1(
     () => {
-      let timeoutId =
-        Js.Global.setTimeout(
-          () => setPacketSequence(_ => rawPacketSequence),
-          500,
-        );
+      let timeoutId = Js.Global.setTimeout(() => setPacketSequence(_ => rawPacketSequence), 500);
       Some(() => Js.Global.clearTimeout(timeoutId));
     },
     [|rawPacketSequence|],
@@ -118,14 +105,11 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
   <>
     <Row marginTop=32>
       <Col col=Col.Nine colSm=Col.Twelve mbSm=24>
-        <div
-          className={Css.merge([CssHelper.flexBox(), Styles.filterSelector])}>
+        <div className={Css.merge([CssHelper.flexBox(), Styles.filterSelector])}>
           {switch (filters) {
            | Data(filter) =>
              let newPacketChannel =
-               filter
-               ->Js.Dict.get(packetPort)
-               ->Belt.Option.getWithDefault([||]);
+               filter->Js.Dict.get(packetPort)->Belt.Option.getWithDefault([||]);
              <>
                <Select
                  options=packetPorts
@@ -161,15 +145,8 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
           />
           <div
             onClick={_ => handleReset()}
-            className={Css.merge([
-              Styles.resetButton,
-              CssHelper.flexBox(~align=`center, ()),
-            ])}>
-            <Icon
-              name="fas fa-times-circle"
-              color={theme.textPrimary}
-              size=16
-            />
+            className={Css.merge([Styles.resetButton, CssHelper.flexBox(~align=`center, ())])}>
+            <Icon name="fas fa-times-circle" color={theme.textPrimary} size=16 />
             <Text value="Reset" size=Text.Lg color={theme.textPrimary} />
           </div>
         </div>

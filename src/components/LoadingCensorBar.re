@@ -46,10 +46,7 @@ module Styles = {
   let mt = (~mt, ~mtSm, ()) =>
     style([marginTop(`px(mt)), Media.mobile([marginBottom(`px(mtSm))])]);
   let mb = (~mb, ~mbSm, ()) =>
-    style([
-      marginBottom(`px(mb)),
-      Media.mobile([marginBottom(`px(mbSm))]),
-    ]);
+    style([marginBottom(`px(mb)), Media.mobile([marginBottom(`px(mbSm))])]);
 
   let loadingCircle = size =>
     style([
@@ -73,8 +70,7 @@ module Styles = {
 module CircleSpin = {
   [@react.component]
   let make = (~size=76, ~height=78) => {
-    let ({ThemeContext.isDarkMode}, _) =
-      React.useContext(ThemeContext.context);
+    let ({ThemeContext.isDarkMode}, _) = React.useContext(ThemeContext.context);
     <div
       className={Css.merge([
         Styles.loadingCircleContainer(height),
@@ -111,12 +107,8 @@ let make =
         ~w=width,
         ~h=height,
         ~r=radius,
-        ~colorBase=
-          colorBase->Belt.Option.getWithDefault(theme.loadingBaseColor),
-        ~colorLighter=
-          colorLighter->Belt.Option.getWithDefault(
-            theme.loadingSecondaryColor,
-          ),
+        ~colorBase=colorBase->Belt.Option.getWithDefault(theme.loadingBaseColor),
+        ~colorLighter=colorLighter->Belt.Option.getWithDefault(theme.loadingSecondaryColor),
         (),
       ),
       Styles.mt(~mt, ~mtSm, ()),

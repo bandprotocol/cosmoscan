@@ -1,8 +1,7 @@
 module Styles = {
   open Css;
 
-  let noDataImage =
-    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
@@ -54,11 +53,7 @@ module RenderBody = {
              | Data({transactionOpt}) =>
                switch (transactionOpt) {
                | Some(transaction) =>
-                 <Timestamp
-                   time={transaction.block.timestamp}
-                   textAlign=Text.Right
-                   size=Text.Md
-                 />
+                 <Timestamp time={transaction.block.timestamp} textAlign=Text.Right size=Text.Md />
                | None => <Text value="Syncing" />
                }
              | _ => <LoadingCensorBar width=80 height=15 />
@@ -72,11 +67,7 @@ module RenderBody = {
 
 module RenderBodyMobile = {
   [@react.component]
-  let make =
-      (
-        ~reserveIndex,
-        ~requestsSub: ApolloHooks.Subscription.variant(RequestSub.t),
-      ) => {
+  let make = (~reserveIndex, ~requestsSub: ApolloHooks.Subscription.variant(RequestSub.t)) => {
     switch (requestsSub) {
     | Data({
         id,
@@ -142,28 +133,20 @@ let make = () => {
 
   let allSub = Sub.all2(requestsSub, latestRequestSub);
 
-  let ({ThemeContext.theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <Section>
     <div className=CssHelper.container id="requestsSection">
       <Row alignItems=Row.Center marginBottom=40 marginBottomSm=24>
         <Col col=Col.Twelve>
-          <Heading
-            value="All Requests"
-            size=Heading.H2
-            marginBottom=16
-            marginBottomSm=8
-          />
+          <Heading value="All Requests" size=Heading.H2 marginBottom=16 marginBottomSm=8 />
           {switch (allSub) {
            | Data((_, latestRequest)) =>
              <Heading
                value={
                  latestRequest
                  ->Belt.Array.get(0)
-                 ->Belt.Option.mapWithDefault(0, ({id}) =>
-                     id |> ID.Request.toInt
-                   )
+                 ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt)
                  ->Format.iPretty
                  ++ " In total"
                }
@@ -222,9 +205,7 @@ let make = () => {
            let requestsCount =
              latestRequest
              ->Belt.Array.get(0)
-             ->Belt.Option.mapWithDefault(0, ({id}) =>
-                 id |> ID.Request.toInt
-               );
+             ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt);
            let pageCount = Page.getPageCount(requestsCount, pageSize);
            <>
              {requestsCount > 0
@@ -268,11 +249,7 @@ let make = () => {
            Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
            ->Belt_Array.mapWithIndex((i, noData) =>
                isMobile
-                 ? <RenderBodyMobile
-                     reserveIndex=i
-                     key={i |> string_of_int}
-                     requestsSub=noData
-                   />
+                 ? <RenderBodyMobile reserveIndex=i key={i |> string_of_int} requestsSub=noData />
                  : <RenderBody key={i |> string_of_int} requestsSub=noData />
              )
            ->React.array

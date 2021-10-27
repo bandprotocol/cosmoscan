@@ -1,19 +1,13 @@
 module Styles = {
   open Css;
 
-  let tableWrapper =
-    style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
-  let noDataImage =
-    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
   [@react.component]
-  let make =
-      (
-        ~unbondingListSub:
-           ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t),
-      ) => {
+  let make = (~unbondingListSub: ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t)) => {
     <TBody>
       <Row alignItems=Row.Center>
         <Col col=Col.Six>
@@ -36,9 +30,7 @@ module RenderBody = {
           <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
             {switch (unbondingListSub) {
              | Data({amount}) =>
-               <Text
-                 value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty}
-               />
+               <Text value={amount |> Coin.getBandAmountFromCoin |> Format.fPretty} />
              | _ => <LoadingCensorBar width=200 height=20 />
              }}
           </div>
@@ -67,15 +59,10 @@ module RenderBodyMobile = {
   let make =
       (
         ~reserveIndex,
-        ~unbondingListSub:
-           ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t),
+        ~unbondingListSub: ApolloHooks.Subscription.variant(UnbondingSub.unbonding_list_t),
       ) => {
     switch (unbondingListSub) {
-    | Data({
-        validator: {operatorAddress, moniker, identity},
-        amount,
-        completionTime,
-      }) =>
+    | Data({validator: {operatorAddress, moniker, identity}, amount, completionTime}) =>
       let key_ =
         (operatorAddress |> Address.toBech32)
         ++ (completionTime |> MomentRe.Moment.toISOString)
@@ -107,25 +94,16 @@ module RenderBodyMobile = {
 let make = (~address) => {
   let isMobile = Media.isMobile();
   let currentTime =
-    React.useContext(TimeContext.context)
-    |> MomentRe.Moment.format(Config.timestampUseFormat);
+    React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
 
   let (page, setPage) = React.useState(_ => 1);
   let pageSize = 5;
 
   let unbondingListSub =
-    UnbondingSub.getUnbondingByDelegator(
-      address,
-      currentTime,
-      ~pageSize,
-      ~page,
-      (),
-    );
-  let unbondingCountSub =
-    UnbondingSub.getUnbondingCountByDelegator(address, currentTime);
+    UnbondingSub.getUnbondingByDelegator(address, currentTime, ~pageSize, ~page, ());
+  let unbondingCountSub = UnbondingSub.getUnbondingCountByDelegator(address, currentTime);
 
-  let ({ThemeContext.theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
     {isMobile
@@ -256,11 +234,7 @@ let make = (~address) => {
     {switch (unbondingCountSub) {
      | Data(unbondingCount) =>
        let pageCount = Page.getPageCount(unbondingCount, pageSize);
-       <Pagination
-         currentPage=page
-         pageCount
-         onPageChange={newPage => setPage(_ => newPage)}
-       />;
+       <Pagination currentPage=page pageCount onPageChange={newPage => setPage(_ => newPage)} />;
      | _ => React.null
      }}
   </div>;

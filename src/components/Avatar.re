@@ -1,17 +1,12 @@
 module Styles = {
   open Css;
 
-  let avatar = width_ =>
-    style([width(`px(width_)), borderRadius(`percent(50.))]);
+  let avatar = width_ => style([width(`px(width_)), borderRadius(`percent(50.))]);
   let avatarSm = width_ => style([Media.mobile([width(`px(width_))])]);
 };
 
 let decodeThem = json =>
-  json
-  |> JsonUtils.Decode.at(
-       ["pictures", "primary", "url"],
-       JsonUtils.Decode.string,
-     );
+  json |> JsonUtils.Decode.at(["pictures", "primary", "url"], JsonUtils.Decode.string);
 
 let decode = json =>
   json
@@ -24,10 +19,7 @@ module Placeholder = {
     <img
       alt="avatar"
       src={j|https://ui-avatars.com/api/?rounded=true&size=128&name=$moniker&color=230F81&background=C2B6F7|j}
-      className={Css.merge([
-        Styles.avatar(width),
-        Styles.avatarSm(widthSm),
-      ])}
+      className={Css.merge([Styles.avatar(width), Styles.avatarSm(widthSm)])}
     />;
 };
 
@@ -47,10 +39,7 @@ module Keybase = {
           <img
             alt="avatar"
             src=url
-            className={Css.merge([
-              Styles.avatar(width),
-              Styles.avatarSm(widthSm),
-            ])}
+            className={Css.merge([Styles.avatar(width), Styles.avatarSm(widthSm)])}
           />,
         )
       | None =>
@@ -63,10 +52,7 @@ module Keybase = {
         Some(<Placeholder moniker width widthSm />);
       };
     }
-    |> Belt.Option.getWithDefault(
-         _,
-         <LoadingCensorBar width height={width - 4} radius=100 />,
-       );
+    |> Belt.Option.getWithDefault(_, <LoadingCensorBar width height={width - 4} radius=100 />);
 };
 
 [@react.component]
@@ -74,7 +60,6 @@ let make = (~moniker, ~identity, ~width=25, ~widthSm=width) =>
   React.useMemo1(
     () =>
       identity != ""
-        ? <Keybase identity moniker width widthSm />
-        : <Placeholder moniker width widthSm />,
+        ? <Keybase identity moniker width widthSm /> : <Placeholder moniker width widthSm />,
     [|identity|],
   );

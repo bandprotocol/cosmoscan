@@ -28,10 +28,7 @@ let make = (~id) =>
                <Row alignItems=Row.Center>
                  <Col col=Col.Four>
                    <div className={CssHelper.flexBox()}>
-                     <Text
-                       value={numRevisions |> string_of_int}
-                       weight=Text.Semibold
-                     />
+                     <Text value={numRevisions |> string_of_int} weight=Text.Semibold />
                      <HSpacing size={`px(5)} />
                      <Text
                        value={numRevisions == 1 ? "Revision" : "Revisions"}
@@ -40,28 +37,13 @@ let make = (~id) =>
                    </div>
                  </Col>
                  <Col col=Col.Three>
-                   <Text
-                     block=true
-                     value="Timestamp"
-                     size=Text.Md
-                     weight=Text.Semibold
-                   />
+                   <Text block=true value="Timestamp" size=Text.Md weight=Text.Semibold />
                  </Col>
                  <Col col=Col.One>
-                   <Text
-                     block=true
-                     value="Block"
-                     size=Text.Md
-                     weight=Text.Semibold
-                   />
+                   <Text block=true value="Block" size=Text.Md weight=Text.Semibold />
                  </Col>
                  <Col col=Col.Four>
-                   <Text
-                     block=true
-                     value="TX HASH"
-                     size=Text.Md
-                     weight=Text.Semibold
-                   />
+                   <Text block=true value="TX HASH" size=Text.Md weight=Text.Semibold />
                  </Col>
                </Row>
              </THead>
@@ -92,11 +74,7 @@ let make = (~id) =>
                       <Col col=Col.Three>
                         {switch (transaction) {
                          | Some(tx) =>
-                           <TimeAgos
-                             time={tx.block.timestamp}
-                             size=Text.Md
-                             weight=Text.Medium
-                           />
+                           <TimeAgos time={tx.block.timestamp} size=Text.Md weight=Text.Medium />
                          | None => <Text value="Genesis" />
                          }}
                       </Col>
@@ -108,12 +86,7 @@ let make = (~id) =>
                       </Col>
                       <Col col=Col.Four>
                         {switch (transaction) {
-                         | Some(tx) =>
-                           <TxLink
-                             txHash={tx.hash}
-                             width=300
-                             weight=Text.Medium
-                           />
+                         | Some(tx) => <TxLink txHash={tx.hash} width=300 weight=Text.Medium />
                          | None =>
                            <Text
                              block=true
@@ -136,12 +109,7 @@ let make = (~id) =>
              <VSpacing size={`px(30)} />
              <img alt="No revision" src=Images.noRevisionIcon className=Styles.icon />
              <VSpacing size={`px(40)} />
-             <Text
-               block=true
-               value="NO REVISION"
-               weight=Text.Regular
-               color=Colors.blue4
-             />
+             <Text block=true value="NO REVISION" weight=Text.Regular color=Colors.blue4 />
              <VSpacing size={`px(15)} />
            </div>}
     </div>

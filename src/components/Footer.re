@@ -17,11 +17,7 @@ let mapImages = [|
     Images.coinmarketcapWhiteSvg,
     "CoinMarketCap",
   |],
-  [|
-    "https:/\/www.coingecko.com/en/coins/band-protocol",
-    Images.coingeckoSvg,
-    "CoinGecko",
-  |],
+  [|"https:/\/www.coingecko.com/en/coins/band-protocol", Images.coingeckoSvg, "CoinGecko"|],
 |];
 
 [@react.component]
@@ -46,37 +42,19 @@ let make = () => {
             {mapImages
              ->Belt.Array.mapWithIndex((i, e) =>
                  <AbsoluteLink key={string_of_int(i)} href={Array.get(e, 0)}>
-                   <img
-                     alt={e[2] ++ " icon"}
-                     src={Array.get(e, 1)}
-                     className=Styles.socialImg
-                   />
+                   <img alt={e[2] ++ " icon"} src={Array.get(e, 1)} className=Styles.socialImg />
                  </AbsoluteLink>
                )
              ->React.array}
           </div>
         </Col>
         <Col col=Col.Six>
-          <div
-            className={CssHelper.flexBox(
-              ~justify={isMobile ? `center : `flexEnd},
-              (),
-            )}>
-            <Text
-              block=true
-              value="CosmoScan"
-              weight=Text.Semibold
-              color={theme.white}
-            />
+          <div className={CssHelper.flexBox(~justify={isMobile ? `center : `flexEnd}, ())}>
+            <Text block=true value="CosmoScan" weight=Text.Semibold color={theme.white} />
             <HSpacing size={`px(5)} />
             <Icon name="far fa-copyright" color={theme.white} />
             <HSpacing size={`px(5)} />
-            <Text
-              block=true
-              value="2021"
-              weight=Text.Semibold
-              color={theme.white}
-            />
+            <Text block=true value="2021" weight=Text.Semibold color={theme.white} />
           </div>
         </Col>
       </Row>

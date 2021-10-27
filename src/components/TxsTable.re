@@ -2,8 +2,7 @@ module Styles = {
   open Css;
 
   let statusImg = style([width(`px(20)), marginTop(`px(-3))]);
-  let noDataImage =
-    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
@@ -126,8 +125,7 @@ let make =
     ) => {
   let isMobile = Media.isMobile();
 
-  let ({ThemeContext.theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
   <>
     {switch (txsSub) {
      | Data(txs) =>
@@ -141,11 +139,7 @@ let make =
                      txSub={Sub.resolve(e)}
                      msgTransform
                    />
-                 : <RenderBody
-                     key={e.txHash |> Hash.toHex}
-                     txSub={Sub.resolve(e)}
-                     msgTransform
-                   />
+                 : <RenderBody key={e.txHash |> Hash.toHex} txSub={Sub.resolve(e)} msgTransform />
              )
            ->React.array
          : <EmptyContainer>

@@ -1,25 +1,19 @@
 module Styles = {
   open Css;
 
-  let tableWrapper =
-    style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
-  let noDataImage =
-    style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
+  let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 };
 
 module RenderBody = {
   [@react.component]
-  let make =
-      (
-        ~delegatorSub: ApolloHooks.Subscription.variant(DelegationSub.stake_t),
-      ) => {
+  let make = (~delegatorSub: ApolloHooks.Subscription.variant(DelegationSub.stake_t)) => {
     let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
     <TBody>
       <Row alignItems=Row.Center minHeight={`px(30)}>
         <Col col=Col.Six>
           {switch (delegatorSub) {
-           | Data({delegatorAddress}) =>
-             <AddressRender address=delegatorAddress />
+           | Data({delegatorAddress}) => <AddressRender address=delegatorAddress />
            | _ => <LoadingCensorBar width=300 height=15 />
            }}
         </Col>
@@ -55,11 +49,7 @@ module RenderBody = {
 module RenderBodyMobile = {
   [@react.component]
   let make =
-      (
-        ~reserveIndex,
-        ~delegatorSub:
-           ApolloHooks.Subscription.variant(DelegationSub.stake_t),
-      ) => {
+      (~reserveIndex, ~delegatorSub: ApolloHooks.Subscription.variant(DelegationSub.stake_t)) => {
     switch (delegatorSub) {
     | Data({amount, sharePercentage, delegatorAddress}) =>
       <MobileCard
@@ -90,15 +80,13 @@ let make = (~address) => {
   let (page, setPage) = React.useState(_ => 1);
   let pageSize = 10;
 
-  let delegatorsSub =
-    DelegationSub.getDelegatorsByValidator(address, ~pageSize, ~page, ());
+  let delegatorsSub = DelegationSub.getDelegatorsByValidator(address, ~pageSize, ~page, ());
   let delegatorCountSub = DelegationSub.getDelegatorCountByValidator(address);
 
   let allSub = Sub.all2(delegatorsSub, delegatorCountSub);
 
   let isMobile = Media.isMobile();
-  let (ThemeContext.{theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
     {isMobile
@@ -217,11 +205,7 @@ let make = (~address) => {
        Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>
            isMobile
-             ? <RenderBodyMobile
-                 key={string_of_int(i)}
-                 reserveIndex=i
-                 delegatorSub=noData
-               />
+             ? <RenderBodyMobile key={string_of_int(i)} reserveIndex=i delegatorSub=noData />
              : <RenderBody key={string_of_int(i)} delegatorSub=noData />
          )
        ->React.array
