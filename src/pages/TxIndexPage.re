@@ -30,7 +30,7 @@ module TxNotFound = {
         <div className={Styles.notfoundContainer(theme)}>
           <div className={CssHelper.flexBox()}>
             <img
-              alt="Not found icon"
+              alt="Not Found"
               src={isDarkMode ? Images.noTxDark : Images.noTxLight}
               className=Styles.notfoundLogo
             />
@@ -58,7 +58,7 @@ module TxSyncing = {
         <div className={Styles.notfoundContainer(theme)}>
           <div className={CssHelper.flexBox()}>
             <img
-              alt="Not found icon"
+              alt="Not Found"
               src={isDarkMode ? Images.noTxDark : Images.noTxLight}
               className=Styles.notfoundLogo
             />
@@ -154,7 +154,7 @@ let make = (~txHash) => {
                | Data({success}) =>
                  <>
                    <img
-                     alt="Status icon"
+                     alt="Status Icon"
                      src={success ? Images.success : Images.fail}
                      className=Styles.successLogo
                    />

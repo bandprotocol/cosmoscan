@@ -82,7 +82,7 @@ module LoginMethod = {
          | LedgerWithCosmos =>
            <div className={Styles.ledgerImageContainer(active)}>
              <img
-               alt="Cosmos ledger icon"
+               alt="Cosmos Ledger Icon"
                src={isDarkMode ? Images.ledgerCosmosDarkIcon : Images.ledgerCosmosLightIcon}
                className=Styles.ledgerIcon
              />
@@ -90,7 +90,7 @@ module LoginMethod = {
          | LedgerWithBandChain =>
            <div className={Styles.ledgerImageContainer(active)}>
              <img
-               alt="Band ledger icon"
+               alt="Band Ledger Icon"
                src={isDarkMode ? Images.ledgerBandChainDarkIcon : Images.ledgerBandChainLightIcon}
                className=Styles.ledgerIcon
              />

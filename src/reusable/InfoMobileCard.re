@@ -183,7 +183,7 @@ let make = (~info) => {
       />
     </div>
   | Status(status) =>
-    <img alt="Status icon" src={status ? Images.success : Images.fail} className=Styles.logo />
+    <img alt="Status Icon" src={status ? Images.success : Images.fail} className=Styles.logo />
 
   // Special case for uptime to have loading state inside.
   | Uptime(uptimeOpt) =>

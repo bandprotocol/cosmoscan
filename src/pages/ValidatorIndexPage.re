@@ -135,7 +135,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                <div className={CssHelper.flexBox()}>
                  <div className={CssHelper.flexBox(~justify=`center, ())}>
                    <img
-                     alt={isActive ? "Active validator icon" : "Inactive validator icon"}
+                     alt={isActive ? "Active Validator Icon" : "Inactive Validator Icon"}
                      src={isActive ? Images.activeValidatorLogo : Images.inactiveValidatorLogo}
                    />
                  </div>

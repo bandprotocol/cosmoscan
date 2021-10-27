@@ -101,7 +101,7 @@ module RenderBody = {
               {switch (validatorSub) {
                | Data({oracleStatus}) =>
                  <img
-                   alt="Status icon"
+                   alt="Status Icon"
                    src={oracleStatus ? Images.success : Images.fail}
                    className=Styles.logo
                  />

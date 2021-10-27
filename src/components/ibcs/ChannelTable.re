@@ -45,8 +45,8 @@ module RenderBody = {
       <Col col=Col.Two>
         <div className={CssHelper.flexBox()}>
           {switch (channel.state) {
-           | Open => <img alt="Success icon" src=Images.success />
-           | _ => <img alt="Fail icon" src=Images.fail />
+           | Open => <img alt="Success Icon" src=Images.success />
+           | _ => <img alt="Fail Icon" src=Images.fail />
            }}
         </div>
       </Col>
@@ -97,7 +97,7 @@ module RenderMobile = {
 
     <div className={Styles.cardContainer(theme)}>
       <img
-        alt="Status icon"
+        alt="Status Icon"
         src={
           switch (channel.state) {
           | Open => Images.success

@@ -42,7 +42,7 @@ let make = () => {
             {mapImages
              ->Belt.Array.mapWithIndex((i, e) =>
                  <AbsoluteLink key={string_of_int(i)} href={Array.get(e, 0)}>
-                   <img alt={e[2] ++ " icon"} src={Array.get(e, 1)} className=Styles.socialImg />
+                   <img alt={e[2] ++ " Icon"} src={Array.get(e, 1)} className=Styles.socialImg />
                  </AbsoluteLink>
                )
              ->React.array}

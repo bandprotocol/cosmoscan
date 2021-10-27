@@ -14,11 +14,11 @@ let toString =
 let make = (~resolveStatus, ~display=Mini, ~style="") => {
   <div className={CssHelper.flexBox(~align=`center, ())}>
     {switch (resolveStatus) {
-     | RequestSub.Success => <img alt="Success icon" src=Images.success className=style />
-     | Failure => <img alt="Fail icon" src=Images.fail className=style />
-     | Pending => <img alt="Pending icon" src=Images.pending className=style />
-     | Expired => <img alt="Expired icon" src=Images.expired className=style />
-     | Unknown => <img alt="Unknown icon" src=Images.unknown className=style />
+     | RequestSub.Success => <img alt="Success Icon" src=Images.success className=style />
+     | Failure => <img alt="Fail Icon" src=Images.fail className=style />
+     | Pending => <img alt="Pending Icon" src=Images.pending className=style />
+     | Expired => <img alt="Expired Icon" src=Images.expired className=style />
+     | Unknown => <img alt="Unknown Icon" src=Images.unknown className=style />
      }}
     {display == Full
        ? <>

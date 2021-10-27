@@ -107,7 +107,7 @@ let make = (~id) =>
            </>
          : <div className=Styles.iconWrapper>
              <VSpacing size={`px(30)} />
-             <img alt="No revision" src=Images.noRevisionIcon className=Styles.icon />
+             <img alt="No Revision" src=Images.noRevisionIcon className=Styles.icon />
              <VSpacing size={`px(40)} />
              <Text block=true value="NO REVISION" weight=Text.Regular color=Colors.blue4 />
              <VSpacing size={`px(15)} />

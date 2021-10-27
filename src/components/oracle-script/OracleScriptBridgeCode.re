@@ -103,8 +103,8 @@ module TargetPlatformIcon = {
       <img
         alt={
           switch (icon) {
-          | Ethereum => "Ethereum icon"
-          | CosmosIBC => "Cosmos IBC icon"
+          | Ethereum => "Ethereum Icon"
+          | CosmosIBC => "Cosmos IBC Icon"
           }
         }
         className=Styles.iconBody
@@ -127,8 +127,8 @@ module LanguageIcon = {
       <img
         alt={
           switch (icon) {
-          | Solidity => "Solidity icon"
-          | Go => "Golang icon"
+          | Solidity => "Solidity Icon"
+          | Go => "Golang Icon"
           }
         }
         className=Styles.iconBody

@@ -49,7 +49,7 @@ let make = (~height) => {
             CssHelper.flexBox(~direction=`column, ~justify=`center, ()),
           ])}>
           <div className={CssHelper.flexBox()}>
-            <img alt="Not found" src=Images.notFoundBg className=Styles.logo />
+            <img alt="Not Found" src=Images.notFoundBg className=Styles.logo />
           </div>
           <VSpacing size=Spacing.xxl />
           {height > latestBlock.height
@@ -77,7 +77,7 @@ let make = (~height) => {
           <Link className=Styles.linkToHome route=Route.HomePage>
             <Text value="Back to Homepage" weight=Text.Bold size=Text.Md color=Colors.blueGray6 />
             <HSpacing size=Spacing.md />
-            <img alt="Right arrow icon" src=Images.rightArrow className=Styles.rightArrow />
+            <img alt="Right Arrow Icon" src=Images.rightArrow className=Styles.rightArrow />
           </Link>
           <VSpacing size=Spacing.xxl />
         </div>

@@ -16,6 +16,6 @@ let make = (~width=`px(65), ~marginBottom=`unset) => {
   <img
     src=Images.loadingCircles
     className={Css.merge([Styles.loading(width, marginBottom)])}
-    alt="Loading icon"
+    alt="Loading Icon"
   />;
 };

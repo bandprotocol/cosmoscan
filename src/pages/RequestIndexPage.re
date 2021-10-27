@@ -500,7 +500,7 @@ let make = (~reqID) => {
                switch (reason) {
                | Some(reason') when reason' != "" =>
                  <div className=Styles.reasonSection>
-                   <img alt="Fail icon" src=Images.fail />
+                   <img alt="Fail Icon" src=Images.fail />
                    <HSpacing size=Spacing.md />
                    <Text value=reason' color={theme.textPrimary} />
                  </div>
@@ -580,7 +580,7 @@ let make = (~reqID) => {
                | (_, _) =>
                  <EmptyContainer height={`px(200)}>
                    <img
-                     alt="Not found icon"
+                     alt="Not Found"
                      src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                      className=Styles.noDataImage
                    />
@@ -631,7 +631,7 @@ let make = (~reqID) => {
                | _ =>
                  <EmptyContainer height={`px(200)}>
                    <img
-                     alt="Not found icon"
+                     alt="Not Found"
                      src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                      className=Styles.noDataImage
                    />

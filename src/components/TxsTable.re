@@ -32,7 +32,7 @@ module RenderBody = {
             {switch (txSub) {
              | Data({success}) =>
                <img
-                 alt="Status icon"
+                 alt="Status Icon"
                  src={success ? Images.success : Images.fail}
                  className=Styles.statusImg
                />

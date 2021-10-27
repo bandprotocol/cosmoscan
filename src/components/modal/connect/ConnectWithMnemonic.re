@@ -91,10 +91,4 @@ let make = (~chainID) => {
     <VSpacing size=Spacing.lg />
     <Text value=errMsg color=Colors.red6 />
   </div>;
-  // </Col>
-  //   </div>
-  //     <img alt="" src=Images.linkIcon />
-  //     <Text value="What is Mnemonic" />
-  //   <div className=Styles.mnemonicHelper>
-  // <Col>
 };

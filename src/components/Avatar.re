@@ -17,7 +17,7 @@ module Placeholder = {
   [@react.component]
   let make = (~moniker, ~width, ~widthSm) =>
     <img
-      alt="avatar"
+      alt="Avatar"
       src={j|https://ui-avatars.com/api/?rounded=true&size=128&name=$moniker&color=230F81&background=C2B6F7|j}
       className={Css.merge([Styles.avatar(width), Styles.avatarSm(widthSm)])}
     />;
@@ -37,7 +37,7 @@ module Keybase = {
       | Some(url) =>
         Some(
           <img
-            alt="avatar"
+            alt="Avatar"
             src=url
             className={Css.merge([Styles.avatar(width), Styles.avatarSm(widthSm)])}
           />,

@@ -84,14 +84,14 @@ let make = _ => {
              color=Colors.gray8
            />
            <VSpacing size=Spacing.xxl />
-           <img alt="Success icon" src=Images.success2 className=Styles.icon />
+           <img alt="Success Icon" src=Images.success2 className=Styles.icon />
          </>
        | Error =>
          <>
            <Text value="Signing Fail" weight=Text.Bold size=Text.Xxxl color=Colors.gray8 />
            <VSpacing size=Spacing.xxl />
            <div className=Styles.errorContainer>
-             <img alt="Fail icon" src=Images.fail2 className=Styles.icon />
+             <img alt="Fail Icon" src=Images.fail2 className=Styles.icon />
              <HSpacing size=Spacing.md />
              <Text
                value="An error occurred"
