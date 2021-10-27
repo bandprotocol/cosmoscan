@@ -8,8 +8,7 @@ module Styles = {
       borderRadius(`px(4)),
     ]);
 
-  let resultContainer =
-    style([minHeight(`px(400)), width(`percent(100.))]);
+  let resultContainer = style([minHeight(`px(400)), width(`percent(100.))]);
 
   let btn = style([width(`percent(100.))]);
 
@@ -53,8 +52,7 @@ type state_t =
 let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let (state, setState) = React.useState(_ => Nothing);
-  let jsonTxStr =
-    rawTx->BandChainJS.Transaction.getSignMessage->JsBuffer.toUTF8;
+  let jsonTxStr = rawTx->BandChainJS.Transaction.getSignMessage->JsBuffer.toUTF8;
 
   let client = React.useContext(ClientContext.context);
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
@@ -73,9 +71,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
          <textarea
            className={Styles.jsonDisplay(theme)}
            disabled=true
-           defaultValue={
-             jsonTxStr |> Js.Json.parseExn |> TxCreator2.stringifyWithSpaces
-           }
+           defaultValue={jsonTxStr |> Js.Json.parseExn |> TxCreator2.stringifyWithSpaces}
          />
          <div id="broadcastButtonContainer">
            <Button
@@ -91,11 +87,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                       let pubKeyHex = account.pubKey->PubKey.toHex;
                       let pubKey = pubKeyHex->BandChainJS.PubKey.fromHex;
                       let txRawBytes =
-                        rawTx->BandChainJS.Transaction.getTxData(
-                          signature,
-                          pubKey,
-                          127,
-                        );
+                        rawTx->BandChainJS.Transaction.getTxData(signature, pubKey, 127);
 
                       ignore(
                         TxCreator2.broadcast(client, txRawBytes)
@@ -108,11 +100,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                                  }
                                  : {
                                    Js.Console.error(txResponse);
-                                   setState(_ =>
-                                     Error(
-                                       txResponse.code |> TxResError.parse,
-                                     )
-                                   );
+                                   setState(_ => Error(txResponse.code |> TxResError.parse));
                                  };
                                dispatchModal(EnableExit);
                                Js.Promise.resolve();
@@ -124,10 +112,8 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
                            })
                         |> Js.Promise.catch(err => {
                              switch (Js.Json.stringifyAny(err)) {
-                             | Some(errorValue) =>
-                               setState(_ => Error(errorValue))
-                             | None =>
-                               setState(_ => Error("Can not stringify error"))
+                             | Some(errorValue) => setState(_ => Error(errorValue))
+                             | None => setState(_ => Error("Can not stringify error"))
                              };
                              dispatchModal(EnableExit);
                              Js.Promise.resolve();
@@ -146,9 +132,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
              {"Broadcast" |> React.string}
            </Button>
          </div>
-         <Button py=10 style=Styles.btn onClick=onBack>
-           {"Back" |> React.string}
-         </Button>
+         <Button py=10 style=Styles.btn onClick=onBack> {"Back" |> React.string} </Button>
        </div>
      | Success(txHash) =>
        <div
@@ -166,13 +150,8 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
              color={theme.textPrimary}
            />
          </div>
-         <Link
-           className=Styles.txhashContainer route={Route.TxIndexPage(txHash)}>
-           <Button
-             py=8
-             px=13
-             variant=Button.Outline
-             onClick={_ => {dispatchModal(CloseModal)}}>
+         <Link className=Styles.txhashContainer route={Route.TxIndexPage(txHash)}>
+           <Button py=8 px=13 variant=Button.Outline onClick={_ => {dispatchModal(CloseModal)}}>
              {"View Details" |> React.string}
            </Button>
          </Link>
@@ -227,12 +206,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
              color={theme.textPrimary}
            />
          </div>
-         <Text
-           value=err
-           color={theme.failColor}
-           align=Text.Center
-           breakAll=true
-         />
+         <Text value=err color={theme.failColor} align=Text.Center breakAll=true />
        </div>
      }}
   </div>;

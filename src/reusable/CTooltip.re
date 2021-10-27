@@ -15,10 +15,7 @@ module Styles = {
       position(`relative),
       display(`block),
       hover([
-        selector(
-          "> div:nth-child(1)",
-          [opacity(1.), zIndex(99), pointerEvents(`unset)],
-        ),
+        selector("> div:nth-child(1)", [opacity(1.), zIndex(99), pointerEvents(`unset)]),
       ]),
     ]);
   let hiddenTooltipSm = style([Media.mobile([display(`none)])]);
@@ -44,11 +41,7 @@ module Styles = {
         position(`absolute),
         border(`px(5), `solid, `rgba((0, 0, 0, `num(0.)))),
       ]),
-      Media.mobile([
-        padding(`px(12)),
-        fontSize(`px(12)),
-        maxWidth(`px(150)),
-      ]),
+      Media.mobile([padding(`px(12)), fontSize(`px(12)), maxWidth(`px(150))]),
     ]);
 
   let placement =

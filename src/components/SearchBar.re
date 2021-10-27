@@ -8,11 +8,7 @@ module Styles = {
       height(`percent(100.)),
       position(`relative),
       marginTop(Spacing.xs),
-      Media.mobile([
-        margin(`zero),
-        display(`flex),
-        maxWidth(`percent(100.)),
-      ]),
+      Media.mobile([margin(`zero), display(`flex), maxWidth(`percent(100.))]),
     ]);
   let searchIcon =
     style([
@@ -28,25 +24,10 @@ module Styles = {
       color(theme.textPrimary),
       background(theme.secondaryBg),
       borderRadius(`px(8)),
-      padding4(
-        ~left=`px(15),
-        ~right=Spacing.md,
-        ~top=`px(10),
-        ~bottom=`px(10),
-      ),
+      padding4(~left=`px(15), ~right=Spacing.md, ~top=`px(10), ~bottom=`px(10)),
       boxShadows([
-        Shadow.box(
-          ~x=`zero,
-          ~y=`px(1),
-          ~blur=`px(4),
-          Css.rgba(0, 0, 0, `num(0.07)),
-        ),
-        Shadow.box(
-          ~x=`zero,
-          ~y=`px(4),
-          ~blur=`px(12),
-          Css.rgba(0, 0, 0, `num(0.02)),
-        ),
+        Shadow.box(~x=`zero, ~y=`px(1), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.07))),
+        Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(12), Css.rgba(0, 0, 0, `num(0.02))),
       ]),
       fontSize(`px(12)),
       outline(`px(1), `none, theme.secondaryBg),
@@ -83,27 +64,12 @@ module SearchResults = {
         top(`percent(90.)),
         borderRadius(`px(4)),
         boxShadows([
-          Shadow.box(
-            ~x=`zero,
-            ~y=`px(2),
-            ~blur=`px(4),
-            Css.rgba(0, 0, 0, `num(0.07)),
-          ),
-          Shadow.box(
-            ~x=`zero,
-            ~y=`px(4),
-            ~blur=`px(12),
-            Css.rgba(0, 0, 0, `num(0.02)),
-          ),
+          Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.07))),
+          Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(12), Css.rgba(0, 0, 0, `num(0.02))),
         ]),
       ]);
 
-    let result =
-      style([
-        padding(Spacing.sm),
-        paddingLeft(`px(38)),
-        cursor(`pointer),
-      ]);
+    let result = style([padding(Spacing.sm), paddingLeft(`px(38)), cursor(`pointer)]);
 
     let lastResult =
       style([
@@ -117,8 +83,7 @@ module SearchResults = {
   };
 
   let isValidAddress = a =>
-    a->String.sub(0, min(a->String.length, 2)) == "0x"
-    && a->String.length > 2;
+    a->String.sub(0, min(a->String.length, 2)) == "0x" && a->String.length > 2;
 
   let isValidTx = isValidAddress;
 
@@ -137,12 +102,7 @@ module SearchResults = {
                 weight=Text.Semibold
               />
               <VSpacing size=Spacing.xs />
-              <Text
-                value={searchTerm ++ "1f2bce"}
-                weight=Text.Bold
-                size=Text.Lg
-                block=true
-              />
+              <Text value={searchTerm ++ "1f2bce"} weight=Text.Bold size=Text.Lg block=true />
               <VSpacing size=Spacing.sm />
             </>
           : React.null,
@@ -156,19 +116,11 @@ module SearchResults = {
                 weight=Text.Semibold
               />
               <VSpacing size=Spacing.xs />
-              <Text
-                value={searchTerm ++ "dd92b"}
-                weight=Text.Bold
-                size=Text.Lg
-                block=true
-              />
+              <Text value={searchTerm ++ "dd92b"} weight=Text.Bold size=Text.Lg block=true />
               <VSpacing size=Spacing.sm />
             </>
           : React.null,
-        <>
-          <Text value="Show all results for " />
-          <Text value=searchTerm weight=Text.Bold />
-        </>,
+        <> <Text value="Show all results for " /> <Text value=searchTerm weight=Text.Bold /> </>,
       |]
       ->Belt.Array.keep(r => r != React.null);
 
@@ -181,8 +133,7 @@ module SearchResults = {
              className={Css.merge([
                Styles.result,
                i == results->Array.length - 1 ? Styles.lastResult : "",
-               i == focusIndex mod results->Array.length
-                 ? Styles.resultFocused : "",
+               i == focusIndex mod results->Array.length ? Styles.resultFocused : "",
              ])}>
              result
            </div>
@@ -231,10 +182,7 @@ let reducer = state =>
     }
   | StartTyping => {...state, resultState: ShowAndFocus(0)}
   | StopTyping => {...state, resultState: Hidden}
-  | HoverResultAt(resultIndex) => {
-      ...state,
-      resultState: ShowAndFocus(resultIndex),
-    };
+  | HoverResultAt(resultIndex) => {...state, resultState: ShowAndFocus(resultIndex)};
 
 [@react.component]
 let make = () => {
@@ -247,9 +195,7 @@ let make = () => {
     <input
       onFocus={_evt => dispatch(StartTyping)}
       onBlur={_evt => dispatch(StopTyping)}
-      onChange={evt =>
-        dispatch(ChangeSearchTerm(ReactEvent.Form.target(evt)##value))
-      }
+      onChange={evt => dispatch(ChangeSearchTerm(ReactEvent.Form.target(evt)##value))}
       onKeyDown={event =>
         switch (ReactEvent.Keyboard.key(event)) {
         | "ArrowUp" =>

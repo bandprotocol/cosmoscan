@@ -9,29 +9,16 @@ module Styles = {
       minHeight(`px(450)),
       backgroundColor(theme.secondaryBg),
       borderRadius(`px(4)),
-      boxShadow(
-        Shadow.box(
-          ~x=`zero,
-          ~y=`px(2),
-          ~blur=`px(4),
-          rgba(0, 0, 0, `num(0.1)),
-        ),
-      ),
+      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), rgba(0, 0, 0, `num(0.1)))),
     ]);
 
   let logo = style([width(`px(180)), marginRight(`px(10))]);
-  let linkToHome =
-    style([display(`flex), alignItems(`center), cursor(`pointer)]);
-  let rightArrow =
-    style([
-      width(`px(20)),
-      filter([`saturate(50.0), `brightness(70.0)]),
-    ]);
+  let linkToHome = style([display(`flex), alignItems(`center), cursor(`pointer)]);
+  let rightArrow = style([width(`px(20)), filter([`saturate(50.0), `brightness(70.0)])]);
 };
 
 let isIBCTx = (tx: TxSub.t) => {
-  tx.messages
-  ->Belt.List.reduce(false, (acc, message) => acc || message.isIBC);
+  tx.messages->Belt.List.reduce(false, (acc, message) => acc || message.isIBC);
 };
 
 [@react.component]
@@ -42,15 +29,11 @@ let make = (~height) => {
   let txsSub = TxSub.getListByBlockHeight(height, ());
   let ibcTxsSub = {
     let%Sub txs = txsSub;
-    Sub.resolve(
-      txs->Belt.Array.keepMap(tx => isIBCTx(tx) ? Some(tx) : None),
-    );
+    Sub.resolve(txs->Belt.Array.keepMap(tx => isIBCTx(tx) ? Some(tx) : None));
   };
   let commonTxsSub = {
     let%Sub txs = txsSub;
-    Sub.resolve(
-      txs->Belt.Array.keepMap(tx => !isIBCTx(tx) ? Some(tx) : None),
-    );
+    Sub.resolve(txs->Belt.Array.keepMap(tx => !isIBCTx(tx) ? Some(tx) : None));
   };
 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
@@ -110,15 +93,9 @@ let make = (~height) => {
       <div className=CssHelper.container>
         <Row marginBottom=40 marginBottomSm=16>
           <Col>
-            <Heading
-              value="Block Details"
-              size=Heading.H2
-              marginBottom=32
-              marginBottomSm=8
-            />
+            <Heading value="Block Details" size=Heading.H2 marginBottom=32 marginBottomSm=8 />
             {switch (blockSub) {
-             | Data({height}) =>
-               <TypeID.Block id=height position=TypeID.Title />
+             | Data({height}) => <TypeID.Block id=height position=TypeID.Title />
              | _ => <LoadingCensorBar width=100 height=15 />
              }}
           </Col>
@@ -147,11 +124,7 @@ let make = (~height) => {
                        size=Text.Lg
                        breakAll=true
                      />
-                   | _ =>
-                     <LoadingCensorBar
-                       width={isMobile ? 200 : 350}
-                       height=15
-                     />
+                   | _ => <LoadingCensorBar width={isMobile ? 200 : 350} height=15 />
                    }}
                 </Col>
               </Row>
@@ -166,8 +139,7 @@ let make = (~height) => {
                 </Col>
                 <Col col=Col.Eight>
                   {switch (blockSub) {
-                   | Data({txn}) =>
-                     <Text value={txn |> string_of_int} size=Text.Lg />
+                   | Data({txn}) => <Text value={txn |> string_of_int} size=Text.Lg />
                    | _ => <LoadingCensorBar width=40 height=15 />
                    }}
                 </Col>
@@ -188,9 +160,7 @@ let make = (~height) => {
                        <Text
                          value={
                            timestamp
-                           |> MomentRe.Moment.format(
-                                Config.timestampDisplayFormat,
-                              )
+                           |> MomentRe.Moment.format(Config.timestampDisplayFormat)
                            |> String.uppercase_ascii
                          }
                          size=Text.Lg
@@ -242,15 +212,8 @@ let make = (~height) => {
            <Row marginBottom=24>
              <Col>
                <Table>
-                 <Heading
-                   value="IBC Transactions"
-                   size=Heading.H4
-                   marginBottom=16
-                   marginTop=32
-                 />
-                 <Text
-                   value="This section contains only IBC-related transactions."
-                 />
+                 <Heading value="IBC Transactions" size=Heading.H4 marginBottom=16 marginTop=32 />
+                 <Text value="This section contains only IBC-related transactions." />
                  <SeperatedLine mt=32 mb=0 />
                  <BlockIndexTxsTable txsSub=ibcTxsSub />
                </Table>
@@ -259,12 +222,7 @@ let make = (~height) => {
          | _ => React.null
          }}
         <Table>
-          <Heading
-            value="Transactions"
-            size=Heading.H4
-            marginBottom=32
-            marginTop=32
-          />
+          <Heading value="Transactions" size=Heading.H4 marginBottom=32 marginTop=32 />
           <SeperatedLine mt=32 mb=0 />
           <BlockIndexTxsTable txsSub=commonTxsSub />
         </Table>

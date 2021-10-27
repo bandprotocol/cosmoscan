@@ -1,8 +1,7 @@
 module Styles = {
   open Css;
 
-  let sortDrowdownContainer =
-    style([position(`relative), zIndex(2), maxWidth(`px(60))]);
+  let sortDrowdownContainer = style([position(`relative), zIndex(2), maxWidth(`px(60))]);
   let sortDrowdownPanel = show => {
     style([
       display(
@@ -11,12 +10,7 @@ module Styles = {
         },
       ),
       boxShadow(
-        Shadow.box(
-          ~x=`zero,
-          ~y=`px(2),
-          ~blur=`px(4),
-          Css.rgba(0, 0, 0, `num(0.08)),
-        ),
+        Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
       ),
       backgroundColor(rgb(255, 255, 255)),
       position(`absolute),
@@ -57,18 +51,12 @@ let make = (~sortedBy, ~setSortedBy, ~sortList) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.sortDrowdownContainer>
-    <div
-      className=Styles.sortDropdownTextItem
-      onClick={_ => setShow(prev => !prev)}>
+    <div className=Styles.sortDropdownTextItem onClick={_ => setShow(prev => !prev)}>
       <Text block=true value="Sort By" align=Text.Right />
       <div className=Styles.iconContainer>
         {show
            ? <Icon name="far fa-angle-up" color={theme.textPrimary} size=14 />
-           : <Icon
-               name="far fa-angle-down"
-               color={theme.textPrimary}
-               size=14
-             />}
+           : <Icon name="far fa-angle-down" color={theme.textPrimary} size=14 />}
       </div>
     </div>
     <div className={Styles.sortDrowdownPanel(show)}>
@@ -87,12 +75,7 @@ let make = (~sortedBy, ~setSortedBy, ~sortList) => {
              }}>
              <Text block=true value=name />
              {isActive
-                ? <Icon
-                    name="far fa-check"
-                    color={theme.textPrimary}
-                    size=12
-                  />
-                : React.null}
+                ? <Icon name="far fa-check" color={theme.textPrimary} size=12 /> : React.null}
            </div>;
          })
        ->Array.of_list

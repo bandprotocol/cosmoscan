@@ -2,8 +2,7 @@ module Styles = {
   open Css;
 
   let statusLogo = style([width(`px(20))]);
-  let resultContainer =
-    style([selector("> div + div", [marginTop(`px(24))])]);
+  let resultContainer = style([selector("> div + div", [marginTop(`px(24))])]);
 
   let voteButton =
     fun
@@ -13,14 +12,10 @@ module Styles = {
     | Rejected
     | Failed => style([visibility(`hidden)]);
 
-  let chartContainer =
-    style([paddingRight(`px(20)), Media.mobile([paddingRight(`zero)])]);
+  let chartContainer = style([paddingRight(`px(20)), Media.mobile([paddingRight(`zero)])]);
 
   let parameterChanges = (theme: Theme.t) =>
-    style([
-      padding2(~v=`px(16), ~h=`px(24)),
-      backgroundColor(theme.secondaryTableBg),
-    ]);
+    style([padding2(~v=`px(16), ~h=`px(24)), backgroundColor(theme.secondaryTableBg)]);
 };
 
 module VoteButton = {
@@ -32,8 +27,7 @@ module VoteButton = {
     let (_, dispatchModal) = React.useContext(ModalContext.context);
 
     let connect = chainID => dispatchModal(OpenModal(Connect(chainID)));
-    let vote = () =>
-      Vote(proposalID, proposalName)->SubmitTx->OpenModal->dispatchModal;
+    let vote = () => Vote(proposalID, proposalName)->SubmitTx->OpenModal->dispatchModal;
 
     switch (accountOpt) {
     | Some(_) =>
@@ -43,11 +37,7 @@ module VoteButton = {
     | None =>
       switch (trackingSub) {
       | Data({chainID}) =>
-        <Button
-          px=20
-          py=5
-          style={CssHelper.flexBox()}
-          onClick={_ => connect(chainID)}>
+        <Button px=20 py=5 style={CssHelper.flexBox()} onClick={_ => connect(chainID)}>
           {"Vote" |> React.string}
         </Button>
       | Error(err) =>
@@ -67,8 +57,7 @@ let make = (~proposalID) => {
   let voteStatByProposalIDSub = VoteSub.getVoteStatByProposalID(proposalID);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
 
-  let allSub =
-    Sub.all3(proposalSub, voteStatByProposalIDSub, bondedTokenCountSub);
+  let allSub = Sub.all3(proposalSub, voteStatByProposalIDSub, bondedTokenCountSub);
 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
@@ -76,12 +65,7 @@ let make = (~proposalID) => {
     <div className=CssHelper.container>
       <Row marginBottom=40 marginBottomSm=16>
         <Col>
-          <Heading
-            value="Proposal Details"
-            size=Heading.H2
-            marginBottom=40
-            marginBottomSm=24
-          />
+          <Heading value="Proposal Details" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
         </Col>
         <Col col=Col.Eight mbSm=16>
           {switch (allSub) {
@@ -89,11 +73,7 @@ let make = (~proposalID) => {
              <div
                className={Css.merge([
                  CssHelper.flexBox(),
-                 CssHelper.flexBoxSm(
-                   ~direction=`column,
-                   ~align=`flexStart,
-                   (),
-                 ),
+                 CssHelper.flexBoxSm(~direction=`column, ~align=`flexStart, ()),
                ])}>
                <div className={CssHelper.flexBox()}>
                  <TypeID.Proposal id position=TypeID.Title />
@@ -101,9 +81,7 @@ let make = (~proposalID) => {
                  <Heading size=Heading.H3 value=name />
                  <HSpacing size={`px(16)} />
                </div>
-               <div className={CssHelper.mtSm(~size=16, ())}>
-                 <ProposalBadge status />
-               </div>
+               <div className={CssHelper.mtSm(~size=16, ())}> <ProposalBadge status /> </div>
              </div>
            | _ =>
              <div className={CssHelper.flexBox()}>
@@ -135,10 +113,7 @@ let make = (~proposalID) => {
                  | Data(({proposerAddressOpt}, _, _)) =>
                    switch (proposerAddressOpt) {
                    | Some(proposerAddress) =>
-                     <AddressRender
-                       address=proposerAddress
-                       position=AddressRender.Subtitle
-                     />
+                     <AddressRender address=proposerAddress position=AddressRender.Subtitle />
                    | None => <Text value="Proposed on Wenchang" />
                    }
                  | _ => <LoadingCensorBar width=270 height=15 />
@@ -156,10 +131,8 @@ let make = (~proposalID) => {
               </Col>
               <Col col=Col.Eight>
                 {switch (allSub) {
-                 | Data(({submitTime}, _, _)) =>
-                   <Timestamp size=Text.Lg time=submitTime />
-                 | _ =>
-                   <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
+                 | Data(({submitTime}, _, _)) => <Timestamp size=Text.Lg time=submitTime />
+                 | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
                  }}
               </Col>
             </Row>
@@ -191,16 +164,14 @@ let make = (~proposalID) => {
               </Col>
               <Col col=Col.Eight>
                 {switch (allSub) {
-                 | Data(({description}, _, _)) =>
-                   <Markdown value=description />
+                 | Data(({description}, _, _)) => <Markdown value=description />
                  | _ => <LoadingCensorBar width=270 height=15 />
                  }}
               </Col>
             </Row>
             // Display when related to Enable IBC
             {switch (allSub) {
-             | Data(({name}, _, _))
-                 when name->Js.String2.includes("Enable IBC") =>
+             | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC") =>
                <Row>
                  <Col col=Col.Four mbSm=8>
                    <Heading
@@ -212,11 +183,7 @@ let make = (~proposalID) => {
                  </Col>
                  <Col col=Col.Eight>
                    <div className={Styles.parameterChanges(theme)}>
-                     <Text
-                       value="IBCRequestEnabled: True"
-                       size=Text.Lg
-                       block=true
-                     />
+                     <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
                    </div>
                  </Col>
                </Row>
@@ -261,9 +228,7 @@ let make = (~proposalID) => {
                            CssHelper.flexBox(~justify=`flexEnd, ()),
                          ])}>
                          {let turnoutPercent =
-                            total
-                            /. (bondedToken |> Coin.getBandAmountFromCoin)
-                            *. 100.;
+                            total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.;
                           <div className=Styles.chartContainer>
                             <TurnoutChart percent=turnoutPercent />
                           </div>}
@@ -279,9 +244,7 @@ let make = (~proposalID) => {
                              marginBottom=4
                            />
                            <Text
-                             value={
-                               (total |> Format.fPretty(~digits=2)) ++ " BAND"
-                             }
+                             value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
                              size=Text.Lg
                              block=true
                              color={theme.textPrimary}
@@ -320,10 +283,7 @@ let make = (~proposalID) => {
                </Col>
                <Col col=Col.Six mb=24 mbSm=16>
                  <InfoContainer>
-                   <div
-                     className={Css.merge([
-                       CssHelper.flexBox(~justify=`spaceBetween, ()),
-                     ])}>
+                   <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
                      <Heading value="Results" size=Heading.H4 />
                      {isMobile
                         ? React.null
@@ -359,9 +319,7 @@ let make = (~proposalID) => {
                  </InfoContainer>
                </Col>
              </Row>
-             <Row marginBottom=24>
-               <Col> <VoteBreakdownTable proposalID /> </Col>
-             </Row>
+             <Row marginBottom=24> <Col> <VoteBreakdownTable proposalID /> </Col> </Row>
            </>
          }
        | _ => React.null
@@ -384,21 +342,16 @@ let make = (~proposalID) => {
                 {switch (proposalSub) {
                  | Data({totalDeposit, status}) =>
                    switch (status) {
-                   | ProposalSub.Deposit =>
-                     <ProgressBar.Deposit totalDeposit />
+                   | ProposalSub.Deposit => <ProgressBar.Deposit totalDeposit />
                    | _ =>
                      <div className={CssHelper.flexBox()}>
                        <img src=Images.success className=Styles.statusLogo />
                        <HSpacing size=Spacing.sm />
                        // TODO: remove hard-coded later
-                       <Text
-                         value="Completed Min Deposit 1,000 BAND"
-                         size=Text.Lg
-                       />
+                       <Text value="Completed Min Deposit 1,000 BAND" size=Text.Lg />
                      </div>
                    }
-                 | _ =>
-                   <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
+                 | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
                  }}
               </Col>
             </Row>
@@ -413,8 +366,7 @@ let make = (~proposalID) => {
               </Col>
               <Col col=Col.Eight>
                 {switch (proposalSub) {
-                 | Data({depositEndTime}) =>
-                   <Timestamp size=Text.Lg time=depositEndTime />
+                 | Data({depositEndTime}) => <Timestamp size=Text.Lg time=depositEndTime />
                  | _ => <LoadingCensorBar width=90 height=15 />
                  }}
               </Col>
@@ -425,12 +377,7 @@ let make = (~proposalID) => {
       <Row>
         <Col>
           <Table>
-            <Heading
-              value="Depositors"
-              size=Heading.H4
-              marginTop=32
-              marginTopSm=16
-            />
+            <Heading value="Depositors" size=Heading.H4 marginTop=32 marginTopSm=16 />
             <SeperatedLine mt=32 mb=0 />
             <DepositorTable proposalID />
           </Table>

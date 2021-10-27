@@ -26,14 +26,7 @@ module Styles = {
       top(`px(32)),
       background(rgba(255, 255, 255, `num(1.))),
       borderRadius(`px(100)),
-      boxShadow(
-        Shadow.box(
-          ~x=`zero,
-          ~y=`px(4),
-          ~blur=`px(4),
-          rgba(0, 0, 0, `num(0.1)),
-        ),
-      ),
+      boxShadow(Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(4), rgba(0, 0, 0, `num(0.1)))),
       float(`left),
       fontSize(`px(14)),
     ]);
@@ -48,12 +41,7 @@ module Styles = {
 
   let nextBtn = style([width(`percent(100.)), marginTop(`px(24))]);
 
-  let info =
-    style([
-      display(`flex),
-      justifyContent(`spaceBetween),
-      alignItems(`center),
-    ]);
+  let info = style([display(`flex), justifyContent(`spaceBetween), alignItems(`center)]);
 };
 
 module SubmitTxStep = {
@@ -64,38 +52,26 @@ module SubmitTxStep = {
 
     let gas = SubmitMsg.gasLimit(msg);
     let fee = 5000.;
-    let (memo, setMemo) =
-      React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
+    let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
 
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
-      <Heading
-        value={SubmitMsg.toString(msg)}
-        size=Heading.H4
-        marginBottom=24
-      />
+      <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
       {switch (msg) {
-       | SubmitMsg.Send(receiver) =>
-         <SendMsg address={account.address} receiver setMsgsOpt />
-       | Delegate(validator) =>
-         <DelegateMsg address={account.address} validator setMsgsOpt />
-       | Undelegate(validator) =>
-         <UndelegateMsg address={account.address} validator setMsgsOpt />
-       | Redelegate(validator) =>
-         <RedelegateMsg address={account.address} validator setMsgsOpt />
+       | SubmitMsg.Send(receiver) => <SendMsg address={account.address} receiver setMsgsOpt />
+       | Delegate(validator) => <DelegateMsg address={account.address} validator setMsgsOpt />
+       | Undelegate(validator) => <UndelegateMsg address={account.address} validator setMsgsOpt />
+       | Redelegate(validator) => <RedelegateMsg address={account.address} validator setMsgsOpt />
        | WithdrawReward(validator) =>
          <WithdrawRewardMsg validator setMsgsOpt address={account.address} />
-       | Reinvest(validator, amount) =>
-         <ReinvestMsg validator setMsgsOpt amount />
-       | Vote(proposalID, proposalName) =>
-         <VoteMsg proposalID proposalName setMsgsOpt />
+       | Reinvest(validator, amount) => <ReinvestMsg validator setMsgsOpt amount />
+       | Vote(proposalID, proposalName) => <VoteMsg proposalID proposalName setMsgsOpt />
        }}
       <EnhanceTxInput
         width=300
         inputData=memo
         setInputData=setMemo
         parse={newVal => {
-          newVal->Js.String.length <= 32
-            ? Result.Ok(newVal) : Err("Exceed limit length")
+          newVal->Js.String.length <= 32 ? Result.Ok(newVal) : Err("Exceed limit length")
         }}
         msg="Memo (Optional)"
         placeholder="Memo"
@@ -103,13 +79,7 @@ module SubmitTxStep = {
       />
       <SeperatedLine />
       <div className=Styles.info>
-        <Text
-          value="Transaction Fee"
-          size=Text.Md
-          weight=Text.Medium
-          nowrap=true
-          block=true
-        />
+        <Text value="Transaction Fee" size=Text.Md weight=Text.Medium nowrap=true block=true />
         <Text value="0.005 BAND" />
       </div>
       <div id="nextButtonContainer">
@@ -162,11 +132,7 @@ module CreateTxFlow = {
       {switch (rawTx) {
        | None => React.null
        | Some(rawTx') =>
-         <PreviewJsonStep
-           rawTx=rawTx'
-           onBack={_ => setRawTx(_ => None)}
-           account
-         />
+         <PreviewJsonStep rawTx=rawTx' onBack={_ => setRawTx(_ => None)} account />
        }}
     </>;
   };
@@ -178,9 +144,6 @@ let make = (~msg) => {
 
   switch (account) {
   | Some(account') => <CreateTxFlow account=account' msg />
-  | None =>
-    <div className=Styles.container>
-      <Text value="Please sign in" size=Text.Lg />
-    </div>
+  | None => <div className=Styles.container> <Text value="Please sign in" size=Text.Lg /> </div>
   };
 };

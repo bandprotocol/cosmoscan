@@ -83,11 +83,8 @@ let make = (~chainID) => {
       }
     />
     <VSpacing size=Spacing.xl />
-    <div
-      id="mnemonicConnectButton"
-      className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-      <Button
-        px=20 py=8 onClick={_ => createMnemonic()} style=Styles.connectBtn>
+    <div id="mnemonicConnectButton" className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+      <Button px=20 py=8 onClick={_ => createMnemonic()} style=Styles.connectBtn>
         {"Connect" |> React.string}
       </Button>
     </div>

@@ -25,14 +25,7 @@ module Styles = {
       right(`px(-10)),
       borderRadius(`px(4)),
       padding(`px(16)),
-      boxShadow(
-        Shadow.box(
-          ~x=`zero,
-          ~y=`zero,
-          ~blur=`px(4),
-          Css.rgba(0, 0, 0, `num(0.08)),
-        ),
-      ),
+      boxShadow(Shadow.box(~x=`zero, ~y=`zero, ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08)))),
       transition(~duration=200, "all"),
       opacity(show ? 1. : 0.),
       pointerEvents(show ? `auto : `none),
@@ -43,14 +36,7 @@ module Styles = {
     style([
       padding(`px(16)),
       backgroundColor(theme.headerBg),
-      boxShadow(
-        Shadow.box(
-          ~x=`zero,
-          ~y=`zero,
-          ~blur=`px(4),
-          Css.rgba(0, 0, 0, `num(0.08)),
-        ),
-      ),
+      boxShadow(Shadow.box(~x=`zero, ~y=`zero, ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08)))),
     ]);
 
   let connect = style([padding2(~v=`px(10), ~h=`zero)]);
@@ -79,13 +65,7 @@ module DisconnectBtn = {
         Styles.disconnect,
       ])}
       onClick={_ => disconnect()}>
-      <Text
-        value="Disconnect"
-        weight=Text.Medium
-        color={theme.baseBlue}
-        nowrap=true
-        block=true
-      />
+      <Text value="Disconnect" weight=Text.Medium color={theme.baseBlue} nowrap=true block=true />
     </div>;
   };
 };
@@ -104,10 +84,7 @@ module FaucetBtn = {
             onClick={_ => {
               setIsRequest(_ => true);
               let _ =
-                AxiosFaucet.request({
-                  address: address |> Address.toBech32,
-                  amount: 10_000_000,
-                })
+                AxiosFaucet.request({address: address |> Address.toBech32, amount: 10_000_000})
                 |> Js.Promise.then_(_ => {
                      setIsRequest(_ => false);
                      Js.Promise.resolve();
@@ -124,9 +101,7 @@ module SendBtn = {
   [@react.component]
   let make = (~send) => {
     <div id="sendToken">
-      <Button px=20 py=5 onClick={_ => {send()}}>
-        {"Send" |> React.string}
-      </Button>
+      <Button px=20 py=5 onClick={_ => {send()}}> {"Send" |> React.string} </Button>
     </div>;
   };
 };
@@ -145,9 +120,7 @@ module Balance = {
           value={
             switch (accountSub) {
             | Data(account) =>
-              account.balance
-              |> Coin.getBandAmountFromCoins
-              |> Format.fPretty(~digits=6)
+              account.balance |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=6)
             | _ => "0"
             }
           }
@@ -164,8 +137,7 @@ module Balance = {
 [@react.component]
 let make = () => {
   let trackingSub = TrackingSub.use();
-  let (accountOpt, dispatchAccount) =
-    React.useContext(AccountContext.context);
+  let (accountOpt, dispatchAccount) = React.useContext(AccountContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
   let (show, setShow) = React.useState(_ => false);
 
@@ -185,11 +157,7 @@ let make = () => {
 
   switch (accountOpt) {
   | Some({address}) =>
-    <div
-      className={Css.merge([
-        CssHelper.flexBox(~justify=`flexEnd, ()),
-        Styles.container,
-      ])}>
+    <div className={Css.merge([CssHelper.flexBox(~justify=`flexEnd, ()), Styles.container])}>
       <div ref={ReactDOMRe.Ref.domRef(clickOutside)}>
         <div
           id="userInfoButton"
@@ -209,12 +177,7 @@ let make = () => {
           <div className={Styles.innerProfileCard(theme)}>
             <Balance address />
             <VSpacing size={`px(16)} />
-            <div
-              className={CssHelper.flexBox(
-                ~direction=`row,
-                ~justify=`spaceBetween,
-                (),
-              )}>
+            <div className={CssHelper.flexBox(~direction=`row, ~justify=`spaceBetween, ())}>
               <FaucetBtn address />
               <SendBtn send />
             </div>

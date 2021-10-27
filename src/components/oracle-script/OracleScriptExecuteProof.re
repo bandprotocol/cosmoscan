@@ -1,7 +1,6 @@
 module Styles = {
   open Css;
-  let labelWrapper =
-    style([flexShrink(0.), flexGrow(0.), flexBasis(`px(220))]);
+  let labelWrapper = style([flexShrink(0.), flexGrow(0.), flexBasis(`px(220))]);
   let resultBox = style([padding(`px(20))]);
   let withWH = (w, h) =>
     style([
@@ -52,16 +51,14 @@ let make = (~id: ID.Request.t) => {
     </div>
     {switch (proofOpt) {
      | Some(proof) =>
-       <div
-         className={Css.merge([CssHelper.flexBox(), Styles.proofContainer])}>
+       <div className={Css.merge([CssHelper.flexBox(), Styles.proofContainer])}>
          <CopyButton
            data={proof.evmProofBytes |> JsBuffer.toHex(~with0x=false)}
            title={isMobile ? "EVM" : "Copy EVM proof"}
            py=10
            px=14
          />
-         {let nonEVMProofOpt =
-            proof.jsonProof->NonEVMProof.createProofFromJson;
+         {let nonEVMProofOpt = proof.jsonProof->NonEVMProof.createProofFromJson;
           switch (nonEVMProofOpt) {
           | Some(proof) =>
             <CopyButton

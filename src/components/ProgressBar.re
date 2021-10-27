@@ -5,11 +5,7 @@ module Styles = {
     style([
       position(`relative),
       paddingTop(`px(20)),
-      Media.mobile([
-        display(`flex),
-        alignItems(`center),
-        paddingTop(`zero),
-      ]),
+      Media.mobile([display(`flex), alignItems(`center), paddingTop(`zero)]),
     ]);
   let progressOuter = (theme: Theme.t) =>
     style([
@@ -71,8 +67,7 @@ module Styles = {
 [@react.component]
 let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
   let progressPercentage =
-    (reportedValidators * 100 |> float_of_int)
-    /. (requestValidators |> float_of_int);
+    (reportedValidators * 100 |> float_of_int) /. (requestValidators |> float_of_int);
   let success = reportedValidators >= minimumValidators;
 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
@@ -88,16 +83,12 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
       />
     </div>
     <div className={Styles.progressOuter(theme)}>
-      <div
-        className={Styles.progressInner(progressPercentage, success, theme)}
-      />
+      <div className={Styles.progressInner(progressPercentage, success, theme)} />
     </div>
     <div className=Styles.rightText>
       <Text
         value={
-          (reportedValidators |> Format.iPretty)
-          ++ " of "
-          ++ (requestValidators |> Format.iPretty)
+          (reportedValidators |> Format.iPretty) ++ " of " ++ (requestValidators |> Format.iPretty)
         }
         size=Text.Sm
         transform=Text.Uppercase
@@ -157,9 +148,7 @@ module Deposit = {
         />
       </div>
       <div className={Styles.progressOuter(theme)}>
-        <div
-          className={Styles.progressUptimeInner(percent, theme.baseBlue)}
-        />
+        <div className={Styles.progressUptimeInner(percent, theme.baseBlue)} />
       </div>
     </div>;
   };
@@ -182,11 +171,7 @@ module Voting = {
           weight=Heading.Thin
         />
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          <Text
-            value={percent |> Format.fPercent(~digits=2)}
-            size=Text.Lg
-            block=true
-          />
+          <Text value={percent |> Format.fPercent(~digits=2)} size=Text.Lg block=true />
           {isMobile
              ? React.null
              : <>

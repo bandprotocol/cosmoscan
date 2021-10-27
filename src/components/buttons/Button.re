@@ -91,22 +91,11 @@ let make =
       ~style="",
       ~disabled=false,
     ) => {
-  let ({ThemeContext.theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <button
     className={Css.merge([
-      Styles.btn(
-        ~variant,
-        ~px,
-        ~py,
-        ~pxSm,
-        ~pySm,
-        ~fsize,
-        theme,
-        isDarkMode,
-        (),
-      ),
+      Styles.btn(~variant, ~px, ~py, ~pxSm, ~pySm, ~fsize, theme, isDarkMode, ()),
       CssHelper.flexBox(~align=`center, ~justify=`center, ()),
       style,
     ])}

@@ -4,14 +4,10 @@ module Styles = {
   let resultContainer = (theme: Theme.t) =>
     style([
       margin2(~v=`px(20), ~h=`zero),
-      selector(
-        "> div + div",
-        [borderTop(`px(1), `solid, theme.tableRowBorderColor)],
-      ),
+      selector("> div + div", [borderTop(`px(1), `solid, theme.tableRowBorderColor)]),
     ]);
   let resultBox = style([padding(`px(20))]);
-  let labelWrapper =
-    style([flexShrink(0.), flexGrow(0.), flexBasis(`px(220))]);
+  let labelWrapper = style([flexShrink(0.), flexGrow(0.), flexBasis(`px(220))]);
   let resultWrapper =
     style([
       flexShrink(0.),
@@ -24,8 +20,7 @@ module Styles = {
 let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
   {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-    let requestsByTxHashSub =
-      RequestSub.Mini.getListByTxHash(txResponse.txHash);
+    let requestsByTxHashSub = RequestSub.Mini.getListByTxHash(txResponse.txHash);
     let%Sub requestsByTxHash = requestsByTxHashSub;
     let requestOpt = requestsByTxHash->Belt_Array.get(0);
 
@@ -33,24 +28,15 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
       <div className={Styles.resultContainer(theme)}>
         <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
           <div className=Styles.labelWrapper>
-            <Text
-              value="Exit Status"
-              color={theme.textSecondary}
-              weight=Text.Regular
-            />
+            <Text value="Exit Status" color={theme.textSecondary} weight=Text.Regular />
           </div>
           <Text value={txResponse.success ? "0" : "1"} />
         </div>
         {switch (requestOpt) {
          | Some({id}) =>
-           <div
-             className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+           <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
              <div className=Styles.labelWrapper>
-               <Text
-                 value="Request ID"
-                 color={theme.textSecondary}
-                 weight=Text.Regular
-               />
+               <Text value="Request ID" color={theme.textSecondary} weight=Text.Regular />
              </div>
              <TypeID.Request id />
            </div>
@@ -59,11 +45,7 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
          }}
         <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
           <div className=Styles.labelWrapper>
-            <Text
-              value="Tx Hash"
-              color={theme.textSecondary}
-              weight=Text.Regular
-            />
+            <Text value="Tx Hash" color={theme.textSecondary} weight=Text.Regular />
           </div>
           <TxLink txHash={txResponse.txHash} width=500 />
         </div>
@@ -71,8 +53,7 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
          | Some({result: Some(result), id}) =>
            let outputKVsOpt = Obi.decode(schema, "output", result);
            <>
-             <div
-               className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+             <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
                <div className=Styles.labelWrapper>
                  <Text
                    value="Output"
@@ -88,10 +69,7 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
                       rows={
                         outputKVs
                         ->Belt_Array.map(({fieldName, fieldValue}) =>
-                            [
-                              KVTable.Value(fieldName),
-                              KVTable.Value(fieldValue),
-                            ]
+                            [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
                           )
                         ->Belt_List.fromArray
                       }
@@ -103,8 +81,7 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
              <OracleScriptExecuteProof id />
            </>;
          | Some(request) =>
-           <div
-             className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+           <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
              <div className=Styles.labelWrapper>
                <Text
                  value="Waiting for output and `proof`"

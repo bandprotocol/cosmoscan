@@ -16,8 +16,7 @@ module Styles = {
       selector("> div + div", [marginLeft(`px(15))]),
     ]);
 
-  let linkStyle =
-    style([color(`currentColor), transition(~duration=0, "all")]);
+  let linkStyle = style([color(`currentColor), transition(~duration=0, "all")]);
 };
 
 module ButtonSection = {
@@ -26,24 +25,14 @@ module ButtonSection = {
     let (_, dispatchModal) = React.useContext(ModalContext.context);
     let validatorInfoSub = ValidatorSub.get(validatorAddress);
     let accountSub = AccountSub.get(delegatorAddress);
-    let balanceAtStakeSub =
-      DelegationSub.getStakeByValidator(delegatorAddress, validatorAddress);
+    let balanceAtStakeSub = DelegationSub.getStakeByValidator(delegatorAddress, validatorAddress);
     let allSub = Sub.all3(validatorInfoSub, accountSub, balanceAtStakeSub);
 
-    let delegate = () =>
-      validatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
+    let delegate = () => validatorAddress->SubmitMsg.Delegate->SubmitTx->OpenModal->dispatchModal;
     let undelegate = () =>
-      validatorAddress
-      ->SubmitMsg.Undelegate
-      ->SubmitTx
-      ->OpenModal
-      ->dispatchModal;
+      validatorAddress->SubmitMsg.Undelegate->SubmitTx->OpenModal->dispatchModal;
     let redelegate = () =>
-      validatorAddress
-      ->SubmitMsg.Redelegate
-      ->SubmitTx
-      ->OpenModal
-      ->dispatchModal;
+      validatorAddress->SubmitMsg.Redelegate->SubmitTx->OpenModal->dispatchModal;
 
     switch (allSub) {
     | Data((validatorInfo, {balance}, {amount: {amount}})) =>
@@ -61,34 +50,23 @@ module ButtonSection = {
             validatorInfo.commission == 100.
               ? Webapi.Dom.(
                   window
-                  |> Window.alert(
-                       "Delegation to foundation validator nodes is not advised.",
-                     )
+                  |> Window.alert("Delegation to foundation validator nodes is not advised.")
                 )
               : delegate()
           }}>
           {"Delegate" |> React.string}
         </Button>
         <Button
-          px=20
-          py=8
-          variant=Button.Outline
-          disabled=disableNoStake
-          onClick={_ => undelegate()}>
+          px=20 py=8 variant=Button.Outline disabled=disableNoStake onClick={_ => undelegate()}>
           {"Undelegate" |> React.string}
         </Button>
         <Button
-          px=20
-          py=8
-          variant=Button.Outline
-          disabled=disableNoStake
-          onClick={_ => redelegate()}>
+          px=20 py=8 variant=Button.Outline disabled=disableNoStake onClick={_ => redelegate()}>
           {"Redelegate" |> React.string}
         </Button>
       </div>;
     | _ =>
-      <div
-        className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
+      <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
         <LoadingCensorBar width=100 height=33 />
         <LoadingCensorBar width=100 height=33 />
         <LoadingCensorBar width=100 height=33 />
@@ -125,21 +103,13 @@ module DisplayBalance = {
                code=false
              />
            : <Text
-               value={
-                 amount->Coin.getBandAmountFromCoin
-                 |> Format.fPretty(~digits=6)
-               }
+               value={amount->Coin.getBandAmountFromCoin |> Format.fPretty(~digits=6)}
                size=Text.Lg
                color={theme.textSecondary}
                block=true
              />}
         <HSpacing size=Spacing.sm />
-        <Text
-          value="BAND"
-          size=Text.Lg
-          color={theme.textSecondary}
-          block=true
-        />
+        <Text value="BAND" size=Text.Lg color={theme.textSecondary} block=true />
       </div>
       <div className={CssHelper.flexBox()}>
         {isCountup
@@ -152,22 +122,13 @@ module DisplayBalance = {
                spacing={Text.Em(0.)}
              />
            : <Text
-               value={
-                 amount->Coin.getBandAmountFromCoin
-                 *. usdPrice
-                 |> Format.fPretty(~digits=6)
-               }
+               value={amount->Coin.getBandAmountFromCoin *. usdPrice |> Format.fPretty(~digits=6)}
                size=Text.Md
                color={theme.textSecondary}
                block=true
              />}
         <HSpacing size=Spacing.sm />
-        <Text
-          value="USD"
-          size=Text.Md
-          color={theme.textSecondary}
-          block=true
-        />
+        <Text value="USD" size=Text.Md color={theme.textSecondary} block=true />
       </div>
     </>;
   };
@@ -178,13 +139,11 @@ module StakingInfo = {
   let make = (~delegatorAddress, ~validatorAddress) => {
     let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
     let currentTime =
-      React.useContext(TimeContext.context)
-      |> MomentRe.Moment.format(Config.timestampUseFormat);
+      React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
     let (_, dispatchModal) = React.useContext(ModalContext.context);
 
     let infoSub = React.useContext(GlobalContext.context);
-    let balanceAtStakeSub =
-      DelegationSub.getStakeByValidator(delegatorAddress, validatorAddress);
+    let balanceAtStakeSub = DelegationSub.getStakeByValidator(delegatorAddress, validatorAddress);
     let unbondingSub =
       UnbondingSub.getUnbondingBalanceByValidator(
         delegatorAddress,
@@ -195,19 +154,11 @@ module StakingInfo = {
     let allSub = Sub.all3(infoSub, balanceAtStakeSub, unbondingSub);
 
     let withdrawReward = () => {
-      validatorAddress
-      ->SubmitMsg.WithdrawReward
-      ->SubmitTx
-      ->OpenModal
-      ->dispatchModal;
+      validatorAddress->SubmitMsg.WithdrawReward->SubmitTx->OpenModal->dispatchModal;
     };
 
     let reinvest = reward =>
-      (validatorAddress, reward)
-      ->SubmitMsg.Reinvest
-      ->SubmitTx
-      ->OpenModal
-      ->dispatchModal;
+      (validatorAddress, reward)->SubmitMsg.Reinvest->SubmitTx->OpenModal->dispatchModal;
     <>
       <Row marginBottom=24>
         <Col>
@@ -254,39 +205,22 @@ module StakingInfo = {
           <Button px=20 py=8 variant=Button.Outline onClick={_ => ()}>
             <Link
               className=Styles.linkStyle
-              route={
-                Route.AccountIndexPage(
-                  delegatorAddress,
-                  Route.AccountUnbonding,
-                )
-              }>
+              route={Route.AccountIndexPage(delegatorAddress, Route.AccountUnbonding)}>
               {"View Entries" |> React.string}
             </Link>
           </Button>
         </Col>
         <Col col=Col.Three>
           <div className={CssHelper.mb(~size=16, ())}>
-            <Heading
-              value="Reward"
-              size=Heading.H5
-              color={theme.textSecondary}
-              marginBottom=8
-            />
+            <Heading value="Reward" size=Heading.H5 color={theme.textSecondary} marginBottom=8 />
             {switch (allSub) {
              | Data(({financial: {usdPrice}}, balanceAtStake, _)) =>
-               <DisplayBalance
-                 amount={balanceAtStake.reward}
-                 usdPrice
-                 isCountup=true
-               />
+               <DisplayBalance amount={balanceAtStake.reward} usdPrice isCountup=true />
              | _ => <DisplayBalance.Loading />
              }}
           </div>
           <div
-            className={Css.merge([
-              CssHelper.flexBox(),
-              Styles.buttonContainer,
-            ])}
+            className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}
             id="withdrawRewardContainer">
             {let (disable, reward) =
                switch (allSub) {
@@ -327,8 +261,7 @@ let make = (~validatorAddress) => {
   let trackingSub = TrackingSub.use();
   let (accountOpt, _) = React.useContext(AccountContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
-  let (ThemeContext.{theme, isDarkMode}, _) =
-    React.useContext(ThemeContext.context);
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let connect = chainID => dispatchModal(OpenModal(Connect(chainID)));
 
@@ -344,8 +277,7 @@ let make = (~validatorAddress) => {
     </div>
     <SeperatedLine mt=32 mb=24 />
     {switch (accountOpt) {
-     | Some({address: delegatorAddress}) =>
-       <StakingInfo validatorAddress delegatorAddress />
+     | Some({address: delegatorAddress}) => <StakingInfo validatorAddress delegatorAddress />
      | None =>
        switch (trackingSub) {
        | Data({chainID}) =>
@@ -354,17 +286,9 @@ let make = (~validatorAddress) => {
              CssHelper.flexBox(~direction=`column, ~justify=`center, ()),
              Styles.connectContainer(theme),
            ])}>
-           <Icon
-             name="fal fa-link"
-             size=32
-             color={isDarkMode ? theme.white : theme.black}
-           />
+           <Icon name="fal fa-link" size=32 color={isDarkMode ? theme.white : theme.black} />
            <VSpacing size={`px(16)} />
-           <Text
-             value="Please connect to make request"
-             size=Text.Lg
-             nowrap=true
-           />
+           <Text value="Please connect to make request" size=Text.Lg nowrap=true />
            <VSpacing size={`px(16)} />
            <Button px=20 py=5 onClick={_ => connect(chainID)}>
              {"Connect" |> React.string}
