@@ -78,6 +78,7 @@ let parseChainID =
   | "band-laozi-testnet4" => LaoziTestnet
   | "band-laozi-mainnet" => LaoziMainnet
   | "band-laozi-poa" => LaoziPOA
+  | "laozi-mainnet" => LaoziMainnet
   | _ => Unknown;
 
 let getLink =
