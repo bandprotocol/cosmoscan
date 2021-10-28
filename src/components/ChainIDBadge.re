@@ -91,7 +91,7 @@ let getLink =
   | LaoziTestnet => "https://laozi-testnet4.cosmoscan.io/"
   | LaoziMainnet => "https://cosmoscan.io/"
   | LaoziPOA => "https://laozi-poa.cosmoscan.io/"
-  | Unknown => "https://cosmoscan.io/";
+  | Unknown => "";
 
 let getName =
   fun
@@ -104,7 +104,7 @@ let getName =
   | LaoziTestnet => "laozi-testnet"
   | LaoziMainnet => "laozi-mainnet"
   | LaoziPOA => "laozi-poa"
-  | Unknown => "laozi-mainnet";
+  | Unknown => "";
 
 [@react.component]
 let make = () =>
