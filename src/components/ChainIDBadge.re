@@ -76,9 +76,8 @@ let parseChainID =
   | "band-laozi-testnet2"
   | "band-laozi-testnet3"
   | "band-laozi-testnet4" => LaoziTestnet
-  | "band-laozi-mainnet" => LaoziMainnet
-  | "band-laozi-poa" => LaoziPOA
   | "laozi-mainnet" => LaoziMainnet
+  | "band-laozi-poa" => LaoziPOA
   | _ => Unknown;
 
 let getLink =
@@ -92,7 +91,7 @@ let getLink =
   | LaoziTestnet => "https://laozi-testnet4.cosmoscan.io/"
   | LaoziMainnet => "https://cosmoscan.io/"
   | LaoziPOA => "https://laozi-poa.cosmoscan.io/"
-  | Unknown => "";
+  | Unknown => "https://cosmoscan.io/";
 
 let getName =
   fun
@@ -105,7 +104,7 @@ let getName =
   | LaoziTestnet => "laozi-testnet"
   | LaoziMainnet => "laozi-mainnet"
   | LaoziPOA => "laozi-poa"
-  | Unknown => "unknown";
+  | Unknown => "laozi-mainnet";
 
 [@react.component]
 let make = () =>
