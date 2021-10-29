@@ -46,7 +46,12 @@ module ValidatorReportStatus = {
        | (false, _) => <Icon name="fas fa-times-circle" color={theme.failColor} />
        }}
       <HSpacing size=Spacing.sm />
-      <ValidatorMonikerLink validatorAddress=operatorAddress moniker size=Text.Md />
+      <ValidatorMonikerLink
+        validatorAddress=operatorAddress
+        moniker
+        size=Text.Md
+        width={`px(160)}
+      />
     </div>;
   };
 };
