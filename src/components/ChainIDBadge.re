@@ -104,7 +104,7 @@ let getName =
   | LaoziTestnet => "laozi-testnet"
   | LaoziMainnet => "laozi-mainnet"
   | LaoziPOA => "laozi-poa"
-  | Unknown => "";
+  | Unknown => "unknown";
 
 [@react.component]
 let make = () =>
