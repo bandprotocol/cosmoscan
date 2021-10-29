@@ -50,7 +50,7 @@ module ValidatorReportStatus = {
         validatorAddress=operatorAddress
         moniker
         size=Text.Md
-        width={`px(160)}
+        width={`px(150)}
       />
     </div>;
   };
