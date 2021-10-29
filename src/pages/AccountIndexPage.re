@@ -256,20 +256,14 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                   {isMobile
                      ? React.null
                      : {
-                       switch (accountOpt) {
-                       | Some({address: sender}) =>
-                         if (sender == address) {
-                           React.null;
-                         } else {
-                           switch (topPartAllSub) {
-                           | Data((_, _, _, _, {chainID})) =>
-                             <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
+                       switch (topPartAllSub, accountOpt) {
+                       | (Data((_, _, _, _, {chainID})), Some({address: sender})) =>
+                         sender != address
+                           ? <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
                                {"Send BAND" |> React.string}
                              </Button>
-                           | _ => <LoadingCensorBar width=90 height=26 />
-                           };
-                         }
-                       | None => React.null
+                           : React.null
+                       | _ => React.null
                        };
                      }}
                 </div>
