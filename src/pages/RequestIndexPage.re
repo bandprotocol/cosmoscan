@@ -152,7 +152,7 @@ module KVTableContainer = {
     | None =>
       <EmptyContainer height={`px(200)}>
         <img
-          alt="Schema not found"
+          alt="Schema Not Found"
           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
           className=Styles.noDataImage
         />

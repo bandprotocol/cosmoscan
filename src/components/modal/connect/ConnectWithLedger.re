@@ -94,7 +94,7 @@ module InstructionCard = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.instructionCard>
       <Text value=title color={theme.textPrimary} weight=Text.Semibold />
-      <img alt="Ledger device" src=url className=Styles.ledgerGuide />
+      <img alt="Ledger Device" src=url className=Styles.ledgerGuide />
     </div>;
   };
 };

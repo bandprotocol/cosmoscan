@@ -7,17 +7,17 @@ module Styles = {
 };
 
 let mapImages = [|
-  [|"https:/\/github.com/bandprotocol", Images.githubSvg, "Github"|],
-  [|"https:/\/medium.com/bandprotocol", Images.mediumSvg, "Medium"|],
-  [|"https:/\/twitter.com/BandProtocol", Images.twitterSvg, "Twitter"|],
-  [|"https:/\/t.me/bandprotocol", Images.telegramSvg, "Telegram"|],
-  [|"https:/\/discord.com/invite/3t4bsY7", Images.discordSvg, "Discord"|],
+  [|{j|https://github.com/bandprotocol|j}, Images.githubSvg, "Github"|],
+  [|{j|https://medium.com/bandprotocol|j}, Images.mediumSvg, "Medium"|],
+  [|{j|https://twitter.com/BandProtocol|j}, Images.twitterSvg, "Twitter"|],
+  [|{j|https://t.me/bandprotocol|j}, Images.telegramSvg, "Telegram"|],
+  [|{j|https://discord.com/invite/3t4bsY7|j}, Images.discordSvg, "Discord"|],
   [|
-    "https:/\/coinmarketcap.com/currencies/band-protocol/",
+    {j|https://coinmarketcap.com/currencies/band-protocol/|j},
     Images.coinmarketcapWhiteSvg,
     "CoinMarketCap",
   |],
-  [|"https:/\/www.coingecko.com/en/coins/band-protocol", Images.coingeckoSvg, "CoinGecko"|],
+  [|{j|https://www.coingecko.com/en/coins/band-protocol|j}, Images.coingeckoSvg, "CoinGecko"|],
 |];
 
 [@react.component]
