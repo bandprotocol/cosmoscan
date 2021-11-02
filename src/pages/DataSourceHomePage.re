@@ -219,26 +219,22 @@ let make = () => {
              : <THead>
                  <Row alignItems=Row.Center>
                    <Col col=Col.Three>
-                     <div className=CssHelper.container>
-                       <Text
-                         block=true
-                         value="Data Source"
-                         transform=Text.Uppercase
-                         size=Text.Sm
-                         weight=Text.Semibold
-                       />
-                     </div>
+                     <Text
+                       block=true
+                       value="Data Source"
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       weight=Text.Semibold
+                     />
                    </Col>
                    <Col col=Col.Three>
-                     <div className=CssHelper.container>
-                       <Text
-                         block=true
-                         value="Fee"
-                         transform=Text.Uppercase
-                         size=Text.Sm
-                         weight=Text.Semibold
-                       />
-                     </div>
+                     <Text
+                       block=true
+                       value="Fee"
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       weight=Text.Semibold
+                     />
                    </Col>
                    <Col col=Col.Three>
                      <Text
