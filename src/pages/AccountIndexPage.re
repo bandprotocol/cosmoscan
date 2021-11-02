@@ -257,13 +257,13 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      ? React.null
                      : {
                        switch (topPartAllSub, accountOpt) {
-                       | (Data((_, _, _, _, {chainID})), Some({address: sender})) =>
-                         sender != address
-                           ? <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
-                               {"Send BAND" |> React.string}
-                             </Button>
-                           : React.null
-                       | _ => React.null
+                       | (Data(_), Some({address: sender}))
+                           when Address.isEqual(sender, address) => React.null
+                       | (Data((_, _, _, _, {chainID})), _) =>
+                         <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
+                           {"Send BAND" |> React.string}
+                         </Button>
+                       | _ => <LoadingCensorBar width=90 height=26 />
                        };
                      }}
                 </div>
