@@ -183,31 +183,26 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
            </Row>
          </THead>}
     {switch (latest5RequestSub) {
+     | Data(requests) when requests->Belt.Array.length === 0 =>
+       <EmptyContainer height={`calc((`sub, `percent(100.), `px(86)))} boxShadow=true>
+         <img
+           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+           className=Styles.noDataImage
+         />
+         <Heading size=Heading.H4 value="No Request" align=Heading.Center weight=Heading.Regular />
+       </EmptyContainer>
      | Data(requests) =>
-       requests->Belt.Array.length > 0
-         ? requests
-           ->Belt_Array.mapWithIndex((i, e) =>
-               isMobile
-                 ? <RenderBodyMobile
-                     key={e.id |> ID.Request.toString}
-                     reserveIndex=i
-                     requestSub={Sub.resolve(e)}
-                   />
-                 : <RenderBody key={e.id |> ID.Request.toString} requestSub={Sub.resolve(e)} />
-             )
-           ->React.array
-         : <EmptyContainer height={`calc((`sub, `percent(100.), `px(86)))} boxShadow=true>
-             <img
-               src={isDarkMode ? Images.noDataDark : Images.noDataLight}
-               className=Styles.noDataImage
-             />
-             <Heading
-               size=Heading.H4
-               value="No Request"
-               align=Heading.Center
-               weight=Heading.Regular
-             />
-           </EmptyContainer>
+       requests
+       ->Belt_Array.mapWithIndex((i, e) =>
+           isMobile
+             ? <RenderBodyMobile
+                 key={e.id |> ID.Request.toString}
+                 reserveIndex=i
+                 requestSub={Sub.resolve(e)}
+               />
+             : <RenderBody key={e.id |> ID.Request.toString} requestSub={Sub.resolve(e)} />
+         )
+       ->React.array
      | _ =>
        Belt_Array.make(5, ApolloHooks.Subscription.NoData)
        ->Belt_Array.mapWithIndex((i, noData) =>

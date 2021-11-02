@@ -219,7 +219,7 @@ library ResultDecoder {
       ),
     )
     |> toEqual(generateDecoderSolidity({j|{symbol:string,multiplier:u64}/{px:u64}|j}))
-  })
+  });
 
   test("should be able to generate solidity when parameter is array", () => {
     expect(
@@ -278,7 +278,7 @@ library ResultDecoder {
       ),
     )
     |> toEqual(generateDecoderSolidity({j|{symbols:[string],multiplier:u64}/{rates:[u64]}|j}))
-  })
+  });
 });
 
 describe("should be able to generate go code correctly", () => {
@@ -304,7 +304,7 @@ func DecodeResult(data []byte) (Result, error) {
 	decoder := obi.NewObiDecoder(data)
 
 	px, err := decoder.DecodeU64()
-	if err != nil {
+	if err !== nil {
 		return Result{}, err
 	}
 
@@ -372,4 +372,3 @@ func(result *Result) EncodeResult() []byte {
     |> toEqual(generateEncodeGo("test", {j|{symbol:string,multiplier:u64}/{px:u64}|j}, "output"))
   });
 });
-

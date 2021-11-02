@@ -21,7 +21,7 @@ let make =
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.timeContainer>
-    {prefix != ""
+    {prefix !== ""
        ? <>
            <Text
              value=prefix
@@ -44,7 +44,7 @@ let make =
       align=textAlign
       color={color->Belt.Option.getWithDefault(theme.textSecondary)}
     />
-    {suffix != ""
+    {suffix !== ""
        ? <>
            <HSpacing size=Spacing.sm />
            <Text
@@ -77,7 +77,7 @@ module Grid = {
       ) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div>
-      {prefix != ""
+      {prefix !== ""
          ? <>
              <Text
                value=prefix
@@ -117,7 +117,7 @@ module Grid = {
           align=textAlign
         />
       </div>
-      {suffix != ""
+      {suffix !== ""
          ? <>
              <HSpacing size=Spacing.sm />
              <Text

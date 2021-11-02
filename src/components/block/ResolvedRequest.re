@@ -33,7 +33,7 @@ let make = (~blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
   let setTab = index => setTabIndex(_ => index);
 
   switch (blockSub) {
-  | Data({requests}) when requests->Belt.Array.length != 0 =>
+  | Data({requests}) when requests->Belt.Array.length !== 0 =>
     let onChainRequests =
       requests->Belt.Array.keepMap(({id, isIBC}) => !isIBC ? Some(id) : None);
     let ibcRequests = requests->Belt.Array.keepMap(({id, isIBC}) => isIBC ? Some(id) : None);
@@ -59,7 +59,7 @@ let make = (~blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
             />
           </div>
           <Tab.State tabs=[|{j|On Chain ($onChain)|j}, {j|IBC ($ibc)|j}|] tabIndex setTab>
-            {showRequests->Belt.Array.length == 0
+            {showRequests->Belt.Array.length === 0
                ? <div className=Styles.emptyContainer>
                    <Text value="There is no resolved request." />
                  </div>

@@ -111,7 +111,7 @@ module SearchResults = {
           : React.null,
         <> <Text value="Show all results for " /> <Text value=searchTerm weight=Text.Bold /> </>,
       |]
-      ->Belt.Array.keep(r => r != React.null);
+      ->Belt.Array.keep(r => r !== React.null);
 
     <div className=Styles.container>
       {results

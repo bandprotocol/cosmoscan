@@ -134,7 +134,7 @@ let make = () =>
          : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
         {[|LaoziMainnet, LaoziTestnet, LaoziPOA|]
-         ->Belt.Array.keep(chainID => chainID != currentChainID)
+         ->Belt.Array.keep(chainID => chainID !== currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
              <AbsoluteLink href={getLink(chainID)} key=name className={Styles.link(theme)}>

@@ -57,7 +57,7 @@ module Keybase = {
 let make = (~moniker, ~identity, ~width=25, ~widthSm=width) =>
   React.useMemo1(
     () =>
-      identity != ""
+      identity !== ""
         ? <Keybase identity moniker width widthSm /> : <Placeholder moniker width widthSm />,
     [|identity|],
   );

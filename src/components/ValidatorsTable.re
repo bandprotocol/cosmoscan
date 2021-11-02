@@ -245,7 +245,7 @@ let compareString = (a, b) => {
 };
 
 let defaultCompare = (a: ValidatorSub.t, b: ValidatorSub.t) =>
-  if (a.tokens != b.tokens) {
+  if (a.tokens !== b.tokens) {
     compare(b.tokens, a.tokens);
   } else {
     compareString(b.moniker, a.moniker);
@@ -275,7 +275,7 @@ let sorting = (validators: array(ValidatorSub.t), sortedBy) => {
           )
         };
       };
-      if (result != 0) {
+      if (result !== 0) {
         result;
       } else {
         defaultCompare(a, b);

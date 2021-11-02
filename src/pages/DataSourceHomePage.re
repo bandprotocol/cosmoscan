@@ -14,7 +14,7 @@ let getName =
   | LatestUpdate => "Latest Update";
 
 let defaultCompare = (a: DataSourceSub.t, b: DataSourceSub.t) =>
-  if (a.timestamp != b.timestamp) {
+  if (a.timestamp !== b.timestamp) {
     compare(b.id |> ID.DataSource.toInt, a.id |> ID.DataSource.toInt);
   } else {
     compare(b.requestCount, a.requestCount);
@@ -30,7 +30,7 @@ let sorting = (dataSources: array(DataSourceSub.t), sortedBy) => {
         | LatestUpdate => compare(b.timestamp, a.timestamp)
         };
       };
-      if (result != 0) {
+      if (result !== 0) {
         result;
       } else {
         defaultCompare(a, b);
@@ -170,7 +170,7 @@ let make = () => {
 
   React.useEffect1(
     () => {
-      if (searchTerm != "") {
+      if (searchTerm !== "") {
         setPage(_ => 1);
       };
       None;
@@ -267,39 +267,39 @@ let make = () => {
                  </Row>
                </THead>}
           {switch (allSub) {
+           | Data((dataSources, _)) when dataSources->Belt.Array.length === 0 =>
+             <EmptyContainer>
+               <img
+                 src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
+                 className=Styles.noDataImage
+               />
+               <Heading
+                 size=Heading.H4
+                 value="No Data Source"
+                 align=Heading.Center
+                 weight=Heading.Regular
+                 color={theme.textSecondary}
+               />
+             </EmptyContainer>
            | Data((dataSources, dataSourcesCount)) =>
              let pageCount = Page.getPageCount(dataSourcesCount, pageSize);
              <>
-               {dataSources->Belt.Array.length > 0
-                  ? dataSources
-                    ->sorting(sortedBy)
-                    ->Belt_Array.mapWithIndex((i, e) =>
-                        isMobile
-                          ? <RenderBodyMobile
-                              key={e.id |> ID.DataSource.toString}
-                              reserveIndex=i
-                              dataSourcesSub={Sub.resolve(e)}
-                            />
-                          : <RenderBody
-                              key={e.id |> ID.DataSource.toString}
-                              reserveIndex=i
-                              dataSourcesSub={Sub.resolve(e)}
-                            />
-                      )
-                    ->React.array
-                  : <EmptyContainer>
-                      <img
-                        src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
-                        className=Styles.noDataImage
-                      />
-                      <Heading
-                        size=Heading.H4
-                        value="No Data Source"
-                        align=Heading.Center
-                        weight=Heading.Regular
-                        color={theme.textSecondary}
-                      />
-                    </EmptyContainer>}
+               {dataSources
+                ->sorting(sortedBy)
+                ->Belt_Array.mapWithIndex((i, e) =>
+                    isMobile
+                      ? <RenderBodyMobile
+                          key={e.id |> ID.DataSource.toString}
+                          reserveIndex=i
+                          dataSourcesSub={Sub.resolve(e)}
+                        />
+                      : <RenderBody
+                          key={e.id |> ID.DataSource.toString}
+                          reserveIndex=i
+                          dataSourcesSub={Sub.resolve(e)}
+                        />
+                  )
+                ->React.array}
                {isMobile
                   ? React.null
                   : <Pagination
