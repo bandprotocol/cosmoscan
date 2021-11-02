@@ -433,7 +433,7 @@ let make = () => {
              : <THead>
                  <Row alignItems=Row.Center>
                    <Col col=Col.Four>
-                     <div className=TElement.Styles.hashContainer>
+                     <div className=CssHelper.container>
                        <Text
                          block=true
                          value="Oracle Script"
