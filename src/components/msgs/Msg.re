@@ -120,7 +120,7 @@ let make = (~msg: MsgDecoder.t) => {
      | ChannelOpenConfirmMsg({channelID}) => <IBCChannelMsg.ChannelCloseCommon channelID />
      | ChannelCloseInitMsg({channelID})
      | ChannelCloseConfirmMsg({channelID}) => <IBCChannelMsg.ChannelCloseCommon channelID />
-     | TransferMsg({token, receiver}) =>
+     | TransferMsgSuccess({token, receiver}) =>
        <IBCTransferMsg.Transfer toAddress=receiver amount={token.amount} denom={token.denom} />
      | RecvPacketMsgSuccess({packetData}) =>
        switch (packetData) {
