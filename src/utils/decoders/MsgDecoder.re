@@ -828,7 +828,7 @@ module TimeoutOnClose = {
 module DecodedCoin = {
   type t = {
     amount: float,
-    denom: string
+    denom: string,
   };
 
   let decode = json => {
@@ -1430,10 +1430,8 @@ let isIBC =
   | RecvPacketMsgFail(_)
   | TimeoutMsg(_)
   | TimeoutOnCloseMsg(_)
-  | TransferMsgSuccess(_) 
-  | TransferMsgFail(_) => true; 
-  
-  
+  | TransferMsgSuccess(_)
+  | TransferMsgFail(_) => true;
 
 let getCreator = msg => {
   switch (msg.decoded) {
@@ -1643,7 +1641,7 @@ let getBadgeTheme = msg => {
   | AcknowledgePacketMsg(_) => getBadge(AcknowledgePacketBadge)
   | TimeoutMsg(_) => getBadge(TimeoutBadge)
   | TimeoutOnCloseMsg(_) => getBadge(TimeoutOnCloseBadge)
-  | TransferMsgSuccess(_) => getBadge(TransferBadge)
+  | TransferMsgSuccess(_)
   | TransferMsgFail(_) => getBadge(TransferBadge)
   };
 };
