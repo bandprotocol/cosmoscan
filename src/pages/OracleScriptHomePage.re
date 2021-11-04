@@ -433,15 +433,13 @@ let make = () => {
              : <THead>
                  <Row alignItems=Row.Center>
                    <Col col=Col.Four>
-                     <div className=TElement.Styles.hashContainer>
-                       <Text
-                         block=true
-                         value="Oracle Script"
-                         weight=Text.Semibold
-                         transform=Text.Uppercase
-                         size=Text.Sm
-                       />
-                     </div>
+                     <Text
+                       block=true
+                       value="Oracle Script"
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                     />
                    </Col>
                    <Col col=Col.Four>
                      <Text

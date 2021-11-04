@@ -256,8 +256,10 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                   {isMobile
                      ? React.null
                      : {
-                       switch (topPartAllSub) {
-                       | Data((_, _, _, _, {chainID})) =>
+                       switch (topPartAllSub, accountOpt) {
+                       | (Data(_), Some({address: sender}))
+                           when Address.isEqual(sender, address) => React.null
+                       | (Data((_, _, _, _, {chainID})), _) =>
                          <Button variant=Button.Outline onClick={_ => {send(chainID)}}>
                            {"Send BAND" |> React.string}
                          </Button>
