@@ -12,7 +12,7 @@ module Styles = {
       boxShadow(
         Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
       ),
-      backgroundColor(rgb(255, 255, 255)),
+      backgroundColor(Theme.white),
       position(`absolute),
       right(`zero),
       top(`percent(100.)),

@@ -76,7 +76,7 @@ let selectWrapper = (~size=14, ~pRight=16, ~pRightSm=pRight, ~mW=500, ~fontColor
 
 let infoContainer =
   style([
-    backgroundColor(rgba(255, 255, 255, `num(1.))),
+    backgroundColor(Theme.white),
     boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08)))),
     padding(`px(24)),
     Media.mobile([padding(`px(16))]),
