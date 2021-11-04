@@ -23,7 +23,7 @@ module Styles = {
       backgroundImage(
         `linearGradient((
           `deg(180.),
-          [(`percent(0.), Css.hex("CED4FD")), (`percent(100.), theme.baseBlue)],
+          [(`percent(0.), theme.lightenBlue), (`percent(100.), theme.baseBlue)],
         )),
       ),
       width(`px(30)),

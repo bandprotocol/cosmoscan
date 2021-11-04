@@ -16,7 +16,7 @@ module Styles = {
 [@react.component]
 let make = (~id) =>
   {
-    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let numRevisionsSub = id |> DataSourceRevisionSub.count;
     let revisionsSub = id |> DataSourceRevisionSub.get;
     let%Sub numRevisions = numRevisionsSub;
@@ -66,7 +66,7 @@ let make = (~id) =>
                             block=true
                             value=name
                             weight=Text.Medium
-                            color={Css.hex("555555")}
+                            color={theme.textSecondary}
                             nowrap=true
                             ellipsis=true
                           />
@@ -94,7 +94,7 @@ let make = (~id) =>
                              value="Genesis transaction"
                              weight=Text.Medium
                              code=true
-                             color={Css.hex("555555")}
+                             color={theme.textSecondary}
                              ellipsis=true
                              nowrap=true
                            />
