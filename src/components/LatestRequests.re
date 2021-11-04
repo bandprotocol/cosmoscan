@@ -198,6 +198,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
            ->React.array
          : <EmptyContainer height={`calc((`sub, `percent(100.), `px(86)))} boxShadow=true>
              <img
+               alt="No Request"
                src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                className=Styles.noDataImage
              />

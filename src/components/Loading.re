@@ -13,5 +13,9 @@ module Styles = {
 
 [@react.component]
 let make = (~width=`px(65), ~marginBottom=`unset) => {
-  <img src=Images.loadingCircles className={Css.merge([Styles.loading(width, marginBottom)])} />;
+  <img
+    src=Images.loadingCircles
+    className={Css.merge([Styles.loading(width, marginBottom)])}
+    alt="Loading Icon"
+  />;
 };

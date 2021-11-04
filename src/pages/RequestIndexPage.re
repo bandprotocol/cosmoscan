@@ -156,6 +156,7 @@ module KVTableContainer = {
     | None =>
       <EmptyContainer height={`px(200)}>
         <img
+          alt="Schema Not Found"
           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
           className=Styles.noDataImage
         />
@@ -504,7 +505,7 @@ let make = (~reqID) => {
                switch (reason) {
                | Some(reason') when reason' != "" =>
                  <div className=Styles.reasonSection>
-                   <img src=Images.fail />
+                   <img alt="Fail Icon" src=Images.fail />
                    <HSpacing size=Spacing.md />
                    <Text value=reason' color={theme.textPrimary} />
                  </div>
@@ -584,6 +585,7 @@ let make = (~reqID) => {
                | (_, _) =>
                  <EmptyContainer height={`px(200)}>
                    <img
+                     alt="Not Found"
                      src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                      className=Styles.noDataImage
                    />
@@ -634,6 +636,7 @@ let make = (~reqID) => {
                | _ =>
                  <EmptyContainer height={`px(200)}>
                    <img
+                     alt="Not Found"
                      src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                      className=Styles.noDataImage
                    />

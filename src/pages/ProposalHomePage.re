@@ -239,6 +239,7 @@ let make = () => {
                ->React.array
              : <EmptyContainer>
                  <img
+                   alt="No Proposal"
                    src={isDarkMode ? Images.noTxDark : Images.noTxLight}
                    className=Styles.noDataImage
                  />

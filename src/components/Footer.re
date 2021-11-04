@@ -7,13 +7,17 @@ module Styles = {
 };
 
 let mapImages = [|
-  [|"https:/\/github.com/bandprotocol", Images.githubSvg|],
-  [|"https:/\/medium.com/bandprotocol", Images.mediumSvg|],
-  [|"https:/\/twitter.com/BandProtocol", Images.twitterSvg|],
-  [|"https:/\/t.me/bandprotocol", Images.telegramSvg|],
-  [|"https:/\/discord.com/invite/3t4bsY7", Images.discordSvg|],
-  [|"https:/\/coinmarketcap.com/currencies/band-protocol/", Images.coinmarketcapWhiteSvg|],
-  [|"https:/\/www.coingecko.com/en/coins/band-protocol", Images.coingeckoSvg|],
+  [|{j|https://github.com/bandprotocol|j}, Images.githubSvg, "Github"|],
+  [|{j|https://medium.com/bandprotocol|j}, Images.mediumSvg, "Medium"|],
+  [|{j|https://twitter.com/BandProtocol|j}, Images.twitterSvg, "Twitter"|],
+  [|{j|https://t.me/bandprotocol|j}, Images.telegramSvg, "Telegram"|],
+  [|{j|https://discord.com/invite/3t4bsY7|j}, Images.discordSvg, "Discord"|],
+  [|
+    {j|https://coinmarketcap.com/currencies/band-protocol/|j},
+    Images.coinmarketcapWhiteSvg,
+    "CoinMarketCap",
+  |],
+  [|{j|https://www.coingecko.com/en/coins/band-protocol|j}, Images.coingeckoSvg, "CoinGecko"|],
 |];
 
 [@react.component]
@@ -38,7 +42,7 @@ let make = () => {
             {mapImages
              ->Belt.Array.mapWithIndex((i, e) =>
                  <AbsoluteLink key={string_of_int(i)} href={Array.get(e, 0)}>
-                   <img src={Array.get(e, 1)} className=Styles.socialImg />
+                   <img alt={e[2] ++ " Icon"} src={Array.get(e, 1)} className=Styles.socialImg />
                  </AbsoluteLink>
                )
              ->React.array}
@@ -46,21 +50,11 @@ let make = () => {
         </Col>
         <Col col=Col.Six>
           <div className={CssHelper.flexBox(~justify={isMobile ? `center : `flexEnd}, ())}>
-            <Text
-              block=true
-              value="CosmoScan"
-              weight=Text.Semibold
-              color={theme.white}
-            />
+            <Text block=true value="CosmoScan" weight=Text.Semibold color={theme.white} />
             <HSpacing size={`px(5)} />
             <Icon name="far fa-copyright" color={theme.white} />
             <HSpacing size={`px(5)} />
-            <Text
-              block=true
-              value="2021"
-              weight=Text.Semibold
-              color={theme.white}
-            />
+            <Text block=true value="2021" weight=Text.Semibold color={theme.white} />
           </div>
         </Col>
       </Row>
