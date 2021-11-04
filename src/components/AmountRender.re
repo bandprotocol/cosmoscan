@@ -10,11 +10,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~coins, ~pos=Msg, ~color=?) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-  let textColor = color->Belt.Option.getWithDefault(theme.textSecondary);
-
+let make = (~coins, ~pos=Msg) => {
   <div className=Styles.container>
     {switch (pos) {
      | TxIndex =>
@@ -24,7 +20,6 @@ let make = (~coins, ~pos=Msg, ~color=?) => {
          block=true
          nowrap=true
          size=Text.Lg
-         color=textColor
        />
      | _ =>
        <Text
@@ -32,13 +27,12 @@ let make = (~coins, ~pos=Msg, ~color=?) => {
          block=true
          nowrap=true
          code=true
-         color=textColor
        />
      }}
     <HSpacing size=Spacing.sm />
     {switch (pos) {
-     | Msg => <Text value="BAND" weight=Text.Regular color=textColor nowrap=true block=true />
-     | TxIndex => <Text value="BAND" weight=Text.Regular color=textColor nowrap=true block=true />
+     | Msg => <Text value="BAND" weight=Text.Regular nowrap=true block=true />
+     | TxIndex => <Text value="BAND" weight=Text.Regular nowrap=true block=true />
      | Fee => React.null
      }}
   </div>;

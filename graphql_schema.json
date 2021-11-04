@@ -15850,22 +15850,6 @@
         "description": "columns and relationships of \"data_sources\"",
         "fields": [
           {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
-            },
-            "description": null
-          },
-          {
             "args": [
               {
                 "name": "distinct_on",
@@ -16933,18 +16917,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -16969,16 +16941,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -17045,16 +17007,6 @@
                 "name": "data_sources_bool_exp",
                 "ofType": null
               }
-            },
-            "description": null
-          },
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "bigint_comparison_exp",
-              "ofType": null
             },
             "description": null
           },
@@ -17217,16 +17169,6 @@
       {
         "inputFields": [
           {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "id",
             "defaultValue": null,
             "type": {
@@ -17257,16 +17199,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "data_source_requests",
             "defaultValue": null,
@@ -17419,18 +17351,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "description",
             "type": {
               "kind": "SCALAR",
@@ -17515,16 +17435,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "description",
             "defaultValue": null,
@@ -17617,18 +17527,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "description",
             "type": {
               "kind": "SCALAR",
@@ -17713,16 +17611,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "description",
             "defaultValue": null,
@@ -17948,16 +17836,6 @@
       {
         "inputFields": [
           {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "data_source_requests_aggregate",
             "defaultValue": null,
             "type": {
@@ -18131,12 +18009,6 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "description": "column name"
-          },
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "description",
             "description": "column name"
           },
@@ -18188,16 +18060,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "description",
             "defaultValue": null,
@@ -18300,18 +18162,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18336,16 +18186,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -18388,18 +18228,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18424,16 +18252,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -18476,18 +18294,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18512,16 +18318,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -18564,18 +18360,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18600,16 +18384,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -18646,12 +18420,6 @@
         "interfaces": null,
         "name": "data_sources_update_column",
         "enumValues": [
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "description": "column name"
-          },
           {
             "isDeprecated": false,
             "deprecationReason": null,
@@ -18717,18 +18485,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18753,16 +18509,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -18805,18 +18551,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18841,16 +18575,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -18893,18 +18617,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "accumulated_revenue",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -18929,16 +18641,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "accumulated_revenue",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "id",
             "defaultValue": null,
@@ -66786,22 +66488,6 @@
             "description": null
           },
           {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
-            },
-            "description": null
-          },
-          {
             "args": [
               {
                 "name": "distinct_on",
@@ -67429,18 +67115,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -67465,16 +67139,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -67583,16 +67247,6 @@
             "description": null
           },
           {
-            "name": "fee",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "bigint_comparison_exp",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "raw_reports",
             "defaultValue": null,
             "type": {
@@ -67671,16 +67325,6 @@
             "description": null
           },
           {
-            "name": "fee",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "request_id",
             "defaultValue": null,
             "type": {
@@ -67733,16 +67377,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
@@ -67827,18 +67461,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -67863,16 +67485,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -67937,18 +67549,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -67973,16 +67573,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -68196,16 +67786,6 @@
             "description": null
           },
           {
-            "name": "fee",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "raw_reports_aggregate",
             "defaultValue": null,
             "type": {
@@ -68311,12 +67891,6 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "description": "column name"
-          },
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "description": "column name"
           }
@@ -68348,16 +67922,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
@@ -68422,18 +67986,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -68458,16 +68010,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -68532,18 +68074,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -68568,16 +68098,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -68642,18 +68162,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -68678,16 +68186,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -68752,18 +68250,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -68788,16 +68274,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -68853,12 +68329,6 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "description": "column name"
-          },
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "description": "column name"
           }
@@ -68903,18 +68373,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -68939,16 +68397,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -69013,18 +68461,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -69049,16 +68485,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -69123,18 +68549,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "fee",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "request_id",
             "type": {
               "kind": "SCALAR",
@@ -69159,16 +68573,6 @@
           },
           {
             "name": "external_id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "fee",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",

@@ -9,7 +9,6 @@ type internal_t = {
   description: string,
   executable: JsBuffer.t,
   fee: list(Coin.t),
-  accumulatedRevenue: Coin.t,
   transaction: option(transaction_t),
   requestStat: option(request_stat_t),
 };
@@ -22,7 +21,6 @@ type t = {
   description: string,
   executable: JsBuffer.t,
   fee: list(Coin.t),
-  accumulatedRevenue: Coin.t,
   timestamp: option(MomentRe.Moment.t),
   requestCount: int,
 };
@@ -37,7 +35,6 @@ let toExternal =
         description,
         executable,
         fee,
-        accumulatedRevenue,
         transaction: txOpt,
         requestStat: requestStatOpt,
       },
@@ -49,7 +46,6 @@ let toExternal =
   description,
   executable,
   fee,
-  accumulatedRevenue,
   timestamp: {
     let%Opt tx = txOpt;
     Some(tx.block.timestamp);
@@ -68,7 +64,6 @@ module MultiConfig = [%graphql
       description
       executable @bsDecoder(fn: "GraphQLParser.buffer")
       fee @bsDecoder(fn: "GraphQLParser.coins")
-      accumulatedRevenue: accumulated_revenue @bsDecoder(fn: "GraphQLParser.coin")
       transaction @bsRecord {
         block @bsRecord {
           timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
@@ -93,7 +88,6 @@ module SingleConfig = [%graphql
       description
       executable @bsDecoder(fn: "GraphQLParser.buffer")
       fee @bsDecoder(fn: "GraphQLParser.coins")
-      accumulatedRevenue: accumulated_revenue @bsDecoder(fn: "GraphQLParser.coin")
       transaction @bsRecord {
         block @bsRecord {
           timestamp @bsDecoder(fn: "GraphQLParser.timestamp")

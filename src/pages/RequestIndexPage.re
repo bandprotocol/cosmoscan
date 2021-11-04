@@ -665,17 +665,9 @@ let make = (~reqID) => {
                  ? React.null
                  : <THead>
                      <Row alignItems=Row.Center>
-                       <Col col=Col.Two>
+                       <Col col=Col.Three>
                          <Heading
                            value="EXTERNAL ID"
-                           size=Heading.H5
-                           weight=Heading.Regular
-                           color={theme.textSecondary}
-                         />
-                       </Col>
-                       <Col col=Col.Two>
-                         <Heading
-                           value="FEE"
                            size=Heading.H5
                            weight=Heading.Regular
                            color={theme.textSecondary}
@@ -689,7 +681,7 @@ let make = (~reqID) => {
                            color={theme.textSecondary}
                          />
                        </Col>
-                       <Col col=Col.Four>
+                       <Col col=Col.Five>
                          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
                            <Heading
                              value="PARAM"
@@ -704,13 +696,11 @@ let make = (~reqID) => {
               {switch (requestSub) {
                | Data({rawDataRequests}) =>
                  rawDataRequests
-                 ->Belt.Array.map(
-                     ({externalID, fee, dataSource: {dataSourceID, name}, calldata}) => {
+                 ->Belt.Array.map(({externalID, dataSource: {dataSourceID, name}, calldata}) => {
                      isMobile
                        ? <MobileCard
                            values=InfoMobileCard.[
                              ("External ID", Text(externalID)),
-                             ("Fee\n(BAND)", Coin({value: [fee], hasDenom: false})),
                              ("Data Source", DataSource(dataSourceID, name)),
                              ("Param", Text(calldata |> JsBuffer.toUTF8)),
                            ]
@@ -720,17 +710,12 @@ let make = (~reqID) => {
                          />
                        : <TBody key=externalID>
                            <Row alignItems=Row.Center minHeight={`px(30)}>
-                             <Col col=Col.Two>
+                             <Col col=Col.Three>
                                <Text
                                  value=externalID
                                  color={theme.textSecondary}
                                  weight=Text.Thin
                                />
-                             </Col>
-                             <Col col=Col.Two>
-                               <div className={CssHelper.flexBox()}>
-                                 <AmountRender coins=[fee] color={theme.textPrimary} />
-                               </div>
                              </Col>
                              <Col col=Col.Four>
                                <div className={CssHelper.flexBox()}>
@@ -739,7 +724,7 @@ let make = (~reqID) => {
                                  <Text value=name color={theme.textSecondary} weight=Text.Thin />
                                </div>
                              </Col>
-                             <Col col=Col.Four>
+                             <Col col=Col.Five>
                                <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
                                  <Text
                                    value={calldata->JsBuffer.toUTF8}
@@ -759,7 +744,6 @@ let make = (~reqID) => {
                    ? <MobileCard
                        values=InfoMobileCard.[
                          ("External ID", Loading(60)),
-                         ("Fee\n(BAND)", Loading(60)),
                          ("Data Source", Loading(60)),
                          ("Param", Loading(60)),
                        ]
@@ -768,10 +752,9 @@ let make = (~reqID) => {
                      />
                    : <TBody>
                        <Row alignItems=Row.Center minHeight={`px(30)}>
-                         <Col col=Col.Two> <LoadingCensorBar width=60 height=15 /> </Col>
-                         <Col col=Col.Two> <LoadingCensorBar width=60 height=15 /> </Col>
+                         <Col col=Col.Three> <LoadingCensorBar width=60 height=15 /> </Col>
                          <Col col=Col.Four> <LoadingCensorBar width=100 height=15 /> </Col>
-                         <Col col=Col.Four>
+                         <Col col=Col.Five>
                            <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
                              <LoadingCensorBar width=50 height=15 />
                            </div>

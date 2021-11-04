@@ -67,7 +67,7 @@ module RenderBody = {
           {switch (dataSourcesSub) {
            | Data({fee}) =>
              <div className={CssHelper.flexBox()}>
-               <AmountRender coins=fee color={theme.textPrimary} />
+               <AmountRender coins=fee />
              </div>
            | _ => <LoadingCensorBar width=100 height=15 />
            }}
