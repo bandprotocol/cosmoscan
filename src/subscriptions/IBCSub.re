@@ -166,7 +166,7 @@ let toExternal =
 };
 module IncomingPacketsConfig = [%graphql
   {|
-  subscription IncomingPackets($limit: Int!, $packetType: String, $packetTypeIsNull: Boolean, $port: String!, $channel: String!, $sequence: Int, $chainID: String!) {
+  query IncomingPackets($limit: Int!, $packetType: String, $packetTypeIsNull: Boolean, $port: String!, $channel: String!, $sequence: Int, $chainID: String!) {
     incoming_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: {_eq: $sequence}, dst_port: {_ilike: $port}, dst_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
         packetType: type @bsDecoder(fn: "parsePacketTypeOpt")
         srcPort: src_port
@@ -192,7 +192,7 @@ module IncomingPacketsConfig = [%graphql
 
 module OutgoingPacketsConfig = [%graphql
   {|
-  subscription OutgoingPackets($limit: Int!, $packetType: String, $packetTypeIsNull: Boolean, $port: String!, $channel: String!, $sequence: Int, $chainID: String!) {
+  query OutgoingPackets($limit: Int!, $packetType: String, $packetTypeIsNull: Boolean, $port: String!, $channel: String!, $sequence: Int, $chainID: String!) {
     outgoing_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: {_eq: $sequence} ,src_port: {_ilike: $port}, src_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
         packetType: type @bsDecoder(fn: "parsePacketTypeOpt")
         srcPort: src_port
@@ -238,7 +238,7 @@ let getList =
     switch (direction) {
     | Incoming =>
       let (result, _) =
-        ApolloHooks.useSubscription(
+        ApolloHooks.useQuery(
           IncomingPacketsConfig.definition,
           ~variables=
             IncomingPacketsConfig.makeVariables(
@@ -258,10 +258,10 @@ let getList =
               (),
             ),
         );
-      result |> Sub.map(_, x => x##incoming_packets->Belt_Array.map(toExternal));
+      result |> Query.map(_, x => x##incoming_packets->Belt_Array.map(toExternal));
     | Outgoing =>
       let (result, _) =
-        ApolloHooks.useSubscription(
+        ApolloHooks.useQuery(
           OutgoingPacketsConfig.definition,
           ~variables=
             OutgoingPacketsConfig.makeVariables(
@@ -281,7 +281,7 @@ let getList =
               (),
             ),
         );
-      result |> Sub.map(_, x => x##outgoing_packets->Belt_Array.map(toExternal));
+      result |> Query.map(_, x => x##outgoing_packets->Belt_Array.map(toExternal));
     };
   result;
 };
