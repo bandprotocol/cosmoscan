@@ -100,7 +100,11 @@ module RenderBody = {
             <div className=Styles.oracleStatus>
               {switch (validatorSub) {
                | Data({oracleStatus}) =>
-                 <img src={oracleStatus ? Images.success : Images.fail} className=Styles.logo />
+                 <img
+                   alt="Status Icon"
+                   src={oracleStatus ? Images.success : Images.fail}
+                   className=Styles.logo
+                 />
                | _ => <LoadingCensorBar width=20 height=20 radius=50 />
                }}
             </div>
@@ -444,6 +448,7 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
               ->React.array
             : <EmptyContainer>
                 <img
+                  alt="No Validator"
                   src={isDarkMode ? Images.noDelegatorDark : Images.noDelegatorLight}
                   className=Styles.noDataImage
                 />

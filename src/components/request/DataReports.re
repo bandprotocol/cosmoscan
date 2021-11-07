@@ -77,9 +77,15 @@ let make = (~reports: array(RequestSub.report_t)) => {
                  ? React.null
                  : <>
                      <Row alignItems=Row.Center marginBottom=16>
-                       <Col col=Col.Three> <Text value="External ID" weight=Text.Medium transform=Text.Uppercase /> </Col>
-                       <Col col=Col.Three> <Text value="Exit Code" weight=Text.Medium transform=Text.Uppercase /> </Col>
-                       <Col col=Col.Six> <Text value="Value" weight=Text.Medium transform=Text.Uppercase /> </Col>
+                       <Col col=Col.Three>
+                         <Text value="External ID" weight=Text.Medium transform=Text.Uppercase />
+                       </Col>
+                       <Col col=Col.Three>
+                         <Text value="Exit Code" weight=Text.Medium transform=Text.Uppercase />
+                       </Col>
+                       <Col col=Col.Six>
+                         <Text value="Value" weight=Text.Medium transform=Text.Uppercase />
+                       </Col>
                      </Row>
                      <SeperatedLine mt=10 mb=15 />
                    </>}
@@ -114,7 +120,11 @@ let make = (~reports: array(RequestSub.report_t)) => {
         })
       ->React.array
     : <EmptyContainer>
-        <img src={isDarkMode ? Images.noTxDark : Images.noTxLight} className=Styles.noDataImage />
+        <img
+          alt="No Report"
+          src={isDarkMode ? Images.noTxDark : Images.noTxLight}
+          className=Styles.noDataImage
+        />
         <Heading
           size=Heading.H4
           value="No Report"

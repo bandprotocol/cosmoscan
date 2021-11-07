@@ -206,6 +206,7 @@ let make = (~address) => {
            ->React.array
          : <EmptyContainer>
              <img
+               alt="No Unbonding"
                src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                className=Styles.noDataImage
              />

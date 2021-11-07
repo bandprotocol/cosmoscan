@@ -34,9 +34,8 @@ module Styles = {
 
 module ValidatorReportStatus = {
   [@react.component]
-  let make = (~moniker, ~isReport, ~resolveStatus) => {
+  let make = (~moniker, ~isReport, ~resolveStatus, ~operatorAddress) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
     <div
       className={Css.merge([
         CssHelper.flexBox(~align=`center, ~wrap=`nowrap, ()),
@@ -47,7 +46,12 @@ module ValidatorReportStatus = {
        | (false, _) => <Icon name="fas fa-times-circle" color={theme.failColor} />
        }}
       <HSpacing size=Spacing.sm />
-      <Text value=moniker color={theme.textSecondary} ellipsis=true />
+      <ValidatorMonikerLink
+        validatorAddress=operatorAddress
+        moniker
+        size=Text.Md
+        width={`px(150)}
+      />
     </div>;
   };
 };
@@ -152,6 +156,7 @@ module KVTableContainer = {
     | None =>
       <EmptyContainer height={`px(200)}>
         <img
+          alt="Schema Not Found"
           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
           className=Styles.noDataImage
         />
@@ -475,13 +480,14 @@ let make = (~reqID) => {
                   {switch (requestSub) {
                    | Data({requestedValidators, resolveStatus, reports}) =>
                      requestedValidators
-                     ->Belt.Array.map(({validator: {moniker, consensusAddress}}) => {
+                     ->Belt.Array.map(
+                         ({validator: {moniker, consensusAddress, operatorAddress}}) => {
                          let isReport =
                            reports->Belt.Array.some(({reportValidator}) =>
                              consensusAddress == reportValidator.consensusAddress
                            );
                          <Col col=Col.Three colSm=Col.Six key=moniker>
-                           <ValidatorReportStatus moniker isReport resolveStatus />
+                           <ValidatorReportStatus moniker isReport resolveStatus operatorAddress />
                          </Col>;
                        })
                      ->React.array
@@ -499,7 +505,7 @@ let make = (~reqID) => {
                switch (reason) {
                | Some(reason') when reason' !== "" =>
                  <div className=Styles.reasonSection>
-                   <img src=Images.fail />
+                   <img alt="Fail Icon" src=Images.fail />
                    <HSpacing size=Spacing.md />
                    <Text value=reason' color={theme.textPrimary} />
                  </div>
@@ -579,6 +585,7 @@ let make = (~reqID) => {
                | (_, _) =>
                  <EmptyContainer height={`px(200)}>
                    <img
+                     alt="Not Found"
                      src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                      className=Styles.noDataImage
                    />
@@ -629,6 +636,7 @@ let make = (~reqID) => {
                | _ =>
                  <EmptyContainer height={`px(200)}>
                    <img
+                     alt="Not Found"
                      src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                      className=Styles.noDataImage
                    />

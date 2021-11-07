@@ -167,6 +167,7 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
        | Data(packets) when packets->Belt.Array.length === 0 =>
          <EmptyContainer backgroundColor={theme.mainBg}>
            <img
+             alt="No Packets"
              src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
              className=Styles.noDataImage
            />

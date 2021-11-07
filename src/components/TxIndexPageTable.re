@@ -20,7 +20,7 @@ let renderUnknownMessage = () => {
   <Col col=Col.Six>
     <div className=Styles.topicContainer>
       <Text value="Unknown Message" size=Text.Sm transform=Text.Uppercase />
-      <img src=Images.fail className=Styles.failIcon />
+      <img alt="Fail Icon" src=Images.fail className=Styles.failIcon />
     </div>
   </Col>;
 };
@@ -99,7 +99,8 @@ let renderBody = (msg: MsgDecoder.t) =>
   | RecvPacketMsgFail(packet) => <IndexIBCPacketMsg.RecvPacketFail packet />
   | TimeoutMsg(packet) => <IndexIBCPacketMsg.Timeout packet />
   | TimeoutOnCloseMsg(packet) => <IndexIBCPacketMsg.TimeoutOnClose packet />
-  | TransferMsg(msg) => <IndexIBCTransferMsg.Transfer msg />
+  | TransferMsgSuccess(msg) => <IndexIBCTransferMsg.TransferSuccess msg />
+  | TransferMsgFail(msg) => <IndexIBCTransferMsg.TransferFail msg />
   | _ => React.null
   };
 

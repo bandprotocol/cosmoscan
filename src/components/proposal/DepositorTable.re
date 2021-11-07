@@ -186,6 +186,7 @@ let make = (~proposalID) => {
               ->React.array
             : <EmptyContainer>
                 <img
+                  alt="No Depositors"
                   src={isDarkMode ? Images.noDelegatorDark : Images.noDelegatorLight}
                   className=Styles.noDataImage
                 />

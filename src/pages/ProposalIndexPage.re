@@ -363,7 +363,7 @@ let make = (~proposalID) => {
                    | ProposalSub.Deposit => <ProgressBar.Deposit totalDeposit />
                    | _ =>
                      <div className={CssHelper.flexBox()}>
-                       <img src=Images.success className=Styles.statusLogo />
+                       <img alt="Success Icon" src=Images.success className=Styles.statusLogo />
                        <HSpacing size=Spacing.sm />
                        // TODO: remove hard-coded later
                        <Text value="Completed Min Deposit 1,000 BAND" size=Text.Lg />

@@ -43,7 +43,8 @@ module HighlightCard = {
     let isMobile = Media.isMobile();
 
     <div className={Css.merge([Styles.card(theme), special ? Styles.specialBg : ""])}>
-      {special && !isMobile ? <img src=Images.bandToken className=Styles.bandToken /> : React.null}
+      {special && !isMobile
+         ? <img alt="Band Token" src=Images.bandToken className=Styles.bandToken /> : React.null}
       <div
         id={"highlight-" ++ label}
         className={Css.merge([

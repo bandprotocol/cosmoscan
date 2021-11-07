@@ -31,7 +31,11 @@ module RenderBody = {
           <div className={CssHelper.flexBox(~justify=`center, ())}>
             {switch (txSub) {
              | Data({success}) =>
-               <img src={success ? Images.success : Images.fail} className=Styles.statusImg />
+               <img
+                 alt="Status Icon"
+                 src={success ? Images.success : Images.fail}
+                 className=Styles.statusImg
+               />
              | _ => <LoadingCensorBar width=20 height=20 radius=20 />
              }}
           </div>
@@ -140,6 +144,7 @@ let make =
            ->React.array
          : <EmptyContainer>
              <img
+               alt="No Transaction"
                src={isDarkMode ? Images.noTxDark : Images.noTxLight}
                className=Styles.noDataImage
              />

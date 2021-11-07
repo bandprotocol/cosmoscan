@@ -288,6 +288,7 @@ let make = (~counterpartyChainID) => {
      | Data(connections) when connections->Belt.Array.length == 0 =>
        <EmptyContainer backgroundColor={theme.mainBg}>
          <img
+           alt="No Connections"
            src={isDarkMode ? Images.noDataDark : Images.noDataLight}
            className=Styles.noDataImage
          />
