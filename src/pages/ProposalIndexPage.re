@@ -31,13 +31,13 @@ module VoteButton = {
 
     switch (accountOpt) {
     | Some(_) =>
-      <Button px=20 py=5 style={CssHelper.flexBox()} onClick={_ => vote()}>
+      <Button px=40 py=10 fsize=14 style={CssHelper.flexBox()} onClick={_ => vote()}>
         {"Vote" |> React.string}
       </Button>
     | None =>
       switch (trackingSub) {
       | Data({chainID}) =>
-        <Button px=20 py=5 style={CssHelper.flexBox()} onClick={_ => connect(chainID)}>
+        <Button px=40 py=10 fsize=14 style={CssHelper.flexBox()} onClick={_ => connect(chainID)}>
           {"Vote" |> React.string}
         </Button>
       | Error(err) =>
@@ -63,27 +63,45 @@ let make = (~proposalID) => {
 
   <Section>
     <div className=CssHelper.container>
-      <Row marginBottom=40 marginBottomSm=16>
+      <Row>
         <Col>
           <Heading value="Proposal Details" size=Heading.H2 marginBottom=40 marginBottomSm=24 />
         </Col>
-        <Col col=Col.Eight mbSm=16>
-          {switch (allSub) {
-           | Data(({id, name, status}, _, _)) =>
-             <div
-               className={Css.merge([
-                 CssHelper.flexBox(),
-                 CssHelper.flexBoxSm(~direction=`column, ~align=`flexStart, ()),
-               ])}>
-               <div className={CssHelper.flexBox()}>
-                 <TypeID.Proposal id position=TypeID.Title />
-                 <HSpacing size=Spacing.sm />
-                 <Heading size=Heading.H3 value=name />
-                 <HSpacing size={`px(16)} />
+      </Row>
+      <Row alignItems=Row.Center marginBottom=40 marginBottomSm=16>
+        {switch (allSub) {
+         | Data(({id, name, status}, _, _)) =>
+           <>
+             <Col col=Col.Eight mbSm=16>
+               <div
+                 className={Css.merge([
+                   CssHelper.flexBox(),
+                   CssHelper.flexBoxSm(~direction=`column, ~align=`flexStart, ()),
+                 ])}>
+                 <div className={CssHelper.flexBox()}>
+                   <TypeID.Proposal id position=TypeID.Title />
+                   <HSpacing size=Spacing.sm />
+                   <Heading size=Heading.H3 value=name />
+                   <HSpacing size={`px(16)} />
+                 </div>
+                 <div className={CssHelper.mtSm(~size=16, ())}> <ProposalBadge status /> </div>
                </div>
-               <div className={CssHelper.mtSm(~size=16, ())}> <ProposalBadge status /> </div>
-             </div>
-           | _ =>
+             </Col>
+             <Col col=Col.Four>
+               {isMobile
+                  ? React.null
+                  : <div
+                      className={Css.merge([
+                        CssHelper.flexBox(~direction=`column, ~align=`flexEnd, ()),
+                      ])}>
+                      <div className={Styles.voteButton(status)}>
+                        <VoteButton proposalID proposalName=name />
+                      </div>
+                    </div>}
+             </Col>
+           </>
+         | _ =>
+           <Col col=Col.Eight mbSm=16>
              <div className={CssHelper.flexBox()}>
                <LoadingCensorBar width=270 height=15 />
                <HSpacing size={`px(16)} />
@@ -91,8 +109,8 @@ let make = (~proposalID) => {
                  <LoadingCensorBar width=100 height=15 radius=50 />
                </div>
              </div>
-           }}
-        </Col>
+           </Col>
+         }}
       </Row>
       <Row marginBottom=24>
         <Col>
@@ -303,11 +321,6 @@ let make = (~proposalID) => {
                  <InfoContainer>
                    <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
                      <Heading value="Results" size=Heading.H4 />
-                     {isMobile
-                        ? React.null
-                        : <div className={Styles.voteButton(status)}>
-                            <VoteButton proposalID proposalName=name />
-                          </div>}
                    </div>
                    <SeperatedLine mt=24 mb=35 />
                    <div className=Styles.resultContainer>
