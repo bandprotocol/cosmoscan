@@ -57,7 +57,6 @@ module ConnectBtn = {
 module DisconnectBtn = {
   [@react.component]
   let make = (~disconnect) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div
       className={Css.merge([
         CssHelper.flexBox(~justify=`center, ~align=`center, ()),
@@ -65,7 +64,7 @@ module DisconnectBtn = {
         Styles.disconnect,
       ])}
       onClick={_ => disconnect()}>
-      <Text value="Disconnect" weight=Text.Medium color={theme.baseBlue} nowrap=true block=true />
+      <Text value="Disconnect" weight=Text.Medium color=Theme.baseBlue nowrap=true block=true />
     </div>;
   };
 };
@@ -164,7 +163,7 @@ let make = () => {
           className={Css.merge([CssHelper.flexBox(), CssHelper.clickable])}
           onClick={_ => setShow(prev => !prev)}>
           <div className={Styles.oval(theme)}>
-            <Icon name="fal fa-user" color={theme.white} />
+            <Icon name="fal fa-user" color=Theme.white />
           </div>
           <HSpacing size=Spacing.sm />
           <Icon name="fas fa-caret-down" color={theme.baseBlue} />

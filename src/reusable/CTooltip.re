@@ -19,17 +19,17 @@ module Styles = {
       ]),
     ]);
   let hiddenTooltipSm = style([Media.mobile([display(`none)])]);
-  let tooltipItem = (maxWidth_, padding_, align_, fsize_, theme: Theme.t) =>
+  let tooltipItem = (maxWidth_, padding_, align_, fsize_) =>
     style([
       position(`absolute),
       display(`block),
       fontSize(`px(fsize_)),
       textAlign(align_),
-      backgroundColor(`rgba((85, 85, 85, `num(1.0)))),
+      backgroundColor(`hex("555555")),
       borderRadius(`px(4)),
       maxWidth(`px(maxWidth_)),
       unsafe("width", "max-content"),
-      color(theme.white),
+      color(Theme.white),
       padding(`px(padding_)),
       opacity(0.),
       pointerEvents(`none),
@@ -56,7 +56,7 @@ module Styles = {
           top(`percent(50.)),
           transform(`translateY(`percent(-50.))),
           right(`px(-10)),
-          borderLeftColor(`rgba((85, 85, 85, `num(1.0)))),
+          borderLeftColor(`hex("555555")),
         ]),
       ])
     | Right =>
@@ -69,7 +69,7 @@ module Styles = {
           top(`percent(50.)),
           transform(`translateY(`percent(-50.))),
           left(`px(-10)),
-          borderRightColor(`rgba((85, 85, 85, `num(1.0)))),
+          borderRightColor(`hex("555555")),
         ]),
       ])
     | Top =>
@@ -82,7 +82,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(50.)),
           bottom(`px(-10)),
-          borderTopColor(`rgba((85, 85, 85, `num(1.0)))),
+          borderTopColor(`hex("555555")),
         ]),
       ])
     | Bottom =>
@@ -95,7 +95,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(50.)),
           top(`px(-10)),
-          borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
+          borderBottomColor(`hex("555555")),
         ]),
       ])
     | BottomLeft =>
@@ -107,7 +107,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(30.)),
           top(`px(-10)),
-          borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
+          borderBottomColor(`hex("555555")),
         ]),
       ])
     | BottomRight =>
@@ -119,7 +119,7 @@ module Styles = {
           transform(`translateX(`percent(-70.))),
           left(`percent(70.)),
           top(`px(-10)),
-          borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
+          borderBottomColor(`hex("555555")),
         ]),
       ]);
 
@@ -135,7 +135,7 @@ module Styles = {
             top(`percent(50.)),
             transform(`translateY(`percent(-50.))),
             right(`px(-10)),
-            borderLeftColor(`rgba((85, 85, 85, `num(1.0)))),
+            borderLeftColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -149,7 +149,7 @@ module Styles = {
             top(`percent(50.)),
             transform(`translateY(`percent(-50.))),
             left(`px(-10)),
-            borderRightColor(`rgba((85, 85, 85, `num(1.0)))),
+            borderRightColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -163,7 +163,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(50.)),
             bottom(`px(-10)),
-            borderTopColor(`rgba((85, 85, 85, `num(1.0)))),
+            borderTopColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -177,7 +177,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(50.)),
             top(`px(-10)),
-            borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
+            borderBottomColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -191,7 +191,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(30.)),
             top(`px(-10)),
-            borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
+            borderBottomColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -205,7 +205,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(70.)),
             top(`px(-10)),
-            borderBottomColor(`rgba((85, 85, 85, `num(1.0)))),
+            borderBottomColor(`hex("555555")),
           ]),
         ]),
       ]);
@@ -225,11 +225,10 @@ let make =
       ~styles="",
       ~children,
     ) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div className={Css.merge([Styles.tooltipContainer, styles])}>
     <div
       className={Css.merge([
-        Styles.tooltipItem(width, pd, align, fsize, theme),
+        Styles.tooltipItem(width, pd, align, fsize),
         Styles.placement(tooltipPlacement),
         Styles.placementSm(tooltipPlacementSm),
         mobile ? "" : Styles.hiddenTooltipSm,

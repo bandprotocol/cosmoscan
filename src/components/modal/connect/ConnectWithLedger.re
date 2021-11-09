@@ -18,24 +18,6 @@ module Styles = {
       justifyContent(`spaceBetween),
     ]);
 
-  let oval = (theme: Theme.t) =>
-    style([
-      backgroundImage(
-        `linearGradient((
-          `deg(180.),
-          [(`percent(0.), theme.lightenBlue), (`percent(100.), theme.baseBlue)],
-        )),
-      ),
-      width(`px(30)),
-      height(`px(30)),
-      borderRadius(`percent(50.)),
-      display(`flex),
-      justifyContent(`center),
-      alignItems(`center),
-    ]);
-
-  let rFlex = style([display(`flex), flexDirection(`row), alignItems(`center)]);
-
   let resultContainer =
     style([
       display(`flex),
