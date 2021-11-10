@@ -21,16 +21,6 @@ module Styles = {
       color(theme.textPrimary),
     ]);
 
-  let mnemonicHelper = (theme: Theme.t) =>
-    style([
-      width(`px(130)),
-      height(`px(16)),
-      display(`flex),
-      justifyContent(`spaceBetween),
-      alignContent(`center),
-      color(theme.baseBlue),
-    ]);
-
   let connectBtn = style([width(`percent(100.)), height(`px(37))]);
 };
 
@@ -91,10 +81,4 @@ let make = (~chainID) => {
     <VSpacing size=Spacing.lg />
     <Text value=errMsg color={theme.failColor} />
   </div>;
-  // </Col>
-  //   </div>
-  //     <img src=Images.linkIcon />
-  //     <Text value="What is Mnemonic" />
-  //   <div className=Styles.mnemonicHelper>
-  // <Col>
 };
