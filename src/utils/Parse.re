@@ -15,8 +15,15 @@ let getBandAmount = (maxValue, amount) => {
   };
 };
 
-let address = addr => {
+let bandAddress = addr => {
   switch (Address.fromBech32Opt(addr->String.trim)) {
+  | Some(address) => Result.Ok(address)
+  | None => Err("Invalid address")
+  };
+};
+
+let notBandAddress = addr => {
+  switch (Address.fromBech32OptNotBandPrefix(addr->String.trim)) {
   | Some(address) => Result.Ok(address)
   | None => Err("Invalid address")
   };
