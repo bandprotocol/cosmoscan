@@ -1,6 +1,5 @@
 module Styles = {
   open Css;
-
   let container =
     style([
       display(`flex),
@@ -18,24 +17,6 @@ module Styles = {
       width(`percent(100.)),
       justifyContent(`spaceBetween),
     ]);
-
-  let oval =
-    style([
-      backgroundImage(
-        `linearGradient((
-          `deg(180.),
-          [(`percent(0.), Colors.blue2), (`percent(100.), Colors.bandBlue)],
-        )),
-      ),
-      width(`px(30)),
-      height(`px(30)),
-      borderRadius(`percent(50.)),
-      display(`flex),
-      justifyContent(`center),
-      alignItems(`center),
-    ]);
-
-  let rFlex = style([display(`flex), flexDirection(`row), alignItems(`center)]);
 
   let resultContainer =
     style([

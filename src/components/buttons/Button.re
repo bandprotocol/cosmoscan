@@ -60,7 +60,11 @@ module Styles = {
             color(isDarkMode ? Theme.black : Theme.white),
             selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
           ]),
-          active([backgroundColor(Colors.buttonOutlineActive)]),
+          active([
+            backgroundColor(theme.textPrimary),
+            color(isDarkMode ? Theme.black : Theme.white),
+            selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
+          ]),
           disabled([
             borderColor(theme.textSecondary),
             color(theme.textSecondary),

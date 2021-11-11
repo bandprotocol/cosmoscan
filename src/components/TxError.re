@@ -46,7 +46,7 @@ module Full = {
         Styles.errorContainer(theme),
         CssHelper.flexBox(~wrap=`nowrap, ()),
       ])}>
-      <Icon name="fal fa-exclamation-circle" size=14 color=Colors.red5 />
+      <Icon name="fal fa-exclamation-circle" size=14 color={theme.failColor} />
       <Text
         value={msg |> parseErr}
         size=Text.Lg
