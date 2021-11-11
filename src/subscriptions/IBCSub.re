@@ -60,7 +60,7 @@ type acknowledgement_t = {
 let parsePacketTypeOpt =
   fun
   | Some("oracle_request") => OracleRequest
-  | Some("oracle_response") => OracleResponse
+  | Some("oracle response") => OracleResponse
   | Some("fungible_token") => FungibleToken
   | _ => Unknown;
 
@@ -221,7 +221,7 @@ let getList =
   let packetTypeKeyword = {
     switch (packetType) {
     | "Oracle Request" => Some("oracle_request")
-    | "Oracle Response" => Some("oracle_response")
+    | "Oracle Response" => Some("oracle response")
     | "Fungible Token" => Some("fungible_token")
     | "Unknown"
     | "" => None
