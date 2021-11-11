@@ -47,11 +47,12 @@ module Styles = {
 
 [@react.component]
 let make = (~info, ~header, ~isLeft=true) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let infoSub = React.useContext(GlobalContext.context);
   <div className={Styles.mainContainer(isLeft)}>
     <Text
       value=header
-      color=Colors.gray7
+      color={theme.textSecondary}
       size=Text.Sm
       weight=Text.Thin
       height={Text.Px(18)}
@@ -117,7 +118,7 @@ let make = (~info, ~header, ~isLeft=true) => {
            size=Text.Md
            weight=Text.Thin
            spacing={Text.Em(0.06)}
-           color=Colors.gray7
+           color={theme.textSecondary}
          />
        </div>
      | Fee(fee) =>

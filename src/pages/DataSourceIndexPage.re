@@ -1,7 +1,7 @@
 module Styles = {
   open Css;
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
+  let infoHeader = (theme: Theme.t) =>
+    style([borderBottom(`px(1), `solid, theme.tableRowBorderColor), paddingBottom(`px(16))]);
 };
 
 module Content = {

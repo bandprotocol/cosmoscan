@@ -56,26 +56,31 @@ let make = (~height) => {
              ? <Text
                  value={j|This block(#B$height) hasn't mined yet.|j}
                  size=Text.Lg
-                 color=Colors.blueGray6
+                 color={theme.textSecondary}
                />
              : <div className={CssHelper.flexBox(~justify=`center, ())}>
                  <Text
                    value="The database is syncing."
                    size=Text.Lg
-                   color=Colors.blueGray6
+                   color={theme.textSecondary}
                    block=true
                  />
                  <VSpacing size=Spacing.md />
                  <Text
                    value="Please waiting for the state up to date."
                    size=Text.Lg
-                   color=Colors.blueGray6
+                   color={theme.textSecondary}
                    block=true
                  />
                </div>}
           <VSpacing size=Spacing.lg />
           <Link className=Styles.linkToHome route=Route.HomePage>
-            <Text value="Back to Homepage" weight=Text.Bold size=Text.Md color=Colors.blueGray6 />
+            <Text
+              value="Back to Homepage"
+              weight=Text.Bold
+              size=Text.Md
+              color={theme.textSecondary}
+            />
             <HSpacing size=Spacing.md />
             <img alt="Right Arrow Icon" src=Images.rightArrow className=Styles.rightArrow />
           </Link>

@@ -92,7 +92,12 @@ let make = (~headers=["Key", "Value"], ~rows) => {
         {headers
          ->Belt_List.mapWithIndex((i, header) => {
              <Col key={header ++ (i |> string_of_int)} col=columnSize colSm=columnSize>
-               <Text value=header weight=Text.Semibold height={Text.Px(18)} transform=Text.Uppercase />
+               <Text
+                 value=header
+                 weight=Text.Semibold
+                 height={Text.Px(18)}
+                 transform=Text.Uppercase
+               />
              </Col>
            })
          ->Belt_List.toArray

@@ -18,7 +18,6 @@ module Styles = {
         selector("> div:nth-child(1)", [opacity(1.), zIndex(99), pointerEvents(`unset)]),
       ]),
     ]);
-
   let hiddenTooltipSm = style([Media.mobile([display(`none)])]);
   let tooltipItem = (maxWidth_, padding_, align_, fsize_) =>
     style([
@@ -26,11 +25,11 @@ module Styles = {
       display(`block),
       fontSize(`px(fsize_)),
       textAlign(align_),
-      backgroundColor(Colors.gray7),
+      backgroundColor(`hex("555555")),
       borderRadius(`px(4)),
       maxWidth(`px(maxWidth_)),
       unsafe("width", "max-content"),
-      color(Colors.white),
+      color(Theme.white),
       padding(`px(padding_)),
       opacity(0.),
       pointerEvents(`none),
@@ -40,7 +39,7 @@ module Styles = {
         pointerEvents(`none),
         display(`block),
         position(`absolute),
-        border(`px(5), `solid, Colors.transparent),
+        border(`px(5), `solid, `rgba((0, 0, 0, `num(0.)))),
       ]),
       Media.mobile([padding(`px(12)), fontSize(`px(12)), maxWidth(`px(150))]),
     ]);
@@ -57,7 +56,7 @@ module Styles = {
           top(`percent(50.)),
           transform(`translateY(`percent(-50.))),
           right(`px(-10)),
-          borderLeftColor(Colors.gray7),
+          borderLeftColor(`hex("555555")),
         ]),
       ])
     | Right =>
@@ -70,7 +69,7 @@ module Styles = {
           top(`percent(50.)),
           transform(`translateY(`percent(-50.))),
           left(`px(-10)),
-          borderRightColor(Colors.gray7),
+          borderRightColor(`hex("555555")),
         ]),
       ])
     | Top =>
@@ -83,7 +82,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(50.)),
           bottom(`px(-10)),
-          borderTopColor(Colors.gray7),
+          borderTopColor(`hex("555555")),
         ]),
       ])
     | Bottom =>
@@ -96,7 +95,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(50.)),
           top(`px(-10)),
-          borderBottomColor(Colors.gray7),
+          borderBottomColor(`hex("555555")),
         ]),
       ])
     | BottomLeft =>
@@ -108,7 +107,7 @@ module Styles = {
           transform(`translateX(`percent(-50.))),
           left(`percent(30.)),
           top(`px(-10)),
-          borderBottomColor(Colors.gray7),
+          borderBottomColor(`hex("555555")),
         ]),
       ])
     | BottomRight =>
@@ -120,7 +119,7 @@ module Styles = {
           transform(`translateX(`percent(-70.))),
           left(`percent(70.)),
           top(`px(-10)),
-          borderBottomColor(Colors.gray7),
+          borderBottomColor(`hex("555555")),
         ]),
       ]);
 
@@ -136,7 +135,7 @@ module Styles = {
             top(`percent(50.)),
             transform(`translateY(`percent(-50.))),
             right(`px(-10)),
-            borderLeftColor(Colors.gray7),
+            borderLeftColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -150,7 +149,7 @@ module Styles = {
             top(`percent(50.)),
             transform(`translateY(`percent(-50.))),
             left(`px(-10)),
-            borderRightColor(Colors.gray7),
+            borderRightColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -164,7 +163,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(50.)),
             bottom(`px(-10)),
-            borderTopColor(Colors.gray7),
+            borderTopColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -178,7 +177,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(50.)),
             top(`px(-10)),
-            borderBottomColor(Colors.gray7),
+            borderBottomColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -192,7 +191,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(30.)),
             top(`px(-10)),
-            borderBottomColor(Colors.gray7),
+            borderBottomColor(`hex("555555")),
           ]),
         ]),
       ])
@@ -206,7 +205,7 @@ module Styles = {
             transform(`translateX(`percent(-50.))),
             left(`percent(70.)),
             top(`px(-10)),
-            borderBottomColor(Colors.gray7),
+            borderBottomColor(`hex("555555")),
           ]),
         ]),
       ]);

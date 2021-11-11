@@ -36,7 +36,7 @@ module Styles = {
       background(rgba(255, 255, 255, `num(1.))),
       border(`px(0), `solid, hex("FFFFFF")),
       width(`px(135)),
-      focus([outlineColor(Colors.white)]),
+      focus([outlineColor(Theme.white)]),
     ]);
 
   let nextBtn = style([width(`percent(100.)), marginTop(`px(24))]);
