@@ -71,13 +71,14 @@ module Styles = {
       ),
     ]);
 
-  let closeButton =
+  let closeButton = isActive =>
     style([
       width(`px(10)),
       position(`absolute),
       top(`px(20)),
       right(`px(20)),
       cursor(`pointer),
+      display(isActive ? `block : `none),
       zIndex(3),
     ]);
 };
@@ -118,12 +119,13 @@ let make = () => {
           id="closeModal"
           src=Images.closeButton
           onClick={_ => {canExit ? closeModal() : ()}}
-          className=Styles.closeButton>
+          className={Styles.closeButton(canExit)}>
           <Icon name="fal fa-times" color={theme.textPrimary} size=18 />
         </div>
         {switch (modal) {
          | Connect(chainID) => <ConnectModal chainID />
          | SubmitTx(msg) => <SubmitTxModal msg />
+         | ChainSelector(targetChain) => <ChainSelectorModal targetChain />
          | QRCode(address) => <QRCodeModal address />
          | IBCPacketError(reason) => <IBCPacketFailModal reason />
          | Syncing => <SyncingModal />
