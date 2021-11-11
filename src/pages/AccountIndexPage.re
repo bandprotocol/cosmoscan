@@ -213,7 +213,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
   let qrCode = () => {
     address->QRCode->OpenModal->dispatchModal;
   };
-  let addressTag = address->Address.toBech32->VerifyAccount.parseAddressName;
+  let addressTag = address->VerifiedAccount.getNameOpt;
 
   <Section>
     <div className=CssHelper.container>
@@ -240,7 +240,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                       position=AddressRender.Subtitle
                       copy=true
                       clickable=false
-                      label=false
+                      tag=false
                     />
                   </div>
                 </div>

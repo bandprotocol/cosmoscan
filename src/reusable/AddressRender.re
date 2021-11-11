@@ -63,7 +63,7 @@ let make =
       ~copy=false,
       ~clickable=true,
       ~wordBreak=false,
-      ~label=true,
+      ~tag=true,
     ) => {
   let isValidator = accountType == `validator;
   let prefix = isValidator ? "bandvaloper" : "band";
@@ -75,8 +75,7 @@ let make =
 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-  let fullAddress = prefix ++ noPrefixAddress;
-  let addressTag = fullAddress->VerifyAccount.parseAddressName;
+  let addressTagOpt = address->VerifiedAccount.getNameOpt;
 
   <>
     <Link
@@ -98,19 +97,14 @@ let make =
           Styles.font(position),
           wordBreak ? Styles.wordBreak : "",
         ])}>
-        {label
-           ? switch (addressTag) {
-             | Some(tag) => <span> tag->React.string </span>
-             | None =>
-               <>
-                 <span className=Styles.prefix> {prefix |> React.string} </span>
-                 {noPrefixAddress |> React.string}
-               </>
-             }
-           : <>
-               <span className=Styles.prefix> {prefix |> React.string} </span>
-               {noPrefixAddress |> React.string}
-             </>}
+        {switch (addressTagOpt, tag) {
+         | (Some(tag), true) => <span> tag->React.string </span>
+         | _ =>
+           <>
+             <span className=Styles.prefix> {prefix |> React.string} </span>
+             {noPrefixAddress |> React.string}
+           </>
+         }}
       </span>
     </Link>
     {copy
