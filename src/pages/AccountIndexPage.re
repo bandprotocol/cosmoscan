@@ -202,7 +202,8 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
   let send = chainID => {
     switch (accountOpt) {
     | Some({address: sender}) =>
-      let openSendModal = () => Some(address)->SubmitMsg.Send->SubmitTx->OpenModal->dispatchModal;
+      let openSendModal = () =>
+        SubmitMsg.Send(Some(address), IBCQuery.BAND)->SubmitTx->OpenModal->dispatchModal;
       if (sender == address) {
         Webapi.Dom.(window |> Window.confirm("Are you sure you want to send tokens to yourself?"))
           ? openSendModal() : ();

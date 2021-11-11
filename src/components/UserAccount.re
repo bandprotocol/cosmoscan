@@ -148,7 +148,7 @@ let make = () => {
     setShow(_ => false);
   };
   let send = () => {
-    None->SubmitMsg.Send->SubmitTx->OpenModal->dispatchModal;
+    SubmitMsg.Send(None, IBCQuery.BAND)->SubmitTx->OpenModal->dispatchModal;
     setShow(_ => false);
   };
 
