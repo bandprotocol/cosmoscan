@@ -240,13 +240,14 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                       position=AddressRender.Subtitle
                       copy=true
                       clickable=false
+                      label=false
                     />
                   </div>
                 </div>
                 {switch (addressTag) {
-                 | Some(Binance) =>
+                 | Some(v) =>
                    <div className={Css.merge([CssHelper.flexBox(), CssHelper.mt(~size=8, ())])}>
-                     <Text value="(Binance)" size=Text.Lg block=true />
+                     <Text value={j| ($v) |j} size=Text.Lg block=true />
                    </div>
                  | None => React.null
                  }}
