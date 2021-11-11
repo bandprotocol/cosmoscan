@@ -76,6 +76,11 @@ module MsgRequest = {
     "MsgRequestData";
 };
 
+module MsgTransfer = {
+  [@bs.module "@bandprotocol/bandchain.js"] [@bs.scope "Message"] [@bs.new]
+  external create: (string, string, string, string, Coin.t, float) => msg_t = "MsgTransfer";
+};
+
 module Transaction = {
   type t;
 

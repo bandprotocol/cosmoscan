@@ -57,7 +57,8 @@ module SubmitTxStep = {
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
       <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
       {switch (msg) {
-       | SubmitMsg.Send(receiver) => <SendMsg address={account.address} receiver setMsgsOpt />
+       | SubmitMsg.Send(receiver, targetChain) =>
+         <SendMsg address={account.address} receiver setMsgsOpt targetChain />
        | Delegate(validator) => <DelegateMsg address={account.address} validator setMsgsOpt />
        | Undelegate(validator) => <UndelegateMsg address={account.address} validator setMsgsOpt />
        | Redelegate(validator) => <RedelegateMsg address={account.address} validator setMsgsOpt />
@@ -128,7 +129,7 @@ module CreateTxFlow = {
     let (rawTx, setRawTx) = React.useState(_ => None);
 
     <>
-      <SubmitTxStep account setRawTx isActive={rawTx == None} msg />
+      <SubmitTxStep account setRawTx isActive={rawTx->Belt.Option.isNone} msg />
       {switch (rawTx) {
        | None => React.null
        | Some(rawTx') =>

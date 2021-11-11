@@ -86,3 +86,4 @@
 
 //IBC
 [@bs.module] external ibcIcon: string = "./tx-ibc-icon.svg";
+[@bs.module] external unknownChain: string = "./unknown-chain.svg";

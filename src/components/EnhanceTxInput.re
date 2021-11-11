@@ -7,7 +7,7 @@ module Styles = {
     style([
       width(`percent(100.)),
       height(`px(37)),
-      paddingLeft(`px(9)),
+      paddingLeft(`px(16)),
       paddingRight(`px(9)),
       borderRadius(`px(4)),
       fontSize(`px(14)),

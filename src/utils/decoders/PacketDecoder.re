@@ -64,7 +64,7 @@ type t = {
 let getPacketTypeText =
   fun
   | "oracle_request" => "Oracle Request"
-  | "oracle_response" => "Oracle Response"
+  | "oracle response" => "Oracle Response"
   | "fungible_token" => "Fungible Token"
   | _ => "Unknown";
 

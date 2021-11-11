@@ -10,6 +10,14 @@ type request_params_t = {
   executeGas: int,
 };
 
+type ibc_transfer_t = {
+  sourcePort: string,
+  sourceChannel: string,
+  receiver: string,
+  token: BandChainJS.Coin.t,
+  timeoutTimestamp: float,
+};
+
 type tx_response_t = {
   txHash: Hash.t,
   success: bool,
@@ -27,7 +35,8 @@ type msg_input_t =
   | Redelegate(Address.t, Address.t, BandChainJS.Coin.t)
   | WithdrawReward(Address.t)
   | Request(request_params_t)
-  | Vote(ID.Proposal.t, int);
+  | Vote(ID.Proposal.t, int)
+  | IBCTransfer(ibc_transfer_t);
 
 let createMsg = (sender, msg: msg_input_t) => {
   BandChainJS.(
@@ -69,6 +78,8 @@ let createMsg = (sender, msg: msg_input_t) => {
         prepareGas,
         executeGas,
       )
+    | IBCTransfer({sourcePort, sourceChannel, receiver, token, timeoutTimestamp}) =>
+      MsgTransfer.create(sourcePort, sourceChannel, sender, receiver, token, timeoutTimestamp)
     }
   );
 };
