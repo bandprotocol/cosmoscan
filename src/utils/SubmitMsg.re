@@ -1,5 +1,5 @@
 type t =
-  | Send(option(Address.t))
+  | Send(option(Address.t), IBCQuery.target_chain_t)
   | Delegate(Address.t)
   | Undelegate(Address.t)
   | Redelegate(Address.t)

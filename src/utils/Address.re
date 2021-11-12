@@ -3,14 +3,14 @@ type t =
 
 exception WrongPrefixAddress(string);
 
-let validatePrefix = bech32Address => {
+let validateBandPrefix = bech32Address => {
   let prefix = bech32Address->Bech32.prefixGet;
   prefix == "band" || prefix == "bandvaloper" || prefix == "bandvalconspub";
 };
 
 let fromBech32 = bech32str => {
   let decoded = bech32str->Bech32.decode;
-  validatePrefix(decoded)
+  validateBandPrefix(decoded)
     ? Address(decoded->Bech32.wordsGet->Bech32.fromWords->JsBuffer.arrayToHex)
     : raise(WrongPrefixAddress("Address is not correct prefix."));
 };
@@ -19,8 +19,15 @@ let fromBech32Opt = bech32str => {
   let decodedOpt = bech32str |> Bech32.decodeOpt;
   let%Opt decoded = decodedOpt;
 
-  validatePrefix(decoded)
+  validateBandPrefix(decoded)
     ? Some(Address(decoded->Bech32.wordsGet->Bech32.fromWords->JsBuffer.arrayToHex)) : None;
+};
+
+let fromBech32OptNotBandPrefix = bech32str => {
+  let decodedOpt = bech32str |> Bech32.decodeOpt;
+  let%Opt decoded = decodedOpt;
+
+  Some(Address(decoded->Bech32.wordsGet->Bech32.fromWords->JsBuffer.arrayToHex));
 };
 
 let fromHex = hexstr => Address(hexstr->HexUtils.normalizeHexString);
