@@ -41,15 +41,13 @@ let make = (~options, ~setSelectOption, ~selectLabel, ~selectedOption, ~disabled
           setSelectOption(newVal);
         }}>
         <option value=""> {"All " ++ selectLabel ++ "s" |> React.string} </option>
-        {switch (options |> Belt.Array.length) {
-         | 0 =>
-           options
-           |> Belt.Array.map(_, value =>
-                <option key=value value> {value |> React.string} </option>
-              )
-           |> React.array
-         | _ => React.null
-         }}
+        {options |> Belt.Array.length > 0
+           ? options
+             |> Belt.Array.map(_, value =>
+                  <option key=value value> {value |> React.string} </option>
+                )
+             |> React.array
+           : React.null}
       </select>
     </div>
   </div>;

@@ -7,7 +7,7 @@ let withCommas = value =>
          |> Js.String.split("")
          |> Js.Array.reverseInPlace
          |> Js.Array.reducei(
-              (acc, ch, idx) => idx mod 3 == 0 && idx !== 0 ? ch ++ "," ++ acc : ch ++ acc,
+              (acc, ch, idx) => idx mod 3 === 0 && idx !== 0 ? ch ++ "," ++ acc : ch ++ acc,
               "",
             );
        } else {

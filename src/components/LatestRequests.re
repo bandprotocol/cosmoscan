@@ -188,6 +188,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
          <img
            src={isDarkMode ? Images.noDataDark : Images.noDataLight}
            className=Styles.noDataImage
+           alt="No Request"
          />
          <Heading size=Heading.H4 value="No Request" align=Heading.Center weight=Heading.Regular />
        </EmptyContainer>

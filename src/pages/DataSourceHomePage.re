@@ -272,6 +272,7 @@ let make = () => {
                <img
                  src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
                  className=Styles.noDataImage
+                 alt="No Data Source"
                />
                <Heading
                  size=Heading.H4
