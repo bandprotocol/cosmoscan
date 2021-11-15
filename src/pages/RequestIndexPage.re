@@ -503,7 +503,7 @@ let make = (~reqID) => {
             {switch (requestSub) {
              | Data({reason}) =>
                switch (reason) {
-               | Some(reason') when reason' != "" =>
+               | Some(reason') when reason' !== "" =>
                  <div className=Styles.reasonSection>
                    <img alt="Fail Icon" src=Images.fail />
                    <HSpacing size=Spacing.md />

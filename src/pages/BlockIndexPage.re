@@ -208,7 +208,7 @@ let make = (~height) => {
         </Row>
         <ResolvedRequest blockSub />
         {switch (ibcTxsSub) {
-         | Data(ibcTxs) when ibcTxs->Belt.Array.length != 0 =>
+         | Data(ibcTxs) when ibcTxs->Belt.Array.length !== 0 =>
            <Row marginBottom=24>
              <Col>
                <Table>

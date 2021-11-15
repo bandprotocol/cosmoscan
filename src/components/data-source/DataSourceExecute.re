@@ -202,7 +202,7 @@ let make = (~executable: JsBuffer.t) => {
             px=25
             py=13
             onClick={_ =>
-              if (result != Loading) {
+              if (result !== Loading) {
                 setResult(_ => Loading);
                 let _ =
                   AxiosRequest.execute(

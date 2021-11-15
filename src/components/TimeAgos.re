@@ -51,7 +51,7 @@ let make =
   );
 
   <div className=Styles.timeContainer>
-    {prefix != ""
+    {prefix !== ""
        ? <>
            <Text
              value=prefix
@@ -74,7 +74,7 @@ let make =
       code
       nowrap=true
     />
-    {suffix != ""
+    {suffix !== ""
        ? <>
            <HSpacing size=Spacing.sm />
            <Text
