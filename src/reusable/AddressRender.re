@@ -63,7 +63,7 @@ let make =
       ~copy=false,
       ~clickable=true,
       ~wordBreak=false,
-      ~tag=true,
+      ~showName=true,
     ) => {
   let isValidator = accountType == `validator;
   let prefix = isValidator ? "bandvaloper" : "band";
@@ -74,8 +74,6 @@ let make =
       : address |> Address.toBech32 |> Js.String.sliceToEnd(~from=4);
 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
-  let addressTagOpt = address->VerifiedAccount.getNameOpt;
 
   <>
     <Link
@@ -97,8 +95,8 @@ let make =
           Styles.font(position),
           wordBreak ? Styles.wordBreak : "",
         ])}>
-        {switch (addressTagOpt, tag) {
-         | (Some(tag), true) => <span> tag->React.string </span>
+        {switch (address->VerifiedAccount.getNameOpt, showName) {
+         | (Some(name), true) => <span> name->React.string </span>
          | _ =>
            <>
              <span className=Styles.prefix> {prefix |> React.string} </span>

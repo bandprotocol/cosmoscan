@@ -213,7 +213,6 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
   let qrCode = () => {
     address->QRCode->OpenModal->dispatchModal;
   };
-  let addressTag = address->VerifiedAccount.getNameOpt;
 
   <Section>
     <div className=CssHelper.container>
@@ -240,14 +239,14 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                       position=AddressRender.Subtitle
                       copy=true
                       clickable=false
-                      tag=false
+                      showName=false
                     />
                   </div>
                 </div>
-                {switch (addressTag) {
-                 | Some(v) =>
+                {switch (address->VerifiedAccount.getNameOpt) {
+                 | Some(name) =>
                    <div className={Css.merge([CssHelper.flexBox(), CssHelper.mt(~size=8, ())])}>
-                     <Text value={j| ($v) |j} size=Text.Lg block=true />
+                     <Text value={j| ($name) |j} size=Text.Lg block=true />
                    </div>
                  | None => React.null
                  }}
