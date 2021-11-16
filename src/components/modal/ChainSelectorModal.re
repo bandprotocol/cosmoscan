@@ -16,6 +16,7 @@ module Styles = {
     style([
       height(`px(320)),
       overflow(`auto),
+      marginTop(`px(16)),
       selector("> div + div", [marginTop(`px(16))]),
     ]);
 
@@ -31,6 +32,7 @@ module Styles = {
 
 [@react.component]
 let make = (~targetChain) => {
+  let (searchTerm, setSearchTerm) = React.useState(_ => "");
   let transferableChainsQuery = IBCQuery.getTransferConnections();
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
@@ -51,6 +53,12 @@ let make = (~targetChain) => {
 
   <div className=Styles.container>
     <Heading value="Select Chain" size=Heading.H4 marginBottom=24 />
+    <SearchInput
+      placeholder="Search Chain"
+      onChange=setSearchTerm
+      maxWidth=512
+      inputStyle="default"
+    />
     <div className=Styles.selectorPanel>
       {switch (transferableChainsQuery) {
        | Data(transferableChains) =>
@@ -61,7 +69,10 @@ let make = (~targetChain) => {
              onClick={_ => handleClick(IBCQuery.BAND)}>
              <TargetChainInfo targetChain=IBCQuery.BAND />
            </div>
-           {transferableChains
+           {//  transferableChains->Belt.Array.keep((chainID) =>
+            // chainID->React.string === searchTerm
+            // );
+            transferableChains
             ->Belt.Array.map(transferableChain => {
                 let keyString =
                   switch (transferableChain) {
