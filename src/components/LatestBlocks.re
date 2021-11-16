@@ -91,7 +91,7 @@ let make = (~blocksSub) => {
                </div>
              </Col>
            )
-         ->React.array
+         ->React.array;
        | _ =>
          Belt_Array.make(5, ())
          ->Belt.Array.mapWithIndex((i, _) =>
