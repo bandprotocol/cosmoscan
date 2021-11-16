@@ -15,6 +15,7 @@ module TransferConnectionsConfig = [%graphql
     connections(where: {channels: {port: {_eq: "transfer"}}}, order_by: {counterparty_chain_id: asc}) {
       channels {
         channel
+        port
       }
       counterparty_chain_id
     }
@@ -33,7 +34,10 @@ let getTransferConnections = () => {
          connections
          ->Belt.Array.map(connection => {
              let chainID = connection##counterparty_chain_id;
-             let channel = connection##channels->Belt.Array.getExn(0)##channel;
+             let channel =
+               connection##channels
+               ->Belt.Array.keep(each => each##port === "transfer")
+               ->Belt.Array.getExn(0)##channel;
 
              let (imgSrc, name) = VerifiedChain.parse(chainID, channel);
              {chainID, channel, imgSrc, name};
