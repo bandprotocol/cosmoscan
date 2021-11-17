@@ -57,7 +57,7 @@ let make = (~targetChain) => {
       placeholder="Search Chain"
       onChange=setSearchTerm
       maxWidth=512
-      inputStyle="default"
+      inputStyle=SearchInput.Default
     />
     <div className=Styles.selectorPanel>
       {switch (transferableChainsQuery) {
