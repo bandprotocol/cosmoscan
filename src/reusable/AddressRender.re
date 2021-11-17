@@ -63,6 +63,7 @@ let make =
       ~copy=false,
       ~clickable=true,
       ~wordBreak=false,
+      ~showName=true,
     ) => {
   let isValidator = accountType == `validator;
   let prefix = isValidator ? "bandvaloper" : "band";
@@ -94,8 +95,14 @@ let make =
           Styles.font(position),
           wordBreak ? Styles.wordBreak : "",
         ])}>
-        <span className=Styles.prefix> {prefix |> React.string} </span>
-        {noPrefixAddress |> React.string}
+        {switch (address->VerifiedAccount.getNameOpt, showName) {
+         | (Some(name), true) => <span> name->React.string </span>
+         | _ =>
+           <>
+             <span className=Styles.prefix> {prefix |> React.string} </span>
+             {noPrefixAddress |> React.string}
+           </>
+         }}
       </span>
     </Link>
     {copy

@@ -27,11 +27,7 @@ module Styles = {
       height(`percent(100.)),
       selector(
         "> div",
-        [
-          height(`calc((`sub, `percent(50.), `px(12)))),
-          width(`percent(100.)),
-          Media.mobile([height(`auto), marginBottom(`px(16))]),
-        ],
+        [width(`percent(100.)), Media.mobile([height(`auto), marginBottom(`px(16))])],
       ),
     ]);
 
@@ -199,6 +195,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
 
     availableBalance +. balanceAtStakeAmount +. rewardAmount +. unbondingAmount +. commissionAmount;
   };
+
   let send = chainID => {
     switch (accountOpt) {
     | Some({address: sender}) =>
@@ -233,8 +230,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
             <InfoContainer>
               <div
                 className={Css.merge([
-                  CssHelper.flexBox(~direction=`column, ~justify=`center, ~align=`flexStart, ()),
-                  Styles.detailContainer,
+                  CssHelper.flexBox(~direction=`column, ~justify=`start, ~align=`flexStart, ()),
                 ])}>
                 <div className=Styles.addressContainer>
                   <Heading size=Heading.H4 value="Address" marginBottom=25 />
@@ -244,9 +240,17 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                       position=AddressRender.Subtitle
                       copy=true
                       clickable=false
+                      showName=false
                     />
                   </div>
                 </div>
+                {switch (address->VerifiedAccount.getNameOpt) {
+                 | Some(name) =>
+                   <div className={Css.merge([CssHelper.flexBox(), CssHelper.mt(~size=8, ())])}>
+                     <Text value={j| ($name) |j} size=Text.Lg block=true />
+                   </div>
+                 | None => React.null
+                 }}
                 <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
                   <Button variant=Button.Outline py=5 onClick={_ => {qrCode()}}>
                     <div className={CssHelper.flexBox()}>
