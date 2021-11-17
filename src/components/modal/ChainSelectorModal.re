@@ -49,7 +49,6 @@ let make = (~targetChain) => {
       Some(() => dispatchModal(EnableExit));
     },
     [|targetChain|],
-    // (targetChain, searchTerm),
   );
 
   <div className=Styles.container>
@@ -66,7 +65,7 @@ let make = (~targetChain) => {
          <>
            {searchTerm
             |> Js.String.length <= 0
-            || Js.String.includes(searchTerm, "Band" |> Js.String.toLocaleLowerCase)
+            || Js.String.includes(searchTerm |> Js.String.toLocaleLowerCase, "band")
               ? <div
                   key="band"
                   className={Styles.button(targetChain === IBCQuery.BAND, theme)}
@@ -75,6 +74,18 @@ let make = (~targetChain) => {
                 </div>
               : React.null}
            {transferableChains
+            ->Belt.Array.keep(transferableChain => {
+                switch (transferableChain) {
+                | IBCQuery.IBC({name, chainID})
+                    when
+                      Js.String.includes(searchTerm, name |> Js.String.toLowerCase)
+                      || Js.String.includes(searchTerm, chainID |> Js.String.toLowerCase)
+                      || searchTerm
+                      |> Js.String.length <= 0 =>
+                  true
+                | _ => false
+                }
+              })
             ->Belt.Array.map(transferableChain => {
                 let keyString =
                   switch (transferableChain) {
@@ -94,26 +105,12 @@ let make = (~targetChain) => {
                   };
                 };
 
-                let isContainsTargetSearch = {
-                  switch (transferableChain) {
-                  | IBCQuery.IBC({name, chainID})
-                      when
-                        Js.String.includes(searchTerm, name |> Js.String.toLowerCase)
-                        || Js.String.includes(searchTerm, chainID |> Js.String.toLowerCase)
-                        || searchTerm == "" =>
-                    true
-                  | _ => false
-                  };
-                };
-
-                isContainsTargetSearch
-                  ? <div
-                      key=keyString
-                      className={Styles.button(isEqual, theme)}
-                      onClick={_ => handleClick(transferableChain)}>
-                      <TargetChainInfo targetChain=transferableChain />
-                    </div>
-                  : React.null;
+                <div
+                  key=keyString
+                  className={Styles.button(isEqual, theme)}
+                  onClick={_ => handleClick(transferableChain)}>
+                  <TargetChainInfo targetChain=transferableChain />
+                </div>;
               })
             ->React.array}
          </>
