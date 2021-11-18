@@ -200,7 +200,10 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
     switch (accountOpt) {
     | Some({address: sender}) =>
       let openSendModal = () =>
-        SubmitMsg.Send(Some(address), IBCQuery.BAND)->SubmitTx->OpenModal->dispatchModal;
+        SubmitMsg.Send(Some(address), IBCConnectionQuery.BAND)
+        ->SubmitTx
+        ->OpenModal
+        ->dispatchModal;
       if (sender == address) {
         Webapi.Dom.(window |> Window.confirm("Are you sure you want to send tokens to yourself?"))
           ? openSendModal() : ();
