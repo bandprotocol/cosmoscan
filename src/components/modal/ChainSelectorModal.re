@@ -31,7 +31,7 @@ module Styles = {
 
 [@react.component]
 let make = (~targetChain) => {
-  let transferableChainsQuery = IBCQuery.getTransferConnections();
+  let transferableChainsQuery = IBCConnectionQuery.getList();
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
 
@@ -57,15 +57,15 @@ let make = (~targetChain) => {
          <>
            <div
              key="band"
-             className={Styles.button(targetChain === IBCQuery.BAND, theme)}
-             onClick={_ => handleClick(IBCQuery.BAND)}>
-             <TargetChainInfo targetChain=IBCQuery.BAND />
+             className={Styles.button(targetChain === IBCConnectionQuery.BAND, theme)}
+             onClick={_ => handleClick(IBCConnectionQuery.BAND)}>
+             <TargetChainInfo targetChain=IBCConnectionQuery.BAND />
            </div>
            {transferableChains
             ->Belt.Array.map(transferableChain => {
                 let keyString =
                   switch (transferableChain) {
-                  | IBCQuery.IBC({channel}) => channel
+                  | IBCConnectionQuery.IBC({channel}) => channel
                   | BAND => "band"
                   };
 

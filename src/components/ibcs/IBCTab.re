@@ -48,7 +48,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
+let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let (packetType, setPacketType) = React.useState(_ => "");
@@ -58,7 +58,7 @@ let make = (~direction: IBCSub.packet_direction_t, ~chainID) => {
   let (rawPacketSequence, setRawPacketSequence) = React.useState(_ => "");
 
   let packetsSub =
-    IBCSub.getList(
+    IBCQuery.getList(
       ~pageSize=10,
       ~direction,
       ~packetType,

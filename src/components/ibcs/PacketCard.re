@@ -17,7 +17,7 @@ type t = {
 };
 
 [@react.component]
-let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.t)) => {
+let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCQuery.t)) => {
   let (_, dispatchModal) = React.useContext(ModalContext.context);
 
   let errorMsg = reason => reason->IBCPacketError->OpenModal->dispatchModal;
@@ -31,7 +31,7 @@ let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCSub.t)) => 
         ])}>
         <div className=Styles.badgeContainer>
           {switch (packetSub) {
-           | Data({packetType}) => <MsgBadge name={packetType |> IBCSub.getPacketTypeText} />
+           | Data({packetType}) => <MsgBadge name={packetType |> IBCQuery.getPacketTypeText} />
            | _ => <LoadingCensorBar width=110 height=20 radius=50 />
            }}
         </div>
