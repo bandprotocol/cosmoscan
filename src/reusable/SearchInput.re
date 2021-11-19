@@ -18,13 +18,15 @@ module Styles = {
     };
   };
 
-  let searchBar = (theme: Theme.t, maxWidth_, inputStyle_) => {
+  let searchBar = (theme: Theme.t, maxWidth_, inputStyle_, isDarkMode_) => {
     switch (inputStyle_) {
     | Default =>
       style([
         backgroundColor(theme.inputContrastColor),
         borderRadius(`px(4)),
-        border(`zero, `none, theme.textSecondary),
+        isDarkMode_
+          ? border(`zero, `none, theme.textSecondary)
+          : border(`px(2), `solid, theme.tableRowBorderColor),
         placeholder([color(theme.textSecondary)]),
         color(theme.textPrimary),
         padding(`px(16)),
@@ -56,7 +58,7 @@ module Styles = {
 [@react.component]
 let make = (~placeholder, ~onChange, ~debounce=500, ~maxWidth=240, ~inputStyle=Underline) => {
   let (changeValue, setChangeValue) = React.useState(_ => "");
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect1(
     () => {
@@ -72,7 +74,7 @@ let make = (~placeholder, ~onChange, ~debounce=500, ~maxWidth=240, ~inputStyle=U
     </div>
     <input
       type_="text"
-      className={Styles.searchBar(theme, maxWidth, inputStyle)}
+      className={Styles.searchBar(theme, maxWidth, inputStyle, isDarkMode)}
       placeholder
       onChange={event => {
         let newVal =
