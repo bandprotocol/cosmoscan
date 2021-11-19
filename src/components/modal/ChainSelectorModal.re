@@ -64,7 +64,8 @@ let make = (~targetChain) => {
        | Data(transferableChains) =>
          <>
            {searchTerm
-            |> Js.String.length <= 0
+            |> Js.String.length
+            <== 0
             || Js.String.includes(searchTerm |> Js.String.toLocaleLowerCase, "band")
               ? <div
                   key="band"
@@ -81,7 +82,8 @@ let make = (~targetChain) => {
                       Js.String.includes(searchTerm, name |> Js.String.toLowerCase)
                       || Js.String.includes(searchTerm, chainID |> Js.String.toLowerCase)
                       || searchTerm
-                      |> Js.String.length <= 0 =>
+                      |> Js.String.length
+                      <== 0 =>
                   true
                 | _ => false
                 }
