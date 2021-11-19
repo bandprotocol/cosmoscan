@@ -23,7 +23,8 @@ module TransferConnectionsConfig = [%graphql
 ];
 
 let getList = () => {
-  let (result, _) = ApolloHooks.useQuery(TransferConnectionsConfig.definition);
+  let (result, _) =
+    ApolloHooks.useQuery(TransferConnectionsConfig.definition, ~pollInterval=?Some(5000));
 
   result
   |> Query.map(
