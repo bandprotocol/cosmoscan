@@ -43,7 +43,7 @@ module ResolveStatus = {
       <div className=Styles.labelWrapper> <Text value="Resolve Status" /> </div>
       <div className=Styles.valueWrapper>
         {switch (status) {
-         | IBCSub.OracleResponseData.Success =>
+         | IBCQuery.OracleResponseData.Success =>
            <img alt="Success Icon" src=Images.success className=Styles.status />
          | Fail => <img alt="Fail Icon" src=Images.fail className=Styles.status />
          | _ => React.null

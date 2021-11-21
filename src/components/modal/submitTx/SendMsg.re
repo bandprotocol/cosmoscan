@@ -22,7 +22,7 @@ let make = (~address, ~receiver, ~setMsgsOpt, ~targetChain) => {
         coin->BandChainJS.Coin.setAmount(amountValue |> Js.Float.toString);
 
         switch (targetChain) {
-        | IBCQuery.BAND => Some([|TxCreator2.Send(toAddressValue, [|coin|])|])
+        | IBCConnectionQuery.BAND => Some([|TxCreator2.Send(toAddressValue, [|coin|])|])
         | IBC({channel}) =>
           Some([|
             TxCreator2.IBCTransfer({
@@ -73,7 +73,7 @@ let make = (~address, ~receiver, ~setMsgsOpt, ~targetChain) => {
       setInputData=setToAddress
       parse={
         switch (targetChain) {
-        | IBCQuery.BAND => Parse.bandAddress
+        | IBCConnectionQuery.BAND => Parse.bandAddress
         | IBC(_) => Parse.notBandAddress
         }
       }

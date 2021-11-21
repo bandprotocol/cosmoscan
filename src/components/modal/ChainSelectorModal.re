@@ -33,7 +33,7 @@ module Styles = {
 [@react.component]
 let make = (~targetChain) => {
   let (searchTerm, setSearchTerm) = React.useState(_ => "");
-  let transferableChainsQuery = IBCQuery.getTransferConnections();
+  let transferableChainsQuery = IBCConnectionQuery.getList();
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
 
@@ -68,15 +68,15 @@ let make = (~targetChain) => {
             || Js.String.includes(searchTerm |> Js.String.toLocaleLowerCase, "band")
               ? <div
                   key="band"
-                  className={Styles.button(targetChain === IBCQuery.BAND, theme)}
-                  onClick={_ => handleClick(IBCQuery.BAND)}>
-                  <TargetChainInfo targetChain=IBCQuery.BAND />
+                  className={Styles.button(targetChain === IBCConnectionQuery.BAND, theme)}
+                  onClick={_ => handleClick(IBCConnectionQuery.BAND)}>
+                  <TargetChainInfo targetChain=IBCConnectionQuery.BAND />
                 </div>
               : React.null}
            {transferableChains
             ->Belt.Array.keep(transferableChain => {
                 switch (transferableChain) {
-                | IBCQuery.IBC({name, chainID})
+                | IBCConnectionQuery.IBC({name, chainID})
                     when
                       Js.String.includes(searchTerm, name |> Js.String.toLowerCase)
                       || Js.String.includes(searchTerm, chainID |> Js.String.toLowerCase)
@@ -89,7 +89,7 @@ let make = (~targetChain) => {
             ->Belt.Array.map(transferableChain => {
                 let keyString =
                   switch (transferableChain) {
-                  | IBCQuery.IBC({channel}) => channel
+                  | IBCConnectionQuery.IBC({channel}) => channel
                   | BAND => "band"
                   };
 
