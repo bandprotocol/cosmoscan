@@ -26,7 +26,7 @@ let make = (~targetChain) => {
     <div className={CssHelper.flexBox(~wrap=`nowrap, ~justify=`spaceBetween, ())}>
       <TargetChainInfo targetChain />
       <Button py=10 variant=Button.Outline onClick={_ => edit()}>
-        {"Edit" |> React.string}
+        {"Change" |> React.string}
       </Button>
     </div>
   </div>;
