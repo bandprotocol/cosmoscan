@@ -16,6 +16,7 @@ module Styles = {
     style([
       resize(`none),
       fontSize(`px(12)),
+      color(theme.textPrimary),
       backgroundColor(theme.contrastBg),
       border(`px(1), `solid, theme.tableRowBorderColor),
       borderRadius(`px(4)),
