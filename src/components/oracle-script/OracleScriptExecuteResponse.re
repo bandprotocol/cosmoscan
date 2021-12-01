@@ -40,7 +40,6 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
              </div>
              <TypeID.Request id />
            </div>
-
          | None => React.null
          }}
         <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
@@ -52,34 +51,34 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
         {switch (requestOpt) {
          | Some({result: Some(result), id}) =>
            let outputKVsOpt = Obi.decode(schema, "output", result);
-           <>
-             <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-               <div className=Styles.labelWrapper>
-                 <Text
-                   value="Output"
-                   color={theme.textSecondary}
-                   weight=Text.Regular
-                   height={Text.Px(20)}
-                 />
+           switch (outputKVsOpt) {
+           | Some(outputKVs) =>
+             <>
+               <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                 <div className=Styles.labelWrapper>
+                   <Text
+                     value="Output"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
+                 </div>
+                 <div className=Styles.resultWrapper>
+                   <KVTable
+                     rows={
+                       outputKVs
+                       ->Belt_Array.map(({fieldName, fieldValue}) =>
+                           [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
+                         )
+                       ->Belt_List.fromArray
+                     }
+                   />
+                 </div>
                </div>
-               <div className=Styles.resultWrapper>
-                 {switch (outputKVsOpt) {
-                  | Some(outputKVs) =>
-                    <KVTable
-                      rows={
-                        outputKVs
-                        ->Belt_Array.map(({fieldName, fieldValue}) =>
-                            [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
-                          )
-                        ->Belt_List.fromArray
-                      }
-                    />
-                  | None => React.null
-                  }}
-               </div>
-             </div>
-             <OracleScriptExecuteProof id />
-           </>;
+               <OracleScriptExecuteProof id />
+             </>
+           | None => <RequestFailedResult id />
+           };
          | Some(request) =>
            <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
              <div className=Styles.labelWrapper>
