@@ -77,7 +77,7 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
                </div>
                <OracleScriptExecuteProof id />
              </>
-           | None => <RequestFailedResult id />
+           | None => <> <RequestFailedResult id /> </>
            };
          | Some(request) =>
            <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
