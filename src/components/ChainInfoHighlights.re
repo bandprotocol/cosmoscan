@@ -64,9 +64,9 @@ module HighlightCard = {
     </div>;
   };
 };
-
+//TODO: Refactor later
 [@react.component]
-let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
+let make = (~latestBlockSub: Sub.t(BlockSub.block_t)) => {
   let infoSub = React.useContext(GlobalContext.context);
   let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
   let activeValidatorCountSub = ValidatorSub.countByActive(true);
