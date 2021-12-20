@@ -72,7 +72,7 @@ let make = (~id: ID.Request.t) => {
        </div>
      | _ =>
        <div className={Styles.withWH(`percent(100.), `auto)}>
-         <Loading width={`px(104)} />
+         <LoadingCensorBar.CircleSpin size=48 height=48 />
        </div>
      }}
   </div>;
