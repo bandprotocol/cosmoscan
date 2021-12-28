@@ -1,6 +1,7 @@
 module Styles = {
   open Css;
 
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
   let resultContainer = (theme: Theme.t) =>
     style([
       margin2(~v=`px(20), ~h=`zero),
@@ -19,7 +20,7 @@ module Styles = {
 [@react.component]
 let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
   {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     let requestsByTxHashSub = RequestSub.Mini.getListByTxHash(txResponse.txHash);
     let%Sub requestsByTxHash = requestsByTxHashSub;
     let requestOpt = requestsByTxHash->Belt_Array.get(0);
@@ -49,36 +50,62 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
           <TxLink txHash={txResponse.txHash} width=500 />
         </div>
         {switch (requestOpt) {
-         | Some({result: Some(result), id}) =>
-           let outputKVsOpt = Obi.decode(schema, "output", result);
-           switch (outputKVsOpt) {
-           | Some(outputKVs) =>
-             <>
-               <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-                 <div className=Styles.labelWrapper>
-                   <Text
-                     value="Output"
-                     color={theme.textSecondary}
-                     weight=Text.Regular
-                     height={Text.Px(20)}
-                   />
+         | Some({result: Some(result), id, resolveStatus}) =>
+           switch (resolveStatus, result) {
+           | (RequestSub.Success, result) =>
+             let outputKVsOpt = Obi.decode(schema, "output", result);
+             switch (outputKVsOpt) {
+             | Some(outputKVs) =>
+               <>
+                 <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                   <div className=Styles.labelWrapper>
+                     <Text
+                       value="Output"
+                       color={theme.textSecondary}
+                       weight=Text.Regular
+                       height={Text.Px(20)}
+                     />
+                   </div>
+                   <div className=Styles.resultWrapper>
+                     <KVTable
+                       rows={
+                         outputKVs
+                         ->Belt_Array.map(({fieldName, fieldValue}) =>
+                             [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
+                           )
+                         ->Belt_List.fromArray
+                       }
+                     />
+                   </div>
                  </div>
-                 <div className=Styles.resultWrapper>
-                   <KVTable
-                     rows={
-                       outputKVs
-                       ->Belt_Array.map(({fieldName, fieldValue}) =>
-                           [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
-                         )
-                       ->Belt_List.fromArray
-                     }
-                   />
+                 <OracleScriptExecuteProof id />
+               </>
+             | None =>
+               <>
+                 <RequestFailedResult id />
+                 <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                   <div className=Styles.labelWrapper>
+                     <Text
+                       value="Output"
+                       color={theme.textSecondary}
+                       weight=Text.Regular
+                       height={Text.Px(20)}
+                     />
+                   </div>
+                   <div className=Styles.resultWrapper>
+                     <Text
+                       value="Schema not found"
+                       color={theme.textSecondary}
+                       weight=Text.Regular
+                       height={Text.Px(20)}
+                     />
+                   </div>
                  </div>
-               </div>
-               <OracleScriptExecuteProof id />
-             </>
-           | None => <> <RequestFailedResult id /> </>
-           };
+               </>
+             };
+           | (Pending, _) => React.null
+           | (_, _) => <RequestFailedResult id />
+           }
          | Some(request) =>
            <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
              <div className=Styles.labelWrapper>
