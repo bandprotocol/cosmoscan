@@ -37,11 +37,11 @@ describe("Send", () => {
 });
 
 describe("Delegation", () => {
-  it("Should be able to delegate with Carol", () => {
+  it("Should be able to delegate with WeStaking", () => {
     cy.get('[id="navigationBar"] > div > a').contains("Validator").click();
-    cy.get('[id="validatorsSection"] > div > div > div > a > span')
+    cy.get('[id="validatorsSection"] > div:nth-of-type(3) > div > div > div:nth-of-type(2) > a > span')
       .wait(500)
-      .contains("Carol")
+      .contains("WeStaking")
       .click();
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(1)')
       .wait(1000)
@@ -58,7 +58,7 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to undelegate with Carol", () => {
+  it("Should be able to undelegate with WeStaking", () => {
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(2)')
       .wait(1000)
       .click();
@@ -74,13 +74,13 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to redelegate with Carol", () => {
+  it("Should be able to redelegate from WeStaking to Cosmostation", () => {
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(3)')
       .click()
       .wait(1000);
     cy.get('[id="memoInput"]').type("cypress");
     cy.get('[id="redelegateContainer"] > div:nth-of-type(1)').click();
-    cy.get('[id="redelegateContainer"] input').wait(1000).type("Bobby.fish 🐡");
+    cy.get('[id="redelegateContainer"] input').wait(1000).type("Cosmostation");
     cy.get(
       '[id="redelegateContainer"] > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1)'
     ).click();
@@ -95,7 +95,7 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to withdraw reward with Carol", () => {
+  it("Should be able to withdraw reward with WeStaking", () => {
     cy.get('[id="withdrawRewardContainer"] > button:nth-of-type(1)').click().wait(1000);
     cy.get('[id="memoInput"]').type("cypress");
     cy.get('[id="nextButtonContainer"] > button').click().wait(1000);
@@ -107,7 +107,7 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to reinvest with Carol", () => {
+  it("Should be able to reinvest with WeStaking", () => {
     cy.get('[id="withdrawRewardContainer"] > button:nth-of-type(2)').click().wait(1000);
     cy.get('[id="memoInput"]').type("cypress");
     cy.get('[id="nextButtonContainer"] > button').click().wait(1000);
