@@ -2,7 +2,6 @@
   "name": "band-scan",
   "scripts": {
     "build": "rm -rf dist/ && bsb -make-world && parcel build index.html --no-source-maps --no-cache",
-    "build:ci": "rm -rf dist/ && bsb -make-world -w -ws && RPC_URL=http://rpc.laozi-testnet4.bandchain.org GRAPHQL_URL=wss://graphql-lt4.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi-testnet4.bandchain.org/grpc-web FAUCET_URL=https://laozi-testnet4.bandchain.org/faucet yarn parcel index.html --no-source-maps --no-cache",
     "start": "bsb -make-world -w",
     "test": "yarn jest --coverage",
     "cy:run": "cypress run --record --key a9dc5d7b-e8f3-4dd5-a5b2-7625f8a2ea3d",
