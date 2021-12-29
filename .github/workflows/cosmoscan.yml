@@ -34,9 +34,11 @@ jobs:
       - name: Run yarn build
         run: yarn build
         env:
-          RPC_URL: "https://d3n.bandprotocol.com/rest"
-          GRAPHQL_URL: "wss://d3n.bandprotocol.com/v1/graphql"
-          NETWORK: "GUANYU38"
+          RPC_URL: "http://rpc.laozi-testnet4.bandchain.org"
+          GRAPHQL_URL: "wss://graphql-lt4.bandchain.org/v1/graphql"
+          LAMBDA_URL: "https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan"
+          GRPC: "https://laozi-testnet4.bandchain.org/grpc-web"
+          FAUCET_URL: "https://laozi-testnet4.bandchain.org/faucet"
       
       - name: Run install cypress
         run: yarn cypress install

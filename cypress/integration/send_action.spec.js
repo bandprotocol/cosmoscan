@@ -78,7 +78,6 @@ describe("Delegation", () => {
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(3)')
       .click()
       .wait(1000);
-    cy.get('[id="memoInput"]').type("cypress");
     cy.get('[id="redelegateContainer"] > div:nth-of-type(1)').click();
     cy.get('[id="redelegateContainer"] input').wait(1000).type("Cosmostation");
     cy.get(
