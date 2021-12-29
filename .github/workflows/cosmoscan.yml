@@ -31,8 +31,8 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           
-      - name: Run yarn build:ci
-        run: yarn build:ci
+      - name: Run yarn build
+        run: yarn build
         env:
           RPC_URL: "http://rpc.laozi-testnet4.bandchain.org"
           GRAPHQL_URL: "wss://graphql-lt4.bandchain.org/v1/graphql"
