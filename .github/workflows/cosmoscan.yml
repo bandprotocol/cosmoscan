@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Cosmoscan Workflow
 
 on:
   push:
@@ -42,8 +42,6 @@ jobs:
 
       - name: Run yarn test
         run: yarn test
-        working-directory: ${{env.working-directory}}
 
       - name: Run yarn integration-test
         run: yarn integration-test
-        working-directory: ${{env.working-directory}}
