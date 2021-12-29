@@ -1,3 +1,9 @@
+module Styles = {
+  open Css;
+
+  let executedMsg = style([selector("> * + *", [marginLeft(`px(5))])]);
+};
+
 module CreateValidatorMsg = {
   [@react.component]
   let make = (~validator: MsgDecoder.CreateValidator.t) => {
@@ -436,16 +442,18 @@ module ExecSuccessMsg = {
           color={theme.textSecondary}
           marginBottom=8
         />
-        {address.msgs
-         ->Belt.List.mapWithIndex((index, msg) => {
-             <Text
-               key={(msg |> ExecDecoder.getName) ++ (index |> string_of_int)}
-               size=Text.Lg
-               value={msg |> ExecDecoder.getName}
-             />
-           })
-         ->Belt.List.toArray
-         ->React.array}
+        <div className=Styles.executedMsg>
+          {address.msgs
+           ->Belt.List.mapWithIndex((index, msg) => {
+               <Text
+                 key={(msg |> ExecDecoder.getName) ++ (index |> string_of_int)}
+                 size=Text.Lg
+                 value={msg |> ExecDecoder.getName}
+               />
+             })
+           ->Belt.List.toArray
+           ->React.array}
+        </div>
       </Col>
     </Row>;
   };
