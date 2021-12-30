@@ -62,7 +62,6 @@ describe("Delegation", () => {
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(2)')
       .wait(1000)
       .click();
-    cy.get('[id="memoInput"]').type("cypress");
     cy.get('[id="undelegateAmountInput').type("0.5");
     cy.get('[id="memoInput"]').type("cypress");
     cy.get('[id="nextButtonContainer"] > button').click().wait(1000);

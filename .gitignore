@@ -19,4 +19,5 @@ ehthumbs.db
 Thumbs.db
 # cypress video files
 /cypress/videos/
+/cypress/screenshots/
 
