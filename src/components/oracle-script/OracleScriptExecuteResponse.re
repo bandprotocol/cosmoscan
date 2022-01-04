@@ -20,7 +20,7 @@ module Styles = {
 [@react.component]
 let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
   {
-    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let requestsByTxHashSub = RequestSub.Mini.getListByTxHash(txResponse.txHash);
     let%Sub requestsByTxHash = requestsByTxHashSub;
     let requestOpt = requestsByTxHash->Belt_Array.get(0);
@@ -50,63 +50,68 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
           <TxLink txHash={txResponse.txHash} width=500 />
         </div>
         {switch (requestOpt) {
-         | Some({result: Some(result), id, resolveStatus}) =>
-           switch (resolveStatus, result) {
-           | (RequestSub.Success, result) =>
-             let outputKVsOpt = Obi.decode(schema, "output", result);
-             switch (outputKVsOpt) {
-             | Some(outputKVs) =>
-               <>
-                 <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-                   <div className=Styles.labelWrapper>
-                     <Text
-                       value="Output"
-                       color={theme.textSecondary}
-                       weight=Text.Regular
-                       height={Text.Px(20)}
-                     />
-                   </div>
-                   <div className=Styles.resultWrapper>
-                     <KVTable
-                       rows={
-                         outputKVs
-                         ->Belt_Array.map(({fieldName, fieldValue}) =>
-                             [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
-                           )
-                         ->Belt_List.fromArray
-                       }
-                     />
-                   </div>
+         | Some({resolveStatus: Success, result: Some(result), id}) =>
+           let outputKVsOpt = Obi.decode(schema, "output", result);
+           switch (outputKVsOpt) {
+           | Some(outputKVs) =>
+             <>
+               <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                 <div className=Styles.labelWrapper>
+                   <Text
+                     value="Output"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
                  </div>
-                 <OracleScriptExecuteProof id />
-               </>
-             | None =>
-               <>
-                 <RequestFailedResult id />
-                 <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-                   <div className=Styles.labelWrapper>
-                     <Text
-                       value="Output"
-                       color={theme.textSecondary}
-                       weight=Text.Regular
-                       height={Text.Px(20)}
-                     />
-                   </div>
-                   <div className=Styles.resultWrapper>
-                     <Text
-                       value="Schema not found"
-                       color={theme.textSecondary}
-                       weight=Text.Regular
-                       height={Text.Px(20)}
-                     />
-                   </div>
+                 <div className=Styles.resultWrapper>
+                   <KVTable
+                     rows={
+                       outputKVs
+                       ->Belt_Array.map(({fieldName, fieldValue}) =>
+                           [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
+                         )
+                       ->Belt_List.fromArray
+                     }
+                   />
                  </div>
-               </>
-             };
-           | (Pending, _) => React.null
-           | (_, _) => <RequestFailedResult id />
-           }
-         | Some(request) =>
+               </div>
+               <OracleScriptExecuteProof id />
+             </>
+           | None =>
+             <>
+               <RequestFailedResult id />
+               <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                 <div className=Styles.labelWrapper>
+                   <Text
+                     value="Output"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
+                 </div>
+                 <div className=Styles.resultWrapper>
+                   <Text
+                     value="Schema not found"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
+                 </div>
+               </div>
+             </>
+           };
+         | Some({resolveStatus: Success, result: None}) =>
+           <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+             <div className=Styles.labelWrapper>
+               <Text
+                 value="There is no result for this request."
+                 color={theme.textSecondary}
+                 weight=Text.Regular
+               />
+             </div>
+           </div>
+         | Some({resolveStatus: Pending, reportsCount, minCount, askCount}) =>
            <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
              <div className=Styles.labelWrapper>
                <Text
@@ -117,12 +122,13 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
              </div>
              <div className=Styles.resultWrapper>
                <ProgressBar
-                 reportedValidators={request.reportsCount}
-                 minimumValidators={request.minCount}
-                 requestValidators={request.askCount}
+                 reportedValidators=reportsCount
+                 minimumValidators=minCount
+                 requestValidators=askCount
                />
              </div>
            </div>
+         | Some({resolveStatus: _, id}) => <RequestFailedResult id />
          | None => React.null
          }}
       </div>
