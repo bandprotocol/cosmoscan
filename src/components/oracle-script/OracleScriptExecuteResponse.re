@@ -128,7 +128,7 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
                />
              </div>
            </div>
-         | Some({resolveStatus: _, id}) => <RequestFailedResult id />
+         | Some({id}) => <RequestFailedResult id />
          | None => React.null
          }}
       </div>
