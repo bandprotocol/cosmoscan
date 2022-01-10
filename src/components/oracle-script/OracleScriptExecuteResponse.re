@@ -1,6 +1,7 @@
 module Styles = {
   open Css;
 
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
   let resultContainer = (theme: Theme.t) =>
     style([
       margin2(~v=`px(20), ~h=`zero),
@@ -40,7 +41,6 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
              </div>
              <TypeID.Request id />
            </div>
-
          | None => React.null
          }}
         <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
@@ -50,37 +50,68 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
           <TxLink txHash={txResponse.txHash} width=500 />
         </div>
         {switch (requestOpt) {
-         | Some({result: Some(result), id}) =>
+         | Some({resolveStatus: Success, result: Some(result), id}) =>
            let outputKVsOpt = Obi.decode(schema, "output", result);
-           <>
-             <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
-               <div className=Styles.labelWrapper>
-                 <Text
-                   value="Output"
-                   color={theme.textSecondary}
-                   weight=Text.Regular
-                   height={Text.Px(20)}
-                 />
+           switch (outputKVsOpt) {
+           | Some(outputKVs) =>
+             <>
+               <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                 <div className=Styles.labelWrapper>
+                   <Text
+                     value="Output"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
+                 </div>
+                 <div className=Styles.resultWrapper>
+                   <KVTable
+                     rows={
+                       outputKVs
+                       ->Belt_Array.map(({fieldName, fieldValue}) =>
+                           [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
+                         )
+                       ->Belt_List.fromArray
+                     }
+                   />
+                 </div>
                </div>
-               <div className=Styles.resultWrapper>
-                 {switch (outputKVsOpt) {
-                  | Some(outputKVs) =>
-                    <KVTable
-                      rows={
-                        outputKVs
-                        ->Belt_Array.map(({fieldName, fieldValue}) =>
-                            [KVTable.Value(fieldName), KVTable.Value(fieldValue)]
-                          )
-                        ->Belt_List.fromArray
-                      }
-                    />
-                  | None => React.null
-                  }}
+               <OracleScriptExecuteProof id />
+             </>
+           | None =>
+             <>
+               <RequestFailedResult id />
+               <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+                 <div className=Styles.labelWrapper>
+                   <Text
+                     value="Output"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
+                 </div>
+                 <div className=Styles.resultWrapper>
+                   <Text
+                     value="Schema not found"
+                     color={theme.textSecondary}
+                     weight=Text.Regular
+                     height={Text.Px(20)}
+                   />
+                 </div>
                </div>
+             </>
+           };
+         | Some({resolveStatus: Success, result: None}) =>
+           <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
+             <div className=Styles.labelWrapper>
+               <Text
+                 value="There is no result for this request."
+                 color={theme.textSecondary}
+                 weight=Text.Regular
+               />
              </div>
-             <OracleScriptExecuteProof id />
-           </>;
-         | Some(request) =>
+           </div>
+         | Some({resolveStatus: Pending, reportsCount, minCount, askCount}) =>
            <div className={Css.merge([CssHelper.flexBox(), Styles.resultBox])}>
              <div className=Styles.labelWrapper>
                <Text
@@ -91,12 +122,13 @@ let make = (~txResponse: TxCreator2.tx_response_t, ~schema: string) =>
              </div>
              <div className=Styles.resultWrapper>
                <ProgressBar
-                 reportedValidators={request.reportsCount}
-                 minimumValidators={request.minCount}
-                 requestValidators={request.askCount}
+                 reportedValidators=reportsCount
+                 minimumValidators=minCount
+                 requestValidators=askCount
                />
              </div>
            </div>
+         | Some({id}) => <RequestFailedResult id />
          | None => React.null
          }}
       </div>
