@@ -4,57 +4,6 @@ module Styles = {
   let tableWrapper = style([Media.mobile([padding2(~v=`px(16), ~h=`zero)])]);
 };
 
-//TODO: Will Remove After Doing on Validator index
-
-module LoadingWithHeader = {
-  [@react.component]
-  let make = () => {
-    <div className=Styles.tableWrapper>
-      <THead>
-        <Row alignItems=Row.Center>
-          <Col col=Col.Two>
-            <Text
-              block=true
-              value="Block"
-              weight=Text.Semibold
-              transform=Text.Uppercase
-              size=Text.Sm
-            />
-          </Col>
-          <Col col=Col.Seven>
-            <Text
-              block=true
-              value="Block Hash"
-              weight=Text.Semibold
-              transform=Text.Uppercase
-              size=Text.Sm
-            />
-          </Col>
-          <Col col=Col.One>
-            <Text
-              block=true
-              value="Txn"
-              weight=Text.Semibold
-              transform=Text.Uppercase
-              size=Text.Sm
-            />
-          </Col>
-          <Col col=Col.Two>
-            <Text
-              block=true
-              value="Timestamp"
-              weight=Text.Semibold
-              transform=Text.Uppercase
-              size=Text.Sm
-              align=Text.Right
-            />
-          </Col>
-        </Row>
-      </THead>
-    </div>;
-  };
-};
-
 module RenderBody = {
   [@react.component]
   let make = (~blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
@@ -142,7 +91,10 @@ let make = (~consensusAddress) => {
   let isMobile = Media.isMobile();
 
   let blocksSub =
-    BlockSub.getListByConsensusAddress(~address=consensusAddress, ~pageSize, ~page=1, ());
+    switch (consensusAddress) {
+    | Some(address) => BlockSub.getListByConsensusAddress(~address, ~pageSize, ~page=1, ())
+    | None => NoData
+    };
 
   <div className=Styles.tableWrapper>
     {isMobile
