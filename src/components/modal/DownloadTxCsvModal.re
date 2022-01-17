@@ -49,7 +49,7 @@ let make = (~address) => {
     };
   };
 
-  React.useEffect3(
+  React.useEffect2(
     () => {
       switch (txQuery) {
       | Data(data) =>
@@ -63,7 +63,7 @@ let make = (~address) => {
       };
       None;
     },
-    (dateTo, dateFrom, txQuery),
+    (dateTo, dateFrom),
   );
 
   <div className=Styles.container>
