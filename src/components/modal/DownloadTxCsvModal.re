@@ -32,6 +32,7 @@ let make = (~address) => {
   let (dateTo, setDateTo) = React.useState(_ => currentDate);
   let (generate, setGenerate) = React.useState(_ => Nothing);
   let (csvFile, setCsvFile) = React.useState(_ => "");
+  let (csvString, setCsvString) = React.useState(_ => "0 transaction found");
 
   let txQuery =
     TxQueryByBlockTimestamp.get(
@@ -52,14 +53,12 @@ let make = (~address) => {
     () => {
       switch (txQuery) {
       | Data(data) =>
-        setGenerate(_ => Generating);
         if (data->Belt.Array.size > 0) {
-          let csvString = CSVGenerator.create(data);
-          let csv = "data:text/csv;charset=utf-8," ++ csvString;
-          let excel = Js.Global.encodeURI(csv);
-          setCsvFile(_ => excel);
+          setCsvString(_ => CSVGenerator.create(data));
         };
-        setGenerate(_ => Success);
+        let csv = "data:text/csv;charset=utf-8," ++ csvString;
+        let excel = Js.Global.encodeURI(csv);
+        setCsvFile(_ => excel);
       | _ => setGenerate(_ => Nothing)
       };
       None;
@@ -118,7 +117,13 @@ let make = (~address) => {
     <div>
       <a
         href=csvFile
-        download="export.csv"
+        download={
+          "transactions-"
+          ++ (dateFrom |> Js.Date.toLocaleDateString)
+          ++ "-"
+          ++ (dateTo |> Js.Date.toLocaleDateString)
+          ++ ".csv"
+        }
         ref={ReactDOMRe.Ref.domRef(inputRef)}
         className=Styles.csvAnchor>
         {"show more" |> React.string}
