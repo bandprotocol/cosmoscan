@@ -1,5 +1,3 @@
-[%bs.raw {|require('react-datepicker/dist/react-datepicker.min.css')|}];
-
 module Styles = {
   open Css;
 
@@ -7,8 +5,16 @@ module Styles = {
     style([
       important(fontFamily(`inherit_)),
       selector(" .react-datepicker__day--selected", [backgroundColor(theme.baseBlue)]),
-      selector(" .react-datepicker__day--in-range", [backgroundColor(theme.baseBlue)]),
-      selector(".react-datepicker__day--in-selecting-range", [backgroundColor(theme.baseBlue)]),
+      selector(" .react-datepicker__day--in-range", [backgroundColor(theme.lightenBlue)]),
+      selector(
+        " .react-datepicker__day--in-selecting-range",
+        [backgroundColor(theme.lightenBlue)],
+      ),
+      selector(" .react-datepicker__day--range-start", [backgroundColor(theme.baseBlue)]),
+      selector(
+        " .react-datepicker__day--selecting-range-end",
+        [backgroundColor(theme.baseBlue)],
+      ),
       selector(
         " .react-datepicker__header",
         [borderBottom(`zero, `solid, theme.tableRowBorderColor), fontFamily(`inherit_)],

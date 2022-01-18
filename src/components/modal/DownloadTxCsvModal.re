@@ -31,10 +31,10 @@ let make = (~address) => {
   let (dateFrom, setDateFrom) = React.useState(_ => currentDate);
   let (dateTo, setDateTo) = React.useState(_ => currentDate);
   let (generate, setGenerate) = React.useState(_ => Nothing);
-  let (csvFile, setCsvFile) = React.useState(_ => "");
+  let (csvFile, setCsvFile) = React.useState(_ => "data:text/csv;charset=utf-8,");
   let (csvString, setCsvString) = React.useState(_ => "0 transaction found");
 
-  let txQuery =
+  let (txQuery, fetchMore) =
     TxQueryByBlockTimestamp.get(
       address,
       dateFrom |> Js.Date.toISOString,
@@ -43,6 +43,17 @@ let make = (~address) => {
     );
 
   let download = () => {
+    let x =
+      fetchMore(
+        ~variables=
+          TxQueryByBlockTimestamp.TxQueryByBlockTimestampConfig.makeVariables(
+            ~address=address |> Address.toBech32,
+            ~greater=dateFrom |> Js.Date.toISOString |> Js.Json.string,
+            ~less=dateTo |> Js.Date.toISOString |> Js.Json.string,
+            (),
+          ),
+      );
+
     switch (inputRef->React.Ref.current->Js.Nullable.toOption) {
     | None => ()
     | Some(el) => el->clickElement

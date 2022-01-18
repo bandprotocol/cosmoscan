@@ -1,33 +1,28 @@
 type block_t = {timestamp: MomentRe.Moment.t};
-
 type t = {
-  id: int,
   txHash: Hash.t,
   blockHeight: ID.Block.t,
   success: bool,
   gasFee: list(Coin.t),
   gasLimit: int,
   gasUsed: int,
-  sender: Address.t,
+  bandAddress: Address.t,
   timestamp: MomentRe.Moment.t,
-  messages: list(MsgDecoder.t),
+  messages: list(string),
   memo: string,
-  errMsg: string,
 };
 
 type internal_t = {
-  id: int,
   txHash: Hash.t,
   blockHeight: ID.Block.t,
   success: bool,
   gasFee: list(Coin.t),
   gasLimit: int,
   gasUsed: int,
-  sender: Address.t,
+  bandAddress: Address.t,
   block: block_t,
   messages: Js.Json.t,
   memo: string,
-  errMsg: option(string),
 };
 
 type account_transaction_t = {transaction: internal_t};
@@ -38,7 +33,6 @@ module TxQueryByBlockTimestampConfig = [%graphql
     accounts_by_pk(address: $address) {
       account_transactions(order_by: {transaction_id: desc}, limit: 300, where: {transaction: {block: {timestamp: {_lte: $less, _gte: $greater}}}})  @bsRecord {
         transaction @bsRecord {
-          id
           txHash: hash @bsDecoder(fn: "GraphQLParser.hash")
           blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
           success
@@ -46,9 +40,8 @@ module TxQueryByBlockTimestampConfig = [%graphql
           gasFee: gas_fee @bsDecoder(fn: "GraphQLParser.coins")
           gasLimit: gas_limit
           gasUsed: gas_used
-          sender  @bsDecoder(fn: "Address.fromBech32")
+          bandAddress: sender  @bsDecoder(fn: "Address.fromBech32")
           messages
-          errMsg: err_msg
           block @bsRecord {
             timestamp  @bsDecoder(fn: "GraphQLParser.timestamp")
           }
@@ -62,39 +55,36 @@ module TxQueryByBlockTimestampConfig = [%graphql
 let toExternal =
     (
       {
-        id,
         txHash,
         blockHeight,
         success,
         gasFee,
         gasLimit,
         gasUsed,
-        sender,
+        bandAddress,
         memo,
         block,
         messages,
-        errMsg,
       },
     ) => {
-  id,
   txHash,
   blockHeight,
   success,
   gasFee,
   gasLimit,
   gasUsed,
-  sender,
+  bandAddress,
   memo,
   timestamp: block.timestamp,
   messages: {
-    let msg = messages |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
-    msg->Belt.List.map(success ? MsgDecoder.decodeAction : MsgDecoder.decodeFailAction);
+    let msgList = messages |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
+    // msgList->Belt.List.map(success ? MsgDecoder.decodeAction : MsgDecoder.decodeFailAction);
+    msgList->Belt.List.map(msg => msg |> JsonUtils.Decode.(field("type", string)));
   },
-  errMsg: errMsg->Belt.Option.getWithDefault(""),
 };
 
 let get = (address, dateStart, dateEnd, ()) => {
-  let (resultQuery, _) =
+  let (resultQuery, full) =
     ApolloHooks.useQuery(
       TxQueryByBlockTimestampConfig.definition,
       ~variables=
@@ -105,6 +95,7 @@ let get = (address, dateStart, dateEnd, ()) => {
           (),
         ),
     );
+
   let transactions =
     resultQuery
     |> Query.map(_, a => {
@@ -114,5 +105,5 @@ let get = (address, dateStart, dateEnd, ()) => {
          | None => [||]
          }
        });
-  transactions;
+  (transactions, full.fetchMore);
 };
