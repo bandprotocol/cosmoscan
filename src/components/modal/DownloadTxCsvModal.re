@@ -26,56 +26,58 @@ type generate_t =
 let make = (~address) => {
   let inputRef = React.useRef(Js.Nullable.null);
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-  let currentDate = Js.Date.make();
+  let dateNow = Js.Date.make();
+  let currentDateStart = Js.Date.fromFloat(Js.Date.setHours(Js.Date.make(), 0.00));
 
-  let (dateFrom, setDateFrom) = React.useState(_ => currentDate);
-  let (dateTo, setDateTo) = React.useState(_ => currentDate);
+  let (dateStart, setDateStart) = React.useState(_ => currentDateStart);
+  let (dateEnd, setDateEnd) = React.useState(_ => dateNow);
   let (generate, setGenerate) = React.useState(_ => Nothing);
-  let (csvFile, setCsvFile) = React.useState(_ => "data:text/csv;charset=utf-8,");
-  let (csvString, setCsvString) = React.useState(_ => "0 transaction found");
+  let (csvFile, setCsvFile) =
+    React.useState(_ => Js.Global.encodeURI("data:text/csv;charset=utf-8,"));
 
-  let (txQuery, fetchMore) =
+  let variables =
+    TxQueryByBlockTimestamp.TxQueryByBlockTimestampConfig.make(
+      ~address=address |> Address.toBech32,
+      ~greater=dateStart |> Js.Date.toISOString |> Js.Json.string,
+      ~less=dateEnd |> Js.Date.toISOString |> Js.Json.string,
+      (),
+    )##variables;
+
+  let (txQuery, refetch) =
     TxQueryByBlockTimestamp.get(
       address,
-      dateFrom |> Js.Date.toISOString,
-      dateTo |> Js.Date.toISOString,
+      dateStart |> Js.Date.toISOString,
+      dateEnd |> Js.Date.toISOString,
       (),
     );
 
   let download = () => {
-    let x =
-      fetchMore(
-        ~variables=
-          TxQueryByBlockTimestamp.TxQueryByBlockTimestampConfig.makeVariables(
-            ~address=address |> Address.toBech32,
-            ~greater=dateFrom |> Js.Date.toISOString |> Js.Json.string,
-            ~less=dateTo |> Js.Date.toISOString |> Js.Json.string,
-            (),
-          ),
-      );
-
-    switch (inputRef->React.Ref.current->Js.Nullable.toOption) {
-    | None => ()
-    | Some(el) => el->clickElement
-    };
+    refetch(~variables, ())
+    |> Js.Promise.then_(data => {
+         setGenerate(_ => Generating);
+         switch (inputRef->React.Ref.current->Js.Nullable.toOption) {
+         | None => ()
+         | Some(el) =>
+           setCsvFile(_ =>
+             Js.Global.encodeURI("data:text/csv;charset=utf-8,There is 0 transaction found")
+           );
+           switch (txQuery) {
+           | Loading => setGenerate(_ => Generating)
+           | Data(data) =>
+             if (data->Belt.Array.size > 0) {
+               setCsvFile(_ =>
+                 Js.Global.encodeURI("data:text/csv;charset=utf-8," ++ CSVGenerator.create(data))
+               );
+             };
+             setGenerate(_ => Success);
+             el->clickElement;
+           | _ => setGenerate(_ => Nothing)
+           };
+         };
+         Js.Promise.resolve();
+       })
+    |> ignore;
   };
-
-  React.useEffect2(
-    () => {
-      switch (txQuery) {
-      | Data(data) =>
-        if (data->Belt.Array.size > 0) {
-          setCsvString(_ => CSVGenerator.create(data));
-        };
-        let csv = "data:text/csv;charset=utf-8," ++ csvString;
-        let excel = Js.Global.encodeURI(csv);
-        setCsvFile(_ => excel);
-      | _ => setGenerate(_ => Nothing)
-      };
-      None;
-    },
-    (dateTo, dateFrom),
-  );
 
   <div className=Styles.container>
     <Heading size=Heading.H4 value="Export CSV Transactions" marginBottom=10 />
@@ -89,25 +91,25 @@ let make = (~address) => {
       <DateInput
         msg="From"
         placeholderText="From"
-        selected=dateFrom
-        onChange=setDateFrom
+        selected=dateStart
+        onChange=setDateStart
         selectsStart=true
-        startDate=dateFrom
-        endDate=dateTo
-        maxDate=currentDate
+        startDate=dateStart
+        endDate=dateEnd
+        maxDate=dateNow
       />
       <HSpacing size=Spacing.md />
       <DateInput
         msg="To"
         placeholderText="To"
-        selected=dateTo
-        onChange=setDateTo
+        selected=dateEnd
+        onChange=setDateEnd
         selectsStart=true
         selectsEnd=true
-        startDate=dateFrom
-        endDate=dateTo
-        maxDate=currentDate
-        minDate=dateFrom
+        startDate=dateStart
+        endDate=dateEnd
+        maxDate=dateNow
+        minDate=dateStart
       />
     </div>
     <div
@@ -130,9 +132,9 @@ let make = (~address) => {
         href=csvFile
         download={
           "transactions-"
-          ++ (dateFrom |> Js.Date.toLocaleDateString)
+          ++ (dateStart |> Js.Date.toLocaleDateString)
           ++ "-"
-          ++ (dateTo |> Js.Date.toLocaleDateString)
+          ++ (dateEnd |> Js.Date.toLocaleDateString)
           ++ ".csv"
         }
         ref={ReactDOMRe.Ref.domRef(inputRef)}

@@ -6,7 +6,7 @@ type t = {
   gasFee: list(Coin.t),
   gasLimit: int,
   gasUsed: int,
-  bandAddress: Address.t,
+  from: Address.t,
   timestamp: MomentRe.Moment.t,
   messages: list(string),
   memo: string,
@@ -19,7 +19,7 @@ type internal_t = {
   gasFee: list(Coin.t),
   gasLimit: int,
   gasUsed: int,
-  bandAddress: Address.t,
+  from: Address.t,
   block: block_t,
   messages: Js.Json.t,
   memo: string,
@@ -31,7 +31,7 @@ module TxQueryByBlockTimestampConfig = [%graphql
   {|
   query TxQueryBlockTimestamp($address: String!, $greater:timestamp, $less: timestamp) {
     accounts_by_pk(address: $address) {
-      account_transactions(order_by: {transaction_id: desc}, limit: 300, where: {transaction: {block: {timestamp: {_lte: $less, _gte: $greater}}}})  @bsRecord {
+      account_transactions(order_by: {transaction_id: desc}, limit: 400, where: {transaction: {block: {timestamp: {_lte: $less, _gte: $greater}}}})  @bsRecord {
         transaction @bsRecord {
           txHash: hash @bsDecoder(fn: "GraphQLParser.hash")
           blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
@@ -40,7 +40,7 @@ module TxQueryByBlockTimestampConfig = [%graphql
           gasFee: gas_fee @bsDecoder(fn: "GraphQLParser.coins")
           gasLimit: gas_limit
           gasUsed: gas_used
-          bandAddress: sender  @bsDecoder(fn: "Address.fromBech32")
+          from: sender  @bsDecoder(fn: "Address.fromBech32")
           messages
           block @bsRecord {
             timestamp  @bsDecoder(fn: "GraphQLParser.timestamp")
@@ -53,27 +53,14 @@ module TxQueryByBlockTimestampConfig = [%graphql
 ];
 
 let toExternal =
-    (
-      {
-        txHash,
-        blockHeight,
-        success,
-        gasFee,
-        gasLimit,
-        gasUsed,
-        bandAddress,
-        memo,
-        block,
-        messages,
-      },
-    ) => {
+    ({txHash, blockHeight, success, gasFee, gasLimit, gasUsed, from, memo, block, messages}) => {
   txHash,
   blockHeight,
   success,
   gasFee,
   gasLimit,
   gasUsed,
-  bandAddress,
+  from,
   memo,
   timestamp: block.timestamp,
   messages: {
@@ -105,5 +92,5 @@ let get = (address, dateStart, dateEnd, ()) => {
          | None => [||]
          }
        });
-  (transactions, full.fetchMore);
+  (transactions, full.refetch);
 };
