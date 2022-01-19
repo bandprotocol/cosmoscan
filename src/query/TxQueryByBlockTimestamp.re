@@ -1,25 +1,25 @@
 type block_t = {timestamp: MomentRe.Moment.t};
 type t = {
-  txHash: Hash.t,
+  txHash: string,
   blockHeight: ID.Block.t,
   success: bool,
   gasFee: list(Coin.t),
   gasLimit: int,
   gasUsed: int,
-  from: Address.t,
+  from: string,
   timestamp: MomentRe.Moment.t,
   messages: list(string),
   memo: string,
 };
 
 type internal_t = {
-  txHash: Hash.t,
+  txHash: string,
   blockHeight: ID.Block.t,
   success: bool,
   gasFee: list(Coin.t),
   gasLimit: int,
   gasUsed: int,
-  from: Address.t,
+  from: string,
   block: block_t,
   messages: Js.Json.t,
   memo: string,
@@ -31,16 +31,16 @@ module TxQueryByBlockTimestampConfig = [%graphql
   {|
   query TxQueryBlockTimestamp($address: String!, $greater:timestamp, $less: timestamp) {
     accounts_by_pk(address: $address) {
-      account_transactions(order_by: {transaction_id: desc}, limit: 400, where: {transaction: {block: {timestamp: {_lte: $less, _gte: $greater}}}})  @bsRecord {
+      account_transactions(order_by: {transaction_id: desc}, limit: 350, where: {transaction: {block: {timestamp: {_lte: $less, _gte: $greater}}}})  @bsRecord {
         transaction @bsRecord {
-          txHash: hash @bsDecoder(fn: "GraphQLParser.hash")
+          txHash: hash @bsDecoder(fn: "GraphQLParser.string")
           blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
           success
           memo
           gasFee: gas_fee @bsDecoder(fn: "GraphQLParser.coins")
           gasLimit: gas_limit
           gasUsed: gas_used
-          from: sender  @bsDecoder(fn: "Address.fromBech32")
+          from: sender
           messages
           block @bsRecord {
             timestamp  @bsDecoder(fn: "GraphQLParser.timestamp")
@@ -65,7 +65,6 @@ let toExternal =
   timestamp: block.timestamp,
   messages: {
     let msgList = messages |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
-    // msgList->Belt.List.map(success ? MsgDecoder.decodeAction : MsgDecoder.decodeFailAction);
     msgList->Belt.List.map(msg => msg |> JsonUtils.Decode.(field("type", string)));
   },
 };

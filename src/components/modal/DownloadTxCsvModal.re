@@ -53,7 +53,7 @@ let make = (~address) => {
 
   let download = () => {
     refetch(~variables, ())
-    |> Js.Promise.then_(data => {
+    |> Js.Promise.then_(res => {
          setGenerate(_ => Generating);
          switch (inputRef->React.Ref.current->Js.Nullable.toOption) {
          | None => ()
@@ -62,12 +62,11 @@ let make = (~address) => {
              Js.Global.encodeURI("data:text/csv;charset=utf-8,There is 0 transaction found")
            );
            switch (txQuery) {
-           | Loading => setGenerate(_ => Generating)
            | Data(data) =>
              if (data->Belt.Array.size > 0) {
-               setCsvFile(_ =>
-                 Js.Global.encodeURI("data:text/csv;charset=utf-8," ++ CSVGenerator.create(data))
-               );
+               let csvString = CSVGenerator.create(data);
+               let csvFile = Js.Global.encodeURI("data:text/csv;charset=utf-8," ++ csvString);
+               setCsvFile(_ => csvFile);
              };
              setGenerate(_ => Success);
              el->clickElement;
@@ -121,7 +120,7 @@ let make = (~address) => {
       <HSpacing size=Spacing.sm />
       <Text value="To avoid the 30 secs timeout, please select a small date range" size=Text.Md />
     </div>
-    <Button style=Styles.downloadBtn onClick={_ => {download()}}>
+    <Button style=Styles.downloadBtn onClick={_ => download()}>
       {switch (generate) {
        | Generating => "Generating CSV..." |> React.string
        | _ => "Download" |> React.string
