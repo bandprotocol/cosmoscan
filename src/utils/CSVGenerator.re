@@ -69,27 +69,23 @@ let create = (data: array(TxQueryByBlockTimestamp.t)) => {
       let msgString =
         item.messages->Belt.List.toArray->Belt.Array.map(msg => getName(msg))
         |> Js.Array.joinWith(";");
-      item.txHash
-      ++ ","
-      ++ (item.blockHeight |> ID.Block.toInt |> string_of_int)
-      ++ ","
-      ++ (item.success |> string_of_bool)
-      ++ ","
-      ++ (item.gasFee |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=2))
-      ++ ","
-      ++ (item.gasLimit |> string_of_int)
-      ++ ","
-      ++ (item.gasUsed |> string_of_int)
-      ++ ","
-      ++ item.from
-      ++ ","
-      ++ (item.timestamp |> MomentRe.Moment.toUnix |> string_of_int)
-      ++ ","
-      ++ (item.timestamp |> MomentRe.Moment.format(Config.timestampDisplayFormat))
-      ++ ","
-      ++ msgString
-      ++ ","
-      ++ item.memo;
+
+      let dataString =
+        [|
+          item.txHash,
+          item.blockHeight |> ID.Block.toInt |> string_of_int,
+          item.success |> string_of_bool,
+          item.gasFee |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=2),
+          item.gasLimit |> string_of_int,
+          item.gasUsed |> string_of_int,
+          item.from,
+          item.timestamp |> MomentRe.Moment.toUnix |> string_of_int,
+          item.timestamp |> MomentRe.Moment.format(Config.timestampDisplayFormat),
+          msgString,
+          item.memo,
+        |]
+        |> Js.Array.joinWith(",");
+      dataString;
     })
     |> Js.Array.joinWith("\n");
   keys ++ "\n" ++ result;
