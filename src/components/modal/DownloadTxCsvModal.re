@@ -12,6 +12,12 @@ module Styles = {
   let downloadBtn = style([width(`percent(100.)), marginTop(`px(10))]);
 
   let csvAnchor = style([display(`none)]);
+  let tips =
+    style([
+      marginTop(`px(20)),
+      selector("> i", [display(`inlineBlock), marginTop(`px(3))]),
+      selector("> span", [display(`inlineBlock)]),
+    ]);
 };
 
 type generate_t =
@@ -68,7 +74,7 @@ let make = (~address) => {
                let csvFile = Js.Global.encodeURI("data:text/csv;charset=utf-8," ++ csvString);
                setCsvFile(_ => csvFile);
              };
-             setGenerate(_ => Success);
+             setGenerate(_ => Nothing);
              el->clickElement;
            | _ => setGenerate(_ => Nothing)
            };
@@ -113,12 +119,15 @@ let make = (~address) => {
     </div>
     <div
       className={Css.merge([
-        CssHelper.flexBox(~justify=`center, ~direction=`row, ()),
-        CssHelper.mt(~size=20, ()),
+        CssHelper.flexBox(~justify=`center, ~direction=`row, ~wrap=`nowrap, ~align=`start, ()),
+        Styles.tips,
       ])}>
       <Icon name="fal fa-exclamation-circle" color={theme.textSecondary} />
       <HSpacing size=Spacing.sm />
-      <Text value="To avoid the 30 secs timeout, please select a small date range" size=Text.Md />
+      <Text
+        value="The exported transactions will be limited to 400 transactions. Please choose a small range to export."
+        size=Text.Md
+      />
     </div>
     <Button style=Styles.downloadBtn onClick={_ => download()}>
       {switch (generate) {

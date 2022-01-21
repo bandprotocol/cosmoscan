@@ -1,6 +1,5 @@
 module Styles = {
   open Css;
-
   let overlay = isFadeOut =>
     style([
       display(`flex),
@@ -35,7 +34,6 @@ module Styles = {
       left(`percent(50.)),
       backgroundColor(theme.secondaryBg),
       borderRadius(`px(8)),
-      // overflow(`hidden),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       animation(
         ~duration=Config.modalFadingDutation,
@@ -111,9 +109,16 @@ let make = () => {
   switch (modalStateOpt) {
   | None => React.null
   | Some({modal, canExit, closing}) =>
+    let overflowProp = () => {
+      switch (modal) {
+      | DownloadTxCSV(_) => CssHelper.overflowVisible
+      | _ => CssHelper.overflowHidden
+      };
+    };
+
     <div className={Styles.overlay(closing)} onClick={_ => {canExit ? closeModal() : ()}}>
       <div
-        className={Styles.content(closing, theme)}
+        className={Css.merge([Styles.content(closing, theme), overflowProp()])}
         onClick={e => ReactEvent.Mouse.stopPropagation(e)}>
         <div
           id="closeModal"
@@ -132,6 +137,6 @@ let make = () => {
          | Syncing => <SyncingModal />
          }}
       </div>
-    </div>
+    </div>;
   };
 };

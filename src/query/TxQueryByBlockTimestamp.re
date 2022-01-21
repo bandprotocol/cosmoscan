@@ -8,7 +8,7 @@ type t = {
   gasUsed: int,
   from: string,
   timestamp: MomentRe.Moment.t,
-  messages: list(string),
+  messages: list(MsgDecoder.t),
   memo: string,
 };
 
@@ -65,7 +65,8 @@ let toExternal =
   timestamp: block.timestamp,
   messages: {
     let msgList = messages |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
-    msgList->Belt.List.map(msg => msg |> JsonUtils.Decode.(field("type", string)));
+    // msgList->Belt.List.map(msg => msg |> JsonUtils.Decode.(field("type", string)));
+    msgList->Belt.List.map(success ? MsgDecoder.decodeAction : MsgDecoder.decodeFailAction);
   },
 };
 
