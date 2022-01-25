@@ -40,6 +40,7 @@ module Styles = {
       display(`flex),
       alignItems(`center),
     ]);
+  let notFoundLogo = style([width(`px(150))]);
 };
 
 module ValidatorReportStatus = {
@@ -199,26 +200,28 @@ let make = (~reqID) => {
             Styles.pageContainer(theme),
             CssHelper.flexBox(~direction=`column, ~justify=`center, ()),
           ])}>
-          // Wait for Image here
-          // <div className={CssHelper.flexBox()}>
-          //   <img alt="Not Found" src=Images.notFoundBg className=Styles.logo />
-          // </div>
-
-            <VSpacing size=Spacing.xxl />
-            <Text value="Request ID not found." size=Text.Lg color={theme.textSecondary} />
-            <VSpacing size=Spacing.lg />
-            <Link className=Styles.linkToHome route=Route.HomePage>
-              <Text
-                value="Back to Homepage"
-                weight=Text.Bold
-                size=Text.Md
-                color={theme.textSecondary}
-              />
-              <HSpacing size=Spacing.md />
-              <img alt="Right Arrow Icon" src=Images.rightArrow className=Styles.rightArrow />
-            </Link>
-            <VSpacing size=Spacing.xxl />
+          <div className={CssHelper.flexBox()}>
+            <img
+              alt="Request ID Not Found"
+              src={isDarkMode ? Images.noRequestDark : Images.noRequestLight}
+              className=Styles.notFoundLogo
+            />
           </div>
+          <VSpacing size=Spacing.xxl />
+          <Text value="Request ID not found." size=Text.Lg color={theme.textSecondary} />
+          <VSpacing size=Spacing.lg />
+          <Link className=Styles.linkToHome route=Route.HomePage>
+            <Text
+              value="Back to Homepage"
+              weight=Text.Bold
+              size=Text.Md
+              color={theme.textSecondary}
+            />
+            <HSpacing size=Spacing.md />
+            <img alt="Right Arrow Icon" src=Images.rightArrow className=Styles.rightArrow />
+          </Link>
+          <VSpacing size=Spacing.xxl />
+        </div>
       </div>
     </Section>
   | _ =>
