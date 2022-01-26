@@ -266,7 +266,6 @@ module Mini = {
             (),
           ),
       );
-    /* result |> Sub.map(_, x => x##rawDataRequests->Belt_Array.map(toExternalRequest)); */
     result
     |> Sub.map(_, x =>
          x##rawDataRequests->Belt_Array.mapWithIndex((_, each) => toExternal(each.request))
