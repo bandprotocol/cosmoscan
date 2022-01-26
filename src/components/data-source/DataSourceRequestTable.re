@@ -38,7 +38,7 @@ module RenderBody = {
                <HSpacing size=Spacing.sm />
                <Text value=oracleScriptName ellipsis=true color={theme.textPrimary} />
              </div>
-           | _ => <LoadingCensorBar width=270 height=15 />
+           | _ => <LoadingCensorBar width=212 height=15 />
            }}
         </Col>
         <Col col=Col.Two>
@@ -49,16 +49,17 @@ module RenderBody = {
                minimumValidators=minCount
                requestValidators=askCount
              />
-           | _ => <LoadingCensorBar width=212 height=15 />
+           | _ => <LoadingCensorBar width=168 height=15 />
            }}
         </Col>
         <Col col=Col.One>
-          <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-            {switch (requestsSub) {
-             | Data({resolveStatus}) => <RequestStatus resolveStatus />
-             | _ => <LoadingCensorBar width=100 height=15 />
-             }}
-          </div>
+          {switch (requestsSub) {
+           | Data({resolveStatus}) =>
+             <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
+               <RequestStatus resolveStatus />
+             </div>
+           | _ => <LoadingCensorBar width=60 height=15 />
+           }}
         </Col>
         <Col col=Col.Two>
           <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
@@ -74,6 +75,7 @@ module RenderBody = {
                  />
                | None => <Text value="Syncing" />
                }
+
              | _ => <LoadingCensorBar width=120 height=15 mt=5 />
              }}
           </div>
@@ -154,145 +156,178 @@ let make = (~dataSourceID: ID.DataSource.t) => {
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
-    {isMobile
-       ? <Row marginBottom=16>
-           <Col>
-             {switch (allSub) {
-              | Data((_, totalRequestCount)) =>
-                <div className={CssHelper.flexBox()}>
-                  <Text
-                    block=true
-                    value={totalRequestCount |> Format.iPretty}
-                    weight=Text.Semibold
-                    size=Text.Sm
-                  />
-                  <HSpacing size=Spacing.xs />
-                  <Text
-                    block=true
-                    value="Requests"
-                    weight=Text.Semibold
-                    size=Text.Sm
-                    transform=Text.Uppercase
-                  />
-                </div>
-              | _ => <LoadingCensorBar width=100 height=15 />
-              }}
-           </Col>
-         </Row>
-       : <THead>
-           <Row alignItems=Row.Center>
-             <Col col=Col.Two>
-               {switch (allSub) {
-                | Data((_, totalRequestCount)) =>
-                  <div className={CssHelper.flexBox()}>
-                    <Text
-                      block=true
-                      value={totalRequestCount |> Format.iPretty}
-                      weight=Text.Semibold
-                      transform=Text.Uppercase
-                      size=Text.Sm
-                    />
-                    <HSpacing size=Spacing.xs />
-                    <Text
-                      block=true
-                      value="Requests"
-                      weight=Text.Semibold
-                      transform=Text.Uppercase
-                      size=Text.Sm
-                    />
-                  </div>
-                | _ => <LoadingCensorBar width=100 height=15 />
-                }}
-             </Col>
-             <Col col=Col.Two>
-               <Text
-                 block=true
-                 value="Fee Earned"
-                 weight=Text.Semibold
-                 transform=Text.Uppercase
-                 size=Text.Sm
-               />
-             </Col>
-             <Col col=Col.Three>
-               <Text
-                 block=true
-                 value="Oracle Script"
-                 weight=Text.Semibold
-                 transform=Text.Uppercase
-                 size=Text.Sm
-               />
-             </Col>
-             <Col col=Col.Three>
-               <Text
-                 block=true
-                 value="Report Status"
-                 size=Text.Sm
-                 weight=Text.Semibold
-                 transform=Text.Uppercase
-               />
-             </Col>
-             <Col col=Col.Two>
-               <Text
-                 block=true
-                 value="Timestamp"
-                 weight=Text.Semibold
-                 size=Text.Sm
-                 align=Text.Right
-                 transform=Text.Uppercase
-               />
+    {switch (allSub) {
+     | Loading =>
+       <EmptyContainer height={`px(200)}>
+         <LoadingCensorBar.CircleSpin size=50 height=70 />
+         <Heading
+           size=Heading.H4
+           value="Waiting for the requests"
+           align=Heading.Center
+           weight=Heading.Regular
+           color={theme.textSecondary}
+         />
+       </EmptyContainer>
+     | Data((_, totalRequestCount)) when totalRequestCount === 0 =>
+       <div className={CssHelper.flexBox()}>
+         <EmptyContainer>
+           <img
+             alt="Request Not Found"
+             src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+             className=Styles.noDataImage
+           />
+           <Heading
+             size=Heading.H4
+             value="Request Not Found"
+             align=Heading.Center
+             weight=Heading.Regular
+             color={theme.textSecondary}
+           />
+         </EmptyContainer>
+       </div>
+     | Data((_, totalRequestCount)) =>
+       isMobile
+         ? <Row marginBottom=16>
+             <Col>
+               <div className={CssHelper.flexBox()}>
+                 <Text
+                   block=true
+                   value={totalRequestCount |> Format.iPretty}
+                   weight=Text.Semibold
+                   size=Text.Sm
+                 />
+                 <HSpacing size=Spacing.xs />
+                 <Text
+                   block=true
+                   value="Requests"
+                   weight=Text.Semibold
+                   size=Text.Sm
+                   transform=Text.Uppercase
+                 />
+               </div>
              </Col>
            </Row>
-         </THead>}
-    {switch (allSub) {
-     | Data((requests, requestsCount)) =>
-       let pageCount = Page.getPageCount(requestsCount, pageSize);
-       <>
-         {requestsCount > 0
-            ? requests
-              ->Belt_Array.mapWithIndex((i, e) =>
-                  isMobile
-                    ? <RenderBodyMobile
-                        key={e.id |> ID.Request.toString}
-                        reserveIndex=i
-                        requestsSub={Sub.resolve(e)}
-                      />
-                    : <RenderBody
-                        key={e.id |> ID.Request.toString}
-                        theme
-                        requestsSub={Sub.resolve(e)}
-                      />
-                )
-              ->React.array
-            : <EmptyContainer>
-                <img
-                  alt="No Request"
-                  src={isDarkMode ? Images.noDataDark : Images.noDataLight}
-                  className=Styles.noDataImage
-                />
-                <Heading
-                  size=Heading.H4
-                  value="No Request"
-                  align=Heading.Center
-                  weight=Heading.Regular
-                  color={theme.textSecondary}
-                />
-              </EmptyContainer>}
-         {isMobile
-            ? React.null
-            : <Pagination
-                currentPage=page
-                pageCount
-                onPageChange={newPage => setPage(_ => newPage)}
-              />}
-       </>;
+         : <div>
+             <THead>
+               <Row alignItems=Row.Center>
+                 <Col col=Col.Two>
+                   {switch (allSub) {
+                    | Data((_, totalRequestCount)) =>
+                      <div className={CssHelper.flexBox()}>
+                        <Text
+                          block=true
+                          value={totalRequestCount |> Format.iPretty}
+                          weight=Text.Semibold
+                          transform=Text.Uppercase
+                          size=Text.Sm
+                        />
+                        <HSpacing size=Spacing.xs />
+                        <Text
+                          block=true
+                          value="Requests"
+                          weight=Text.Semibold
+                          transform=Text.Uppercase
+                          size=Text.Sm
+                        />
+                      </div>
+                    | _ => <LoadingCensorBar width=100 height=15 />
+                    }}
+                 </Col>
+                 <Col col=Col.Two>
+                   <Text
+                     block=true
+                     value="Fee Earned"
+                     weight=Text.Semibold
+                     transform=Text.Uppercase
+                     size=Text.Sm
+                   />
+                 </Col>
+                 <Col col=Col.Three>
+                   <Text
+                     block=true
+                     value="Oracle Script"
+                     weight=Text.Semibold
+                     transform=Text.Uppercase
+                     size=Text.Sm
+                   />
+                 </Col>
+                 <Col col=Col.Three>
+                   <Text
+                     block=true
+                     value="Report Status"
+                     size=Text.Sm
+                     weight=Text.Semibold
+                     transform=Text.Uppercase
+                   />
+                 </Col>
+                 <Col col=Col.Two>
+                   <Text
+                     block=true
+                     value="Timestamp"
+                     weight=Text.Semibold
+                     size=Text.Sm
+                     align=Text.Right
+                     transform=Text.Uppercase
+                   />
+                 </Col>
+               </Row>
+             </THead>
+             {switch (allSub) {
+              | Data((requests, requestsCount)) =>
+                let pageCount = Page.getPageCount(requestsCount, pageSize);
+                <>
+                  {requests
+                   ->Belt_Array.mapWithIndex((i, e) =>
+                       isMobile
+                         ? <RenderBodyMobile
+                             key={e.id |> ID.Request.toString}
+                             reserveIndex=i
+                             requestsSub={Sub.resolve(e)}
+                           />
+                         : <RenderBody
+                             key={e.id |> ID.Request.toString}
+                             theme
+                             requestsSub={Sub.resolve(e)}
+                           />
+                     )
+                   ->React.array}
+                  {isMobile
+                     ? React.null
+                     : <Pagination
+                         currentPage=page
+                         pageCount
+                         onPageChange={newPage => setPage(_ => newPage)}
+                       />}
+                </>;
+              | _ =>
+                Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
+                ->Belt_Array.mapWithIndex((i, noData) =>
+                    isMobile
+                      ? <RenderBodyMobile
+                          key={i |> string_of_int}
+                          reserveIndex=i
+                          requestsSub=noData
+                        />
+                      : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
+                  )
+                ->React.array
+              }}
+           </div>
      | _ =>
-       Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
-       ->Belt_Array.mapWithIndex((i, noData) =>
-           isMobile
-             ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestsSub=noData />
-             : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
-         )
-       ->React.array
+       <EmptyContainer height={`px(200)}>
+         <img
+           alt="Request Not Found"
+           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+           className=Styles.noDataImage
+         />
+         <Heading
+           size=Heading.H4
+           value="Request Not Found"
+           align=Heading.Center
+           weight=Heading.Regular
+           color={theme.textSecondary}
+         />
+       </EmptyContainer>
      }}
   </div>;
 };
