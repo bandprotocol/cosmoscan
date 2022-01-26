@@ -191,7 +191,8 @@ let make = (~reqID) => {
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   switch (requestSub) {
-  | NoData =>
+  | NoData
+  | Error(_) =>
     <Section>
       <div className=CssHelper.container>
         <VSpacing size=Spacing.xxl />
