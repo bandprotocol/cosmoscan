@@ -157,17 +157,6 @@ let make = (~dataSourceID: ID.DataSource.t) => {
 
   <div className=Styles.tableWrapper>
     {switch (allSub) {
-     | Loading =>
-       <EmptyContainer height={`px(200)}>
-         <LoadingCensorBar.CircleSpin size=50 height=70 />
-         <Heading
-           size=Heading.H4
-           value="Waiting for the requests"
-           align=Heading.Center
-           weight=Heading.Regular
-           color={theme.textSecondary}
-         />
-       </EmptyContainer>
      | Data((_, totalRequestCount)) when totalRequestCount === 0 =>
        <div className={CssHelper.flexBox()}>
          <EmptyContainer>
@@ -315,14 +304,10 @@ let make = (~dataSourceID: ID.DataSource.t) => {
            </div>
      | _ =>
        <EmptyContainer height={`px(200)}>
-         <img
-           alt="Request Not Found"
-           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
-           className=Styles.noDataImage
-         />
+         <LoadingCensorBar.CircleSpin size=50 height=70 />
          <Heading
            size=Heading.H4
-           value="Request Not Found"
+           value="Waiting for the requests"
            align=Heading.Center
            weight=Heading.Regular
            color={theme.textSecondary}
