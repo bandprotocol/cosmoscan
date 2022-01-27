@@ -70809,7 +70809,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "validator",
+            "name": "validatorByValidatorDstId",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -70818,18 +70818,6 @@
                 "name": "validators",
                 "ofType": null
               }
-            },
-            "description": "An object relationship"
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "validatorByValidatorDstId",
-            "type": {
-              "kind": "OBJECT",
-              "name": "validators",
-              "ofType": null
             },
             "description": "An object relationship"
           },
@@ -71447,16 +71435,6 @@
             "description": null
           },
           {
-            "name": "validator",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "validators_bool_exp",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
             "name": "validatorByValidatorDstId",
             "defaultValue": null,
             "type": {
@@ -71594,16 +71572,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "validator",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "validators_obj_rel_insert_input",
               "ofType": null
             },
             "description": null
@@ -72035,16 +72003,6 @@
             "type": {
               "kind": "ENUM",
               "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "validator",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "validators_order_by",
               "ofType": null
             },
             "description": null

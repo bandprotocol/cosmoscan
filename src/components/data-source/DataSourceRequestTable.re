@@ -150,7 +150,6 @@ let make = (~dataSourceID: ID.DataSource.t) => {
   let totalRequestCountSub = RequestSub.countByDataSource(dataSourceID);
 
   let allSub = Sub.all2(requestsSub, totalRequestCountSub);
-
   let isMobile = Media.isMobile();
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
@@ -196,7 +195,7 @@ let make = (~dataSourceID: ID.DataSource.t) => {
                </div>
              </Col>
            </Row>
-         : <div>
+         : <>
              <THead>
                <Row alignItems=Row.Center>
                  <Col col=Col.Two>
@@ -301,7 +300,7 @@ let make = (~dataSourceID: ID.DataSource.t) => {
                   )
                 ->React.array
               }}
-           </div>
+           </>
      | _ =>
        <EmptyContainer height={`px(200)}>
          <LoadingCensorBar.CircleSpin size=50 height=70 />
