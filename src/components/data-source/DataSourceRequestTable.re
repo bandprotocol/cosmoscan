@@ -21,13 +21,13 @@ module RenderBody = {
         <Col col=Col.Two>
           {switch (requestsSub) {
            | Data({id}) => <TypeID.Request id />
-           | _ => <LoadingCensorBar width=135 height=15 />
+           | _ => <LoadingCensorBar width=135 height=15 widthPercent=100.0 />
            }}
         </Col>
         <Col col=Col.Two>
           {switch (requestsSub) {
            | Data({feeEarned}) => <AmountRender coins=[feeEarned] color={theme.textPrimary} />
-           | _ => <LoadingCensorBar width=100 height=15 />
+           | _ => <LoadingCensorBar width=100 height=15 widthPercent=100.0 />
            }}
         </Col>
         <Col col=Col.Three>
@@ -38,7 +38,7 @@ module RenderBody = {
                <HSpacing size=Spacing.sm />
                <Text value=oracleScriptName ellipsis=true color={theme.textPrimary} />
              </div>
-           | _ => <LoadingCensorBar width=212 height=15 />
+           | _ => <LoadingCensorBar width=212 height=15 widthPercent=100.0 />
            }}
         </Col>
         <Col col=Col.Two>
@@ -49,7 +49,7 @@ module RenderBody = {
                minimumValidators=minCount
                requestValidators=askCount
              />
-           | _ => <LoadingCensorBar width=168 height=15 />
+           | _ => <LoadingCensorBar width=168 height=15 widthPercent=100.0 />
            }}
         </Col>
         <Col col=Col.One>
@@ -76,7 +76,7 @@ module RenderBody = {
                | None => <Text value="Syncing" />
                }
 
-             | _ => <LoadingCensorBar width=120 height=15 mt=5 />
+             | _ => <LoadingCensorBar width=120 height=15 widthPercent=100.0 />
              }}
           </div>
         </Col>
@@ -149,169 +149,150 @@ let make = (~dataSourceID: ID.DataSource.t) => {
   let requestsSub = RequestSub.Mini.getListByDataSource(dataSourceID, ~pageSize, ~page, ());
   let totalRequestCountSub = RequestSub.countByDataSource(dataSourceID);
 
-  let allSub = Sub.all2(requestsSub, totalRequestCountSub);
   let isMobile = Media.isMobile();
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
-    {switch (allSub) {
-     | Data((_, totalRequestCount)) when totalRequestCount === 0 =>
-       <div className={CssHelper.flexBox()}>
-         <EmptyContainer>
-           <img
-             alt="Request Not Found"
-             src={isDarkMode ? Images.noDataDark : Images.noDataLight}
-             className=Styles.noDataImage
-           />
-           <Heading
-             size=Heading.H4
-             value="Request Not Found"
-             align=Heading.Center
-             weight=Heading.Regular
-             color={theme.textSecondary}
-           />
-         </EmptyContainer>
-       </div>
-     | Data((_, totalRequestCount)) =>
-       isMobile
-         ? <Row marginBottom=16>
-             <Col>
-               <div className={CssHelper.flexBox()}>
-                 <Text
-                   block=true
-                   value={totalRequestCount |> Format.iPretty}
-                   weight=Text.Semibold
-                   size=Text.Sm
-                 />
-                 <HSpacing size=Spacing.xs />
-                 <Text
-                   block=true
-                   value="Requests"
-                   weight=Text.Semibold
-                   size=Text.Sm
-                   transform=Text.Uppercase
-                 />
-               </div>
-             </Col>
-           </Row>
-         : <>
-             <THead>
-               <Row alignItems=Row.Center>
-                 <Col col=Col.Two>
-                   {switch (allSub) {
-                    | Data((_, totalRequestCount)) =>
-                      <div className={CssHelper.flexBox()}>
+    {switch (totalRequestCountSub) {
+     | Data(totalRequestCount) when totalRequestCount > 0 =>
+       let pageCount = Page.getPageCount(totalRequestCount, pageSize);
+       switch (requestsSub) {
+       | Data(requests) =>
+         <>
+           {isMobile
+              ? <Row marginBottom=16>
+                  <Col>
+                    <div className={CssHelper.flexBox()}>
+                      <Text
+                        block=true
+                        value={totalRequestCount |> Format.iPretty}
+                        weight=Text.Semibold
+                        size=Text.Sm
+                      />
+                      <HSpacing size=Spacing.xs />
+                      <Text
+                        block=true
+                        value="Requests"
+                        weight=Text.Semibold
+                        size=Text.Sm
+                        transform=Text.Uppercase
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              : <>
+                  <THead>
+                    <Row alignItems=Row.Center>
+                      <Col col=Col.Two>
+                        <div className={CssHelper.flexBox()}>
+                          <Text
+                            block=true
+                            value={totalRequestCount |> Format.iPretty}
+                            weight=Text.Semibold
+                            transform=Text.Uppercase
+                            size=Text.Sm
+                          />
+                          <HSpacing size=Spacing.xs />
+                          <Text
+                            block=true
+                            value="Requests"
+                            weight=Text.Semibold
+                            transform=Text.Uppercase
+                            size=Text.Sm
+                          />
+                        </div>
+                      </Col>
+                      <Col col=Col.Two>
                         <Text
                           block=true
-                          value={totalRequestCount |> Format.iPretty}
+                          value="Fee Earned"
                           weight=Text.Semibold
                           transform=Text.Uppercase
                           size=Text.Sm
                         />
-                        <HSpacing size=Spacing.xs />
+                      </Col>
+                      <Col col=Col.Three>
                         <Text
                           block=true
-                          value="Requests"
+                          value="Oracle Script"
                           weight=Text.Semibold
                           transform=Text.Uppercase
                           size=Text.Sm
                         />
-                      </div>
-                    | _ => <LoadingCensorBar width=100 height=15 />
-                    }}
-                 </Col>
-                 <Col col=Col.Two>
-                   <Text
-                     block=true
-                     value="Fee Earned"
-                     weight=Text.Semibold
-                     transform=Text.Uppercase
-                     size=Text.Sm
-                   />
-                 </Col>
-                 <Col col=Col.Three>
-                   <Text
-                     block=true
-                     value="Oracle Script"
-                     weight=Text.Semibold
-                     transform=Text.Uppercase
-                     size=Text.Sm
-                   />
-                 </Col>
-                 <Col col=Col.Three>
-                   <Text
-                     block=true
-                     value="Report Status"
-                     size=Text.Sm
-                     weight=Text.Semibold
-                     transform=Text.Uppercase
-                   />
-                 </Col>
-                 <Col col=Col.Two>
-                   <Text
-                     block=true
-                     value="Timestamp"
-                     weight=Text.Semibold
-                     size=Text.Sm
-                     align=Text.Right
-                     transform=Text.Uppercase
-                   />
-                 </Col>
-               </Row>
-             </THead>
-             {switch (allSub) {
-              | Data((requests, requestsCount)) =>
-                let pageCount = Page.getPageCount(requestsCount, pageSize);
-                <>
-                  {requests
-                   ->Belt_Array.mapWithIndex((i, e) =>
-                       isMobile
-                         ? <RenderBodyMobile
-                             key={e.id |> ID.Request.toString}
-                             reserveIndex=i
-                             requestsSub={Sub.resolve(e)}
-                           />
-                         : <RenderBody
-                             key={e.id |> ID.Request.toString}
-                             theme
-                             requestsSub={Sub.resolve(e)}
-                           />
-                     )
-                   ->React.array}
-                  {isMobile
-                     ? React.null
-                     : <Pagination
-                         currentPage=page
-                         pageCount
-                         onPageChange={newPage => setPage(_ => newPage)}
-                       />}
-                </>;
-              | _ =>
-                Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
-                ->Belt_Array.mapWithIndex((i, noData) =>
-                    isMobile
-                      ? <RenderBodyMobile
-                          key={i |> string_of_int}
-                          reserveIndex=i
-                          requestsSub=noData
+                      </Col>
+                      <Col col=Col.Three>
+                        <Text
+                          block=true
+                          value="Report Status"
+                          size=Text.Sm
+                          weight=Text.Semibold
+                          transform=Text.Uppercase
                         />
-                      : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
-                  )
-                ->React.array
-              }}
+                      </Col>
+                      <Col col=Col.Two>
+                        <Text
+                          block=true
+                          value="Timestamp"
+                          weight=Text.Semibold
+                          size=Text.Sm
+                          align=Text.Right
+                          transform=Text.Uppercase
+                        />
+                      </Col>
+                    </Row>
+                  </THead>
+                </>}
+           <>
+             {requests
+              ->Belt_Array.mapWithIndex((i, e) =>
+                  isMobile
+                    ? <RenderBodyMobile
+                        key={e.id |> ID.Request.toString}
+                        reserveIndex=i
+                        requestsSub={Sub.resolve(e)}
+                      />
+                    : <RenderBody
+                        key={e.id |> ID.Request.toString}
+                        theme
+                        requestsSub={Sub.resolve(e)}
+                      />
+                )
+              ->React.array}
            </>
-     | _ =>
-       <EmptyContainer height={`px(200)}>
-         <LoadingCensorBar.CircleSpin size=50 height=70 />
+           {isMobile
+              ? React.null
+              : <Pagination
+                  currentPage=page
+                  pageCount
+                  onPageChange={newPage => setPage(_ => newPage)}
+                />}
+         </>
+       | _ =>
+         Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
+         ->Belt_Array.mapWithIndex((i, noData) =>
+             isMobile
+               ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestsSub=noData />
+               : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
+           )
+         ->React.array
+       };
+     | Data(totalRequestCount) when totalRequestCount === 0 =>
+       <EmptyContainer>
+         <img
+           alt="No Request Found"
+           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+           className=Styles.noDataImage
+         />
          <Heading
            size=Heading.H4
-           value="Waiting for the requests"
+           value="No Request Found"
            align=Heading.Center
            weight=Heading.Regular
            color={theme.textSecondary}
          />
        </EmptyContainer>
+     | _ => React.null
      }}
   </div>;
 };
