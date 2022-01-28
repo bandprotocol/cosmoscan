@@ -40,11 +40,6 @@ module Styles = {
     ]);
 };
 
-type t = {currentDate: MomentRe.Moment.t};
-
-type action =
-  | UpdateDate(MomentRe.Moment.t);
-
 type input_t('a) = {
   text: string,
   value: option('a),

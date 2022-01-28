@@ -1,6 +1,6 @@
 type block_t = {timestamp: MomentRe.Moment.t};
 type t = {
-  txHash: string,
+  txHash: Hash.t,
   blockHeight: ID.Block.t,
   success: bool,
   gasFee: list(Coin.t),
@@ -13,7 +13,7 @@ type t = {
 };
 
 type internal_t = {
-  txHash: string,
+  txHash: Hash.t,
   blockHeight: ID.Block.t,
   success: bool,
   gasFee: list(Coin.t),
@@ -25,15 +25,14 @@ type internal_t = {
   memo: string,
 };
 
-type account_transaction_t = {transaction: internal_t};
+type account_transactions_t = {transaction: internal_t};
 
 module TxQueryByBlockTimestampConfig = [%graphql
   {|
   query TxQueryBlockTimestamp($address: String!, $greater:timestamp, $less: timestamp) {
-    accounts_by_pk(address: $address) {
-      account_transactions(order_by: {transaction_id: desc}, limit: 350, where: {transaction: {block: {timestamp: {_lte: $less, _gte: $greater}}}})  @bsRecord {
-        transaction @bsRecord {
-          txHash: hash @bsDecoder(fn: "GraphQLParser.string")
+    account_transactions(limit: 350, order_by: {transaction_id: desc}, where: {account: {address: {_eq: $address}}, transaction: {block: {timestamp: {_gte: $greater, _lte: $less}}}}) @bsRecord {
+      transaction @bsRecord {
+          txHash: hash @bsDecoder(fn: "GraphQLParser.hash")
           blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
           success
           memo
@@ -48,7 +47,6 @@ module TxQueryByBlockTimestampConfig = [%graphql
         }
       }
     }
-  }
 |}
 ];
 
@@ -65,7 +63,6 @@ let toExternal =
   timestamp: block.timestamp,
   messages: {
     let msgList = messages |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
-    // msgList->Belt.List.map(msg => msg |> JsonUtils.Decode.(field("type", string)));
     msgList->Belt.List.map(success ? MsgDecoder.decodeAction : MsgDecoder.decodeFailAction);
   },
 };
@@ -82,15 +79,10 @@ let get = (address, dateStart, dateEnd, ()) => {
           (),
         ),
     );
-
   let transactions =
     resultQuery
     |> Query.map(_, a => {
-         switch (a##accounts_by_pk) {
-         | Some(x') =>
-           x'##account_transactions->Belt_Array.map(({transaction}) => transaction->toExternal)
-         | None => [||]
-         }
+         a##account_transactions->Belt_Array.map(each => toExternal(each.transaction))
        });
   (transactions, full.refetch);
 };

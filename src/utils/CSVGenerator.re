@@ -27,7 +27,7 @@ let create = (data: array(TxQueryByBlockTimestamp.t)) => {
 
       let dataString =
         [|
-          item.txHash,
+          item.txHash |> Hash.toHex(~upper=true),
           item.blockHeight |> ID.Block.toInt |> string_of_int,
           item.success |> string_of_bool,
           item.gasFee |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=2),
@@ -43,5 +43,5 @@ let create = (data: array(TxQueryByBlockTimestamp.t)) => {
       dataString;
     })
     |> Js.Array.joinWith("\n");
-  keys ++ "\n" ++ result;
+  "data:text/csv;charset=utf-8," ++ keys ++ "\n" ++ result;
 };

@@ -9,6 +9,8 @@ module Styles = {
       Media.mobile([maxWidth(`px(300))]),
     ]);
 
+  let downloadContainer = style([marginTop(`px(20))]);
+
   let downloadBtn = style([width(`percent(100.)), marginTop(`px(10))]);
 
   let csvAnchor = style([display(`none)]);
@@ -24,7 +26,22 @@ type generate_t =
   | Nothing
   | Generating
   | Success
-  | Error;
+  | Error(string);
+
+type block_t = {timestamp: MomentRe.Moment.t};
+
+type internal_t = {
+  txHash: string,
+  blockHeight: ID.Block.t,
+  success: bool,
+  gasFee: list(Coin.t),
+  gasLimit: int,
+  gasUsed: int,
+  from: string,
+  block: block_t,
+  messages: Js.Json.t,
+  memo: string,
+};
 
 [@bs.send] external clickElement: Dom.element => unit = "click";
 
@@ -38,8 +55,7 @@ let make = (~address) => {
   let (dateStart, setDateStart) = React.useState(_ => currentDateStart);
   let (dateEnd, setDateEnd) = React.useState(_ => dateNow);
   let (generate, setGenerate) = React.useState(_ => Nothing);
-  let (csvFile, setCsvFile) =
-    React.useState(_ => Js.Global.encodeURI("data:text/csv;charset=utf-8,"));
+  let (csvFile, setCsvFile) = React.useState(_ => "");
 
   let variables =
     TxQueryByBlockTimestamp.TxQueryByBlockTimestampConfig.make(
@@ -49,7 +65,7 @@ let make = (~address) => {
       (),
     )##variables;
 
-  let (txQuery, refetch) =
+  let (_, refetch) =
     TxQueryByBlockTimestamp.get(
       address,
       dateStart |> Js.Date.toISOString,
@@ -57,32 +73,19 @@ let make = (~address) => {
       (),
     );
 
-  let download = () => {
-    refetch(~variables, ())
-    |> Js.Promise.then_(res => {
-         setGenerate(_ => Generating);
-         switch (inputRef->React.Ref.current->Js.Nullable.toOption) {
-         | None => ()
-         | Some(el) =>
-           setCsvFile(_ =>
-             Js.Global.encodeURI("data:text/csv;charset=utf-8,There is 0 transaction found")
-           );
-           switch (txQuery) {
-           | Data(data) =>
-             if (data->Belt.Array.size > 0) {
-               let csvString = CSVGenerator.create(data);
-               let csvFile = Js.Global.encodeURI("data:text/csv;charset=utf-8," ++ csvString);
-               setCsvFile(_ => csvFile);
-             };
-             setGenerate(_ => Nothing);
-             el->clickElement;
-           | _ => setGenerate(_ => Nothing)
-           };
-         };
-         Js.Promise.resolve();
-       })
-    |> ignore;
-  };
+  React.useEffect1(
+    () => {
+      switch (inputRef->React.Ref.current->Js.Nullable.toOption) {
+      | None => None
+      | Some(el) =>
+        if (csvFile->Js.String2.length > 0) {
+          el->clickElement;
+        };
+        None;
+      }
+    },
+    [|csvFile|],
+  );
 
   <div className=Styles.container>
     <Heading size=Heading.H4 value="Export CSV Transactions" marginBottom=10 />
@@ -129,26 +132,49 @@ let make = (~address) => {
         size=Text.Md
       />
     </div>
-    <Button style=Styles.downloadBtn onClick={_ => download()}>
+    <div className=Styles.downloadContainer>
       {switch (generate) {
-       | Generating => "Generating CSV..." |> React.string
-       | _ => "Download" |> React.string
+       | Generating =>
+         <div className={CssHelper.flexBox(~justify=`center, ())}>
+           <LoadingCensorBar.CircleSpin size=30 height=30 />
+           <Text value="Generating CSV File..." />
+         </div>
+       | _ =>
+         <Button
+           style=Styles.downloadBtn
+           onClick={_ => {
+             setGenerate(_ => Generating);
+             let _ =
+               refetch(~variables, ())
+               |> Js.Promise.then_(res => {
+                    setCsvFile(_ =>
+                      res##account_transactions
+                      ->Belt_Array.map((TxQueryByBlockTimestamp.{transaction}) =>
+                          TxQueryByBlockTimestamp.toExternal(transaction)
+                        )
+                      ->CSVGenerator.create
+                    );
+                    setGenerate(_ => Success);
+                    Js.Promise.resolve();
+                  });
+             ();
+           }}>
+           {"Download" |> React.string}
+         </Button>
        }}
-    </Button>
-    <div>
-      <a
-        href=csvFile
-        download={
-          "transactions-"
-          ++ (dateStart |> Js.Date.toLocaleDateString)
-          ++ "-"
-          ++ (dateEnd |> Js.Date.toLocaleDateString)
-          ++ ".csv"
-        }
-        ref={ReactDOMRe.Ref.domRef(inputRef)}
-        className=Styles.csvAnchor>
-        {"show more" |> React.string}
-      </a>
     </div>
+    <a
+      href=csvFile
+      download={
+        "transactions-"
+        ++ (dateStart |> Js.Date.toLocaleDateString)
+        ++ "-"
+        ++ (dateEnd |> Js.Date.toLocaleDateString)
+        ++ ".csv"
+      }
+      ref={ReactDOMRe.Ref.domRef(inputRef)}
+      className=Styles.csvAnchor>
+      {"show more" |> React.string}
+    </a>
   </div>;
 };
