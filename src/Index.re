@@ -12,7 +12,7 @@ let setupSentry: unit => unit = [%bs.raw
   {|
 function() {
   const Sentry = require("@sentry/browser");
-  Sentry.init({dsn: "https://6f05376ceab44557943d1864072a37ae@o270592.ingest.sentry.io/5260152"});
+  Sentry.init({dsn: "https://8e19a3df712d45ac9224384bbe66a7c5@o1127009.ingest.sentry.io/6168527"});
 }
   |}
 ];
