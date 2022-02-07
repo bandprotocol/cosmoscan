@@ -21,7 +21,7 @@ module Styles = {
 
   let rightArrow = style([width(`px(20)), filter([`saturate(50.0), `brightness(70.0)])]);
 
-  let logo = style([width(`px(100)), marginRight(`px(10))]);
+  let logo = style([width(`px(120)), marginRight(`px(10))]);
 };
 
 [@react.component]

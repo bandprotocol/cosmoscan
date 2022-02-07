@@ -40,7 +40,7 @@ module Styles = {
       display(`flex),
       alignItems(`center),
     ]);
-  let notFoundLogo = style([width(`px(150))]);
+  let notFoundLogo = style([width(`px(120))]);
 };
 
 module ValidatorReportStatus = {
