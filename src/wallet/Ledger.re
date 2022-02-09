@@ -53,8 +53,8 @@ let create = (ledgerApp, accountIndex) => {
   // 1. Check return code of pubKeyInfo
   // 2. If pass, then check app version
   // 3. If pass, then check test_mode
-  if (pubKeyInfo.return_code != 36864) {
-    if (appInfo.appName != requiredAppName) {
+  if (pubKeyInfo.return_code !== 36864) {
+    if (appInfo.appName !== requiredAppName) {
       let appName = appInfo.appName;
       Js.Console.log({j|App name is not $requiredAppName. (Current is $appName)|j});
       Js.Promise.reject(Not_found);
@@ -81,7 +81,7 @@ let getAddressAndPubKey = x => {
   let responsePromise = LedgerJS.getAddressAndPubKey(x.app, x.path, prefix);
   let%Promise response = responsePromise;
 
-  if (response.return_code != 36864) {
+  if (response.return_code !== 36864) {
     Js.Console.log(response.error_message);
     Js.Promise.reject(Not_found);
   } else {

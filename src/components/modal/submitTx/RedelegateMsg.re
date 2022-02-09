@@ -225,7 +225,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
        | Data(({operatorAddress}, validators, _)) =>
          let filteredValidators =
            validators->Belt_Array.keep(validator =>
-             validator.operatorAddress != operatorAddress && validator.commission != 100.
+             validator.operatorAddress !== operatorAddress && validator.commission !== 100.
            );
          <DstValidatorSelection filteredValidators setDstValidatorOpt />;
        | _ => <LoadingCensorBar width=300 height=59 />

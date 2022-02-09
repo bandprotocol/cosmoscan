@@ -165,13 +165,13 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
           let last = data->Belt.Array.get(data->Belt.Array.size - 1)->Belt.Option.getExn;
 
           // update when get new point
-          if (last.y != lastCount) {
+          if (last.y !== lastCount) {
             setLastCount(_ => last.y);
             renderGraph(data, isDarkMode);
           };
 
           // update when change mode
-          if (lastMode != isDarkMode) {
+          if (lastMode !== isDarkMode) {
             setLastMode(_ => isDarkMode);
             renderGraph(data, isDarkMode);
           };

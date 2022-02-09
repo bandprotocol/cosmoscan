@@ -407,7 +407,7 @@ module ExecutionPart = {
                      py=13
                      style={Styles.button(result == Loading)}
                      onClick={_ =>
-                       if (result != Loading) {
+                       if (result !== Loading) {
                          switch (
                            Obi.encode(
                              schema,

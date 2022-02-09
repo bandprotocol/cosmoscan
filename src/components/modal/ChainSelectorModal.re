@@ -16,6 +16,7 @@ module Styles = {
     style([
       height(`px(320)),
       overflow(`auto),
+      marginTop(`px(16)),
       selector("> div + div", [marginTop(`px(16))]),
     ]);
 
@@ -31,6 +32,7 @@ module Styles = {
 
 [@react.component]
 let make = (~targetChain) => {
+  let (searchTerm, setSearchTerm) = React.useState(_ => "");
   let transferableChainsQuery = IBCConnectionQuery.getList();
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let (_, dispatchModal) = React.useContext(ModalContext.context);
@@ -51,17 +53,39 @@ let make = (~targetChain) => {
 
   <div className=Styles.container>
     <Heading value="Select Chain" size=Heading.H4 marginBottom=24 />
+    <SearchInput
+      placeholder="Search Chain"
+      onChange=setSearchTerm
+      maxWidth=512
+      inputStyle=SearchInput.Default
+    />
     <div className=Styles.selectorPanel>
       {switch (transferableChainsQuery) {
        | Data(transferableChains) =>
          <>
-           <div
-             key="band"
-             className={Styles.button(targetChain === IBCConnectionQuery.BAND, theme)}
-             onClick={_ => handleClick(IBCConnectionQuery.BAND)}>
-             <TargetChainInfo targetChain=IBCConnectionQuery.BAND />
-           </div>
+           {searchTerm
+            |> Js.String.length <= 0
+            || Js.String.includes(searchTerm |> Js.String.toLocaleLowerCase, "band")
+              ? <div
+                  key="band"
+                  className={Styles.button(targetChain === IBCConnectionQuery.BAND, theme)}
+                  onClick={_ => handleClick(IBCConnectionQuery.BAND)}>
+                  <TargetChainInfo targetChain=IBCConnectionQuery.BAND />
+                </div>
+              : React.null}
            {transferableChains
+            ->Belt.Array.keep(transferableChain => {
+                switch (transferableChain) {
+                | IBCConnectionQuery.IBC({name, chainID})
+                    when
+                      Js.String.includes(searchTerm, name |> Js.String.toLowerCase)
+                      || Js.String.includes(searchTerm, chainID |> Js.String.toLowerCase)
+                      || searchTerm
+                      |> Js.String.length <= 0 =>
+                  true
+                | _ => false
+                }
+              })
             ->Belt.Array.map(transferableChain => {
                 let keyString =
                   switch (transferableChain) {

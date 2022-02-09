@@ -69,7 +69,7 @@ let make = (~currentPage, ~pageCount, ~onPageChange: int => unit) => {
       <div className=Styles.innerContainer>
         <ClickableSymbol
           isPrevious=true
-          active={currentPage != 1}
+          active={currentPage !== 1}
           onClick={_ => onPageChange(currentPage < 1 ? 1 : currentPage - 1)}
         />
         <div
@@ -90,7 +90,7 @@ let make = (~currentPage, ~pageCount, ~onPageChange: int => unit) => {
         </div>
         <ClickableSymbol
           isPrevious=false
-          active={currentPage != pageCount}
+          active={currentPage !== pageCount}
           onClick={_ => onPageChange(currentPage > pageCount ? pageCount : currentPage + 1)}
         />
       </div>

@@ -15,7 +15,7 @@ module Styles = {
       flexWrap(`nowrap),
     ]);
 
-  let logo = style([width(`px(20))]);
+  let logo = style([width(`px(20)), height(`px(20)), objectFit(`cover)]);
 };
 
 [@react.component]
