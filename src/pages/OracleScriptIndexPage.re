@@ -3,6 +3,7 @@ module Styles = {
   let titleSpacing = style([marginBottom(`px(26))]);
   let idCointainer = style([marginBottom(`px(16))]);
   let containerSpacingSm = style([Media.mobile([marginTop(`px(16))])]);
+  let noDataImage = style([width(`auto), height(`px(70)), marginBottom(`px(16))]);
 
   let relatedDSContainer =
     style([
@@ -21,7 +22,7 @@ module Content = {
       ) => {
     let statSub = OracleScriptSub.getResponseTime(oracleScriptID);
 
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <Section>
       <div className=CssHelper.container>
@@ -227,8 +228,24 @@ module Content = {
                }
              | OracleScriptCode =>
                switch (oracleScriptSub) {
-               | Data({sourceCodeURL}) => <OracleScriptCode url=sourceCodeURL />
-               | _ => <LoadingCensorBar.CircleSpin height=400 />
+               | Data({sourceCodeURL}) when sourceCodeURL !== "" =>
+                 <OracleScriptCode url=sourceCodeURL />
+               | Loading => <LoadingCensorBar.CircleSpin height=400 />
+               | _ =>
+                 <EmptyContainer>
+                   <img
+                     src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
+                     className=Styles.noDataImage
+                     alt="Unable to access OWASM Code"
+                   />
+                   <Heading
+                     size=Heading.H4
+                     value="Unable to access OWASM Code"
+                     align=Heading.Center
+                     weight=Heading.Regular
+                     color={theme.textSecondary}
+                   />
+                 </EmptyContainer>
                }
              | OracleScriptBridgeCode =>
                switch (oracleScriptSub) {
