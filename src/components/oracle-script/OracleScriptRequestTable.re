@@ -234,6 +234,7 @@ let make = (~oracleScriptID: ID.OracleScript.t) => {
               ->React.array
             : <EmptyContainer>
                 <img
+                  alt="No Request"
                   src={isDarkMode ? Images.noDataDark : Images.noDataLight}
                   className=Styles.noDataImage
                 />

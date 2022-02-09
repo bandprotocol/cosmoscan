@@ -85,7 +85,7 @@ let make = _ => {
              color={theme.textSecondary}
            />
            <VSpacing size=Spacing.xxl />
-           <img src=Images.success2 className=Styles.icon />
+           <img alt="Success Icon" src=Images.success2 className=Styles.icon />
          </>
        | Error =>
          <>
@@ -97,7 +97,7 @@ let make = _ => {
            />
            <VSpacing size=Spacing.xxl />
            <div className=Styles.errorContainer>
-             <img src=Images.fail2 className=Styles.icon />
+             <img alt="Fail Icon" src=Images.fail2 className=Styles.icon />
              <HSpacing size=Spacing.md />
              <Text
                value="An error occurred"

@@ -126,6 +126,7 @@ let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
            ->React.array
          : <EmptyContainer>
              <img
+               alt="No Transaction"
                src={isDarkMode ? Images.noTxDark : Images.noTxLight}
                className=Styles.noDataImage
              />

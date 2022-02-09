@@ -496,6 +496,7 @@ let make = () => {
                     ->React.array
                   : <EmptyContainer>
                       <img
+                        alt="No Oracle Script"
                         src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
                         className=Styles.noDataImage
                       />
