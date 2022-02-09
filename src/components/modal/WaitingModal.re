@@ -52,6 +52,7 @@ type result_t =
 [@react.component]
 let make = _ => {
   // TODO: remove later
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let x = Js.Math.random_int(0, 3);
   let result =
     switch (x) {
@@ -70,7 +71,7 @@ let make = _ => {
              value="Waiting for user to sign the transaction"
              weight=Text.Bold
              size=Text.Xxxl
-             color=Colors.gray8
+             color={theme.textSecondary}
            />
            <VSpacing size=Spacing.xxl />
            <Loading width={`px(100)} />
@@ -81,14 +82,19 @@ let make = _ => {
              value="User Signed Successfully"
              weight=Text.Bold
              size=Text.Xxxl
-             color=Colors.gray8
+             color={theme.textSecondary}
            />
            <VSpacing size=Spacing.xxl />
            <img src=Images.success2 className=Styles.icon />
          </>
        | Error =>
          <>
-           <Text value="Signing Fail" weight=Text.Bold size=Text.Xxxl color=Colors.gray8 />
+           <Text
+             value="Signing Fail"
+             weight=Text.Bold
+             size=Text.Xxxl
+             color={theme.textSecondary}
+           />
            <VSpacing size=Spacing.xxl />
            <div className=Styles.errorContainer>
              <img src=Images.fail2 className=Styles.icon />
@@ -96,7 +102,7 @@ let make = _ => {
              <Text
                value="An error occurred"
                weight=Text.Medium
-               color=Colors.red4
+               color={theme.failColor}
                spacing={Text.Em(0.03)}
              />
            </div>

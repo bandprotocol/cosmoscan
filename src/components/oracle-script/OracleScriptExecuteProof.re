@@ -24,7 +24,7 @@ module Styles = {
 let make = (~id: ID.Request.t) => {
   let (proofOpt, reload) = ProofHook.get(id);
   let isMobile = Media.isMobile();
-
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   React.useEffect1(
     () => {
       let intervalID =
@@ -44,7 +44,7 @@ let make = (~id: ID.Request.t) => {
     <div className=Styles.labelWrapper>
       <Text
         value="Proof of validaty"
-        color=Colors.gray6
+        color={theme.textSecondary}
         weight=Text.Regular
         height={Text.Px(15)}
       />

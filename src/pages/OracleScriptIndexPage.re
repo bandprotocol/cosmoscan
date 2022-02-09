@@ -214,7 +214,8 @@ module Content = {
               // {
               //   name: "Revisions",
               //   route:
-              //     oracleScriptID |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptRevisions),
+              //     oracleScriptID
+              //     |> ID.OracleScript.getRouteWithTab(_, Route.OracleScriptRevisions),
               // },
             |]
             currentRoute={oracleScriptID |> ID.OracleScript.getRouteWithTab(_, hashtag)}>

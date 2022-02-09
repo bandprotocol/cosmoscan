@@ -164,7 +164,7 @@ module StakingInfo = {
         <Col>
           <Text
             value="Note: You have a non-zero pending reward on this validator. Any additional staking actions will automatically withdraw that reward balance."
-            color=Colors.gray6
+            color={theme.textSecondary}
             weight=Text.Thin
           />
         </Col>

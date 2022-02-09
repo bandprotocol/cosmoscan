@@ -20,6 +20,7 @@ let make = (~id) =>
     let revisionsSub = id |> OracleScriptRevisionSub.get;
     let%Sub numRevisions = numRevisionsSub;
     let%Sub revisions = revisionsSub;
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <div>
       {numRevisions > 0
@@ -67,7 +68,7 @@ let make = (~id) =>
                             block=true
                             value=name
                             weight=Text.Medium
-                            color=Colors.gray7
+                            color={theme.textSecondary}
                             nowrap=true
                             ellipsis=true
                           />
@@ -100,7 +101,7 @@ let make = (~id) =>
                              value="Genesis transaction"
                              weight=Text.Medium
                              code=true
-                             color=Colors.gray7
+                             color={theme.textSecondary}
                              ellipsis=true
                              nowrap=true
                            />
@@ -116,7 +117,7 @@ let make = (~id) =>
              <VSpacing size={`px(30)} />
              <img src=Images.noRevisionIcon className=Styles.icon />
              <VSpacing size={`px(40)} />
-             <Text block=true value="NO REVISION" weight=Text.Regular color=Colors.blue4 />
+             <Text block=true value="NO REVISION" weight=Text.Regular color={theme.lightenBlue} />
              <VSpacing size={`px(15)} />
            </div>}
     </div>

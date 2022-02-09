@@ -12,12 +12,12 @@ module Styles = {
 
   let btn = style([width(`percent(100.))]);
 
-  let jsonDisplay =
+  let jsonDisplay = (theme: Theme.t) =>
     style([
       resize(`none),
       fontSize(`px(12)),
-      backgroundColor(Colors.bg),
-      border(`px(1), `solid, Colors.gray9),
+      backgroundColor(theme.contrastBg),
+      border(`px(1), `solid, theme.tableRowBorderColor),
       borderRadius(`px(4)),
       width(`percent(100.)),
       height(`px(300)),
@@ -69,7 +69,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            />
          </div>
          <textarea
-           className=Styles.jsonDisplay
+           className={Styles.jsonDisplay(theme)}
            disabled=true
            defaultValue={jsonTxStr |> Js.Json.parseExn |> TxCreator2.stringifyWithSpaces}
          />

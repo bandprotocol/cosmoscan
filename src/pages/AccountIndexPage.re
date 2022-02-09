@@ -6,8 +6,8 @@ module Styles = {
 
   let balance = style([minWidth(`px(150)), justifyContent(`flexEnd)]);
 
-  let infoHeader =
-    style([borderBottom(`px(1), `solid, Colors.gray9), paddingBottom(`px(16))]);
+  let infoHeader = (theme: Theme.t) =>
+    style([borderBottom(`px(1), `solid, theme.dropdownHover), paddingBottom(`px(16))]);
 
   let totalBalance =
     style([

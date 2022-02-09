@@ -136,15 +136,19 @@ module Deposit = {
           CssHelper.mb(~size=8, ()),
           CssHelper.flexBox(~justify=`spaceBetween, ()),
         ])}>
-        <Text value={j|Min Deposit $formatedMinDeposit BAND|j} color=Colors.gray7 size=Text.Lg />
+        <Text
+          value={j|Min Deposit $formatedMinDeposit BAND|j}
+          color={theme.textSecondary}
+          size=Text.Lg
+        />
         <Text
           value={j|$formatedTotalDeposit / $formatedMinDeposit|j}
-          color=Colors.gray7
+          color={theme.textSecondary}
           size=Text.Lg
         />
       </div>
       <div className={Styles.progressOuter(theme)}>
-        <div className={Styles.progressUptimeInner(percent, Colors.bandBlue)} />
+        <div className={Styles.progressUptimeInner(percent, theme.baseBlue)} />
       </div>
     </div>;
   };

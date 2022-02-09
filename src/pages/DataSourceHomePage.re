@@ -67,7 +67,7 @@ module RenderBody = {
           {switch (dataSourcesSub) {
            | Data({fee}) =>
              <div className={CssHelper.flexBox()}>
-               <AmountRender coins=fee color={theme.textPrimary}/>
+               <AmountRender coins=fee color={theme.textPrimary} />
              </div>
            | _ => <LoadingCensorBar width=100 height=15 />
            }}
@@ -219,26 +219,22 @@ let make = () => {
              : <THead>
                  <Row alignItems=Row.Center>
                    <Col col=Col.Three>
-                     <div className=TElement.Styles.hashContainer>
-                       <Text
-                         block=true
-                         value="Data Source"
-                         transform=Text.Uppercase
-                         size=Text.Sm
-                         weight=Text.Semibold
-                       />
-                     </div>
+                     <Text
+                       block=true
+                       value="Data Source"
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       weight=Text.Semibold
+                     />
                    </Col>
                    <Col col=Col.Three>
-                     <div className=TElement.Styles.hashContainer>
-                       <Text
-                         block=true
-                         value="Fee"
-                         transform=Text.Uppercase
-                         size=Text.Sm
-                         weight=Text.Semibold
-                       />
-                     </div>
+                     <Text
+                       block=true
+                       value="Fee"
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                       weight=Text.Semibold
+                     />
                    </Col>
                    <Col col=Col.Three>
                      <Text

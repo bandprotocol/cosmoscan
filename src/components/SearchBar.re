@@ -89,12 +89,18 @@ module SearchResults = {
 
   [@react.component]
   let make = (~searchTerm, ~focusIndex, ~onHover) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let results =
       [|
         searchTerm->isValidAddress
           ? <>
               <VSpacing size={`px(-2)} />
-              <Text value="ADDRESS" size=Text.Xs color=Colors.gray5 weight=Text.Semibold />
+              <Text
+                value="ADDRESS"
+                size=Text.Xs
+                color={theme.textSecondary}
+                weight=Text.Semibold
+              />
               <VSpacing size=Spacing.xs />
               <Text value={searchTerm ++ "1f2bce"} weight=Text.Bold size=Text.Lg block=true />
               <VSpacing size=Spacing.sm />
@@ -103,7 +109,12 @@ module SearchResults = {
         searchTerm->isValidTx
           ? <>
               <VSpacing size={`px(-2)} />
-              <Text value="TRANSACTION" size=Text.Xs color=Colors.gray5 weight=Text.Semibold />
+              <Text
+                value="TRANSACTION"
+                size=Text.Xs
+                color={theme.textSecondary}
+                weight=Text.Semibold
+              />
               <VSpacing size=Spacing.xs />
               <Text value={searchTerm ++ "dd92b"} weight=Text.Bold size=Text.Lg block=true />
               <VSpacing size=Spacing.sm />
