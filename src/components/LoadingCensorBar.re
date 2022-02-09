@@ -1,10 +1,10 @@
 module Styles = {
   open Css;
 
-  let main = (~w, ~h, ~r, ~colorBase, ~colorLighter, ()) =>
+  let main = (~w, ~h, ~r, ~colorBase, ~colorLighter, ~widthPercent, ()) =>
     style([
       display(`flex),
-      width(`px(w)),
+      width(widthPercent !== 0.0 ? `percent(widthPercent) : `px(w)),
       height(`px(h)),
       borderRadius(`px(r)),
       backgroundColor(colorBase),
@@ -99,6 +99,7 @@ let make =
       ~mtSm=mt,
       ~mb=0,
       ~mbSm=mb,
+      ~widthPercent=0.0,
     ) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div
@@ -109,6 +110,7 @@ let make =
         ~r=radius,
         ~colorBase=colorBase->Belt.Option.getWithDefault(theme.loadingBaseColor),
         ~colorLighter=colorLighter->Belt.Option.getWithDefault(theme.loadingSecondaryColor),
+        ~widthPercent,
         (),
       ),
       Styles.mt(~mt, ~mtSm, ()),
