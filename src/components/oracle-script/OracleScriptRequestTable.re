@@ -127,141 +127,132 @@ let make = (~oracleScriptID: ID.OracleScript.t) => {
   let requestsSub = RequestSub.Mini.getListByOracleScript(oracleScriptID, ~pageSize, ~page, ());
   let totalRequestCountSub = RequestSub.countByOracleScript(oracleScriptID);
 
-  let allSub = Sub.all2(requestsSub, totalRequestCountSub);
-
   let isMobile = Media.isMobile();
 
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.tableWrapper>
-    {isMobile
-       ? <Row marginBottom=16>
-           <Col>
-             {switch (allSub) {
-              | Data((_, totalRequestCount)) =>
-                <div className={CssHelper.flexBox()}>
-                  <Text
-                    block=true
-                    value={totalRequestCount |> Format.iPretty}
-                    weight=Text.Semibold
-                    size=Text.Sm
-                  />
-                  <HSpacing size=Spacing.xs />
-                  <Text
-                    block=true
-                    value="Requests"
-                    weight=Text.Semibold
-                    size=Text.Sm
-                    transform=Text.Uppercase
-                  />
-                </div>
-              | _ => <LoadingCensorBar width=100 height=15 />
-              }}
-           </Col>
-         </Row>
-       : <THead>
-           <Row alignItems=Row.Center>
-             <Col col=Col.Two>
-               {switch (allSub) {
-                | Data((_, totalRequestCount)) =>
-                  <div className={CssHelper.flexBox()}>
-                    <Text
-                      block=true
-                      value={totalRequestCount |> Format.iPretty}
-                      weight=Text.Semibold
-                      size=Text.Sm
-                    />
-                    <HSpacing size=Spacing.xs />
-                    <Text
-                      block=true
-                      value="Requests"
-                      weight=Text.Semibold
-                      size=Text.Sm
-                      transform=Text.Uppercase
-                    />
-                  </div>
-                | _ => <LoadingCensorBar width=100 height=15 />
-                }}
-             </Col>
-             <Col col=Col.Four>
-               <Text
-                 block=true
-                 value="Tx Hash"
-                 weight=Text.Semibold
-                 size=Text.Sm
-                 transform=Text.Uppercase
-               />
-             </Col>
-             <Col col=Col.Four>
-               <Text
-                 block=true
-                 value="Report Status"
-                 weight=Text.Semibold
-                 size=Text.Sm
-                 transform=Text.Uppercase
-               />
-             </Col>
-             <Col col=Col.Two>
-               <Text
-                 block=true
-                 value="Timestamp"
-                 weight=Text.Semibold
-                 size=Text.Sm
-                 transform=Text.Uppercase
-                 align=Text.Right
-               />
-             </Col>
-           </Row>
-         </THead>}
-    {switch (allSub) {
-     | Data((requests, requestsCount)) =>
-       let pageCount = Page.getPageCount(requestsCount, pageSize);
-       <>
-         {requestsCount > 0
-            ? requests
-              ->Belt_Array.mapWithIndex((i, e) =>
-                  isMobile
-                    ? <RenderBodyMobile
-                        reserveIndex=i
-                        key={e.id |> ID.Request.toString}
-                        requestsSub={Sub.resolve(e)}
+    {switch (totalRequestCountSub) {
+     | Data(totalRequestCount) when totalRequestCount > 0 =>
+       let pageCount = Page.getPageCount(totalRequestCount, pageSize);
+       switch (requestsSub) {
+       | Data(requests) =>
+         <>
+           {isMobile
+              ? <Row marginBottom=16>
+                  <Col>
+                    <div className={CssHelper.flexBox()}>
+                      <Text
+                        block=true
+                        value={totalRequestCount |> Format.iPretty}
+                        weight=Text.Semibold
+                        size=Text.Sm
                       />
-                    : <RenderBody
-                        key={e.id |> ID.Request.toString}
-                        requestsSub={Sub.resolve(e)}
+                      <HSpacing size=Spacing.xs />
+                      <Text
+                        block=true
+                        value="Requests"
+                        weight=Text.Semibold
+                        size=Text.Sm
+                        transform=Text.Uppercase
                       />
-                )
-              ->React.array
-            : <EmptyContainer>
-                <img
-                  alt="No Request"
-                  src={isDarkMode ? Images.noDataDark : Images.noDataLight}
-                  className=Styles.noDataImage
-                />
-                <Heading
-                  size=Heading.H4
-                  value="No Request"
-                  align=Heading.Center
-                  weight=Heading.Regular
-                  color={theme.textSecondary}
-                />
-              </EmptyContainer>}
-         {isMobile
-            ? React.null
-            : <Pagination
-                currentPage=page
-                pageCount
-                onPageChange={newPage => setPage(_ => newPage)}
-              />}
-       </>;
-     | _ =>
-       Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
-       ->Belt_Array.mapWithIndex((i, noData) =>
-           isMobile
-             ? <RenderBodyMobile reserveIndex=i key={i |> string_of_int} requestsSub=noData />
-             : <RenderBody key={i |> string_of_int} requestsSub=noData />
-         )
-       ->React.array
+                    </div>
+                  </Col>
+                </Row>
+              : <THead>
+                  <Row alignItems=Row.Center>
+                    <Col col=Col.Two>
+                      <div className={CssHelper.flexBox()}>
+                        <Text
+                          block=true
+                          value={totalRequestCount |> Format.iPretty}
+                          weight=Text.Semibold
+                          size=Text.Sm
+                        />
+                        <HSpacing size=Spacing.xs />
+                        <Text
+                          block=true
+                          value="Requests"
+                          weight=Text.Semibold
+                          size=Text.Sm
+                          transform=Text.Uppercase
+                        />
+                      </div>
+                    </Col>
+                    <Col col=Col.Four>
+                      <Text
+                        block=true
+                        value="Tx Hash"
+                        weight=Text.Semibold
+                        size=Text.Sm
+                        transform=Text.Uppercase
+                      />
+                    </Col>
+                    <Col col=Col.Four>
+                      <Text
+                        block=true
+                        value="Report Status"
+                        weight=Text.Semibold
+                        size=Text.Sm
+                        transform=Text.Uppercase
+                      />
+                    </Col>
+                    <Col col=Col.Two>
+                      <Text
+                        block=true
+                        value="Timestamp"
+                        weight=Text.Semibold
+                        size=Text.Sm
+                        transform=Text.Uppercase
+                        align=Text.Right
+                      />
+                    </Col>
+                  </Row>
+                </THead>}
+           {requests
+            ->Belt_Array.mapWithIndex((i, e) =>
+                isMobile
+                  ? <RenderBodyMobile
+                      reserveIndex=i
+                      key={e.id |> ID.Request.toString}
+                      requestsSub={Sub.resolve(e)}
+                    />
+                  : <RenderBody key={e.id |> ID.Request.toString} requestsSub={Sub.resolve(e)} />
+              )
+            ->React.array}
+           {isMobile
+              ? React.null
+              : <Pagination
+                  currentPage=page
+                  pageCount
+                  onPageChange={newPage => setPage(_ => newPage)}
+                />}
+         </>
+       | _ =>
+         Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
+         ->Belt_Array.mapWithIndex((i, noData) =>
+             isMobile
+               ? <RenderBodyMobile reserveIndex=i key={i |> string_of_int} requestsSub=noData />
+               : <RenderBody key={i |> string_of_int} requestsSub=noData />
+           )
+         ->React.array
+       };
+     | Data(totalRequestCount) when totalRequestCount === 0 =>
+       <EmptyContainer>
+         <img
+           alt="No Request Found"
+           src={isDarkMode ? Images.noDataDark : Images.noDataLight}
+           className=Styles.noDataImage
+         />
+         <Heading
+           size=Heading.H4
+           value="No Request Found"
+           align=Heading.Center
+           weight=Heading.Regular
+           color={theme.textSecondary}
+         />
+       </EmptyContainer>
+     | _ => React.null
      }}
   </div>;
 };
