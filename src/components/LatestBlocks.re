@@ -21,7 +21,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~blocksSub) => {
+let make = (~blocksSub: ApolloHooks.Subscription.variant(array(BlockSub.t))) => {
   let isMobile = Media.isMobile();
   let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
   <>
@@ -91,7 +91,7 @@ let make = (~blocksSub) => {
                </div>
              </Col>
            )
-         ->React.array;
+         ->React.array
        | _ =>
          Belt_Array.make(5, ())
          ->Belt.Array.mapWithIndex((i, _) =>

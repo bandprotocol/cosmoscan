@@ -511,8 +511,8 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
            | ProposedBlocks =>
              switch (validatorSub) {
              | Data(validator) =>
-               <ProposedBlocksTable consensusAddress={validator.consensusAddress} />
-             | _ => <ProposedBlocksTable.LoadingWithHeader />
+               <ProposedBlocksTable consensusAddress={Some(validator.consensusAddress)} />
+             | _ => <ProposedBlocksTable consensusAddress=None />
              }
            | Reporters => <ReportersTable address />
            }}

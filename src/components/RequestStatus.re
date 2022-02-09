@@ -11,7 +11,7 @@ let toString =
   | Unknown => "Unknown";
 
 [@react.component]
-let make = (~resolveStatus, ~display=Mini, ~style="") => {
+let make = (~resolveStatus, ~display=Mini, ~style="", ~size=Text.Lg) => {
   <div className={CssHelper.flexBox(~align=`center, ())}>
     {switch (resolveStatus) {
      | RequestSub.Success => <img alt="Success Icon" src=Images.success className=style />
@@ -21,10 +21,7 @@ let make = (~resolveStatus, ~display=Mini, ~style="") => {
      | Unknown => <img alt="Unknown Icon" src=Images.unknown className=style />
      }}
     {display == Full
-       ? <>
-           <HSpacing size=Spacing.sm />
-           <Text value={resolveStatus |> toString} size=Text.Lg />
-         </>
+       ? <> <HSpacing size=Spacing.sm /> <Text value={resolveStatus |> toString} size /> </>
        : React.null}
   </div>;
 };
