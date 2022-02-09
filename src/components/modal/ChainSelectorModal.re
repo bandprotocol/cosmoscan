@@ -28,6 +28,17 @@ module Styles = {
       backgroundColor(theme.inputContrastColor),
       hover([border(`px(1), `solid, theme.textSecondary)]),
     ]);
+
+  let backButton = (theme: Theme.t) =>
+    style([
+      border(`zero, `none, theme.textSecondary),
+      hover([
+        border(`zero, `none, theme.textSecondary),
+        backgroundColor(`rgba((0, 0, 0, `num(0.0)))),
+        color(theme.textPrimary),
+        selector("> i", [color(theme.textPrimary)]),
+      ]),
+    ]);
 };
 
 [@react.component]
@@ -42,6 +53,11 @@ let make = (~targetChain) => {
     SubmitMsg.Send(None, chain)->SubmitTx->OpenModal->dispatchModal;
   };
 
+  let backModal = () => {
+    ModalContext.CloseModal->dispatchModal;
+    SubmitMsg.Send(None, targetChain)->SubmitTx->OpenModal->dispatchModal;
+  };
+
   React.useEffect1(
     () => {
       dispatchModal(DisableExit);
@@ -52,7 +68,16 @@ let make = (~targetChain) => {
   );
 
   <div className=Styles.container>
-    <Heading value="Select Chain" size=Heading.H4 marginBottom=24 />
+    <Button
+      variant=Button.Outline
+      px=0
+      py=0
+      onClick={_ => backModal()}
+      style={Styles.backButton(theme)}>
+      <Icon name="far fa-angle-left" color={theme.textPrimary} size=18 mr=5 />
+      {"Back" |> React.string}
+    </Button>
+    <Heading value="Select Chain" size=Heading.H4 marginBottom=24 marginTop=24 />
     <SearchInput
       placeholder="Search Chain"
       onChange=setSearchTerm
