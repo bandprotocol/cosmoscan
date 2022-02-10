@@ -8,6 +8,7 @@ type resolve_request_t = {
   id: ID.Request.t,
   isIBC: bool,
 };
+
 type internal_t = {
   height: ID.Block.t,
   hash: Hash.t,
@@ -15,7 +16,6 @@ type internal_t = {
   validator: ValidatorSub.Mini.t,
   timestamp: MomentRe.Moment.t,
   transactions_aggregate: transactions_aggregate_t,
-  requests: array(resolve_request_t),
 };
 
 type t = {
@@ -25,10 +25,42 @@ type t = {
   timestamp: MomentRe.Moment.t,
   validator: ValidatorSub.Mini.t,
   txn: int,
+};
+
+let toExternal = ({height, hash, inflation, timestamp, validator, transactions_aggregate}) => {
+  height,
+  hash,
+  inflation,
+  timestamp,
+  validator,
+  txn:
+    switch (transactions_aggregate.aggregate) {
+    | Some(aggregate) => aggregate.count
+    | _ => 0
+    },
+};
+
+type internal_block_t = {
+  height: ID.Block.t,
+  hash: Hash.t,
+  inflation: float,
+  validator: ValidatorSub.Mini.t,
+  timestamp: MomentRe.Moment.t,
+  transactions_aggregate: transactions_aggregate_t,
   requests: array(resolve_request_t),
 };
 
-let toExternal =
+type block_t = {
+  height: ID.Block.t,
+  hash: Hash.t,
+  inflation: float,
+  timestamp: MomentRe.Moment.t,
+  validator: ValidatorSub.Mini.t,
+  txn: int,
+  requests: array(resolve_request_t),
+};
+
+let toExternalBlock =
     ({height, hash, inflation, timestamp, validator, transactions_aggregate, requests}) => {
   height,
   hash,
@@ -41,37 +73,6 @@ let toExternal =
     | _ => 0
     },
   requests,
-};
-
-//TODO: Refactor later
-type internal_block_t = {
-  height: ID.Block.t,
-  hash: Hash.t,
-  inflation: float,
-  validator: ValidatorSub.Mini.t,
-  timestamp: MomentRe.Moment.t,
-  transactions_aggregate: transactions_aggregate_t,
-};
-type block_t = {
-  height: ID.Block.t,
-  hash: Hash.t,
-  inflation: float,
-  timestamp: MomentRe.Moment.t,
-  validator: ValidatorSub.Mini.t,
-  txn: int,
-};
-
-let toExternalBlock = ({height, hash, inflation, timestamp, validator, transactions_aggregate}) => {
-  height,
-  hash,
-  inflation,
-  timestamp,
-  validator,
-  txn:
-    switch (transactions_aggregate.aggregate) {
-    | Some(aggregate) => aggregate.count
-    | _ => 0
-    },
 };
 
 module MultiConfig = [%graphql
@@ -116,10 +117,6 @@ module MultiConsensusAddressConfig = [%graphql
         aggregate @bsRecord {
           count @bsDecoder(fn: "Belt_Option.getExn")
         }
-      }
-      requests(where: {resolve_status: {_neq: "Open"}}) @bsRecord {
-        id @bsDecoder(fn: "ID.Request.fromInt")
-        isIBC: is_ibc
       }
     }
   }
@@ -198,7 +195,7 @@ let get = height => {
     );
   let%Sub x = result;
   switch (x##blocks_by_pk) {
-  | Some(data) => Sub.resolve(data |> toExternal)
+  | Some(data) => Sub.resolve(data |> toExternalBlock)
   | None => NoData
   };
 };
@@ -210,7 +207,7 @@ let getList = (~page, ~pageSize, ()) => {
       MultiConfig.definition,
       ~variables=MultiConfig.makeVariables(~limit=pageSize, ~offset, ()),
     );
-  result |> Sub.map(_, internal => internal##blocks->Belt_Array.map(toExternalBlock));
+  result |> Sub.map(_, internal => internal##blocks->Belt_Array.map(toExternal));
 };
 
 let getListByConsensusAddress = (~address, ~page, ~pageSize, ()) => {
