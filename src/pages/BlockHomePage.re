@@ -1,5 +1,4 @@
-//TODO: Refactor later
-let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(BlockSub.block_t)) => {
+let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <TBody
     key={
@@ -66,9 +65,8 @@ let renderBody = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(Block
     </Row>
   </TBody>;
 };
-//TODO: Refactor later
-let renderBodyMobile =
-    (reserveIndex, blockSub: ApolloHooks.Subscription.variant(BlockSub.block_t)) => {
+
+let renderBodyMobile = (reserveIndex, blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
   switch (blockSub) {
   | Data({height, timestamp, hash, validator, txn}) =>
     <MobileCard
