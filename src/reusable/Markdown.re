@@ -13,8 +13,12 @@ module Styles = {
           hover([color(theme.baseBlue)]),
         ],
       ),
-      selector("p", [color(theme.textSecondary)]),
-      selector("p + p", [marginTop(`em(1.))]),
+      selector("p", [color(theme.textSecondary), marginBottom(`em(1.))]),
+      selector("p:last-child", [color(theme.textSecondary), marginBottom(`em(0.))]),
+      selector(
+        "h2,h3,h4,h5,h6",
+        [color(theme.textSecondary), marginBottom(`px(10)), fontSize(`px(16))],
+      ),
     ]);
 };
 
