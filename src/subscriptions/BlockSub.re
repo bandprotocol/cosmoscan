@@ -8,6 +8,7 @@ type resolve_request_t = {
   id: ID.Request.t,
   isIBC: bool,
 };
+
 type internal_t = {
   height: ID.Block.t,
   hash: Hash.t,
@@ -72,37 +73,6 @@ let toExternalBlock =
     | _ => 0
     },
   requests,
-};
-
-//TODO: Refactor later
-type internal_block_t = {
-  height: ID.Block.t,
-  hash: Hash.t,
-  inflation: float,
-  validator: ValidatorSub.Mini.t,
-  timestamp: MomentRe.Moment.t,
-  transactions_aggregate: transactions_aggregate_t,
-};
-type block_t = {
-  height: ID.Block.t,
-  hash: Hash.t,
-  inflation: float,
-  timestamp: MomentRe.Moment.t,
-  validator: ValidatorSub.Mini.t,
-  txn: int,
-};
-
-let toExternalBlock = ({height, hash, inflation, timestamp, validator, transactions_aggregate}) => {
-  height,
-  hash,
-  inflation,
-  timestamp,
-  validator,
-  txn:
-    switch (transactions_aggregate.aggregate) {
-    | Some(aggregate) => aggregate.count
-    | _ => 0
-    },
 };
 
 module MultiConfig = [%graphql
@@ -237,7 +207,7 @@ let getList = (~page, ~pageSize, ()) => {
       MultiConfig.definition,
       ~variables=MultiConfig.makeVariables(~limit=pageSize, ~offset, ()),
     );
-  result |> Sub.map(_, internal => internal##blocks->Belt_Array.map(toExternalBlock));
+  result |> Sub.map(_, internal => internal##blocks->Belt_Array.map(toExternal));
 };
 
 let getListByConsensusAddress = (~address, ~page, ~pageSize, ()) => {
