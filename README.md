@@ -32,7 +32,7 @@ RPC_URL=http://rpc.laozi-testnet4.bandchain.org GRAPHQL_URL=wss://graphql-lt4.ba
 RPC_URL=https://rpc.laozi1.bandchain.org GRAPHQL_URL=wss://graphql-lm.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi1.bandchain.org/grpc-web yarn parcel index.html
 ```
 
-Serve to [localhost:1234]
+Serve to [localhost:1234](localhost:1234)
 
 ## Build production
 
