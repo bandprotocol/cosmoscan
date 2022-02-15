@@ -46,5 +46,5 @@ jobs:
       - name: Run yarn test
         run: yarn test
 
-      # - name: Run yarn integration-test
-      #   run: yarn integration-test
+      - name: Run yarn integration-test
+        run: yarn integration-test

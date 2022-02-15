@@ -62,20 +62,20 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to undelegate with Band-Validator-9", () => {
-    cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(2)')
-      .wait(1000)
-      .click();
-    cy.get('[id="undelegateAmountInput').type("0.5");
-    cy.get('[id="memoInput"]').type("cypress");
-    cy.get('[id="nextButtonContainer"] > button').click().wait(1000);
-    cy.get('[id="broadcastButtonContainer"] > button').click().wait(1000);
-    cy.get('[id="successMsgContainer"] > span').should(
-      "contain",
-      "Broadcast transaction success"
-    );
-    cy.get('[id="closeModal"]').click();
-  });
+  // it("Should be able to undelegate with Band-Validator-9", () => {
+  //   cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(2)')
+  //     .wait(1000)
+  //     .click();
+  //   cy.get('[id="undelegateAmountInput').type("0.5");
+  //   cy.get('[id="memoInput"]').type("cypress");
+  //   cy.get('[id="nextButtonContainer"] > button').click().wait(1000);
+  //   cy.get('[id="broadcastButtonContainer"] > button').click().wait(1000);
+  //   cy.get('[id="successMsgContainer"] > span').should(
+  //     "contain",
+  //     "Broadcast transaction success"
+  //   );
+  //   cy.get('[id="closeModal"]').click();
+  // });
 
   it("Should be able to redelegate from Band-Validator-9 to WeStaking", () => {
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(3)')
