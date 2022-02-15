@@ -34,7 +34,7 @@ describe("Navigation", () => {
 
       it("Validate latest requests", () => {
         cy.get(
-          '[id="homePageContainer"] > div:nth-of-type(2) > div:nth-of-type(2) > div > div:nth-of-type(1) > div:nth-of-type(1) > h4:nth-of-type(1)'
+          '[id="homePageContainer"] > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > h4:nth-of-type(1)'
         ).should("contain", "Latest Requests");
       });
 
