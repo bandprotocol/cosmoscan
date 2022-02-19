@@ -1,0 +1,50 @@
+name: Cosmoscan Workflow
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  scan-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: "12"
+          cache: "yarn"
+
+      - name: Cache node_modules
+        id: scan-node-modules-cache
+        uses: actions/cache@v1
+        with:
+          path: ./node_modules
+          key: ${{ runner.OS }}-scan-test-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Yarn install deps with node_modules cache
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Run yarn build
+        run: yarn build
+        env:
+          RPC_URL: "http://rpc.laozi-testnet4.bandchain.org"
+          GRAPHQL_URL: "wss://graphql-lt4.bandchain.org/v1/graphql"
+          LAMBDA_URL: "https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan"
+          GRPC: "https://laozi-testnet4.bandchain.org/grpc-web"
+          FAUCET_URL: "https://laozi-testnet4.bandchain.org/faucet"
+
+      - name: Run install cypress
+        run: yarn cypress install
+
+      - name: Run yarn test
+        run: yarn test
+
+      - name: Run yarn integration-test
+        run: yarn integration-test

@@ -32,11 +32,13 @@
 [@bs.module] external noDelegatorDark: string = "./no-delegator-dark.png";
 [@bs.module] external noOracleDark: string = "./no-oracle-dark.png";
 [@bs.module] external noDataDark: string = "./no-data-dark.png";
+[@bs.module] external noRequestDark: string = "./no-request-dark.png";
 
 [@bs.module] external noTxLight: string = "./no-tx-light.png";
 [@bs.module] external noDelegatorLight: string = "./no-delegator-light.png";
 [@bs.module] external noOracleLight: string = "./no-oracle-light.png";
 [@bs.module] external noDataLight: string = "./no-data-light.png";
+[@bs.module] external noRequestLight: string = "./no-request-light.png";
 
 // HomePage
 [@bs.module] external bandToken: string = "./band-token.svg";

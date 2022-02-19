@@ -21,12 +21,22 @@ type t = {
   loading: bool,
 };
 
+type result_t = {
+  data: option(Js.Json.t),
+  loading: bool,
+};
+
 [@bs.val] [@bs.module "axios-hooks"]
 external _context: (string, context_config_t) => (t, (unit, unit) => unit) = "default";
 
 let use = url => {
   let (rawdata, _) = _context(url, context_config_t(~useCache=false));
   Js.undefinedToOption(rawdata->dataGet);
+};
+
+let useLoadable = url => {
+  let (rawdata, _) = _context(url, context_config_t(~useCache=false));
+  {data: Js.undefinedToOption(rawdata->dataGet), loading: rawdata->loadingGet};
 };
 
 let useWithReload = url => {
