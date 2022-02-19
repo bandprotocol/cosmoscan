@@ -26,7 +26,7 @@ type generate_t =
   | Nothing
   | Generating
   | Success
-  | Error(string);
+  | Error;
 
 type block_t = {timestamp: MomentRe.Moment.t};
 
@@ -50,7 +50,8 @@ let make = (~address) => {
   let inputRef = React.useRef(Js.Nullable.null);
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let dateNow = Js.Date.make();
-  let currentDateStart = Js.Date.fromFloat(Js.Date.setHours(Js.Date.make(), 0.00));
+  let currentDateStart =
+    Js.Date.fromFloat(Js.Date.setHoursM(Js.Date.make(), ~hours=0., ~minutes=0., ()));
 
   let (dateStart, setDateStart) = React.useState(_ => currentDateStart);
   let (dateEnd, setDateEnd) = React.useState(_ => dateNow);
@@ -100,7 +101,11 @@ let make = (~address) => {
         msg="From"
         placeholderText="From"
         selected=dateStart
-        onChange=setDateStart
+        onChange={date =>
+          setDateStart(_ =>
+            Js.Date.fromFloat(Js.Date.setHoursM(date, ~hours=0.0, ~minutes=0.0, ()))
+          )
+        }
         selectsStart=true
         startDate=dateStart
         endDate=dateEnd
@@ -111,7 +116,11 @@ let make = (~address) => {
         msg="To"
         placeholderText="To"
         selected=dateEnd
-        onChange=setDateEnd
+        onChange={date =>
+          setDateEnd(_ =>
+            Js.Date.fromFloat(Js.Date.setHoursM(date, ~hours=23.0, ~minutes=59.0, ()))
+          )
+        }
         selectsStart=true
         selectsEnd=true
         startDate=dateStart
@@ -128,7 +137,7 @@ let make = (~address) => {
       <Icon name="fal fa-exclamation-circle" color={theme.textSecondary} />
       <HSpacing size=Spacing.sm />
       <Text
-        value="The exported transactions will be limited to 400 transactions. Please choose a small range to export."
+        value="The exported transactions will be limited to 50 transactions. Please choose a small range to export."
         size=Text.Md
       />
     </div>
@@ -137,7 +146,7 @@ let make = (~address) => {
        | Generating =>
          <div className={CssHelper.flexBox(~justify=`center, ())}>
            <LoadingCensorBar.CircleSpin size=30 height=30 />
-           <Text value="Generating CSV File..." />
+           <Heading value="Generating CSV File..." size=Heading.H5 marginTop=8 />
          </div>
        | _ =>
          <Button
@@ -155,6 +164,10 @@ let make = (~address) => {
                       ->CSVGenerator.create
                     );
                     setGenerate(_ => Success);
+                    Js.Promise.resolve();
+                  })
+               |> Js.Promise.catch(err => {
+                    setGenerate(_ => Error);
                     Js.Promise.resolve();
                   });
              ();

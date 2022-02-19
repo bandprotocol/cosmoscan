@@ -30,7 +30,7 @@ type account_transactions_t = {transaction: internal_t};
 module TxQueryByBlockTimestampConfig = [%graphql
   {|
   query TxQueryBlockTimestamp($address: String!, $greater:timestamp, $less: timestamp) {
-    account_transactions(limit: 350, order_by: {transaction_id: desc}, where: {account: {address: {_eq: $address}}, transaction: {block: {timestamp: {_gte: $greater, _lte: $less}}}}) @bsRecord {
+    account_transactions(limit: 50, order_by: {transaction_id: desc}, where: {account: {address: {_eq: $address}}, transaction: {block: {timestamp: {_gte: $greater, _lte: $less}}}}) @bsRecord {
       transaction @bsRecord {
           txHash: hash @bsDecoder(fn: "GraphQLParser.hash")
           blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
