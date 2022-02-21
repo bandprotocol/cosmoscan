@@ -73,11 +73,11 @@ module Mini = {
   module MultiMiniByDataSourceConfig = [%graphql
     {|
       subscription RequestsMiniByDataSource($id: Int!, $limit: Int!, $offset: Int!) {
-        rawDataRequests: raw_requests ( where: { data_source_id: { _eq: $id } } limit: $limit offset: $offset order_by: { data_source_id: desc }) @bsRecord {
-        request @bsRecord {
-          id @bsDecoder(fn: "ID.Request.fromInt")
-          clientID: client_id
-          requestTime: request_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
+        rawDataRequests: raw_requests ( where: { data_source_id: { _eq: $id } } limit: $limit offset: $offset order_by: { request_id: desc }) @bsRecord {
+          request @bsRecord {
+            id @bsDecoder(fn: "ID.Request.fromInt")
+            clientID: client_id
+            requestTime: request_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
             resolveTime: resolve_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
             sender @bsDecoder(fn: "GraphQLParser.addressOpt")
             calldata @bsDecoder(fn: "GraphQLParser.buffer")
