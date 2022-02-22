@@ -157,126 +157,130 @@ let make = (~dataSourceID: ID.DataSource.t) => {
     {switch (totalRequestCountSub) {
      | Data(totalRequestCount) when totalRequestCount > 0 =>
        let pageCount = Page.getPageCount(totalRequestCount, pageSize);
-       switch (requestsSub) {
-       | Data(requests) =>
-         <>
-           {isMobile
-              ? <Row marginBottom=16>
-                  <Col>
-                    <div className={CssHelper.flexBox()}>
+       <>
+         {isMobile
+            ? <Row marginBottom=16>
+                <Col>
+                  <div className={CssHelper.flexBox()}>
+                    <Text
+                      block=true
+                      value={totalRequestCount |> Format.iPretty}
+                      weight=Text.Semibold
+                      size=Text.Sm
+                    />
+                    <HSpacing size=Spacing.xs />
+                    <Text
+                      block=true
+                      value="Requests"
+                      weight=Text.Semibold
+                      size=Text.Sm
+                      transform=Text.Uppercase
+                    />
+                  </div>
+                </Col>
+              </Row>
+            : <>
+                <THead>
+                  <Row alignItems=Row.Center>
+                    <Col col=Col.Two>
+                      <div className={CssHelper.flexBox()}>
+                        <Text
+                          block=true
+                          value={totalRequestCount |> Format.iPretty}
+                          weight=Text.Semibold
+                          transform=Text.Uppercase
+                          size=Text.Sm
+                        />
+                        <HSpacing size=Spacing.xs />
+                        <Text
+                          block=true
+                          value="Requests"
+                          weight=Text.Semibold
+                          transform=Text.Uppercase
+                          size=Text.Sm
+                        />
+                      </div>
+                    </Col>
+                    <Col col=Col.Two>
                       <Text
                         block=true
-                        value={totalRequestCount |> Format.iPretty}
+                        value="Fee Earned"
                         weight=Text.Semibold
+                        transform=Text.Uppercase
                         size=Text.Sm
                       />
-                      <HSpacing size=Spacing.xs />
+                    </Col>
+                    <Col col=Col.Three>
                       <Text
                         block=true
-                        value="Requests"
+                        value="Oracle Script"
                         weight=Text.Semibold
+                        transform=Text.Uppercase
                         size=Text.Sm
+                      />
+                    </Col>
+                    <Col col=Col.Three>
+                      <Text
+                        block=true
+                        value="Report Status"
+                        size=Text.Sm
+                        weight=Text.Semibold
                         transform=Text.Uppercase
                       />
-                    </div>
-                  </Col>
-                </Row>
-              : <>
-                  <THead>
-                    <Row alignItems=Row.Center>
-                      <Col col=Col.Two>
-                        <div className={CssHelper.flexBox()}>
-                          <Text
-                            block=true
-                            value={totalRequestCount |> Format.iPretty}
-                            weight=Text.Semibold
-                            transform=Text.Uppercase
-                            size=Text.Sm
-                          />
-                          <HSpacing size=Spacing.xs />
-                          <Text
-                            block=true
-                            value="Requests"
-                            weight=Text.Semibold
-                            transform=Text.Uppercase
-                            size=Text.Sm
-                          />
-                        </div>
-                      </Col>
-                      <Col col=Col.Two>
-                        <Text
-                          block=true
-                          value="Fee Earned"
-                          weight=Text.Semibold
-                          transform=Text.Uppercase
-                          size=Text.Sm
-                        />
-                      </Col>
-                      <Col col=Col.Three>
-                        <Text
-                          block=true
-                          value="Oracle Script"
-                          weight=Text.Semibold
-                          transform=Text.Uppercase
-                          size=Text.Sm
-                        />
-                      </Col>
-                      <Col col=Col.Three>
-                        <Text
-                          block=true
-                          value="Report Status"
-                          size=Text.Sm
-                          weight=Text.Semibold
-                          transform=Text.Uppercase
-                        />
-                      </Col>
-                      <Col col=Col.Two>
-                        <Text
-                          block=true
-                          value="Timestamp"
-                          weight=Text.Semibold
-                          size=Text.Sm
-                          align=Text.Right
-                          transform=Text.Uppercase
-                        />
-                      </Col>
-                    </Row>
-                  </THead>
-                </>}
-           <>
-             {requests
-              ->Belt_Array.mapWithIndex((i, e) =>
-                  isMobile
-                    ? <RenderBodyMobile
-                        key={e.id |> ID.Request.toString}
-                        reserveIndex=i
-                        requestsSub={Sub.resolve(e)}
+                    </Col>
+                    <Col col=Col.Two>
+                      <Text
+                        block=true
+                        value="Timestamp"
+                        weight=Text.Semibold
+                        size=Text.Sm
+                        align=Text.Right
+                        transform=Text.Uppercase
                       />
-                    : <RenderBody
-                        key={e.id |> ID.Request.toString}
-                        theme
-                        requestsSub={Sub.resolve(e)}
-                      />
-                )
-              ->React.array}
-           </>
-           {isMobile
-              ? React.null
-              : <Pagination
-                  currentPage=page
-                  pageCount
-                  onPageChange={newPage => setPage(_ => newPage)}
-                />}
-         </>
-       | _ =>
-         Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
-         ->Belt_Array.mapWithIndex((i, noData) =>
-             isMobile
-               ? <RenderBodyMobile key={i |> string_of_int} reserveIndex=i requestsSub=noData />
-               : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
-           )
-         ->React.array
-       };
+                    </Col>
+                  </Row>
+                </THead>
+              </>}
+         {switch (requestsSub) {
+          | Data(requests) =>
+            <>
+              {requests
+               ->Belt_Array.mapWithIndex((i, e) =>
+                   isMobile
+                     ? <RenderBodyMobile
+                         key={e.id |> ID.Request.toString}
+                         reserveIndex=i
+                         requestsSub={Sub.resolve(e)}
+                       />
+                     : <RenderBody
+                         key={e.id |> ID.Request.toString}
+                         theme
+                         requestsSub={Sub.resolve(e)}
+                       />
+                 )
+               ->React.array}
+              {isMobile
+                 ? React.null
+                 : <Pagination
+                     currentPage=page
+                     pageCount
+                     onPageChange={newPage => setPage(_ => newPage)}
+                   />}
+            </>
+          | _ =>
+            Belt_Array.make(pageSize, ApolloHooks.Subscription.NoData)
+            ->Belt_Array.mapWithIndex((i, noData) =>
+                isMobile
+                  ? <RenderBodyMobile
+                      key={i |> string_of_int}
+                      reserveIndex=i
+                      requestsSub=noData
+                    />
+                  : <RenderBody key={i |> string_of_int} theme requestsSub=noData />
+              )
+            ->React.array
+          }}
+       </>;
      | Data(totalRequestCount) when totalRequestCount === 0 =>
        <EmptyContainer>
          <img
