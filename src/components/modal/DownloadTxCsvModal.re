@@ -51,7 +51,7 @@ let make = (~address) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let dateNow = Js.Date.make();
   let currentDateStart =
-    Js.Date.fromFloat(Js.Date.setHoursM(Js.Date.make(), ~hours=0., ~minutes=0., ()));
+    Js.Date.fromFloat(Js.Date.setUTCHoursM(Js.Date.make(), ~hours=0., ~minutes=0., ()));
 
   let (dateStart, setDateStart) = React.useState(_ => currentDateStart);
   let (dateEnd, setDateEnd) = React.useState(_ => dateNow);
@@ -103,7 +103,7 @@ let make = (~address) => {
         selected=dateStart
         onChange={date =>
           setDateStart(_ =>
-            Js.Date.fromFloat(Js.Date.setHoursM(date, ~hours=0.0, ~minutes=0.0, ()))
+            Js.Date.fromFloat(Js.Date.setUTCHoursM(date, ~hours=0.0, ~minutes=0.0, ()))
           )
         }
         selectsStart=true
@@ -118,7 +118,7 @@ let make = (~address) => {
         selected=dateEnd
         onChange={date =>
           setDateEnd(_ =>
-            Js.Date.fromFloat(Js.Date.setHoursM(date, ~hours=23.0, ~minutes=59.0, ()))
+            Js.Date.fromFloat(Js.Date.setUTCHoursM(date, ~hours=23.0, ~minutes=59.0, ()))
           )
         }
         selectsStart=true
