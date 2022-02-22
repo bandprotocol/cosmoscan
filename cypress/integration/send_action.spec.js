@@ -37,13 +37,13 @@ describe("Send", () => {
 });
 
 describe("Delegation", () => {
-  it("Should be able to delegate with Band-Validator-1", () => {
+  it("Should be able to delegate with Band-Validator-9", () => {
     cy.get('[id="navigationBar"] > div > a').contains("Validator").click();
     cy.get(
       '[id="validatorsSection"] > div:nth-of-type(3) > div > div > div:nth-of-type(2) > a > span'
     )
       .wait(500)
-      .contains("Band-Validator-1")
+      .contains("Band-Validator-9")
       .click();
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(1)')
       .wait(1000)
@@ -62,22 +62,7 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to undelegate with Band-Validator-1", () => {
-    cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(2)')
-      .wait(1000)
-      .click();
-    cy.get('[id="undelegateAmountInput').type("0.5");
-    cy.get('[id="memoInput"]').type("cypress");
-    cy.get('[id="nextButtonContainer"] > button').click().wait(1000);
-    cy.get('[id="broadcastButtonContainer"] > button').click().wait(1000);
-    cy.get('[id="successMsgContainer"] > span').should(
-      "contain",
-      "Broadcast transaction success"
-    );
-    cy.get('[id="closeModal"]').click();
-  });
-
-  it("Should be able to redelegate from Band-Validator-1 to WeStaking", () => {
+  it("Should be able to redelegate from Band-Validator-9 to WeStaking", () => {
     cy.get('[id="validatorDelegationinfoDlegate"] button:nth-of-type(3)')
       .click()
       .wait(1000);
@@ -97,7 +82,7 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to withdraw reward with Band-Validator-1", () => {
+  it("Should be able to withdraw reward with Band-Validator-9", () => {
     cy.get('[id="withdrawRewardContainer"] > button:nth-of-type(1)')
       .click()
       .wait(1000);
@@ -111,7 +96,7 @@ describe("Delegation", () => {
     cy.get('[id="closeModal"]').click();
   });
 
-  it("Should be able to reinvest with Band-Validator-1", () => {
+  it("Should be able to reinvest with Band-Validator-9", () => {
     cy.get('[id="withdrawRewardContainer"] > button:nth-of-type(2)')
       .click()
       .wait(1000);
