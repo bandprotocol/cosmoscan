@@ -110172,30 +110172,6 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "no_vote",
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "no_with_veto_vote",
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "proposal_id",
             "type": {
               "kind": "SCALAR",
@@ -111004,30 +110980,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "no_vote",
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "no_with_veto_vote",
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
               "ofType": null
             },
             "description": null
@@ -122039,36 +121991,6 @@
       },
       {
         "inputFields": [
-          {
-            "name": "abstain",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "no",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "no_with_veto",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
           {
             "name": "abstain",
             "defaultValue": null,
