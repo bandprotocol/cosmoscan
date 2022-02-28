@@ -20,6 +20,9 @@ let mapImages = [|
   [|{j|https://www.coingecko.com/en/coins/band-protocol|j}, Images.coingeckoSvg, "CoinGecko"|],
 |];
 
+let currentYear = Js.Date.getFullYear(Js.Date.make());
+let yearString = Js.Float.toString(currentYear);
+
 [@react.component]
 let make = () => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
@@ -54,7 +57,7 @@ let make = () => {
             <HSpacing size={`px(5)} />
             <Icon name="far fa-copyright" color={theme.white} />
             <HSpacing size={`px(5)} />
-            <Text block=true value="2021" weight=Text.Semibold color={theme.white} />
+            <Text block=true value=yearString weight=Text.Semibold color={theme.white} />
           </div>
         </Col>
       </Row>
