@@ -305,8 +305,8 @@ module ExecutionPart = {
     let (callDataArr, setCallDataArr) = React.useState(_ => Belt_Array.make(numParams, ""));
     let (clientID, setClientID) = React.useState(_ => "from_scan");
     let (feeLimit, setFeeLimit) = React.useState(_ => "100");
-    let (prepareGas, setPrepareGas) = React.useState(_ => "30000");
-    let (executeGas, setExecuteGas) = React.useState(_ => "50000");
+    let (prepareGas, setPrepareGas) = React.useState(_ => "");
+    let (executeGas, setExecuteGas) = React.useState(_ => "");
     let (askCount, setAskCount) = React.useState(_ => "1");
     let (minCount, setMinCount) = React.useState(_ => "1");
     let (result, setResult) = React.useState(_ => Nothing);
@@ -389,8 +389,18 @@ module ExecutionPart = {
                    </div>}
               <ClientIDInput clientID setClientID />
               <ValueInput value=feeLimit setValue=setFeeLimit title="Fee Limit" info="(uband)" />
-              <ValueInput value=prepareGas setValue=setPrepareGas title="Prepare Gas" />
-              <ValueInput value=executeGas setValue=setExecuteGas title="Execute Gas" />
+              <ValueInput
+                value=prepareGas
+                setValue=setPrepareGas
+                title="Prepare Gas"
+                info="(optional)"
+              />
+              <ValueInput
+                value=executeGas
+                setValue=setExecuteGas
+                title="Execute Gas"
+                info="(optional)"
+              />
               <SeperatedLine />
               {switch (validatorCount) {
                | Data(count) =>
