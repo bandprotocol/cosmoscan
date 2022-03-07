@@ -248,6 +248,26 @@ let make = (~proposalID) => {
                    </div>
                  </Col>
                </Row>
+               | Data(({name}, _, _))
+               when
+                 name->Js.String2.includes(
+                   "Increase max_raw_request_count from 12 to 16",
+                 ) =>
+             <Row>
+               <Col col=Col.Four mbSm=8>
+                 <Heading
+                   value="Parameter Changes"
+                   size=Heading.H4
+                   weight=Heading.Thin
+                   color={theme.textSecondary}
+                 />
+               </Col>
+               <Col col=Col.Eight>
+                 <div className={Styles.parameterChanges(theme)}>
+                   <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
+                 </div>
+               </Col>
+             </Row>
              | _ => React.null
              }}
           </InfoContainer>
