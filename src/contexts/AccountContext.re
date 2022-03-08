@@ -69,8 +69,18 @@ let reducer = state =>
                   sender: address,
                   clientID,
                   feeLimitList: [|feeLimitCoin|],
-                  prepareGas: prepareGas |> int_of_string,
-                  executeGas: executeGas |> int_of_string,
+                  prepareGas: {
+                    switch (prepareGas) {
+                    | "" => None
+                    | _ => Some(prepareGas |> int_of_string)
+                    };
+                  },
+                  executeGas: {
+                    switch (executeGas) {
+                    | "" => None
+                    | _ => Some(executeGas |> int_of_string)
+                    };
+                  },
                 }),
               |],
               ~chainID,
