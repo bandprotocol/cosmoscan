@@ -3,12 +3,14 @@ type pos_t =
   | Title
   | Subtitle
   | Text
-  | Mini;
+  | Mini
+  | Highlight;
 
 let fontSize =
   fun
   | Landing => Text.Xxxl
-  | Title => Text.Xxl
+  | Title
+  | Highlight => Text.Xxl
   | Subtitle => Text.Lg
   | Text => Text.Md
   | Mini => Text.Sm;
@@ -19,7 +21,8 @@ let lineHeight =
   | Title => Text.Px(23)
   | Subtitle => Text.Px(18)
   | Text => Text.Px(16)
-  | Mini => Text.Px(16);
+  | Mini => Text.Px(16)
+  | Highlight => Text.Px(24);
 
 module Styles = {
   open Css;
@@ -37,7 +40,8 @@ module Styles = {
     | Landing
     | Subtitle
     | Text
-    | Mini => style([pointerEvents(`auto)]);
+    | Mini
+    | Highlight => style([pointerEvents(`auto)]);
 };
 
 module ComponentCreator = (RawID: ID.IDSig) => {
