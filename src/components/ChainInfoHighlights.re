@@ -54,7 +54,7 @@ module Styles = {
           flexDirection(`column),
           height(`percent(100.)),
           position(`relative),
-          overflow(`scroll),
+          overflowY(`scroll),
           padding2(~v=`zero, ~h=`px(24)),
           firstChild([after([border(`zero, `none, white)])]),
           after([
@@ -66,7 +66,7 @@ module Styles = {
             position(`absolute),
           ]),
           Media.mobile([
-            overflow(`visible),
+            overflowY(`visible),
             padding2(~v=`px(24), ~h=`zero),
             after([
               borderTop(`px(1), `solid, theme.tableRowBorderColor),
@@ -222,7 +222,11 @@ module RowHighlightCard = {
        | _ =>
          <>
            <>
-             <Col col=Col.Three> <LoadingContentBlock spacing=16 /> </Col>
+             <Col col=Col.Three>
+               <LoadingContentBlock spacing=16 />
+               <VSpacing size={`px(16)} />
+               <LoadingContentBlock spacing=8 />
+             </Col>
              <Col col=Col.Three>
                <LoadingContentBlock spacing=16 />
                <VSpacing size={`px(16)} />
@@ -284,9 +288,10 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
           ) = allSub;
           {
             let circulatingSupply = financial.circulatingSupply;
+            let onChainSupply = financial.onchainSupply;
             let totalBondedToken = bondedTokenCount |> Coin.getBandAmountFromCoin;
             let bondedRatio =
-              (totalBondedToken /. circulatingSupply *. 100.)
+              (totalBondedToken /. onChainSupply *. 100.)
               ->Js.Float.toFixedWithPrecision(~digits=2)
               ++ "%";
             let activeValidators = activeValidatorCount->Format.iPretty ++ " Nodes";
@@ -297,9 +302,18 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 <CardContentBlock
                   label="Circulating Supply"
                   textSize=Text.Xxl
-                  value={financial.circulatingSupply |> Format.fPretty}
+                  value={circulatingSupply |> Format.fPretty}
                   valueColor={theme.textPrimary}
                   spacing=16
+                  suffix=true
+                />
+                <VSpacing size={`px(16)} />
+                <CardContentBlock
+                  label="On-Chain Supply"
+                  textSize=Text.Xxl
+                  value={onChainSupply |> Format.fPretty}
+                  valueColor={theme.textPrimary}
+                  spacing=8
                   suffix=true
                 />
               </Col>
@@ -307,7 +321,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 <CardContentBlock
                   label="Total BAND Bonded"
                   textSize=Text.Xxl
-                  value={bondedTokenCount |> Coin.getBandAmountFromCoin |> Format.fPretty}
+                  value={totalBondedToken |> Format.fPretty}
                   valueColor={theme.textPrimary}
                   spacing=16
                   suffix=true

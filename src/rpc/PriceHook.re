@@ -5,6 +5,7 @@ type t = {
   btcPrice: float,
   btcMarketCap: float,
   circulatingSupply: float,
+  onchainSupply: float,
 };
 
 let getBandUsd24Change = () => {
@@ -88,15 +89,33 @@ let getPrices = () => {
      );
 };
 
+let getOnChainSupply = () => {
+  Axios.get("https://laozi1.bandchain.org/api/cosmos/bank/v1beta1/supply ")
+  |> Js.Promise.then_(result => {
+       Promise.ret(
+         {
+           let chainSupply =
+             result##data##supply
+             ->Belt.Array.map(Coin.decodeCoin)
+             ->Belt_List.fromArray
+             ->Coin.getBandAmountFromCoins;
+
+           chainSupply;
+         },
+       )
+     });
+};
+
 let getBandInfo = client => {
   // TODO
   // let ratesPromise = client->BandChainJS.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
   let ratesPromise = getPrices();
   let supplyPromise = getCirculatingSupply();
   let usd24HrChangePromise = getBandUsd24Change();
+  let onchainSupplyPromise = getOnChainSupply();
 
-  let%Promise (rates, usd24HrChange, supply) =
-    Js.Promise.all3((ratesPromise, usd24HrChangePromise, supplyPromise));
+  let%Promise (rates, usd24HrChange, supply, onchainSupply) =
+    Js.Promise.all4((ratesPromise, usd24HrChangePromise, supplyPromise, onchainSupplyPromise));
 
   let bandInfoOpt = {
     let%Opt (bandUsd, bandBtc) = rates;
@@ -107,6 +126,7 @@ let getBandInfo = client => {
       btcPrice: bandBtc,
       btcMarketCap: bandBtc *. supply,
       circulatingSupply: supply,
+      onchainSupply,
     });
   };
 
