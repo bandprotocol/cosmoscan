@@ -182,7 +182,7 @@ module HighlightCard = {
            let marketCap = "$" ++ (financial.usdMarketCap |> Format.fCurrency);
            <>
              <CardContentBlock
-               label="Band price"
+               label="Band Price"
                textSize=Text.Xxl
                value=bandPriceInUSD
                valueColor={theme.white}
