@@ -8,21 +8,38 @@ describe("Navigation", () => {
       })
 
       it("Validate highlight info", () => {
-        cy.get('[id="highlight-token"] > span:nth-of-type(1)').should(
+        cy.get('[id="Band Price"] > span:nth-of-type(1)').should(
           "contain",
           "Band Price"
         )
-        cy.get('[id="highlight-Market Cap"] > span:nth-of-type(1)').should(
+        cy.get('[id="Market Cap"] > span:nth-of-type(1)').should(
           "contain",
           "Market Cap"
         )
-        cy.get('[id="highlight-Latest Block"] > span:nth-of-type(1)').should(
+        cy.get('[id="Circulating Supply"] > span:nth-of-type(1)').should(
+          "contain",
+          "Circulating Supply"
+        )
+        cy.get('[id="On-Chain Supply"] > span:nth-of-type(1)').should(
+          "contain",
+          "On-Chain Supply"
+        )
+        cy.get('[id="Total BAND Bonded"] > span:nth-of-type(1)').should(
+          "contain",
+          "Total BAND Bonded"
+        )
+        cy.get('[id="Bonded Ratio"] > span:nth-of-type(1)').should(
+          "contain",
+          "Bonded Ratio"
+        )
+        cy.get('[id="Latest Block"] > span:nth-of-type(1)').should(
           "contain",
           "Latest Block"
         )
-        cy.get(
-          '[id="highlight-Active Validators"] > span:nth-of-type(1)'
-        ).should("contain", "Active Validators")
+        cy.get('[id="Active Validators"] > span:nth-of-type(1)').should(
+          "contain",
+          "Active Validators"
+        )
       })
 
       it("Validate total request graph", () => {

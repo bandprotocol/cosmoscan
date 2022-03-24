@@ -119,7 +119,7 @@ module CardContentBlock = {
         ~suffix=false,
         ~special=false,
       ) => {
-    <div className={special ? "" : Styles.mobileRow}>
+    <div id=label className={special ? "" : Styles.mobileRow}>
       <Text value=label size=Text.Lg />
       <VSpacing size={`px(spacing)} />
       <div>
@@ -158,7 +158,7 @@ module LoadingContentBlock = {
 
 module HighlightCard = {
   [@react.component]
-  let make = (~label, ~priceHookSub: ApolloHooks.Subscription.variant(BandScan.PriceHook.t)) => {
+  let make = (~priceHookSub: ApolloHooks.Subscription.variant(BandScan.PriceHook.t)) => {
     let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
     let isMobile = Media.isMobile();
 
@@ -166,7 +166,6 @@ module HighlightCard = {
       {!isMobile
          ? <img alt="Band Token" src=Images.bandToken className=Styles.bandToken /> : React.null}
       <div
-        id={"highlight-" ++ label}
         className={Css.merge([
           Styles.innerCard(theme),
           CssHelper.flexBox(
@@ -269,7 +268,6 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
   <Row justify=Row.Between>
     <Col col=Col.Three colSm=Col.Twelve mbSm=16>
       <HighlightCard
-        label="token"
         priceHookSub={
           let%Sub (_, {financial}, _) = allSub;
 
@@ -336,7 +334,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 />
               </Col>
               <Col col=Col.Three>
-                <div className=Styles.mobileRow>
+                <div id="Latest Block" className=Styles.mobileRow>
                   <Text value="Latest Block" size=Text.Lg />
                   <VSpacing size={`px(16)} />
                   <TypeID.Block id=height position=TypeID.Highlight />
