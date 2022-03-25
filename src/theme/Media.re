@@ -4,12 +4,14 @@ open Webapi.Dom;
 
 type t =
   | Sm
-  | Md;
+  | Md
+  | Lg;
 
 let getBreakpoint =
   fun
   | Sm => 370
-  | Md => 768;
+  | Md => 768
+  | Lg => 1024;
 
 let query = (size, styles) => {
   let breakpoint = getBreakpoint(size);
@@ -34,8 +36,10 @@ let useQuery = (~size, ()) => {
   width <= breakpoint;
 };
 
+let tablet = styles => query(Lg, styles);
 let mobile = styles => query(Md, styles);
 let smallMobile = styles => query(Sm, styles);
 
+let isTablet = useQuery(~size=Lg);
 let isMobile = useQuery(~size=Md);
 let isSmallMobile = useQuery(~size=Sm);

@@ -4,6 +4,7 @@ module Styles = {
   let card = (theme: Theme.t) =>
     style([
       backgroundColor(theme.secondaryBg),
+      height(`percent(100.)),
       position(`relative),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
@@ -15,6 +16,7 @@ module Styles = {
       position(`relative),
       zIndex(2),
       minHeight(`px(188)),
+      height(`percent(100.)),
       padding2(~v=`px(24), ~h=`px(32)),
       Media.mobile([padding2(~v=`px(24), ~h=`px(16)), minHeight(`px(106))]),
       firstChild([
@@ -37,12 +39,11 @@ module Styles = {
       display(`flex),
       flexDirection(`row),
       flexWrap(`wrap),
-      alignItems(`start),
       backgroundColor(theme.secondaryBg),
+      minHeight(`px(188)),
       position(`relative),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
-      height(`px(188)),
       padding2(~v=`px(24), ~h=`zero),
       Media.smallMobile([margin2(~v=`zero, ~h=`px(-5))]),
       Media.mobile([padding2(~v=`zero, ~h=`px(16)), minHeight(`px(146)), height(`auto)]),
@@ -52,9 +53,7 @@ module Styles = {
           display(`flex),
           justifyContent(`spaceBetween),
           flexDirection(`column),
-          height(`percent(100.)),
           position(`relative),
-          overflowY(`scroll),
           padding2(~v=`zero, ~h=`px(24)),
           firstChild([after([border(`zero, `none, white)])]),
           after([
@@ -66,7 +65,6 @@ module Styles = {
             position(`absolute),
           ]),
           Media.mobile([
-            overflowY(`visible),
             padding2(~v=`px(24), ~h=`zero),
             after([
               borderTop(`px(1), `solid, theme.tableRowBorderColor),
@@ -91,7 +89,7 @@ module Styles = {
     ]);
 
   let bandToken =
-    style([position(`absolute), width(`percent(60.)), top(`percent(-40.)), right(`zero)]);
+    style([position(`absolute), width(`percent(60.)), top(`px(-60)), right(`zero)]);
 
   let mobileRow =
     style([
@@ -108,24 +106,15 @@ module Styles = {
 };
 module CardContentBlock = {
   [@react.component]
-  let make =
-      (
-        ~label,
-        ~textSize: Text.size,
-        ~value,
-        ~valueColor,
-        ~spacing,
-        ~roboto=true,
-        ~suffix=false,
-        ~special=false,
-      ) => {
+  let make = (~label, ~value, ~valueColor, ~spacing, ~roboto=true, ~suffix=false, ~special=false) => {
+    let isTablet = Media.isTablet();
     <div id=label className={special ? "" : Styles.mobileRow}>
-      <Text value=label size=Text.Lg />
+      <Text value=label size={isTablet ? Text.Md : Text.Lg} />
       <VSpacing size={`px(spacing)} />
       <div>
         <Text
           value
-          size=textSize
+          size={isTablet ? Text.Xl : Text.Xxl}
           weight=Text.Semibold
           color=valueColor
           height={Text.Px(24)}
@@ -134,7 +123,7 @@ module CardContentBlock = {
         {suffix
            ? <Text
                value="\nBAND"
-               size=Text.Md
+               size={isTablet ? Text.Sm : Text.Md}
                weight=Text.Semibold
                color=valueColor
                height={Text.Px(24)}
@@ -182,7 +171,6 @@ module HighlightCard = {
            <>
              <CardContentBlock
                label="Band Price"
-               textSize=Text.Xxl
                value=bandPriceInUSD
                valueColor={theme.white}
                spacing=16
@@ -191,7 +179,6 @@ module HighlightCard = {
              />
              <CardContentBlock
                label="Market Cap"
-               textSize=Text.Xxl
                value=marketCap
                valueColor={theme.white}
                spacing={isMobile ? 16 : 8}
@@ -265,6 +252,8 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
     Sub.all3(activeValidatorCountSub, bondedTokenCountSub, inactiveValidatorCountSub);
   let allSub = Sub.all3(latestBlockSub, infoSub, validatorInfoSub);
 
+  let isTablet = Media.isTablet();
+
   <Row justify=Row.Between>
     <Col col=Col.Three colSm=Col.Twelve mbSm=16>
       <HighlightCard
@@ -299,7 +288,6 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Col col=Col.Three>
                 <CardContentBlock
                   label="Circulating Supply"
-                  textSize=Text.Xxl
                   value={circulatingSupply |> Format.fPretty}
                   valueColor={theme.textPrimary}
                   spacing=16
@@ -308,7 +296,6 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 <VSpacing size={`px(16)} />
                 <CardContentBlock
                   label="On-Chain Supply"
-                  textSize=Text.Xxl
                   value={onChainSupply |> Format.fPretty}
                   valueColor={theme.textPrimary}
                   spacing=8
@@ -318,7 +305,6 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Col col=Col.Three>
                 <CardContentBlock
                   label="Total BAND Bonded"
-                  textSize=Text.Xxl
                   value={totalBondedToken |> Format.fPretty}
                   valueColor={theme.textPrimary}
                   spacing=16
@@ -327,7 +313,6 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 <VSpacing size={`px(16)} />
                 <CardContentBlock
                   label="Bonded Ratio"
-                  textSize=Text.Xxl
                   value=bondedRatio
                   valueColor={theme.textPrimary}
                   spacing=8
@@ -335,7 +320,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               </Col>
               <Col col=Col.Three>
                 <div id="Latest Block" className=Styles.mobileRow>
-                  <Text value="Latest Block" size=Text.Lg />
+                  <Text value="Latest Block" size={isTablet ? Text.Md : Text.Lg} />
                   <VSpacing size={`px(16)} />
                   <TypeID.Block id=height position=TypeID.Highlight />
                 </div>
@@ -353,7 +338,6 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Col col=Col.Three>
                 <CardContentBlock
                   label="Active Validators"
-                  textSize=Text.Xxl
                   value=activeValidators
                   valueColor={theme.textPrimary}
                   spacing=16
