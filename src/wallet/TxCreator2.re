@@ -113,7 +113,7 @@ let createRawTx = (~sender, ~msgs, ~chainID, ~feeAmount, ~gas, ~memo, ~client, (
 };
 
 let broadcast = (client, txRawBytes) => {
-  let%Promise response = client->BandChainJS.Client.sendTxBlockMode(txRawBytes);
+  let%Promise response = client->BandChainJS.Client.sendTxSyncMode(txRawBytes);
   Promise.ret(
     Tx(
       JsonUtils.Decode.{
