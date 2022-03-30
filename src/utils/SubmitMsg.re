@@ -24,5 +24,5 @@ let gasLimit =
   | Undelegate(_)
   | Vote(_)
   | WithdrawReward(_)
-  | Reinvest(_) => 200000
+  | Reinvest(_)
   | Redelegate(_) => 300000;
