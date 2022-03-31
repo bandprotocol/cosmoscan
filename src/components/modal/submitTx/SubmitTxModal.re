@@ -42,17 +42,57 @@ module Styles = {
   let nextBtn = style([width(`percent(100.)), marginTop(`px(24))]);
 
   let info = style([display(`flex), justifyContent(`spaceBetween), alignItems(`center)]);
+  let toggle = style([cursor(`pointer), zIndex(100)]);
+  let advancedOptions = (show, theme: Theme.t) => {
+    style([
+      marginTop(`px(10)),
+      transition(~duration=200, "all"),
+      maxHeight(show ? `px(100) : `zero),
+      opacity(show ? 1. : 0.),
+      overflow(`hidden),
+    ]);
+  };
+
+  let listContainer = style([width(`percent(100.)), marginBottom(`px(7))]);
+};
+
+module ValueInput = {
+  [@react.component]
+  let make = (~value, ~setValue, ~title, ~info=?, ~inputType="text") => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <div className=Styles.listContainer>
+      <div className={CssHelper.flexBox()}>
+        <Text value=title weight=Text.Semibold transform=Text.Capitalize />
+        <HSpacing size=Spacing.xs />
+        <Text value={info->Belt.Option.getWithDefault("")} weight=Text.Semibold />
+      </div>
+      <VSpacing size=Spacing.sm />
+      <input
+        className={EnhanceTxInput.Styles.input(theme)}
+        type_=inputType
+        onChange={event => {
+          let newVal = ReactEvent.Form.target(event)##value;
+          setValue(_ => newVal);
+        }}
+        value
+      />
+    </div>;
+  };
 };
 
 module SubmitTxStep = {
   [@react.component]
   let make = (~account: AccountContext.t, ~setRawTx, ~isActive, ~msg) => {
+    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
     let client = React.useContext(ClientContext.context);
+    let (show, setShow) = React.useState(_ => false);
     let (msgsOpt, setMsgsOpt) = React.useState(_ => None);
 
     let gas = SubmitMsg.gasLimit(msg);
     let fee = 5000.;
     let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
+    let (gasInput, setGasInput) = React.useState(_ => "");
+    // let (gasInput, setGasInput) =React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
 
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
       <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
@@ -78,6 +118,40 @@ module SubmitTxStep = {
         placeholder="Memo"
         id="memoInput"
       />
+      <div
+        onClick={_ => setShow(prev => !prev)}
+        className={Css.merge([CssHelper.flexBox(~justify=`center, ()), Styles.toggle])}>
+        <Text
+          block=true
+          value={show ? "Hide Advanced Options" : "Show Advanced Options"}
+          weight=Text.Semibold
+          color={theme.textPrimary}
+        />
+        <HSpacing size=Spacing.xs />
+        <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color={theme.textSecondary} />
+      </div>
+      <div className={Styles.advancedOptions(show, theme)}>
+        <ValueInput
+          value=gasInput
+          setValue=setGasInput
+          title="Gas Limit"
+          info="(optional)"
+          inputType="number"
+        />
+        {switch (int_of_string_opt(gasInput)) {
+         | Some(gasInputAmout) =>
+           gasInputAmout < 200000
+             ? <div>
+                 <Text
+                   value="Gas limit must be at least 200,000"
+                   size=Text.Sm
+                   color=Theme.failColor
+                 />
+               </div>
+             : React.null
+         | _ => React.null
+         }}
+      </div>
       <SeperatedLine />
       <div className=Styles.info>
         <Text value="Transaction Fee" size=Text.Md weight=Text.Medium nowrap=true block=true />
@@ -98,7 +172,12 @@ module SubmitTxStep = {
                    ~msgs,
                    ~chainID=account.chainID,
                    ~feeAmount=fee |> Js.Float.toString,
-                   ~gas,
+                   ~gas={
+                     switch (gasInput) {
+                     | "" => gas
+                     | _ => gasInput |> int_of_string
+                     };
+                   },
                    ~memo=memo',
                    ~client,
                    (),
