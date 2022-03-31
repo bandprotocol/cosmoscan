@@ -92,7 +92,6 @@ module SubmitTxStep = {
     let fee = 5000.;
     let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
     let (gasInput, setGasInput) = React.useState(_ => "");
-    // let (gasInput, setGasInput) =React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
 
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
       <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
