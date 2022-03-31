@@ -12,6 +12,7 @@ module Client = {
     (t, array(string), int, int) => Js.Promise.t(array(reference_data_t)) =
     "getReferenceData";
   [@bs.send] external sendTxBlockMode: (t, JsBuffer.t) => Js.Promise.t('a) = "sendTxBlockMode";
+  [@bs.send] external sendTxSyncMode: (t, JsBuffer.t) => Js.Promise.t('a) = "sendTxSyncMode";
 };
 
 module PubKey = {

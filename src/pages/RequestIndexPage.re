@@ -661,7 +661,8 @@ let make = (~reqID) => {
             <InfoContainer>
               <div className={Css.merge([CssHelper.flexBox(~justify=`spaceBetween, ())])}>
                 <Heading value="Proof of validity" size=Heading.H4 />
-                <AbsoluteLink href="https://docs.bandchain.org/">
+                <AbsoluteLink
+                  href="https://docs.bandchain.org/whitepaper/terminology.html#oracle-data-proof">
                   <div className={CssHelper.flexBox()}>
                     <Heading value="What is proof ?" size=Heading.H5 />
                     <HSpacing size=Spacing.sm />
