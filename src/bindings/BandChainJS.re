@@ -73,7 +73,9 @@ module MsgVote = {
 
 module MsgRequest = {
   [@bs.module "@bandprotocol/bandchain.js"] [@bs.scope "Message"] [@bs.new]
-  external create: (int, JsBuffer.t, int, int, string, string, array(Coin.t), int, int) => msg_t =
+  external create:
+    (int, JsBuffer.t, int, int, string, string, array(Coin.t), option(int), option(int)) =>
+    msg_t =
     "MsgRequestData";
 };
 

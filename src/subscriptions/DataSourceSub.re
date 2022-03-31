@@ -60,7 +60,7 @@ let toExternal =
 module MultiConfig = [%graphql
   {|
   subscription DataSources($limit: Int!, $offset: Int!, $searchTerm: String!) {
-    data_sources(limit: $limit, offset: $offset, where: {name: {_ilike: $searchTerm}}, order_by: {transaction: {block: {timestamp: desc}}, id: desc}) @bsRecord {
+    data_sources(limit: $limit, offset: $offset, where: {name: {_ilike: $searchTerm}}, order_by: {transaction: {block: {timestamp: desc_nulls_last}}, id: desc}) @bsRecord {
       id @bsDecoder(fn: "ID.DataSource.fromInt")
       owner @bsDecoder(fn: "Address.fromBech32")
       treasury @bsDecoder(fn: "Address.fromBech32")
