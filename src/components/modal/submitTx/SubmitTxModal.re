@@ -88,7 +88,6 @@ module SubmitTxStep = {
     let (show, setShow) = React.useState(_ => false);
     let (msgsOpt, setMsgsOpt) = React.useState(_ => None);
 
-    let gas = SubmitMsg.gasLimit(msg);
     let fee = 5000.;
     let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
     let (gasInput, setGasInput) = React.useState(_ => "");
@@ -172,9 +171,9 @@ module SubmitTxStep = {
                    ~chainID=account.chainID,
                    ~feeAmount=fee |> Js.Float.toString,
                    ~gas={
-                     switch (gasInput) {
-                     | "" => gas
-                     | _ => gasInput |> int_of_string
+                     switch (int_of_string_opt(gasInput)) {
+                     | Some(gasOpt) => gasOpt
+                     | None => SubmitMsg.gasLimit(msg)
                      };
                    },
                    ~memo=memo',
