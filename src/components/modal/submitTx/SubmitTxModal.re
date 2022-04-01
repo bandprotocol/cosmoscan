@@ -88,9 +88,11 @@ module SubmitTxStep = {
     let (show, setShow) = React.useState(_ => false);
     let (msgsOpt, setMsgsOpt) = React.useState(_ => None);
 
+    let gasLimit = SubmitMsg.gasLimit(msg);
+
     let fee = 5000.;
     let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
-    let (gasInput, setGasInput) = React.useState(_ => "300000");
+    let (gasInput, setGasInput) = React.useState(_ => string_of_int(gasLimit));
 
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
       <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
@@ -138,7 +140,7 @@ module SubmitTxStep = {
         />
         {switch (int_of_string_opt(gasInput)) {
          | Some(gasInputAmout) =>
-           gasInputAmout < 300000
+           gasInputAmout < gasLimit
              ? {
                <div>
                  <Text
@@ -164,7 +166,7 @@ module SubmitTxStep = {
           style=Styles.nextBtn
           disabled={
             switch (int_of_string_opt(gasInput)) {
-            | Some(gasOpt) => gasOpt < 300000 || msgsOpt->Belt.Option.isNone
+            | Some(gasOpt) => gasOpt < gasLimit || msgsOpt->Belt.Option.isNone
             | None => msgsOpt->Belt.Option.isNone
             }
           }
@@ -182,7 +184,7 @@ module SubmitTxStep = {
                    ~gas={
                      switch (int_of_string_opt(gasInput)) {
                      | Some(gasOpt) => gasOpt
-                     | None => SubmitMsg.gasLimit(msg)
+                     | None => gasLimit
                      };
                    },
                    ~memo=memo',
