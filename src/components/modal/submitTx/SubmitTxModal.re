@@ -90,7 +90,7 @@ module SubmitTxStep = {
 
     let fee = 5000.;
     let (memo, setMemo) = React.useState(_ => EnhanceTxInput.{text: "", value: Some("")});
-    let (gasInput, setGasInput) = React.useState(_ => "");
+    let (gasInput, setGasInput) = React.useState(_ => "300000");
 
     <div className={Css.merge([Styles.container, Styles.disable(isActive)])}>
       <Heading value={SubmitMsg.toString(msg)} size=Heading.H4 marginBottom=24 />
@@ -138,15 +138,19 @@ module SubmitTxStep = {
         />
         {switch (int_of_string_opt(gasInput)) {
          | Some(gasInputAmout) =>
-           gasInputAmout < 200000
-             ? <div>
+           gasInputAmout < 300000
+             ? {
+               <div>
                  <Text
-                   value="Gas limit must be at least 200,000"
+                   value="Gas limit must be at least 300,000"
                    size=Text.Sm
                    color=Theme.failColor
                  />
-               </div>
-             : React.null
+               </div>;
+             }
+             : {
+               React.null;
+             }
          | _ => React.null
          }}
       </div>
@@ -158,7 +162,12 @@ module SubmitTxStep = {
       <div id="nextButtonContainer">
         <Button
           style=Styles.nextBtn
-          disabled={msgsOpt->Belt.Option.isNone}
+          disabled={
+            switch (int_of_string_opt(gasInput)) {
+            | Some(gasOpt) => gasOpt < 300000 || msgsOpt->Belt.Option.isNone
+            | None => msgsOpt->Belt.Option.isNone
+            }
+          }
           onClick={_ => {
             let rawTxOpt =
               {let%Opt memo' = memo.value;
