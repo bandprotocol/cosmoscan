@@ -307,6 +307,7 @@ module ExecutionPart = {
     let (feeLimit, setFeeLimit) = React.useState(_ => "100");
     let (prepareGas, setPrepareGas) = React.useState(_ => "");
     let (executeGas, setExecuteGas) = React.useState(_ => "");
+    let (gaslimit, setGaslimit) = React.useState(_ => "");
     let (askCount, setAskCount) = React.useState(_ => "1");
     let (minCount, setMinCount) = React.useState(_ => "1");
     let (result, setResult) = React.useState(_ => Nothing);
@@ -401,6 +402,12 @@ module ExecutionPart = {
                 title="Execute Gas"
                 info="(optional)"
               />
+              <ValueInput
+                value=gaslimit
+                setValue=setGaslimit
+                title="Gas Limit"
+                info="(optional)"
+              />
               <SeperatedLine />
               {switch (validatorCount) {
                | Data(count) =>
@@ -449,6 +456,7 @@ module ExecutionPart = {
                                  feeLimit,
                                  prepareGas,
                                  executeGas,
+                                 gaslimit,
                                },
                                client,
                              ),
