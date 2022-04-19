@@ -218,10 +218,6 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
     address->QRCode->OpenModal->dispatchModal;
   };
 
-  let downloadCsv = () => {
-    address->DownloadTxCSV->OpenModal->dispatchModal;
-  };
-
   <Section>
     <div className=CssHelper.container>
       <Row marginBottom=40 marginBottomSm=16>
@@ -431,15 +427,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
       <Row>
         <Col>
           <InfoContainer>
-            <div
-              className={Css.merge([
-                CssHelper.flexBox(~direction=`row, ~justify=`spaceBetween, ~align=`center, ()),
-              ])}>
-              <Heading value="Transactions" size=Heading.H4 />
-              <Button variant=Button.Outline py=5 onClick={_ => {downloadCsv()}}>
-                {"Export CSV" |> React.string}
-              </Button>
-            </div>
+            <Heading value="Transactions" size=Heading.H4 />
             <SeperatedLine mt=32 mb=0 />
             <AccountIndexTransactions accountAddress=address />
           </InfoContainer>

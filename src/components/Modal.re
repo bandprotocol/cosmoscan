@@ -1,5 +1,6 @@
 module Styles = {
   open Css;
+
   let overlay = isFadeOut =>
     style([
       display(`flex),
@@ -34,6 +35,7 @@ module Styles = {
       left(`percent(50.)),
       backgroundColor(theme.secondaryBg),
       borderRadius(`px(8)),
+      overflow(`hidden),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       animation(
         ~duration=Config.modalFadingDutation,
@@ -109,16 +111,9 @@ let make = () => {
   switch (modalStateOpt) {
   | None => React.null
   | Some({modal, canExit, closing}) =>
-    let overflowProp = () => {
-      switch (modal) {
-      | DownloadTxCSV(_) => CssHelper.overflowVisible
-      | _ => CssHelper.overflowHidden
-      };
-    };
-
     <div className={Styles.overlay(closing)} onClick={_ => {canExit ? closeModal() : ()}}>
       <div
-        className={Css.merge([Styles.content(closing, theme), overflowProp()])}
+        className={Styles.content(closing, theme)}
         onClick={e => ReactEvent.Mouse.stopPropagation(e)}>
         <div
           id="closeModal"
@@ -132,11 +127,10 @@ let make = () => {
          | SubmitTx(msg) => <SubmitTxModal msg />
          | ChainSelector(targetChain) => <ChainSelectorModal targetChain />
          | QRCode(address) => <QRCodeModal address />
-         | DownloadTxCSV(address) => <DownloadTxCsvModal address />
          | IBCPacketError(reason) => <IBCPacketFailModal reason />
          | Syncing => <SyncingModal />
          }}
       </div>
-    </div>;
+    </div>
   };
 };

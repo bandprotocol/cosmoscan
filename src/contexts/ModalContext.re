@@ -3,7 +3,6 @@ type modal_t =
   | SubmitTx(SubmitMsg.t)
   | ChainSelector(IBCConnectionQuery.target_chain_t)
   | QRCode(Address.t)
-  | DownloadTxCSV(Address.t)
   | IBCPacketError(string)
   | Syncing;
 
