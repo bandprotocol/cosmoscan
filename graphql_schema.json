@@ -114301,6 +114301,18 @@
             "description": "An aggregated array relationship"
           },
           {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "validator_report_count",
+            "type": {
+              "kind": "OBJECT",
+              "name": "validator_report_count",
+              "ofType": null
+            },
+            "description": "An object relationship"
+          },
+          {
             "args": [
               {
                 "name": "distinct_on",
@@ -115360,6 +115372,16 @@
             "description": null
           },
           {
+            "name": "validator_report_count",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "validator_report_count_bool_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
             "name": "validator_votes",
             "defaultValue": null,
             "type": {
@@ -115782,6 +115804,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "val_requests_arr_rel_insert_input",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "validator_report_count",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "validator_report_count_obj_rel_insert_input",
               "ofType": null
             },
             "description": null
@@ -117126,6 +117158,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "val_requests_aggregate_order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "validator_report_count",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "validator_report_count_order_by",
               "ofType": null
             },
             "description": null
