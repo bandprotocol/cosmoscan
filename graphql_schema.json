@@ -12356,6 +12356,180 @@
               }
             },
             "description": null
+          },
+          {
+            "args": [
+              {
+                "name": "distinct_on",
+                "defaultValue": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "interchain_accounts_select_column",
+                      "ofType": null
+                    }
+                  }
+                },
+                "description": "distinct select on columns"
+              },
+              {
+                "name": "limit",
+                "defaultValue": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "description": "limit the number of rows returned"
+              },
+              {
+                "name": "offset",
+                "defaultValue": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "description": "skip the first n rows. Use only with order_by"
+              },
+              {
+                "name": "order_by",
+                "defaultValue": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "interchain_accounts_order_by",
+                      "ofType": null
+                    }
+                  }
+                },
+                "description": "sort the rows by one or more columns"
+              },
+              {
+                "name": "where",
+                "defaultValue": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "interchain_accounts_bool_exp",
+                  "ofType": null
+                },
+                "description": "filter the rows returned"
+              }
+            ],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "interchain_accounts",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "interchain_accounts",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "description": "An array relationship"
+          },
+          {
+            "args": [
+              {
+                "name": "distinct_on",
+                "defaultValue": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "interchain_accounts_select_column",
+                      "ofType": null
+                    }
+                  }
+                },
+                "description": "distinct select on columns"
+              },
+              {
+                "name": "limit",
+                "defaultValue": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "description": "limit the number of rows returned"
+              },
+              {
+                "name": "offset",
+                "defaultValue": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "description": "skip the first n rows. Use only with order_by"
+              },
+              {
+                "name": "order_by",
+                "defaultValue": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "interchain_accounts_order_by",
+                      "ofType": null
+                    }
+                  }
+                },
+                "description": "sort the rows by one or more columns"
+              },
+              {
+                "name": "where",
+                "defaultValue": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "interchain_accounts_bool_exp",
+                  "ofType": null
+                },
+                "description": "filter the rows returned"
+              }
+            ],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "interchain_accounts_aggregate",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "interchain_accounts_aggregate",
+                "ofType": null
+              }
+            },
+            "description": "An aggregated array relationship"
           }
         ]
       },
@@ -12675,6 +12849,16 @@
               "ofType": null
             },
             "description": null
+          },
+          {
+            "name": "interchain_accounts",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "interchain_accounts_bool_exp",
+              "ofType": null
+            },
+            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -12776,6 +12960,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "interchain_accounts",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "interchain_accounts_arr_rel_insert_input",
               "ofType": null
             },
             "description": null
@@ -13264,6 +13458,16 @@
             "type": {
               "kind": "ENUM",
               "name": "order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "interchain_accounts_aggregate",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "interchain_accounts_aggregate_order_by",
               "ofType": null
             },
             "description": null
@@ -30300,13 +30504,29 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "address",
+            "name": "account",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "accounts",
+                "ofType": null
+              }
+            },
+            "description": "An object relationship"
+          },
+          {
+            "args": [],
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "name": "account_id",
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -30371,22 +30591,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              }
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
                 "ofType": null
               }
             },
@@ -30790,7 +30994,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -30803,7 +31007,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -30862,11 +31066,21 @@
             "description": null
           },
           {
-            "name": "address",
+            "name": "account",
             "defaultValue": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "String_comparison_exp",
+              "name": "accounts_bool_exp",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "account_id",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "description": null
@@ -30910,16 +31124,6 @@
               "ofType": null
             },
             "description": null
-          },
-          {
-            "name": "id",
-            "defaultValue": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
-              "ofType": null
-            },
-            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -30940,12 +31144,6 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "interchain_accounts_id_key",
-            "description": "unique or primary key constraint"
-          },
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
             "name": "interchain_accounts_pkey",
             "description": "unique or primary key constraint"
           }
@@ -30956,7 +31154,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
@@ -30977,11 +31175,21 @@
       {
         "inputFields": [
           {
-            "name": "address",
+            "name": "account",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "accounts_obj_rel_insert_input",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31025,16 +31233,6 @@
               "ofType": null
             },
             "description": null
-          },
-          {
-            "name": "id",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -31058,10 +31256,10 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "address",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31098,18 +31296,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "id",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31119,7 +31305,7 @@
       {
         "inputFields": [
           {
-            "name": "address",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31150,16 +31336,6 @@
           },
           {
             "name": "counterparty_port",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31190,10 +31366,10 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "address",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31230,18 +31406,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "args": [],
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "id",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31251,7 +31415,7 @@
       {
         "inputFields": [
           {
-            "name": "address",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31282,16 +31446,6 @@
           },
           {
             "name": "counterparty_port",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31455,7 +31609,17 @@
       {
         "inputFields": [
           {
-            "name": "address",
+            "name": "account",
+            "defaultValue": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "accounts_order_by",
+              "ofType": null
+            },
+            "description": null
+          },
+          {
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31503,16 +31667,6 @@
               "ofType": null
             },
             "description": null
-          },
-          {
-            "name": "id",
-            "defaultValue": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "description": null
           }
         ],
         "kind": "INPUT_OBJECT",
@@ -31526,14 +31680,14 @@
       {
         "inputFields": [
           {
-            "name": "address",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -31558,7 +31712,7 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "address",
+            "name": "account_id",
             "description": "column name"
           },
           {
@@ -31577,12 +31731,6 @@
             "isDeprecated": false,
             "deprecationReason": null,
             "name": "counterparty_port",
-            "description": "column name"
-          },
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "id",
             "description": "column name"
           }
         ],
@@ -31592,11 +31740,11 @@
       {
         "inputFields": [
           {
-            "name": "address",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31627,16 +31775,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "description": null
-          },
-          {
-            "name": "id",
-            "defaultValue": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "description": null
@@ -31663,7 +31801,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -31676,7 +31814,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31707,7 +31845,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -31720,7 +31858,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31751,7 +31889,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -31764,7 +31902,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31795,7 +31933,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Int",
@@ -31808,7 +31946,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31836,7 +31974,7 @@
           {
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "address",
+            "name": "account_id",
             "description": "column name"
           },
           {
@@ -31856,12 +31994,6 @@
             "deprecationReason": null,
             "name": "counterparty_port",
             "description": "column name"
-          },
-          {
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "name": "id",
-            "description": "column name"
           }
         ],
         "description": "update columns of table \"interchain_accounts\"",
@@ -31880,7 +32012,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -31893,7 +32025,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31924,7 +32056,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -31937,7 +32069,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -31968,7 +32100,7 @@
             "args": [],
             "isDeprecated": false,
             "deprecationReason": null,
-            "name": "id",
+            "name": "account_id",
             "type": {
               "kind": "SCALAR",
               "name": "Float",
@@ -31981,7 +32113,7 @@
       {
         "inputFields": [
           {
-            "name": "id",
+            "name": "account_id",
             "defaultValue": null,
             "type": {
               "kind": "ENUM",
@@ -32993,14 +33125,14 @@
           {
             "args": [
               {
-                "name": "address",
+                "name": "account_id",
                 "defaultValue": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 },
@@ -61025,14 +61157,14 @@
           {
             "args": [
               {
-                "name": "address",
+                "name": "account_id",
                 "defaultValue": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 },
@@ -89359,14 +89491,14 @@
           {
             "args": [
               {
-                "name": "address",
+                "name": "account_id",
                 "defaultValue": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 },
