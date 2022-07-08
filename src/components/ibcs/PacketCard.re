@@ -72,6 +72,7 @@ let make = (~packetSub: ApolloHooks.Subscription.variant(BandScan.IBCQuery.t)) =
          <>
            {switch (packetType) {
             | OracleRequest
+            | InterchainAccount
             | FungibleToken => <PacketDetail.TxHash txHash={txHash |> Belt.Option.getExn} />
             | OracleResponse => <PacketDetail.BlockID blockHeight />
             | _ => React.null

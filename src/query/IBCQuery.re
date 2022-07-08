@@ -32,6 +32,7 @@ type packet_type_t =
   | OracleRequest
   | OracleResponse
   | FungibleToken
+  | InterchainAccount
   | Unknown;
 
 type packet_direction_t =
@@ -62,6 +63,7 @@ let parsePacketTypeOpt =
   | Some("oracle_request") => OracleRequest
   | Some("oracle response") => OracleResponse
   | Some("fungible_token") => FungibleToken
+  | Some("interchain_account") => InterchainAccount
   | _ => Unknown;
 
 let getPacketTypeText =
@@ -69,6 +71,7 @@ let getPacketTypeText =
   | OracleRequest => "Oracle Request"
   | OracleResponse => "Oracle Response"
   | FungibleToken => "Fungible Token"
+  | InterchainAccount => "Interchain Account"
   | Unknown => "Unknown";
 
 let getPacketStatus =
@@ -143,6 +146,7 @@ let toExternal =
       JsonUtils.Decode.{
         data:
           switch (packetType) {
+          | InterchainAccount
           | OracleRequest => Request(ack |> OracleRequestAcknowledge.decode)
           | OracleResponse
           | FungibleToken
@@ -223,6 +227,7 @@ let getList =
     | "Oracle Request" => Some("oracle_request")
     | "Oracle Response" => Some("oracle response")
     | "Fungible Token" => Some("fungible_token")
+    | "Interchain Account" => Some("interchain_account")
     | "Unknown"
     | "" => None
     | _ => raise(Not_found)
