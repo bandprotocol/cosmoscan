@@ -48,6 +48,8 @@ module Mini = {
     rawDataRequests: array(raw_request_t),
   };
 
+  type raw_request_internal_t = {request: request_internal};
+
   type t = {
     id: ID.Request.t,
     sender: option(Address.t),
@@ -71,46 +73,43 @@ module Mini = {
   module MultiMiniByDataSourceConfig = [%graphql
     {|
       subscription RequestsMiniByDataSource($id: Int!, $limit: Int!, $offset: Int!) {
-        requests(
-          where: {raw_requests: {data_source_id: {_eq: $id}}}
-          limit: $limit
-          offset: $offset
-          order_by: {id: desc}
-        ) @bsRecord {
-          id @bsDecoder(fn: "ID.Request.fromInt")
-          clientID: client_id
-          requestTime: request_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
-          resolveTime: resolve_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
-          sender @bsDecoder(fn: "GraphQLParser.addressOpt")
-          calldata @bsDecoder(fn: "GraphQLParser.buffer")
-          oracleScript: oracle_script @bsRecord {
-            scriptID: id @bsDecoder(fn: "ID.OracleScript.fromInt")
-            name
-            schema
-          }
-          transactionOpt: transaction @bsRecord {
-            hash @bsDecoder(fn: "GraphQLParser.hash")
-            blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
-            block @bsRecord {
-              timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
+        rawDataRequests: raw_requests ( where: { data_source_id: { _eq: $id } } limit: $limit offset: $offset order_by: { request_id: desc }) @bsRecord {
+          request @bsRecord {
+            id @bsDecoder(fn: "ID.Request.fromInt")
+            clientID: client_id
+            requestTime: request_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
+            resolveTime: resolve_time @bsDecoder(fn: "GraphQLParser.fromUnixSecondOpt")
+            sender @bsDecoder(fn: "GraphQLParser.addressOpt")
+            calldata @bsDecoder(fn: "GraphQLParser.buffer")
+            oracleScript: oracle_script @bsRecord {
+              scriptID: id @bsDecoder(fn: "ID.OracleScript.fromInt")
+              name
+              schema
             }
-            gasFee: gas_fee @bsDecoder(fn: "GraphQLParser.coins")
-          }
-          reportsAggregate: reports_aggregate @bsRecord {
-            aggregate @bsRecord {
-              count @bsDecoder(fn: "Belt_Option.getExn")
+            transactionOpt: transaction @bsRecord {
+              hash @bsDecoder(fn: "GraphQLParser.hash")
+              blockHeight: block_height @bsDecoder(fn: "ID.Block.fromInt")
+              block @bsRecord {
+                timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
+              }
+              gasFee: gas_fee @bsDecoder(fn: "GraphQLParser.coins")
             }
-          }
-          resolveStatus: resolve_status  @bsDecoder(fn: "parseResolveStatus")
-          minCount: min_count
-          requestedValidatorsAggregate: val_requests_aggregate @bsRecord {
-            aggregate @bsRecord {
-              count @bsDecoder(fn: "Belt_Option.getExn")
+            reportsAggregate: reports_aggregate @bsRecord {
+              aggregate @bsRecord {
+                count @bsDecoder(fn: "Belt_Option.getExn")
+              }
             }
-          }
-          result @bsDecoder(fn: "GraphQLParser.optionBuffer")
-          rawDataRequests: raw_requests(order_by: {external_id: asc} , where: {data_source_id: {_eq: $id}}) @bsRecord {
-            fee @bsDecoder (fn: "GraphQLParser.coin")
+            resolveStatus: resolve_status  @bsDecoder(fn: "parseResolveStatus")
+            minCount: min_count
+            requestedValidatorsAggregate: val_requests_aggregate @bsRecord {
+              aggregate @bsRecord {
+                count @bsDecoder(fn: "Belt_Option.getExn")
+              }
+            }
+            result @bsDecoder(fn: "GraphQLParser.optionBuffer")
+            rawDataRequests: raw_requests(order_by: {external_id: asc}) @bsRecord {
+              fee @bsDecoder (fn: "GraphQLParser.coin")
+            }
           }
         }
       }
@@ -267,7 +266,10 @@ module Mini = {
             (),
           ),
       );
-    result |> Sub.map(_, x => x##requests->Belt_Array.map(toExternal));
+    result
+    |> Sub.map(_, x =>
+         x##rawDataRequests->Belt_Array.mapWithIndex((_, each) => toExternal(each.request))
+       );
   };
 
   let getListByOracleScript = (id, ~page, ~pageSize, ()) => {

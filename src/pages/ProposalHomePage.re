@@ -67,7 +67,7 @@ module ProposalCard = {
     <Col key={reserveIndex |> string_of_int} mb=24 mbSm=16>
       <InfoContainer>
         <Row marginBottom=18>
-          <Col col=Col.Eight colSm=Col.Eight>
+          <Col col=Col.Eleven colSm=Col.Ten>
             <div
               className={Css.merge([
                 CssHelper.flexBox(),
@@ -105,7 +105,7 @@ module ProposalCard = {
               </div>
             </div>
           </Col>
-          <Col col=Col.Four colSm=Col.Four>
+          <Col col=Col.One colSm=Col.Two>
             <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
               {switch (proposalSub) {
                | Data({id}) =>

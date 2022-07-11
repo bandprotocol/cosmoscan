@@ -12,6 +12,7 @@ module Client = {
     (t, array(string), int, int) => Js.Promise.t(array(reference_data_t)) =
     "getReferenceData";
   [@bs.send] external sendTxBlockMode: (t, JsBuffer.t) => Js.Promise.t('a) = "sendTxBlockMode";
+  [@bs.send] external sendTxSyncMode: (t, JsBuffer.t) => Js.Promise.t('a) = "sendTxSyncMode";
 };
 
 module PubKey = {
@@ -72,7 +73,9 @@ module MsgVote = {
 
 module MsgRequest = {
   [@bs.module "@bandprotocol/bandchain.js"] [@bs.scope "Message"] [@bs.new]
-  external create: (int, JsBuffer.t, int, int, string, string, array(Coin.t), int, int) => msg_t =
+  external create:
+    (int, JsBuffer.t, int, int, string, string, array(Coin.t), option(int), option(int)) =>
+    msg_t =
     "MsgRequestData";
 };
 

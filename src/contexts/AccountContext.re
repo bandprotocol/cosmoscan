@@ -15,6 +15,7 @@ type send_request_t = {
   feeLimit: string,
   prepareGas: string,
   executeGas: string,
+  gaslimit: string,
 };
 
 type a =
@@ -43,6 +44,7 @@ let reducer = state =>
         feeLimit,
         prepareGas,
         executeGas,
+        gaslimit,
       },
       client,
     ) =>
@@ -69,12 +71,27 @@ let reducer = state =>
                   sender: address,
                   clientID,
                   feeLimitList: [|feeLimitCoin|],
-                  prepareGas: prepareGas |> int_of_string,
-                  executeGas: executeGas |> int_of_string,
+                  prepareGas: {
+                    switch (prepareGas) {
+                    | "" => None
+                    | _ => Some(prepareGas |> int_of_string)
+                    };
+                  },
+                  executeGas: {
+                    switch (executeGas) {
+                    | "" => None
+                    | _ => Some(executeGas |> int_of_string)
+                    };
+                  },
                 }),
               |],
               ~chainID,
-              ~gas=700000,
+              ~gas={
+                switch (int_of_string_opt(gaslimit)) {
+                | Some(gasOpt) => gasOpt
+                | _ => 700000
+                };
+              },
               ~feeAmount="0",
               ~memo="send via scan",
               ~client,

@@ -26,7 +26,7 @@ describe("Navigation", () => {
       });
 
       it("Validate total request graph", () => {
-        cy.get('[id="totalRequestsGraphSection"] > h4:nth-of-type(1)').should(
+        cy.get('[id="totalRequestsGraphSection"] > div > h4:nth-of-type(1)').should(
           "contain",
           "Total Requests"
         );
@@ -34,19 +34,19 @@ describe("Navigation", () => {
 
       it("Validate latest requests", () => {
         cy.get(
-          '[id="latestRequestsSectionHeader"] > div:nth-of-type(1) > span:nth-of-type(1)'
+          '[id="homePageContainer"] > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > h4:nth-of-type(1)'
         ).should("contain", "Latest Requests");
       });
 
       it("Validate latest blocks", () => {
         cy.get(
-          '[id="latestBlocksSectionHeader"] > div:nth-of-type(1) > span:nth-of-type(1)'
+          '[id="homePageContainer"] > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > h4:nth-of-type(1)'
         ).should("contain", "Latest Blocks");
       });
 
       it("Validate latest transactions", () => {
         cy.get(
-          '[id="latestTransactionsSectionHeader"] > div:nth-of-type(1) > span:nth-of-type(1)'
+          '[id="homePageContainer"] > div:nth-of-type(3) > div:nth-of-type(2) > div > div:nth-of-type(1) > div:nth-of-type(1) > h4:nth-of-type(1)'
         ).should("contain", "Latest Transactions");
       });
     });
@@ -74,7 +74,7 @@ describe("Navigation", () => {
 
     describe("Should be able to render Blocks page", () => {
       it("Validate title", () => {
-        cy.get('[id="blocksSection"] h2').should("contain", "All Blocks");
+        cy.get('[id="blocksSection"] h2').should("contain", "Blocks");
       });
     });
   });

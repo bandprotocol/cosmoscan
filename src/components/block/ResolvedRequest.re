@@ -28,7 +28,7 @@ module RequestsList = {
 };
 
 [@react.component]
-let make = (~blockSub: ApolloHooks.Subscription.variant(BlockSub.t)) => {
+let make = (~blockSub: ApolloHooks.Subscription.variant(BlockSub.block_t)) => {
   let (tabIndex, setTabIndex) = React.useState(_ => 0);
   let setTab = index => setTabIndex(_ => index);
 

@@ -34,7 +34,7 @@ let make = () => {
            />
          </>
        : React.null}
-    <div className={Css.merge([CssHelper.container, Styles.content])}>
+    <div className={Css.merge([CssHelper.container, Styles.content])} id="homePageContainer">
       <ChainInfoHighlights latestBlockSub />
       <Row marginTop=24>
         <Col col=Col.Six mbSm=24> <TotalRequestsGraph latest5RequestSub /> </Col>

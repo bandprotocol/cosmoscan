@@ -6,8 +6,8 @@ type request_params_t = {
   clientID: string,
   sender: Address.t,
   feeLimitList: array(BandChainJS.Coin.t),
-  prepareGas: int,
-  executeGas: int,
+  prepareGas: option(int),
+  executeGas: option(int),
 };
 
 type ibc_transfer_t = {
@@ -113,7 +113,7 @@ let createRawTx = (~sender, ~msgs, ~chainID, ~feeAmount, ~gas, ~memo, ~client, (
 };
 
 let broadcast = (client, txRawBytes) => {
-  let%Promise response = client->BandChainJS.Client.sendTxBlockMode(txRawBytes);
+  let%Promise response = client->BandChainJS.Client.sendTxSyncMode(txRawBytes);
   Promise.ret(
     Tx(
       JsonUtils.Decode.{

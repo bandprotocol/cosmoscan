@@ -67,7 +67,7 @@ module Price = {
 
 let getPrices = () => {
   Axios.get(
-    "https://lcd-lp.bandchain.org/oracle/v1/request_prices?ask_count=4&min_count=3&symbols=BAND&symbols=BTC",
+    "https://laozi1.bandchain.org/api/oracle/v1/request_prices?ask_count=16&min_count=10&symbols=BAND&symbols=BTC",
   )
   |> Js.Promise.then_(result =>
        Promise.ret(

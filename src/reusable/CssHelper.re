@@ -85,3 +85,4 @@ let infoContainer =
 // Helper
 
 let overflowHidden = style([overflow(`hidden)]);
+let overflowVisible = style([overflow(`visible)]);

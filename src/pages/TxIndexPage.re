@@ -17,7 +17,7 @@ module Styles = {
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
     ]);
-  let notfoundLogo = style([width(`px(180)), marginRight(`px(10))]);
+  let notfoundLogo = style([width(`auto), height(`px(90)), marginRight(`px(0))]);
 };
 
 module TxNotFound = {
