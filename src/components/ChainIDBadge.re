@@ -75,7 +75,8 @@ let parseChainID =
   | "band-laozi-testnet1"
   | "band-laozi-testnet2"
   | "band-laozi-testnet3"
-  | "band-laozi-testnet4" => LaoziTestnet
+  | "band-laozi-testnet4"
+  | "band-laozi-testnet5-testing" => LaoziTestnet
   | "laozi-mainnet" => LaoziMainnet
   | "band-laozi-poa" => LaoziPOA
   | _ => Unknown;
@@ -88,7 +89,7 @@ let getLink =
   | GuanYuDevnet => "https://guanyu-devnet.cosmoscan.io/"
   | GuanYuTestnet => "https://guanyu-testnet4.cosmoscan.io/"
   | GuanYuPOA => "https://guanyu-poa.cosmoscan.io/"
-  | LaoziTestnet => "https://laozi-testnet4.cosmoscan.io/"
+  | LaoziTestnet => "https://laozi-testnet5.cosmoscan.io/"
   | LaoziMainnet => "https://cosmoscan.io/"
   | LaoziPOA => "https://laozi-poa.cosmoscan.io/"
   | Unknown => "";
