@@ -73,6 +73,15 @@ let make =
       ? address |> Address.toOperatorBech32 |> Js.String.sliceToEnd(~from=11)
       : address |> Address.toBech32 |> Js.String.sliceToEnd(~from=4);
 
+  let addressLength = noPrefixAddress |> Js.String.length;
+
+  let cutAddress =
+    addressLength > 39
+      ? Js.String.substrAtMost(~from=0, ~length=32, noPrefixAddress)
+        ++ "..."
+        ++ Js.String.substrAtMost(~from=addressLength - 4, ~length=addressLength, noPrefixAddress)
+      : noPrefixAddress;
+
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <>
@@ -100,7 +109,7 @@ let make =
          | _ =>
            <>
              <span className=Styles.prefix> {prefix |> React.string} </span>
-             {noPrefixAddress |> React.string}
+             {addressLength > 39 ? cutAddress |> React.string : noPrefixAddress |> React.string}
            </>
          }}
       </span>

@@ -65,7 +65,7 @@ let getFilterList = (~chainID, ()) => {
              acc->Belt.Array.concat(channels)
            });
 
-         let keys = [|"oracle", "transfer"|];
+         let keys = [|"oracle", "transfer", "icahost"|];
 
          keys->Belt_Array.forEach(key => {
            let channelArray: array(string) =
