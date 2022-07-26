@@ -306,7 +306,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                     | None => React.null
                     }}
                  </>
-               | _ => <LoadingCensorBar width=90 height=26 />
+               | _ => React.null
                }}
             </InfoContainer>
             <InfoContainer>
