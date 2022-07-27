@@ -86,4 +86,4 @@ let infoContainer =
 
 let overflowHidden = style([overflow(`hidden)]);
 let overflowVisible = style([overflow(`visible)]);
-let fullWidth = style([width(`percent(100.0))]);
+let fullWidth = style([width(`percent(100.))]);
