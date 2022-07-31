@@ -1,7 +1,7 @@
 {
   "name": "band-scan",
   "scripts": {
-    "build": "rm -rf dist/ && bsb -make-world && parcel build index.html --no-source-maps --no-cache",
+    "build": "rm -rf dist/ && bsb -clean-world && bsb -make-world && parcel build index.html --no-source-maps --no-cache",
     "start": "bsb -make-world -w",
     "test": "yarn jest --coverage",
     "cy:run": "cypress run --record --key a9dc5d7b-e8f3-4dd5-a5b2-7625f8a2ea3d",

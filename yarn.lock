@@ -1209,7 +1209,7 @@
     google-protobuf "^3.17.3"
     secp256k1 "^4.0.2"
 
-"@baransu/graphql_ppx_re@^0.7.1":
+"@baransu/graphql_ppx_re@0.7.1":
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@baransu/graphql_ppx_re/-/graphql_ppx_re-0.7.1.tgz#8146a36a94d56e65692d74488e2bd6cbd4eb8dc9"
   integrity sha512-S9RYUWk8IkFxjE1Xl5eohRgbHJP5nCWOD6J1hMV3hY+D43igDrILq1doAXJatYB82BxcsrBC9V+VeU2LtCxIDw==
@@ -1360,7 +1360,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@glennsl/bs-jest@^0.7.0":
+"@glennsl/bs-jest@0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@glennsl/bs-jest/-/bs-jest-0.7.0.tgz#6b6168edf15aa4dab51cfe7734b36705beac2f11"
   integrity sha512-GF8+OQQXLYQXCJidTDPJbTejBMAU4VgnkPoLlrznAvSi9qeDSl8Yl3zuo/Wezu8A4rpijW3Gb8ltQozP3pHw7w==
@@ -2985,7 +2985,7 @@ bs-axios@^0.0.43:
   dependencies:
     axios "^0.19.2"
 
-bs-css-emotion@^2.4.1:
+bs-css-emotion@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/bs-css-emotion/-/bs-css-emotion-2.4.1.tgz#fe3794c04ae8b0922f37173ddd9ec3b0522e5d33"
   integrity sha512-qXUp9LpYLl+X78IcGtzt4sUKtg7RXZSAWYY22jXId3nDMfSYyq6AWoaCYVg/HfQKyyNAwokuTTVMtfQ9EtkFhg==
@@ -3003,17 +3003,17 @@ bs-fetch@^0.6.2:
   resolved "https://registry.yarnpkg.com/bs-fetch/-/bs-fetch-0.6.2.tgz#37d982e9f79b9bc44c23e87ae78ccbee1f869adf"
   integrity sha512-VXEjp8kY3vHPckaoy3d96Bx0KYjJAPLNISBwfpwMN26K6DtuZYwI2HKhx7zeHBajz1bRArfx7O8OOLcdtujMvg==
 
-bs-let@^0.1.14:
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/bs-let/-/bs-let-0.1.16.tgz#63cd449ed02c75f87eceb248d45963937afdd4ed"
-  integrity sha512-pdbSNe/QRpqgqS72dYDlkZ7kqMHc5aJkLgipLS8BFMRx+hQqkOo0JOpxWZQeDj1T677e302xgmV+Mid5gvmnBg==
+bs-let@0.1.14:
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/bs-let/-/bs-let-0.1.14.tgz#316efd903edd067d1aba313c3dec6650bd27c4ce"
+  integrity sha512-Z0sP0CJtlbCxNlJGN8tr+a+sBVuFc3WfC6YOZYF1wd2IFLah6Zb/eu8aj/4o+WIeIDvG5uo7GIS9NJ73BQpQ2g==
 
 bs-moment@^0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/bs-moment/-/bs-moment-0.4.5.tgz#3f84fed55c2a70d25b0b6025e4e8d821fcdd4dc8"
   integrity sha512-anPYkFSof+X8EeomnP0fbQBvWFJeganwPqqARVB+fcdKYX2Uog/n3CCiFGEA+66yHbwnWZD5YFhtHCuyLMcQfQ==
 
-bs-platform@^7.0.1:
+bs-platform@7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-7.0.1.tgz#1d7b0ef6088b998dceee5db74a7cd8f01c20a3bd"
   integrity sha512-UjStdtHhbtC/l6vKJ1XRDqrPk7rFf5PLYHtRX3akDXEYVnTbN36z0g4DEr5mU8S0N945e33HYts9x+i7hKKpZQ==
@@ -3041,7 +3041,7 @@ bs58check@<3.0.0, bs58check@^2.0.0, bs58check@^2.1.1:
     create-hash "^1.1.0"
     safe-buffer "^5.1.2"
 
-bsb-js@^1.1.7:
+bsb-js@1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/bsb-js/-/bsb-js-1.1.7.tgz#12cc91e974f5896b3a2aa8358419d24e56f552c3"
   integrity sha512-FSR7d5Kb6KfVI5sLz9bEeD9pbA9F4Zbkk1xa6R9CJtyd+dJ7mIkxoXqv7cw7HWcuee+VpIhmjYzrplnFd/5Qgg==
@@ -6984,7 +6984,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^2.0.0:
+marked@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.0.tgz#9662bbcb77ebbded0662a7be66ff929a8611cee5"
   integrity sha512-NqRSh2+LlN2NInpqTQnS614Y/3NkVMFFU6sJlRFEpxJ/LHuK/qJECH7/fXZjk4VZstPW/Pevjil/VtSONsLc7Q==
@@ -7166,7 +7166,7 @@ mkdirp@^0.5.1, mkdirp@^0.5.4, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.10.2, moment@^2.29.1:
+moment@2.29.1, moment@^2.10.2, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
