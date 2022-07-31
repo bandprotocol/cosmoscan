@@ -23,12 +23,11 @@
   ],
   "suffix": ".bs.js",
   "namespace": true,
-  "ppx-flags": ["@reasonml-community/graphql-ppx/ppx", "bs-let/ppx"],
+  "ppx-flags": ["@baransu/graphql_ppx_re/ppx6", "bs-let/ppx"],
   "bs-dependencies": [
     "reason-react",
     "reason-apollo-hooks",
     "reason-apollo",
-    "@reasonml-community/graphql-ppx",
     "@glennsl/bs-json",
     "bs-moment",
     "bs-css",
