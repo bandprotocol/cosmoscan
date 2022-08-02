@@ -324,7 +324,8 @@ let make = (~counterpartyChainID) => {
      }}
     {switch (connectionCountSub) {
      | Data(connectionCount) =>
-       let pageCount = Page.getPageCount(connectionCount, pageSize);
+       let connectCount = connectionCount;
+       let pageCount = Page.getPageCount(connectCount, pageSize);
        <Pagination currentPage=page pageCount onPageChange={newPage => setPage(_ => newPage)} />;
      | _ => React.null
      }}

@@ -372,7 +372,7 @@ let count = (proposalID, answer) => {
 
   result
   |> Sub.map(_, x =>
-       x##votes_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count) |> Belt.Option.getExn
+       x##votes_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count)
      );
 };
 

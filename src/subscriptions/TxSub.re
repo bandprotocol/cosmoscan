@@ -178,7 +178,7 @@ module TxCountConfig = [%graphql
   subscription TransactionsCount {
     transactions_aggregate {
       aggregate {
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -191,7 +191,7 @@ module TxCountBySenderConfig = [%graphql
     accounts_by_pk(address: $sender) {
       account_transactions_aggregate {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }

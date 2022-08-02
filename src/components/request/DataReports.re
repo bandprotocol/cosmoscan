@@ -31,7 +31,7 @@ let make = (~reports: array(RequestSub.report_t)) => {
             idx,
             {
               reportValidator: {operatorAddress, moniker, identity},
-              transactionOpt,
+              transactionOpt: {hash},
               reportDetails,
             },
           ) => {
@@ -66,11 +66,11 @@ let make = (~reports: array(RequestSub.report_t)) => {
                 />
               </Col>
               <Col col=Col.Eight>
-                {switch (transactionOpt) {
-                 | Some({hash}) => <TxLink txHash=hash width=280 />
-                 | None => <Text value="Genesis Transaction" />
-                 }}
-              </Col>
+                // {switch (transactionOpt) {
+                //  | Some({hash}) => <TxLink txHash=hash width=280 />
+                //  | None => <Text value="Genesis Transaction" />
+                //  }}
+                 <TxLink txHash=hash width=280 /> </Col>
             </Row>
             <div className={Styles.reportsTable(theme)}>
               {isMobile
