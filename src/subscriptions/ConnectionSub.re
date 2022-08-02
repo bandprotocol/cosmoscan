@@ -67,7 +67,7 @@ module ConnectionCountConfig = [%graphql
     subscription ConnectionCount($chainID: String!, $connectionID: String!) {
        connections_aggregate(where: {counterparty_chain: {chain_id: {_ilike: $chainID}}, connection_id: {_ilike: $connectionID}}) {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }

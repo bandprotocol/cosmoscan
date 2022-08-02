@@ -128,7 +128,7 @@ module OracleScriptsCountConfig = [%graphql
   subscription OracleScriptsCount($searchTerm: String!) {
     oracle_scripts_aggregate(where: {name: {_ilike: $searchTerm}}){
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
