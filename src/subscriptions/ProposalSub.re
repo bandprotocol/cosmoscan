@@ -128,7 +128,7 @@ module ProposalsCountConfig = [%graphql
   subscription ProposalsCount {
     proposals_aggregate{
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }

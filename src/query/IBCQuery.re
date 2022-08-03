@@ -166,8 +166,8 @@ let toExternal =
 };
 module IncomingPacketsConfig = [%graphql
   {|
-  query IncomingPackets($limit: Int!, $packetType: String, $packetTypeIsNull: Boolean, $port: String!, $channel: String!, $sequence: Int, $chainID: String!) {
-    incoming_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: {_eq: $sequence}, dst_port: {_ilike: $port}, dst_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
+    query IncomingPackets($limit: Int!, $packetType: String!, $packetTypeIsNull: Boolean!, $port: String!, $channel: String!, $sequence: Int_comparison_exp, $chainID: String!) {
+    incoming_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: $sequence, dst_port: {_ilike: $port}, dst_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord {
         packetType: type @bsDecoder(fn: "parsePacketTypeOpt")
         srcPort: src_port
         srcChannel: src_channel
@@ -192,8 +192,8 @@ module IncomingPacketsConfig = [%graphql
 
 module OutgoingPacketsConfig = [%graphql
   {|
-  query OutgoingPackets($limit: Int!, $packetType: String, $packetTypeIsNull: Boolean, $port: String!, $channel: String!, $sequence: Int, $chainID: String!) {
-    outgoing_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: {_eq: $sequence} ,src_port: {_ilike: $port}, src_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord{
+    query OutgoingPackets($limit: Int!, $packetType: String!, $packetTypeIsNull: Boolean!, $port: String!, $channel: String!, $sequence: Int_comparison_exp, $chainID: String!) {
+    outgoing_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: $sequence ,src_port: {_ilike: $port}, src_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord {
         packetType: type @bsDecoder(fn: "parsePacketTypeOpt")
         srcPort: src_port
         srcChannel: src_channel
@@ -234,6 +234,34 @@ let getList =
     | _ => None
     };
   };
+
+  let sequenceFilter = {
+    switch (sequence) {
+    | Some(_) => {
+        "_eq": sequence,
+        "_gt": None,
+        "_gte": None,
+        "_in": None,
+        "_is_null": None,
+        "_lt": None,
+        "_lte": None,
+        "_neq": None,
+        "_nin": None,
+      }
+    | _ => {
+        "_eq": None,
+        "_gt": None,
+        "_gte": None,
+        "_in": None,
+        "_is_null": None,
+        "_lt": None,
+        "_lte": None,
+        "_neq": None,
+        "_nin": None,
+      }
+    };
+  };
+
   let result =
     switch (direction) {
     | Incoming =>
@@ -243,8 +271,20 @@ let getList =
           ~variables=
             IncomingPacketsConfig.makeVariables(
               ~limit=pageSize,
-              ~packetType=?packetTypeKeyword,
-              ~packetTypeIsNull?,
+              ~packetType={
+                switch (packetTypeKeyword) {
+                | Some("oracle_request") => "oracle_request"
+                | Some("oracle response") => "oracle response"
+                | Some("fungible_token") => "fungible_token"
+                | _ => "%%"
+                };
+              },
+              ~packetTypeIsNull={
+                switch (packetTypeIsNull) {
+                | Some(true) => true
+                | _ => false
+                };
+              },
               ~port={
                 port !== "" ? port : "%%";
               },
@@ -254,7 +294,9 @@ let getList =
               ~chainID={
                 chainID !== "" ? chainID : "%%";
               },
-              ~sequence?,
+              ~sequence={
+                sequenceFilter;
+              },
               (),
             ),
           ~pollInterval=?Some(5000),
@@ -267,8 +309,20 @@ let getList =
           ~variables=
             OutgoingPacketsConfig.makeVariables(
               ~limit=pageSize,
-              ~packetType=?packetTypeKeyword,
-              ~packetTypeIsNull?,
+              ~packetType={
+                switch (packetTypeKeyword) {
+                | Some("oracle_request") => "oracle_request"
+                | Some("oracle response") => "oracle response"
+                | Some("fungible_token") => "fungible_token"
+                | _ => "%%"
+                };
+              },
+              ~packetTypeIsNull={
+                switch (packetTypeIsNull) {
+                | Some(true) => true
+                | _ => false
+                };
+              },
               ~port={
                 port !== "" ? port : "%%";
               },
@@ -278,7 +332,9 @@ let getList =
               ~chainID={
                 chainID !== "" ? chainID : "%%";
               },
-              ~sequence?,
+              ~sequence={
+                sequenceFilter;
+              },
               (),
             ),
           ~pollInterval=?Some(5000),

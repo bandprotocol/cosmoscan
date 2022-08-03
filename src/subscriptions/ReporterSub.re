@@ -15,7 +15,7 @@ module ReportersCountConfig = [%graphql
     subscription ReporterCount($operator_address: String!) {
       reporters_aggregate(where: {operator_address: {_eq: $operator_address}}) {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }

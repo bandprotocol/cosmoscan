@@ -91,7 +91,7 @@ module MultiConfig = [%graphql
       timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
       transactions_aggregate @bsRecord {
         aggregate @bsRecord {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -115,7 +115,7 @@ module MultiConsensusAddressConfig = [%graphql
       timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
       transactions_aggregate @bsRecord {
         aggregate @bsRecord {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -139,7 +139,7 @@ module SingleConfig = [%graphql
       timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
       transactions_aggregate @bsRecord {
         aggregate @bsRecord {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
       requests(where: {resolve_status: {_neq: "Open"}}) @bsRecord {
@@ -156,7 +156,7 @@ module BlockCountConfig = [%graphql
   subscription BlocksCount {
     blocks_aggregate{
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -168,7 +168,7 @@ module PastDayBlockCountConfig = [%graphql
   subscription AvgDayBlocksCount($greater: timestamp, $less: timestamp) {
     blocks_aggregate(where: {timestamp: {_lte: $less, _gte: $greater}}) {
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -180,7 +180,7 @@ module BlockCountConsensusAddressConfig = [%graphql
   subscription BlocksCountByConsensusAddress($address: String!) {
     blocks_aggregate(where: {proposer: {_eq: $address}}) {
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }

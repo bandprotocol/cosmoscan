@@ -112,7 +112,7 @@ module DataSourcesCountConfig = [%graphql
   subscription DataSourcesCount($searchTerm: String!) {
     data_sources_aggregate(where: {name: {_ilike: $searchTerm}}){
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }

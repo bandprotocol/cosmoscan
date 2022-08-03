@@ -86,7 +86,7 @@ module UnbondingCountByDelegatorConfig = [%graphql
       accounts_by_pk(address: $delegator_address) {
         unbonding_delegations_aggregate(where: {completion_time: {_gte: $current_time}}) {
           aggregate{
-            count @bsDecoder(fn: "Belt_Option.getExn")
+            count
           }
         }
       }

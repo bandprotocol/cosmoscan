@@ -165,7 +165,7 @@ module ValidatorCountConfig = [%graphql
     subscription ValidatorCount {
       validators_aggregate{
         aggregate{
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -177,7 +177,7 @@ module ValidatorCountByJailedConfig = [%graphql
     subscription ValidatorCountByJailed($jailed: Boolean!) {
       validators_aggregate(where: {jailed: {_eq: $jailed}}) {
         aggregate{
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
