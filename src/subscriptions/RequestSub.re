@@ -1,5 +1,6 @@
-open ValidatorSub.Mini;
 open TxSub.Mini;
+
+open ValidatorSub.Mini;
 
 type resolve_status_t =
   | Pending
