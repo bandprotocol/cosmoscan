@@ -107397,7 +107397,7 @@
             "deprecationReason": null
           },
           {
-            "name": "redelegationsByValidatorDstId",
+            "name": "redelegationsByValidatorSrcId",
             "description": "An array relationship",
             "args": [
               {
@@ -107488,7 +107488,7 @@
             "deprecationReason": null
           },
           {
-            "name": "redelegationsByValidatorDstId_aggregate",
+            "name": "redelegationsByValidatorSrcId_aggregate",
             "description": "An aggregate relationship",
             "args": [
               {
@@ -109010,7 +109010,7 @@
             "defaultValue": null
           },
           {
-            "name": "redelegationsByValidatorDstId",
+            "name": "redelegationsByValidatorSrcId",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -109447,7 +109447,7 @@
             "defaultValue": null
           },
           {
-            "name": "redelegationsByValidatorDstId",
+            "name": "redelegationsByValidatorSrcId",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -110389,7 +110389,7 @@
             "defaultValue": null
           },
           {
-            "name": "redelegationsByValidatorDstId_aggregate",
+            "name": "redelegationsByValidatorSrcId_aggregate",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
