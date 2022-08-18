@@ -3,7 +3,6 @@ module Styles = {
 
   let header = (theme: Theme.t) =>
     style([
-      paddingTop(Spacing.lg),
       backgroundColor(theme.mainBg),
       zIndex(3),
       Media.mobile([
@@ -23,6 +22,9 @@ module Styles = {
   let link = style([cursor(`pointer)]);
 
   let chainIDContainer = style([marginLeft(`px(24))]);
+
+  let notiBar = (theme: Theme.t) =>
+    style([backgroundColor(theme.baseBlue), padding(`px(5)), marginBottom(`px(22))]);
 
   let boxShadow =
     style([
@@ -45,8 +47,16 @@ module DesktopRender = {
   [@react.component]
   let make = () => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-
     <header className={Styles.header(theme)}>
+      <div className={Css.merge([Styles.notiBar(theme)])}>
+        <Row alignItems=Row.Center>
+          <Col col=Col.Twelve>
+            <div className={CssHelper.flexBox(~justify=`center, ())}>
+              <Heading value="You're in devnet mode" size=Heading.H4 />
+            </div>
+          </Col>
+        </Row>
+      </div>
       <div className=CssHelper.container>
         <Row alignItems=Row.Center marginBottom=22>
           <Col col=Col.Six>
