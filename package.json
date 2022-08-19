@@ -57,7 +57,7 @@
   "devDependencies": {
     "@baransu/graphql_ppx_re": "^0.7.1",
     "@glennsl/bs-jest": "^0.7.0",
-    "bs-platform": "^7.0.1",
+    "bs-platform": "^6.2.1",
     "bsb-js": "^1.1.7",
     "cypress": "^6.8.0",
     "parcel-bundler": "^1.12.4",
