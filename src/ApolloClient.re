@@ -1,8 +1,17 @@
-let wsLink = ApolloLinks.webSocketLink(~uri=Env.graphql, ~reconnect=true, ());
+// let wsLink = ApolloLinks.webSocketLink(~uri=Env.graphql, ~reconnect=true, ());
+let webSocketLinkT: ReasonApolloTypes.webSocketLinkT = {
+  uri: Env.graphql,
+  options: {
+    reconnect: true,
+    connectionParams: None,
+  },
+};
+/* WebSocket client */
+let webSocketLink = ApolloLinks.webSocketLink(webSocketLinkT);
 
 let client =
   ReasonApollo.createApolloClient(
-    ~link=wsLink,
+    ~link=webSocketLink,
     ~cache=ApolloInMemoryCache.createInMemoryCache(),
     (),
   );
