@@ -178,7 +178,7 @@ module TxCountConfig = [%graphql
   subscription TransactionsCount {
     transactions_aggregate {
       aggregate {
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -191,7 +191,7 @@ module TxCountBySenderConfig = [%graphql
     accounts_by_pk(address: $sender) {
       account_transactions_aggregate {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -261,7 +261,12 @@ let getListByBlockHeight = (height, ()) => {
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(TxCountConfig.definition);
   result
-  |> Sub.map(_, x => x##transactions_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
+  |> Sub.map(_, x =>
+       x##transactions_aggregate##aggregate
+       |> Belt_Option.getExn
+       |> (y => y##count)
+       |> Belt.Option.getExn
+     );
 };
 
 let countBySender = sender => {
@@ -277,6 +282,7 @@ let countBySender = sender => {
          account##account_transactions_aggregate##aggregate
          |> Belt_Option.getExn
          |> (y => y##count)
+         |> Belt.Option.getExn
        | None => 0
        }
      });

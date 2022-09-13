@@ -128,7 +128,7 @@ module ProposalsCountConfig = [%graphql
   subscription ProposalsCount {
     proposals_aggregate{
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -162,5 +162,10 @@ let get = id => {
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(ProposalsCountConfig.definition);
   result
-  |> Sub.map(_, x => x##proposals_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
+  |> Sub.map(_, x =>
+       x##proposals_aggregate##aggregate
+       |> Belt_Option.getExn
+       |> (y => y##count)
+       |> Belt.Option.getExn
+     );
 };

@@ -94,7 +94,7 @@ module DelegatorCountConfig = [%graphql
     subscription DelegatorCount($operator_address: String!) {
       delegations_view_aggregate(where: {operator_address: {_eq: $operator_address}}) {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -206,6 +206,9 @@ let getDelegatorCountByValidator = validatorAddress => {
     );
   result
   |> Sub.map(_, x =>
-       x##delegations_view_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count)
+       x##delegations_view_aggregate##aggregate
+       |> Belt_Option.getExn
+       |> (y => y##count)
+       |> Belt.Option.getExn
      );
 };
