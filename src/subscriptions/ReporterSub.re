@@ -15,7 +15,7 @@ module ReportersCountConfig = [%graphql
     subscription ReporterCount($operator_address: String!) {
       reporters_aggregate(where: {operator_address: {_eq: $operator_address}}) {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -54,5 +54,10 @@ let count = operatorAddress => {
         ),
     );
   result
-  |> Sub.map(_, x => x##reporters_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
+  |> Sub.map(_, x =>
+       x##reporters_aggregate##aggregate
+       |> Belt_Option.getExn
+       |> (y => y##count)
+       |> Belt.Option.getExn
+     );
 };

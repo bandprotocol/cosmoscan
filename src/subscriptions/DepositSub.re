@@ -75,6 +75,6 @@ let count = proposalID => {
        x##deposits_aggregate##aggregate
        |> Belt_Option.getExn
        |> (y => y##count)
-       |> Belt.Option.getExn
+       |> Belt_Option.getExn
      );
 };

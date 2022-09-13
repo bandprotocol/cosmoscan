@@ -42,7 +42,7 @@ module RedelegateCountByDelegatorConfig = [%graphql
       accounts_by_pk(address: $delegator_address) {
         redelegations_aggregate(where: {completion_time: {_gte: $current_time}}) {
           aggregate{
-            count @bsDecoder(fn: "Belt_Option.getExn")
+            count  @bsDecoder(fn: "Belt_Option.getExn")
           }
         }
       }

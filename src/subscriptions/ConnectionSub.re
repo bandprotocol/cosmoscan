@@ -67,7 +67,7 @@ module ConnectionCountConfig = [%graphql
     subscription ConnectionCount($chainID: String!, $connectionID: String!) {
        connections_aggregate(where: {counterparty_chain: {chain_id: {_ilike: $chainID}}, connection_id: {_ilike: $connectionID}}) {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }
@@ -103,5 +103,9 @@ let getCount = (~counterpartyChainID, ~connectionID, ()) => {
         ),
     );
   result
-  |> Sub.map(_, x => x##connections_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
+  |> Sub.map(_, x =>
+       x##connections_aggregate##aggregate
+       |> Belt_Option.getExn
+       |> (y => y##count |> Belt.Option.getExn)
+     );
 };

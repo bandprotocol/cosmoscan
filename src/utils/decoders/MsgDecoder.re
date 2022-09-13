@@ -833,7 +833,7 @@ module DecodedCoin = {
 
   let decode = json => {
     JsonUtils.Decode.{
-      amount: json |> at(["amount"], int) |> float_of_int,
+      amount: json |> at(["amount"], stringOrInt) |> float_of_int,
       denom: json |> at(["denom"], string),
     };
   };

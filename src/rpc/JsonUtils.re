@@ -10,4 +10,5 @@ module Decode = {
     json |> optional(key(string)) |> Belt.Option.getWithDefault(_, "") |> JsBuffer.fromBase64;
   let strWithDefault = (key, json) =>
     json |> optional(key(string)) |> Belt.Option.getWithDefault(_, "");
+  let stringOrInt = either(int, string |> map(int_of_string));
 };
