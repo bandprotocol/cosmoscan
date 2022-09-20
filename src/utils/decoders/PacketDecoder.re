@@ -43,7 +43,7 @@ module FungibleTokenPacket = {
 
   let decode = json => {
     JsonUtils.Decode.{
-      amount: json |> at(["amount"], int),
+      amount: json |> at(["amount"], stringOrInt),
       denom: json |> at(["denom"], string),
       receiver: json |> at(["receiver"], string),
       sender: json |> at(["sender"], string),

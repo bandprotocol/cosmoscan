@@ -105,14 +105,14 @@ module LoginMethod = {
 
 [@react.component]
 let make = (~chainID) => {
-  let (loginMethod, setLoginMethod) = React.useState(_ => Mnemonic);
+  let (loginMethod, setLoginMethod) = React.useState(_ => LedgerWithCosmos);
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.container>
     <div className=Styles.innerContainer>
       <div className={Styles.modalTitle(theme)}>
         <Heading value="Connect with your wallet" size=Heading.H4 />
-        {chainID == "band-guanyu-mainnet"
+        {chainID == "laozi-mainnet"
            ? <>
                <VSpacing size=Spacing.md />
                <div className={CssHelper.flexBox()}>
@@ -136,7 +136,7 @@ let make = (~chainID) => {
               <VSpacing size=Spacing.xl />
               <Heading size=Heading.H5 value="Select your connection method" />
               <VSpacing size=Spacing.md />
-              {[|Mnemonic, LedgerWithCosmos, LedgerWithBandChain|]
+              {[|LedgerWithCosmos, LedgerWithBandChain|]
                ->Belt_Array.map(method =>
                    <React.Fragment key={method |> toLoginMethodString}>
                      <VSpacing size=Spacing.lg />
