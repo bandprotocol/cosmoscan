@@ -66,6 +66,7 @@ let getPacketTypeText =
   | "oracle_request" => "Oracle Request"
   | "oracle response" => "Oracle Response"
   | "fungible_token" => "Fungible Token"
+  | "interchain_account" => "Interchain Account"
   | _ => "Unknown";
 
 let decodeAction = json => {

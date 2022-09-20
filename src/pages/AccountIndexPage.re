@@ -43,6 +43,8 @@ module Styles = {
 
   let buttonContainer =
     style([marginTop(`px(24)), selector("> button + *", [marginLeft(`px(16))])]);
+
+  let autoHeight = he => style([height(he)]);
 };
 
 module BalanceDetails = {
@@ -234,13 +236,13 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
               CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
               Styles.infoLeft,
             ])}>
-            <InfoContainer>
+            <InfoContainer style={Css.merge([CssHelper.mb(~size=30, ())])}>
               <div
                 className={Css.merge([
                   CssHelper.flexBox(~direction=`column, ~justify=`start, ~align=`flexStart, ()),
                 ])}>
                 <div className=Styles.addressContainer>
-                  <Heading size=Heading.H4 value="Address" marginBottom=25 />
+                  <Heading size=Heading.H4 value="Address" marginBottom=20 />
                   <div className={CssHelper.flexBox()}>
                     <AddressRender
                       address
@@ -257,6 +259,32 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      <Text value={j| ($name) |j} size=Text.Lg block=true />
                    </div>
                  | None => React.null
+                 }}
+                {switch (topPartAllSub) {
+                 | Data((_, {counterpartyAddress, counterpartyChainID}, _, _, _)) =>
+                   <>
+                     {switch (counterpartyAddress) {
+                      | Some(address) =>
+                        <div
+                          className={Css.merge([
+                            CssHelper.mt(~size=20, ()),
+                            CssHelper.mb(~size=20, ()),
+                          ])}>
+                          <Heading size=Heading.H4 value="Counter Party Address" marginBottom=8 />
+                          <Text value={Address.toHex(address)} size=Text.Lg block=true />
+                        </div>
+                      | None => React.null
+                      }}
+                     {switch (counterpartyChainID) {
+                      | Some(chainID) =>
+                        <div className={Css.merge([CssHelper.mb(~size=20, ())])}>
+                          <Heading size=Heading.H4 value="Counter Party Chain ID" marginBottom=8 />
+                          <Text value=chainID size=Text.Lg block=true />
+                        </div>
+                      | None => React.null
+                      }}
+                   </>
+                 | _ => <LoadingCensorBar width=90 height=26 />
                  }}
                 <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
                   <Button variant=Button.Outline py=5 onClick={_ => {qrCode()}}>
@@ -306,7 +334,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
           </div>
         </Col>
         <Col col=Col.Six>
-          <InfoContainer>
+          <InfoContainer style={Styles.autoHeight(`percent(100.))}>
             <Heading value="Balance" size=Heading.H4 marginBottom=40 />
             <div className=Styles.amountBoxes>
               {switch (topPartAllSub) {

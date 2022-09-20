@@ -71,8 +71,14 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
 
   let filters = IBCFilterSub.getFilterList(~chainID, ());
 
-  let packetTypes = [|"Oracle Request", "Oracle Response", "Fungible Token", "Unknown"|];
-  let packetPorts = [|"oracle", "transfer"|];
+  let packetTypes = [|
+    "Oracle Request",
+    "Oracle Response",
+    "Fungible Token",
+    "Interchain Account",
+    "Unknown",
+  |];
+  let packetPorts = [|"oracle", "transfer", "icahost"|];
 
   let handlePacketPort = newVal => {
     setPacketPort(_ => newVal);
