@@ -26,7 +26,7 @@ yarn bsb -make-world -w -ws # ReasonML compiler
 
 # Second tab
 <!-- For devnet(main branch) / testnet -->
-RPC_URL=https://rpc.laozi-testnet5.bandchain.org/ GRAPHQL_URL=wss://graphql-lt5.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi-testnet5.bandchain.org/grpc-web/ FAUCET_URL=https://laozi-testnet5.bandchain.org/faucet yarn parcel index.html
+RPC_URL=http://rpc.laozi-testnet5.bandchain.org GRAPHQL_URL=wss://graphql-lt5.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi-testnet5.bandchain.org/grpc-web FAUCET_URL=https://laozi-testnet5.bandchain.org/faucet yarn parcel index.html
 
 <!-- For mainnet -->
 RPC_URL=https://rpc.laozi1.bandchain.org GRAPHQL_URL=wss://graphql-lm.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi1.bandchain.org/grpc-web yarn parcel index.html

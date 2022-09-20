@@ -20,9 +20,22 @@ module Report = {
 
   let decode = json =>
     JsonUtils.Decode.{
-      requestID: json |> at(["request_id"], ID.Request.fromJson),
-      rawReports: json |> at(["raw_reports"], list(RawDataReport.decode)),
-      validator: json |> at(["validator"], string) |> Address.fromBech32,
+      requestID:
+        json
+        |> either(
+             at(["msg", "request_id"], ID.Request.fromJson),
+             at(["request_id"], ID.Request.fromJson),
+           ),
+      rawReports:
+        json
+        |> either(
+             at(["msg", "raw_reports"], list(RawDataReport.decode)),
+             at(["raw_reports"], list(RawDataReport.decode)),
+           ),
+      validator:
+        json
+        |> either(at(["msg", "validator"], string), at(["validator"], string))
+        |> Address.fromBech32
     };
 };
 
