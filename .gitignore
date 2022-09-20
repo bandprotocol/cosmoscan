@@ -20,3 +20,4 @@ Thumbs.db
 /cypress/videos/
 /cypress/screenshots/
 /cypress/.DS_Store
+/.vscode
