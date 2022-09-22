@@ -117,7 +117,17 @@ module ParameterInput = {
         className={Styles.input(theme)}
         type_="text"
         onChange={event => {
-          let newVal: string = ReactEvent.Form.target(event)##value;
+          let inputVal: string = ReactEvent.Form.target(event)##value;
+          let newVal =
+            switch (fieldType, Js.String.charAt(0, inputVal) !== "[") {
+            | ("[u8]", true) =>
+              switch (inputVal |> JsBuffer.hexToStringArray) {
+              | value => value
+              | exception _ => inputVal
+              }
+            | (_, _) => inputVal
+            };
+
           setCallDataArr(prev => {
             prev->Belt_Array.mapWithIndex((i, value: string) => {index == i ? newVal : value})
           });
