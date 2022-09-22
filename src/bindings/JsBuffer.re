@@ -29,3 +29,5 @@ let arrayToHex = arr => arr->from->toHex;
 let hexToArray = hexstr => hexstr->fromHex->toArray;
 let arrayToBase64 = arr => arr->from->toBase64;
 let base64ToArray = base64str => base64str->fromBase64->toArray;
+let hexToStringArray = hex =>
+  hex->hexToArray->Js.Json.stringifyAny->Belt_Option.getWithDefault(hex);
