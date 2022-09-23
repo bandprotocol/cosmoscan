@@ -260,32 +260,32 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                    </div>
                  | None => React.null
                  }}
-                {switch (topPartAllSub) {
-                 | Data((_, {counterpartyAddress, counterpartyChainID}, _, _, _)) =>
-                   <>
-                     {switch (counterpartyAddress) {
-                      | Some(address) =>
-                        <div
-                          className={Css.merge([
-                            CssHelper.mt(~size=20, ()),
-                            CssHelper.mb(~size=20, ()),
-                          ])}>
-                          <Heading size=Heading.H4 value="Counter Party Address" marginBottom=8 />
-                          <Text value={Address.toHex(address)} size=Text.Lg block=true />
-                        </div>
-                      | None => React.null
-                      }}
-                     {switch (counterpartyChainID) {
-                      | Some(chainID) =>
-                        <div className={Css.merge([CssHelper.mb(~size=20, ())])}>
-                          <Heading size=Heading.H4 value="Counter Party Chain ID" marginBottom=8 />
-                          <Text value=chainID size=Text.Lg block=true />
-                        </div>
-                      | None => React.null
-                      }}
-                   </>
-                 | _ => <LoadingCensorBar width=90 height=26 />
-                 }}
+                // {switch (topPartAllSub) {
+                //  | Data((_, {counterpartyAddress, counterpartyChainID}, _, _, _)) =>
+                //    <>
+                //      {switch (counterpartyAddress) {
+                //       | Some(address) =>
+                //         <div
+                //           className={Css.merge([
+                //             CssHelper.mt(~size=20, ()),
+                //             CssHelper.mb(~size=20, ()),
+                //           ])}>
+                //           <Heading size=Heading.H4 value="Counter Party Address" marginBottom=8 />
+                //           <Text value={Address.toHex(address)} size=Text.Lg block=true />
+                //         </div>
+                //       | None => React.null
+                //       }}
+                //      {switch (counterpartyChainID) {
+                //       | Some(chainID) =>
+                //         <div className={Css.merge([CssHelper.mb(~size=20, ())])}>
+                //           <Heading size=Heading.H4 value="Counter Party Chain ID" marginBottom=8 />
+                //           <Text value=chainID size=Text.Lg block=true />
+                //         </div>
+                //       | None => React.null
+                //       }}
+                //    </>
+                //  | _ => <LoadingCensorBar width=90 height=26 />
+                //  }}
                 <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
                   <Button variant=Button.Outline py=5 onClick={_ => {qrCode()}}>
                     <div className={CssHelper.flexBox()}>

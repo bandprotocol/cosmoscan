@@ -63,7 +63,7 @@ let parsePacketTypeOpt =
   | Some("oracle_request") => OracleRequest
   | Some("oracle response") => OracleResponse
   | Some("fungible_token") => FungibleToken
-  | Some("interchain_account") => InterchainAccount
+  // | Some("interchain_account") => InterchainAccount
   | _ => Unknown;
 
 let getPacketTypeText =
@@ -227,7 +227,7 @@ let getList =
     | "Oracle Request" => Some("oracle_request")
     | "Oracle Response" => Some("oracle response")
     | "Fungible Token" => Some("fungible_token")
-    | "Interchain Account" => Some("interchain_account")
+    // | "Interchain Account" => Some("interchain_account")
     | "Unknown"
     | "" => None
     | _ => raise(Not_found)
