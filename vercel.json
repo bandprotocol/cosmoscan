@@ -1,5 +1,15 @@
 {
   "github": {
     "enabled": true
+  },
+  "redirects": [{ "source": "/", "destination": "/index.html" }],
+  "headers": {
+    "source": "/assets/(.*)",
+    "headers": [
+      {
+        "key": "Cache-Control",
+        "value": "public, max-age=31556952, immutable"
+      }
+    ]
   }
 }
