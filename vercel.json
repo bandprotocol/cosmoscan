@@ -1,5 +1,4 @@
 {
-  "routes": [{ "src": "/(.*)", "dest": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -12,6 +11,7 @@
     }
   ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "cleanUrls": true,
   "github": {
     "enabled": true
   }
