@@ -12,6 +12,7 @@
     }
   ],
   "cleanUrls": true,
+  "trailingSlash": false,
   "github": {
     "enabled": true
   }
