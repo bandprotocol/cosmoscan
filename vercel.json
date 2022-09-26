@@ -1,5 +1,5 @@
 {
-  "redirects": [{ "source": "/.*", "destination": "/index.html" }],
+  "redirects": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
