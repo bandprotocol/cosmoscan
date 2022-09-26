@@ -1,5 +1,5 @@
 {
-  "redirects": [{ "source": "/(.*)", "destination": "/index.html", "statusCode": 200 }],
+  "redirects": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
