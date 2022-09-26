@@ -1,8 +1,5 @@
 {
-  "github": {
-    "enabled": true
-  },
-  "redirects": [{ "source": "/:path*", "destination": "/index.html" }],
+  "redirects": [{ "source": "/", "destination": "/index.html", "status": 200 }],
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -13,5 +10,8 @@
         }
       ]
     }
-  ]
+  ],
+  "github": {
+    "enabled": true
+  }
 }
