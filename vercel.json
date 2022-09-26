@@ -2,7 +2,7 @@
   "github": {
     "enabled": true
   },
-  "redirects": [{ "source": "/", "destination": "/index.html" }],
+  "redirects": [{ "source": "/:path*", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
