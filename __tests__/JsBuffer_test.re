@@ -208,4 +208,8 @@ describe("Expect JsBuffer to work correctly", () => {
          88,
        |])
   );
+  test("should be able to convert hex to string array directly", () =>
+    expect("f23391b5dbf982e37fb7dadea64aae21cae4c172" |> hexToStringArray)
+    |> toEqual("[242,51,145,181,219,249,130,227,127,183,218,222,166,74,174,33,202,228,193,114]")
+  );
 });
