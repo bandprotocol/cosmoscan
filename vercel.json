@@ -10,12 +10,7 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "cleanUrls": true,
   "trailingSlash": false,
   "github": {
