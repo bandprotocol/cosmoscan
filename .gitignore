@@ -21,3 +21,4 @@ Thumbs.db
 /cypress/screenshots/
 /cypress/.DS_Store
 /.vscode
+.vercel
