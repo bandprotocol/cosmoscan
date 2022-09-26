@@ -1,4 +1,5 @@
 {
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -6,13 +7,12 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31556952, immutable"
-        }
+        },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
       ]
     }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "cleanUrls": true,
-  "trailingSlash": false,
   "github": {
     "enabled": true
   }
