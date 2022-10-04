@@ -58,6 +58,5 @@ let count = operatorAddress => {
        x##reporters_aggregate##aggregate
        |> Belt_Option.getExn
        |> (y => y##count)
-       |> Belt.Option.getExn
      );
 };

@@ -209,6 +209,5 @@ let getDelegatorCountByValidator = validatorAddress => {
        x##delegations_view_aggregate##aggregate
        |> Belt_Option.getExn
        |> (y => y##count)
-       |> Belt.Option.getExn
      );
 };

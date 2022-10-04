@@ -37,7 +37,7 @@ let make = () => {
     <div className={Css.merge([CssHelper.container, Styles.content])} id="homePageContainer">
       <ChainInfoHighlights latestBlockSub />
       <Row marginTop=24>
-        <Col col=Col.Six mbSm=24> <TotalRequestsGraph latest5RequestSub /> </Col>
+        // <Col col=Col.Six mbSm=24> <TotalRequestsGraph latest5RequestSub /> </Col>
         <Col col=Col.Six> <LatestRequests latest5RequestSub /> </Col>
       </Row>
       <Row marginTop=24>

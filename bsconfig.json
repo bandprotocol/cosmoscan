@@ -36,5 +36,8 @@
     "bs-webapi"
   ],
   "bs-dev-dependencies": ["@glennsl/bs-jest"],
-  "refmt": 3
+  "refmt": 3,
+  "warnings": {
+    "number": "-48-26-27-20"
+  }
 }

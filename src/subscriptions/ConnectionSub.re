@@ -103,9 +103,5 @@ let getCount = (~counterpartyChainID, ~connectionID, ()) => {
         ),
     );
   result
-  |> Sub.map(_, x =>
-       x##connections_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count |> Belt.Option.getExn)
-     );
+  |> Sub.map(_, x => x##connections_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };

@@ -265,7 +265,6 @@ let count = () => {
        x##transactions_aggregate##aggregate
        |> Belt_Option.getExn
        |> (y => y##count)
-       |> Belt.Option.getExn
      );
 };
 
@@ -282,7 +281,6 @@ let countBySender = sender => {
          account##account_transactions_aggregate##aggregate
          |> Belt_Option.getExn
          |> (y => y##count)
-         |> Belt.Option.getExn
        | None => 0
        }
      });
