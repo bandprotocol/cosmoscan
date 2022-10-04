@@ -195,7 +195,6 @@ let getUnbondingCountByDelegator = (delegatorAddress, currentTime) => {
          x'##unbonding_delegations_aggregate##aggregate
          |> Belt_Option.getExn
          |> (y => y##count)
-         |> Belt.Option.getExn
        | None => 0
        }
      });

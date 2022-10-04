@@ -162,10 +162,5 @@ let get = id => {
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(ProposalsCountConfig.definition);
   result
-  |> Sub.map(_, x =>
-       x##proposals_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count)
-       |> Belt.Option.getExn
-     );
+  |> Sub.map(_, x => x##proposals_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };

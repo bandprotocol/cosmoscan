@@ -119,7 +119,7 @@ module ValidatorReport = {
          {
            let%Opt x = each##validators_by_pk;
            let%Opt y = x##validator_report_count;
-           Some(y##count->Belt.Option.getExn);
+           Some(y##count |> Belt.Option.getWithDefault(_, 0));
          }
          |> Belt.Option.getWithDefault(_, 0)
        );

@@ -71,10 +71,5 @@ let count = proposalID => {
         DepositCountConfig.makeVariables(~proposal_id=proposalID |> ID.Proposal.toInt, ()),
     );
   result
-  |> Sub.map(_, x =>
-       x##deposits_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count)
-       |> Belt_Option.getExn
-     );
+  |> Sub.map(_, x => x##deposits_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };
