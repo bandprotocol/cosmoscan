@@ -166,6 +166,5 @@ let count = () => {
        x##proposals_aggregate##aggregate
        |> Belt_Option.getExn
        |> (y => y##count)
-       |> Belt.Option.getExn
      );
 };

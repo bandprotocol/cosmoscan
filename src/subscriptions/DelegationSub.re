@@ -66,7 +66,7 @@ module StakeCountByDelegatorConfig = [%graphql
   subscription CountByDelegator($delegator_address: String!) {
     delegations_view_aggregate(where: {delegator_address: {_eq: $delegator_address}}) {
       aggregate {
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -206,9 +206,6 @@ let getDelegatorCountByValidator = validatorAddress => {
     );
   result
   |> Sub.map(_, x =>
-       x##delegations_view_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count)
-       |> Belt.Option.getExn
+       x##delegations_view_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count)
      );
 };
