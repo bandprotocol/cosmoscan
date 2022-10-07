@@ -261,11 +261,7 @@ let getListByBlockHeight = (height, ()) => {
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(TxCountConfig.definition);
   result
-  |> Sub.map(_, x =>
-       x##transactions_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count)
-     );
+  |> Sub.map(_, x => x##transactions_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };
 
 let countBySender = sender => {

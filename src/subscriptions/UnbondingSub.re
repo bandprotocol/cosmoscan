@@ -192,9 +192,7 @@ let getUnbondingCountByDelegator = (delegatorAddress, currentTime) => {
   |> Sub.map(_, x => {
        switch (x##accounts_by_pk) {
        | Some(x') =>
-         x'##unbonding_delegations_aggregate##aggregate
-         |> Belt_Option.getExn
-         |> (y => y##count)
+         x'##unbonding_delegations_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count)
        | None => 0
        }
      });

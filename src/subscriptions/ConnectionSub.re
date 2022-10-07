@@ -102,6 +102,7 @@ let getCount = (~counterpartyChainID, ~connectionID, ()) => {
           (),
         ),
     );
+
   result
   |> Sub.map(_, x =>
        x##connections_aggregate##aggregate
