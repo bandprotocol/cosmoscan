@@ -5,17 +5,6 @@ module Changes = {
     value: string,
   };
 
-  let toExternal = ({subspace, key, value}) => {
-    subspace ++ "." ++ key ++ ": " ++ value;
-  };
-
-  // let decodeArr = json =>
-  //   JsonUtils.Decode.{
-  //     subspace: json |> field("subspace", string),
-  //     key: json |> field("key", string),
-  //     value: json |> field("value", string),
-  //   };
-
   let decode = json =>
     JsonUtils.Decode.{
       subspace: json |> at(["subspace"], string),
@@ -25,39 +14,30 @@ module Changes = {
 };
 
 module Content = {
-  type t = {
-    title: string,
-    description: string,
-    changes: option(list(Changes.changes_t)),
-    plan: option(Js.Json.t),
-  };
   type plan_t = {
     name: string,
     time: MomentRe.Moment.t,
     height: int,
   };
 
-  // type content_internal_t = {
-  //   title: string,
-  //   description: string,
-  //   changes: option(array(Changes.changes_t)),
-  //   plan: option(plan_t),
-  // };
-
-  // let decodeChanges = (json: array(Js.Json.t)) =>
-  //   json->Belt.Array.map(_, each =>
-  //           JsonUtils.Decode.{
-  //             subspace: each |> field("subspace", string),
-  //             key: each |> field("key", string),
-  //             value: each |> field("value", string),
-  //           }
-  //         );
+  type t = {
+    title: string,
+    description: string,
+    changes: option(array(Changes.changes_t)),
+    plan: option(plan_t),
+  };
 
   let decodeChanges = json => {
-    let changes = json |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
-    // let changes_2 = json |> Js.Json.decodeArray |> Belt.Option.getExn;
-    Js.log2("change_2", json |> Js.Json.decodeArray));
-    changes |> Belt_List.map(_, Changes.decode);
+    let changes = json |> Js.Json.decodeArray |> Belt.Option.getExn;
+    changes |> Belt_Array.map(_, Changes.decode);
+  };
+
+  let decodePlan = json => {
+    JsonUtils.Decode.{
+      name: json |> field("name", string),
+      time: json |> field("time", moment),
+      height: json |> field("height", int),
+    };
   };
 
   let decode = (json: Js.Json.t) =>
@@ -65,7 +45,7 @@ module Content = {
       title: json |> field("title", string),
       description: json |> field("description", string),
       changes: json |> optional(field("changes", decodeChanges)),
-      plan: json |> optional(field("plan", json => json)),
+      plan: json |> optional(field("plan", decodePlan)),
     };
 };
 

@@ -193,7 +193,7 @@ module RenderBody = {
         }
       }>
       <Row alignItems=Row.Center>
-        <Col col=Col.Four>
+        <Col col=Col.Six>
           {switch (oracleScriptSub) {
            | Data({id, name}) =>
              <div className={CssHelper.flexBox()}>
@@ -204,14 +204,14 @@ module RenderBody = {
            | _ => <LoadingCensorBar width=300 height=15 />
            }}
         </Col>
-        <Col col=Col.Four>
-          {switch (oracleScriptSub) {
-           | Data({description}) =>
-             let text = Ellipsis.format(~text=description, ~limit=70, ());
-             <Text value=text block=true />;
-           | _ => <LoadingCensorBar width=270 height=15 />
-           }}
-        </Col>
+        // <Col col=Col.Four>
+        //   {switch (oracleScriptSub) {
+        //    | Data({description}) =>
+        //      let text = Ellipsis.format(~text=description, ~limit=70, ());
+        //      <Text value=text block=true />;
+        //    | _ => <LoadingCensorBar width=270 height=15 />
+        //    }}
+        // </Col>
         <Col col=Col.Two>
           <div className={CssHelper.flexBox(~justify=`flexStart, ~align=`flexStart, ())}>
             {switch (allSub) {
@@ -241,6 +241,27 @@ module RenderBody = {
                    />
                  </div>
                </>;
+             | _ => <LoadingCensorBar width=70 height=15 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Two>
+          <div className={CssHelper.flexBox(~justify=`flexStart, ~align=`flexStart, ())}>
+            {switch (allSub) {
+             | Data(({version}, _)) =>
+               <div>
+                 <Text
+                   value={
+                     switch (version) {
+                     | Ok => "OK"
+                     | Redeploy => "Need Redeployment"
+                     | Nothing => ""
+                     }
+                   }
+                   weight=Text.Medium
+                   block=true
+                 />
+               </div>
              | _ => <LoadingCensorBar width=70 height=15 />
              }}
           </div>
@@ -278,11 +299,10 @@ module RenderBodyMobile = {
            ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
       ) => {
     switch (oracleScriptSub) {
-    | Data({id, timestamp: timestampOpt, description, name, requestCount}) =>
+    | Data({id, timestamp: timestampOpt, name, requestCount, version}) =>
       <MobileCard
         values=InfoMobileCard.[
           ("Oracle Script", OracleScript(id, name)),
-          ("Description", Text(description)),
           (
             "Request&\nResponse time",
             switch (statsSub) {
@@ -295,6 +315,14 @@ module RenderBodyMobile = {
                   ->Belt.Option.map(({responseTime}) => responseTime),
               })
             | _ => Loading(80)
+            },
+          ),
+          (
+            "Version",
+            switch (version) {
+            | Ok => Text("OK")
+            | Redeploy => Text("Need Redeployment")
+            | Nothing => Text("")
             },
           ),
           (
@@ -312,8 +340,8 @@ module RenderBodyMobile = {
       <MobileCard
         values=InfoMobileCard.[
           ("Oracle Script", Loading(200)),
-          ("Description", Loading(200)),
           ("Request&\nResponse time", Loading(80)),
+          ("Version", Loading(80)),
           ("Timestamp", Loading(180)),
         ]
         key={reserveIndex |> string_of_int}
@@ -431,7 +459,7 @@ let make = () => {
              ? React.null
              : <THead>
                  <Row alignItems=Row.Center>
-                   <Col col=Col.Four>
+                   <Col col=Col.Six>
                      <Text
                        block=true
                        value="Oracle Script"
@@ -440,10 +468,19 @@ let make = () => {
                        size=Text.Sm
                      />
                    </Col>
-                   <Col col=Col.Four>
+                   //  <Col col=Col.Two>
+                   //    <Text
+                   //      block=true
+                   //      value="Description"
+                   //      weight=Text.Semibold
+                   //      transform=Text.Uppercase
+                   //      size=Text.Sm
+                   //    />
+                   //  </Col>
+                   <Col col=Col.Two>
                      <Text
                        block=true
-                       value="Description"
+                       value="Request & Response time"
                        weight=Text.Semibold
                        transform=Text.Uppercase
                        size=Text.Sm
@@ -452,7 +489,7 @@ let make = () => {
                    <Col col=Col.Two>
                      <Text
                        block=true
-                       value="Request & Response time"
+                       value="Version"
                        weight=Text.Semibold
                        transform=Text.Uppercase
                        size=Text.Sm
