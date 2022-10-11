@@ -204,14 +204,6 @@ module RenderBody = {
            | _ => <LoadingCensorBar width=300 height=15 />
            }}
         </Col>
-        // <Col col=Col.Four>
-        //   {switch (oracleScriptSub) {
-        //    | Data({description}) =>
-        //      let text = Ellipsis.format(~text=description, ~limit=70, ());
-        //      <Text value=text block=true />;
-        //    | _ => <LoadingCensorBar width=270 height=15 />
-        //    }}
-        // </Col>
         <Col col=Col.Two>
           <div className={CssHelper.flexBox(~justify=`flexStart, ~align=`flexStart, ())}>
             {switch (allSub) {
@@ -468,15 +460,6 @@ let make = () => {
                        size=Text.Sm
                      />
                    </Col>
-                   //  <Col col=Col.Two>
-                   //    <Text
-                   //      block=true
-                   //      value="Description"
-                   //      weight=Text.Semibold
-                   //      transform=Text.Uppercase
-                   //      size=Text.Sm
-                   //    />
-                   //  </Col>
                    <Col col=Col.Two>
                      <Text
                        block=true
