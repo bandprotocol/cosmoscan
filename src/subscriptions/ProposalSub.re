@@ -1,3 +1,74 @@
+module Changes = {
+  type changes_t = {
+    subspace: string,
+    key: string,
+    value: string,
+  };
+
+  let toExternal = ({subspace, key, value}) => {
+    subspace ++ "." ++ key ++ ": " ++ value;
+  };
+
+  // let decodeArr = json =>
+  //   JsonUtils.Decode.{
+  //     subspace: json |> field("subspace", string),
+  //     key: json |> field("key", string),
+  //     value: json |> field("value", string),
+  //   };
+
+  let decode = json =>
+    JsonUtils.Decode.{
+      subspace: json |> at(["subspace"], string),
+      key: json |> at(["key"], string),
+      value: json |> at(["value"], string),
+    };
+};
+
+module Content = {
+  type t = {
+    title: string,
+    description: string,
+    changes: option(list(Changes.changes_t)),
+    plan: option(Js.Json.t),
+  };
+  type plan_t = {
+    name: string,
+    time: MomentRe.Moment.t,
+    height: int,
+  };
+
+  // type content_internal_t = {
+  //   title: string,
+  //   description: string,
+  //   changes: option(array(Changes.changes_t)),
+  //   plan: option(plan_t),
+  // };
+
+  // let decodeChanges = (json: array(Js.Json.t)) =>
+  //   json->Belt.Array.map(_, each =>
+  //           JsonUtils.Decode.{
+  //             subspace: each |> field("subspace", string),
+  //             key: each |> field("key", string),
+  //             value: each |> field("value", string),
+  //           }
+  //         );
+
+  let decodeChanges = json => {
+    let changes = json |> Js.Json.decodeArray |> Belt.Option.getExn |> Belt.List.fromArray;
+    // let changes_2 = json |> Js.Json.decodeArray |> Belt.Option.getExn;
+    Js.log2("change_2", json |> Js.Json.decodeArray));
+    changes |> Belt_List.map(_, Changes.decode);
+  };
+
+  let decode = (json: Js.Json.t) =>
+    JsonUtils.Decode.{
+      title: json |> field("title", string),
+      description: json |> field("description", string),
+      changes: json |> optional(field("changes", decodeChanges)),
+      plan: json |> optional(field("plan", json => json)),
+    };
+};
+
 type proposal_status_t =
   | Deposit
   | Voting
@@ -27,6 +98,7 @@ type internal_t = {
   title: string,
   status: proposal_status_t,
   description: string,
+  contentOpt: option(Js.Json.t),
   submitTime: MomentRe.Moment.t,
   depositEndTime: MomentRe.Moment.t,
   votingStartTime: MomentRe.Moment.t,
@@ -41,6 +113,7 @@ type t = {
   name: string,
   status: proposal_status_t,
   description: string,
+  content: option(Content.t),
   submitTime: MomentRe.Moment.t,
   depositEndTime: MomentRe.Moment.t,
   votingStartTime: MomentRe.Moment.t,
@@ -57,6 +130,7 @@ let toExternal =
         title,
         status,
         description,
+        contentOpt,
         submitTime,
         depositEndTime,
         votingStartTime,
@@ -70,6 +144,10 @@ let toExternal =
   name: title,
   status,
   description,
+  content: {
+    let%Opt content = contentOpt;
+    Some(content |> Content.decode);
+  },
   submitTime,
   depositEndTime,
   votingStartTime,
@@ -87,6 +165,7 @@ module MultiConfig = [%graphql
       title
       status @bsDecoder(fn: "parseProposalStatus")
       description
+      contentOpt: content
       submitTime: submit_time @bsDecoder(fn: "GraphQLParser.timestamp")
       depositEndTime: deposit_end_time @bsDecoder(fn: "GraphQLParser.timestamp")
       votingStartTime: voting_time @bsDecoder(fn: "GraphQLParser.timestamp")
@@ -109,6 +188,7 @@ module SingleConfig = [%graphql
       title
       status @bsDecoder(fn: "parseProposalStatus")
       description
+      contentOpt: content
       submitTime: submit_time @bsDecoder(fn: "GraphQLParser.timestamp")
       depositEndTime: deposit_end_time @bsDecoder(fn: "GraphQLParser.timestamp")
       votingStartTime: voting_time @bsDecoder(fn: "GraphQLParser.timestamp")
@@ -162,9 +242,5 @@ let get = id => {
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(ProposalsCountConfig.definition);
   result
-  |> Sub.map(_, x =>
-       x##proposals_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count)
-     );
+  |> Sub.map(_, x => x##proposals_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };
