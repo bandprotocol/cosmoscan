@@ -197,17 +197,11 @@ module Content = {
                 <Col col=Col.Eight>
                   {switch (oracleScriptSub) {
                    | Data({version}) =>
-                     <Text
-                       value={
-                         switch (version) {
-                         | Ok => "OK"
-                         | Redeploy => "Need Redeployment"
-                         | _ => ""
-                         }
-                       }
-                       size=Text.Lg
-                       block=true
-                     />
+                     switch (version) {
+                     | Ok => <Chip value="Upgraded" color=Chip.Success />
+                     | Redeploy => <Chip value="Redeployment Needed" color=Chip.Warning />
+                     | _ => <Chip value="Unknown" />
+                     }
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>

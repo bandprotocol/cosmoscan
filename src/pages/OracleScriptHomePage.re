@@ -193,7 +193,7 @@ module RenderBody = {
         }
       }>
       <Row alignItems=Row.Center>
-        <Col col=Col.Six>
+        <Col col=Col.Five>
           {switch (oracleScriptSub) {
            | Data({id, name}) =>
              <div className={CssHelper.flexBox()}>
@@ -237,22 +237,16 @@ module RenderBody = {
              }}
           </div>
         </Col>
-        <Col col=Col.Two>
+        <Col col=Col.Three>
           <div className={CssHelper.flexBox(~justify=`flexStart, ~align=`flexStart, ())}>
             {switch (allSub) {
              | Data(({version}, _)) =>
                <div>
-                 <Text
-                   value={
-                     switch (version) {
-                     | Ok => "OK"
-                     | Redeploy => "Need Redeployment"
-                     | Nothing => ""
-                     }
-                   }
-                   weight=Text.Medium
-                   block=true
-                 />
+                 {switch (version) {
+                  | Ok => <Chip value="Upgraded" color=Chip.Success />
+                  | Redeploy => <Chip value="Redeployment Needed" color=Chip.Warning />
+                  | _ => <Chip value="Unknown" />
+                  }}
                </div>
              | _ => <LoadingCensorBar width=70 height=15 />
              }}
@@ -312,8 +306,8 @@ module RenderBodyMobile = {
           (
             "Version",
             switch (version) {
-            | Ok => Text("OK")
-            | Redeploy => Text("Need Redeployment")
+            | Ok => Text("Upgraded")
+            | Redeploy => Text("Redeployment Needed")
             | Nothing => Text("")
             },
           ),
@@ -451,7 +445,7 @@ let make = () => {
              ? React.null
              : <THead>
                  <Row alignItems=Row.Center>
-                   <Col col=Col.Six>
+                   <Col col=Col.Five>
                      <Text
                        block=true
                        value="Oracle Script"
@@ -469,7 +463,7 @@ let make = () => {
                        size=Text.Sm
                      />
                    </Col>
-                   <Col col=Col.Two>
+                   <Col col=Col.Three>
                      <Text
                        block=true
                        value="Version"
