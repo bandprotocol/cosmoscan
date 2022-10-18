@@ -245,7 +245,7 @@ module RenderBody = {
                  {switch (version) {
                   | Ok => <Chip value="Upgraded" color=Chip.Success />
                   | Redeploy => <Chip value="Redeployment Needed" color=Chip.Warning />
-                  | _ => <Chip value="Unknown" />
+                  |  Nothing => React.null
                   }}
                </div>
              | _ => <LoadingCensorBar width=70 height=15 />
