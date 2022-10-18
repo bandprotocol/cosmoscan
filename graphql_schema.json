@@ -44111,6 +44111,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -44533,6 +44545,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -44558,6 +44582,16 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "version",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -44742,6 +44776,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -44783,6 +44827,16 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "version",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -44921,6 +44975,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -45027,6 +45091,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -45112,6 +45188,16 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "version",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -45225,6 +45311,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -45310,6 +45408,16 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "version",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -45591,6 +45699,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -45674,6 +45792,12 @@
           },
           {
             "name": "transaction_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "version",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -45766,6 +45890,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -45791,6 +45925,18 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "version",
             "description": null,
             "args": [],
             "type": {
@@ -45832,6 +45978,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -45857,6 +46013,18 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "version",
             "description": null,
             "args": [],
             "type": {
@@ -45898,6 +46066,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -45923,6 +46101,18 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "version",
             "description": null,
             "args": [],
             "type": {
@@ -45964,6 +46154,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -45998,6 +46198,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -46023,6 +46235,16 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "version",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -46091,6 +46313,12 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -46114,6 +46342,18 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "version",
             "description": null,
             "args": [],
             "type": {
@@ -46155,6 +46395,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -46180,6 +46430,18 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "version",
             "description": null,
             "args": [],
             "type": {
@@ -46221,6 +46483,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -46255,6 +46527,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "version",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -46280,6 +46564,16 @@
           },
           {
             "name": "transaction_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "version",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -49742,6 +50036,29 @@
             "deprecationReason": null
           },
           {
+            "name": "content",
+            "description": null,
+            "args": [
+              {
+                "name": "path",
+                "description": "JSON select path",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "json",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "deposit_end_time",
             "description": null,
             "args": [],
@@ -50799,6 +51116,16 @@
             "defaultValue": null
           },
           {
+            "name": "content",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "json_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "deposit_end_time",
             "description": null,
             "type": {
@@ -51003,6 +51330,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "accounts_obj_rel_insert_input",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "content",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "json",
               "ofType": null
             },
             "defaultValue": null
@@ -51884,6 +52221,16 @@
             "defaultValue": null
           },
           {
+            "name": "content",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "deposit_end_time",
             "description": null,
             "type": {
@@ -52062,6 +52409,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "content",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "deposit_end_time",
             "description": "column name",
             "isDeprecated": false,
@@ -52142,6 +52495,16 @@
         "description": "input type for updating data in table \"proposals\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "content",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "json",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
           {
             "name": "deposit_end_time",
             "description": null,
@@ -52539,6 +52902,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "content",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "deposit_end_time",
             "description": "column name",

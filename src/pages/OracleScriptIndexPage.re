@@ -169,7 +169,7 @@ module Content = {
                   </div>
                 </Col>
               </Row>
-              <Row>
+              <Row marginBottom=24>
                 <Col col=Col.Four mbSm=8>
                   <Heading
                     value="Description"
@@ -181,6 +181,27 @@ module Content = {
                 <Col col=Col.Eight>
                   {switch (oracleScriptSub) {
                    | Data({description}) => <Text value=description size=Text.Lg block=true />
+                   | _ => <LoadingCensorBar width=284 height=15 />
+                   }}
+                </Col>
+              </Row>
+              <Row>
+                <Col col=Col.Four mbSm=8>
+                  <Heading
+                    value="Version"
+                    size=Heading.H4
+                    weight=Heading.Thin
+                    color={theme.textSecondary}
+                  />
+                </Col>
+                <Col col=Col.Eight>
+                  {switch (oracleScriptSub) {
+                   | Data({version}) =>
+                     switch (version) {
+                     | Ok => <Chip value="Upgraded" color=Chip.Success />
+                     | Redeploy => <Chip value="Redeployment Needed" color=Chip.Warning />
+                     | _ => <Chip value="Unknown" />
+                     }
                    | _ => <LoadingCensorBar width=284 height=15 />
                    }}
                 </Col>
