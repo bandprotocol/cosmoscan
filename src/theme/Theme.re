@@ -32,6 +32,8 @@ type t = {
   loadingBaseColor: color_t,
   loadingSecondaryColor: color_t,
   footer: color_t,
+  baseGrey: color_t,
+  warningColor: color_t,
 };
 
 // Default Colors
@@ -43,11 +45,13 @@ let darkBlue = hex("3719B8");
 let darkenBlue = hex("29138A");
 let black = hex("000000");
 let white = hex("ffffff");
+// let baseGrey = hex("bdbdbd");
 
 let successColor = hex("5FD3C8");
 let pendingColor = hex("F4D23E");
 let activeColor = hex("5FD3C8");
 let failColor = hex("E84A4B");
+let warningColor = hex("ffa733");
 
 let footer = hex("1400A5");
 
@@ -65,6 +69,8 @@ let get: mode_t => t =
       pendingColor,
       activeColor,
       failColor,
+      warningColor,
+      baseGrey: hex("bdbdbd"),
       textPrimary: hex("303030"),
       textSecondary: hex("7D7D7D"),
       mainBg: hex("ffffff"),
@@ -92,6 +98,8 @@ let get: mode_t => t =
       pendingColor,
       activeColor,
       failColor,
+      warningColor,
+      baseGrey: hex("424242"),
       textPrimary: hex("ffffff"),
       textSecondary: hex("9A9A9A"),
       mainBg: hex("000000"),
