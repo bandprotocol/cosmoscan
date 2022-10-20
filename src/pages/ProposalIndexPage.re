@@ -291,81 +291,83 @@ let make = (~proposalID) => {
 
              | _ => React.null
              }}
+
+              // Display when related to Enable IBC
+              {switch (allSub) {
+              | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Oracle") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Transfer") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="HistoricalEntries: 10000" size=Text.Lg block=true />
+                      <Text value="SendEnabled: True" size=Text.Lg block=true />
+                      <Text value="ReceiveEnabled: True" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | Data(({name}, _, _))
+                  when name->Js.String2.includes("Increase Block Capacity through Request Gas Parameter") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="PerValidatorRequestGas: 0" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | Data(({name}, _, _))
+                  when name->Js.String2.includes("Increase max_raw_request_count from 12 to 16") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | _ => React.null
+              }}
+       
           </InfoContainer>
         </Col>
       </Row>
-      // Display when related to Enable IBC
-      {switch (allSub) {
-       | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Oracle") =>
-         <Row>
-           <Col col=Col.Four mbSm=8>
-             <Heading
-               value="Parameter Changes"
-               size=Heading.H4
-               weight=Heading.Thin
-               color={theme.textSecondary}
-             />
-           </Col>
-           <Col col=Col.Eight>
-             <div className={Styles.parameterChanges(theme)}>
-               <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
-             </div>
-           </Col>
-         </Row>
-       | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Transfer") =>
-         <Row>
-           <Col col=Col.Four mbSm=8>
-             <Heading
-               value="Parameter Changes"
-               size=Heading.H4
-               weight=Heading.Thin
-               color={theme.textSecondary}
-             />
-           </Col>
-           <Col col=Col.Eight>
-             <div className={Styles.parameterChanges(theme)}>
-               <Text value="HistoricalEntries: 10000" size=Text.Lg block=true />
-               <Text value="SendEnabled: True" size=Text.Lg block=true />
-               <Text value="ReceiveEnabled: True" size=Text.Lg block=true />
-             </div>
-           </Col>
-         </Row>
-       | Data(({name}, _, _))
-           when name->Js.String2.includes("Increase Block Capacity through Request Gas Parameter") =>
-         <Row>
-           <Col col=Col.Four mbSm=8>
-             <Heading
-               value="Parameter Changes"
-               size=Heading.H4
-               weight=Heading.Thin
-               color={theme.textSecondary}
-             />
-           </Col>
-           <Col col=Col.Eight>
-             <div className={Styles.parameterChanges(theme)}>
-               <Text value="PerValidatorRequestGas: 0" size=Text.Lg block=true />
-             </div>
-           </Col>
-         </Row>
-       | Data(({name}, _, _))
-           when name->Js.String2.includes("Increase max_raw_request_count from 12 to 16") =>
-         <Row>
-           <Col col=Col.Four mbSm=8>
-             <Heading
-               value="Parameter Changes"
-               size=Heading.H4
-               weight=Heading.Thin
-               color={theme.textSecondary}
-             />
-           </Col>
-           <Col col=Col.Eight>
-             <div className={Styles.parameterChanges(theme)}>
-               <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
-             </div>
-           </Col>
-         </Row>
-       | _ => React.null
-       }}
       {switch (allSub) {
        | Data((
            {status, votingStartTime, votingEndTime},
