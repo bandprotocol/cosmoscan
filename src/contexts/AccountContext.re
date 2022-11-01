@@ -89,10 +89,15 @@ let reducer = state =>
               ~gas={
                 switch (int_of_string_opt(gaslimit)) {
                 | Some(gasOpt) => gasOpt
-                | _ => 700000
+                | _ => 1000000
                 };
               },
-              ~feeAmount="0",
+              ~feeAmount={
+                switch (int_of_string_opt(gaslimit)) {
+                | Some(gasOpt) => Js.Float.toString(float_of_int(gasOpt) *. 0.0025)
+                | _ => "2500"
+                };
+              },
               ~memo="send via scan",
               ~client,
               (),
