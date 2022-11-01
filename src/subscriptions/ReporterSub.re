@@ -54,10 +54,5 @@ let count = operatorAddress => {
         ),
     );
   result
-  |> Sub.map(_, x =>
-       x##reporters_aggregate##aggregate
-       |> Belt_Option.getExn
-       |> (y => y##count)
-       |> Belt.Option.getExn
-     );
+  |> Sub.map(_, x => x##reporters_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };
