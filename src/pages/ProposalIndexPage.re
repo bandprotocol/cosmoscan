@@ -16,6 +16,31 @@ module Styles = {
 
   let parameterChanges = (theme: Theme.t) =>
     style([padding2(~v=`px(16), ~h=`px(24)), backgroundColor(theme.secondaryTableBg)]);
+
+  let jsonDisplay = (theme: Theme.t) =>
+    style([
+      resize(`none),
+      fontSize(`px(12)),
+      color(theme.textPrimary),
+      backgroundColor(theme.contrastBg),
+      border(`px(1), `solid, theme.tableRowBorderColor),
+      borderRadius(`px(4)),
+      width(`percent(100.)),
+      minHeight(`px(100)),
+      overflowY(`scroll),
+      marginBottom(`px(16)),
+      fontFamilies([
+        `custom("IBM Plex Mono"),
+        `custom("cousine"),
+        `custom("sfmono-regular"),
+        `custom("Consolas"),
+        `custom("Menlo"),
+        `custom("liberation mono"),
+        `custom("ubuntu mono"),
+        `custom("Courier"),
+        `monospace,
+      ]),
+    ]);
 };
 
 module VoteButton = {
@@ -187,85 +212,159 @@ let make = (~proposalID) => {
                  }}
               </Col>
             </Row>
-            // Display when related to Enable IBC
             {switch (allSub) {
-             | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Oracle") =>
-               <Row>
-                 <Col col=Col.Four mbSm=8>
-                   <Heading
-                     value="Parameter Changes"
-                     size=Heading.H4
-                     weight=Heading.Thin
-                     color={theme.textSecondary}
-                   />
-                 </Col>
-                 <Col col=Col.Eight>
-                   <div className={Styles.parameterChanges(theme)}>
-                     <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
-                   </div>
-                 </Col>
-               </Row>
-             | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Transfer") =>
-               <Row>
-                 <Col col=Col.Four mbSm=8>
-                   <Heading
-                     value="Parameter Changes"
-                     size=Heading.H4
-                     weight=Heading.Thin
-                     color={theme.textSecondary}
-                   />
-                 </Col>
-                 <Col col=Col.Eight>
-                   <div className={Styles.parameterChanges(theme)}>
-                     <Text value="HistoricalEntries: 10000" size=Text.Lg block=true />
-                     <Text value="SendEnabled: True" size=Text.Lg block=true />
-                     <Text value="ReceiveEnabled: True" size=Text.Lg block=true />
-                   </div>
-                 </Col>
-               </Row>
-
-             | Data(({name}, _, _))
-                 when
-                   name->Js.String2.includes(
-                     "Increase Block Capacity through Request Gas Parameter",
-                   ) =>
-               <Row>
-                 <Col col=Col.Four mbSm=8>
-                   <Heading
-                     value="Parameter Changes"
-                     size=Heading.H4
-                     weight=Heading.Thin
-                     color={theme.textSecondary}
-                   />
-                 </Col>
-                 <Col col=Col.Eight>
-                   <div className={Styles.parameterChanges(theme)}>
-                     <Text value="PerValidatorRequestGas: 0" size=Text.Lg block=true />
-                   </div>
-                 </Col>
-               </Row>
-               | Data(({name}, _, _))
-               when
-                 name->Js.String2.includes(
-                   "Increase max_raw_request_count from 12 to 16",
-                 ) =>
-             <Row>
-               <Col col=Col.Four mbSm=8>
-                 <Heading
-                   value="Parameter Changes"
-                   size=Heading.H4
-                   weight=Heading.Thin
-                   color={theme.textSecondary}
-                 />
-               </Col>
-               <Col col=Col.Eight>
-                 <div className={Styles.parameterChanges(theme)}>
-                   <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
-                 </div>
-               </Col>
-             </Row>
+             | Data(({content}, _, _)) =>
+               switch (content) {
+               | Some({changes}) =>
+                 switch (changes) {
+                 | Some(changes_data) =>
+                   <Row marginBottom=24>
+                     <Col col=Col.Four mbSm=8>
+                       <Heading
+                         value="Parameter Changes"
+                         size=Heading.H4
+                         weight=Heading.Thin
+                         color={theme.textSecondary}
+                       />
+                     </Col>
+                     <Col col=Col.Eight>
+                       <div className={Styles.parameterChanges(theme)}>
+                         {changes_data
+                          ->Belt.Array.mapWithIndex((i, value) =>
+                              <div key={i->string_of_int}>
+                                <Text
+                                  value={value.subspace ++ "." ++ value.key ++ ": " ++ value.value}
+                                  size=Text.Lg
+                                  block=true
+                                />
+                                <VSpacing size={`px(10)} />
+                              </div>
+                            )
+                          ->React.array}
+                       </div>
+                     </Col>
+                   </Row>
+                 | None => React.null
+                 }
+               | None => React.null
+               }
              | _ => React.null
              }}
+            {switch (allSub) {
+             | Data(({content}, _, _)) =>
+               switch (content) {
+               | Some({plan}) =>
+                 switch (plan) {
+                 | Some(planObj) =>
+                   <>
+                     <Row marginBottom=24>
+                       <Col col=Col.Four mbSm=8>
+                         <Heading
+                           value="Upgrade Name"
+                           size=Heading.H4
+                           weight=Heading.Thin
+                           color={theme.textSecondary}
+                         />
+                       </Col>
+                       <Col col=Col.Eight>
+                         <Text value={planObj.name} size=Text.Lg block=true />
+                       </Col>
+                     </Row>
+                     <Row marginBottom=24>
+                       <Col col=Col.Four mbSm=8>
+                         <Heading
+                           value="Upgrade Height"
+                           size=Heading.H4
+                           weight=Heading.Thin
+                           color={theme.textSecondary}
+                         />
+                       </Col>
+                       <Col col=Col.Eight>
+                         <Text value={planObj.height |> string_of_int} size=Text.Lg block=true />
+                       </Col>
+                     </Row>
+                   </>
+                 | None => React.null
+                 }
+               | None => React.null
+               }
+
+             | _ => React.null
+             }}
+
+              // Display when related to Enable IBC
+              {switch (allSub) {
+              | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Oracle") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Transfer") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="HistoricalEntries: 10000" size=Text.Lg block=true />
+                      <Text value="SendEnabled: True" size=Text.Lg block=true />
+                      <Text value="ReceiveEnabled: True" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | Data(({name}, _, _))
+                  when name->Js.String2.includes("Increase Block Capacity through Request Gas Parameter") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="PerValidatorRequestGas: 0" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | Data(({name}, _, _))
+                  when name->Js.String2.includes("Increase max_raw_request_count from 12 to 16") =>
+                <Row>
+                  <Col col=Col.Four mbSm=8>
+                    <Heading
+                      value="Parameter Changes"
+                      size=Heading.H4
+                      weight=Heading.Thin
+                      color={theme.textSecondary}
+                    />
+                  </Col>
+                  <Col col=Col.Eight>
+                    <div className={Styles.parameterChanges(theme)}>
+                      <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
+                    </div>
+                  </Col>
+                </Row>
+              | _ => React.null
+              }}
+       
           </InfoContainer>
         </Col>
       </Row>

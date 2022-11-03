@@ -193,7 +193,7 @@ module RenderBody = {
         }
       }>
       <Row alignItems=Row.Center>
-        <Col col=Col.Four>
+        <Col col=Col.Five>
           {switch (oracleScriptSub) {
            | Data({id, name}) =>
              <div className={CssHelper.flexBox()}>
@@ -202,14 +202,6 @@ module RenderBody = {
                <Text value=name ellipsis=true color={theme.textPrimary} />
              </div>
            | _ => <LoadingCensorBar width=300 height=15 />
-           }}
-        </Col>
-        <Col col=Col.Four>
-          {switch (oracleScriptSub) {
-           | Data({description}) =>
-             let text = Ellipsis.format(~text=description, ~limit=70, ());
-             <Text value=text block=true />;
-           | _ => <LoadingCensorBar width=270 height=15 />
            }}
         </Col>
         <Col col=Col.Two>
@@ -241,6 +233,21 @@ module RenderBody = {
                    />
                  </div>
                </>;
+             | _ => <LoadingCensorBar width=70 height=15 />
+             }}
+          </div>
+        </Col>
+        <Col col=Col.Three>
+          <div className={CssHelper.flexBox(~justify=`flexStart, ~align=`flexStart, ())}>
+            {switch (allSub) {
+             | Data(({version}, _)) =>
+               <div>
+                 {switch (version) {
+                  | Ok => <Chip value="Upgraded" color=Chip.Success />
+                  | Redeploy => <Chip value="Redeployment Needed" color=Chip.Warning />
+                  |  Nothing => React.null
+                  }}
+               </div>
              | _ => <LoadingCensorBar width=70 height=15 />
              }}
           </div>
@@ -278,11 +285,10 @@ module RenderBodyMobile = {
            ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
       ) => {
     switch (oracleScriptSub) {
-    | Data({id, timestamp: timestampOpt, description, name, requestCount}) =>
+    | Data({id, timestamp: timestampOpt, name, requestCount, version}) =>
       <MobileCard
         values=InfoMobileCard.[
           ("Oracle Script", OracleScript(id, name)),
-          ("Description", Text(description)),
           (
             "Request&\nResponse time",
             switch (statsSub) {
@@ -295,6 +301,14 @@ module RenderBodyMobile = {
                   ->Belt.Option.map(({responseTime}) => responseTime),
               })
             | _ => Loading(80)
+            },
+          ),
+          (
+            "Version",
+            switch (version) {
+            | Ok => Text("Upgraded")
+            | Redeploy => Text("Redeployment Needed")
+            | Nothing => Text("")
             },
           ),
           (
@@ -312,8 +326,8 @@ module RenderBodyMobile = {
       <MobileCard
         values=InfoMobileCard.[
           ("Oracle Script", Loading(200)),
-          ("Description", Loading(200)),
           ("Request&\nResponse time", Loading(80)),
+          ("Version", Loading(80)),
           ("Timestamp", Loading(180)),
         ]
         key={reserveIndex |> string_of_int}
@@ -431,19 +445,10 @@ let make = () => {
              ? React.null
              : <THead>
                  <Row alignItems=Row.Center>
-                   <Col col=Col.Four>
+                   <Col col=Col.Five>
                      <Text
                        block=true
                        value="Oracle Script"
-                       weight=Text.Semibold
-                       transform=Text.Uppercase
-                       size=Text.Sm
-                     />
-                   </Col>
-                   <Col col=Col.Four>
-                     <Text
-                       block=true
-                       value="Description"
                        weight=Text.Semibold
                        transform=Text.Uppercase
                        size=Text.Sm
@@ -453,6 +458,15 @@ let make = () => {
                      <Text
                        block=true
                        value="Request & Response time"
+                       weight=Text.Semibold
+                       transform=Text.Uppercase
+                       size=Text.Sm
+                     />
+                   </Col>
+                   <Col col=Col.Three>
+                     <Text
+                       block=true
+                       value="Version"
                        weight=Text.Semibold
                        transform=Text.Uppercase
                        size=Text.Sm
