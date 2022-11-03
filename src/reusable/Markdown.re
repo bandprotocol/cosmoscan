@@ -19,13 +19,14 @@ module Styles = {
         "h2, h3, h4, h5, h6",
         [color(theme.textSecondary), marginBottom(`px(10)), fontSize(`px(16))],
       ),
-      selector("ul", [marginLeft(`em(2.))]),
+      selector("ul", [marginLeft(`em(1.2))]),
       selector(
         "ul > li",
         [
           fontSize(`px(14)),
           paddingLeft(`px(15)),
           position(`relative),
+          lineHeight(`em(1.42)),
           before([
             contentRule(`text("\f105")),
             fontFamily(`custom("'Font Awesome 5 Pro'")),
@@ -34,7 +35,7 @@ module Styles = {
             display(`block),
             position(`absolute),
             left(`zero),
-            top(`percent(50.)),
+            top(`px(10)),
             pointerEvents(`none),
             color(theme.baseBlue),
           ]),
