@@ -9,7 +9,6 @@ type oracle_script_tab_t =
   | OracleScriptCode
   | OracleScriptBridgeCode
   | OracleScriptRequests
-  | OracleScriptRevisions;
 
 type account_tab_t =
   | AccountDelegations
@@ -129,7 +128,6 @@ let toString =
   | OracleScriptIndexPage(oracleScriptID, OracleScriptCode) => {j|/oracle-script/$oracleScriptID#code|j}
   | OracleScriptIndexPage(oracleScriptID, OracleScriptBridgeCode) => {j|/oracle-script/$oracleScriptID#bridge|j}
   | OracleScriptIndexPage(oracleScriptID, OracleScriptExecute) => {j|/oracle-script/$oracleScriptID#execute|j}
-  | OracleScriptIndexPage(oracleScriptID, OracleScriptRevisions) => {j|/oracle-script/$oracleScriptID#revisions|j}
   | TxHomePage => "/txs"
   | TxIndexPage(txHash) => {j|/tx/$txHash|j}
   | ValidatorHomePage => "/validators"

@@ -96,14 +96,14 @@ module Mini = {
             }
             reportsAggregate: reports_aggregate @bsRecord {
               aggregate @bsRecord {
-                count @bsDecoder(fn: "Belt_Option.getExn")
+                count
               }
             }
             resolveStatus: resolve_status  @bsDecoder(fn: "parseResolveStatus")
             minCount: min_count
             requestedValidatorsAggregate: val_requests_aggregate @bsRecord {
               aggregate @bsRecord {
-                count @bsDecoder(fn: "Belt_Option.getExn")
+                count
               }
             }
             result @bsDecoder(fn: "GraphQLParser.optionBuffer")
@@ -146,14 +146,14 @@ module Mini = {
           }
           reportsAggregate: reports_aggregate @bsRecord {
             aggregate @bsRecord {
-              count @bsDecoder(fn: "Belt_Option.getExn")
+              count
             }
           }
           resolveStatus: resolve_status  @bsDecoder(fn: "parseResolveStatus")
           minCount: min_count
           requestedValidatorsAggregate: val_requests_aggregate @bsRecord {
             aggregate @bsRecord {
-              count @bsDecoder(fn: "Belt_Option.getExn")
+              count
             }
           }
           result @bsDecoder(fn: "GraphQLParser.optionBuffer")
@@ -190,14 +190,14 @@ module Mini = {
           }
           reportsAggregate: reports_aggregate @bsRecord {
             aggregate @bsRecord {
-              count @bsDecoder(fn: "Belt_Option.getExn")
+              count
             }
           }
           resolveStatus: resolve_status  @bsDecoder(fn: "parseResolveStatus")
           minCount: min_count
           requestedValidatorsAggregate: val_requests_aggregate @bsRecord {
             aggregate @bsRecord {
-              count @bsDecoder(fn: "Belt_Option.getExn")
+              count
             }
           }
           result @bsDecoder(fn: "GraphQLParser.optionBuffer")
@@ -608,7 +608,7 @@ module RequestCountConfig = [%graphql
   subscription RequestCount {
     requests_aggregate {
       aggregate {
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }

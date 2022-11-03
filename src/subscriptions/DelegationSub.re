@@ -66,7 +66,7 @@ module StakeCountByDelegatorConfig = [%graphql
   subscription CountByDelegator($delegator_address: String!) {
     delegations_view_aggregate(where: {delegator_address: {_eq: $delegator_address}}) {
       aggregate {
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
@@ -94,7 +94,7 @@ module DelegatorCountConfig = [%graphql
     subscription DelegatorCount($operator_address: String!) {
       delegations_view_aggregate(where: {operator_address: {_eq: $operator_address}}) {
         aggregate {
-          count @bsDecoder(fn: "Belt_Option.getExn")
+          count
         }
       }
     }

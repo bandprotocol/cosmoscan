@@ -76,7 +76,7 @@ let parseChainID =
   | "band-laozi-testnet2"
   | "band-laozi-testnet3"
   | "band-laozi-testnet4"
-  | "band-laozi-testnet5" 
+  | "band-laozi-testnet5"
   | "band-laozi-testnet6" => LaoziTestnet
   | "laozi-mainnet" => LaoziMainnet
   | "band-laozi-poa" => LaoziPOA

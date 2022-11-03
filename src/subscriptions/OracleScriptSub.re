@@ -11,6 +11,23 @@ type response_last_1_day_t = {
   responseTime: float,
 };
 
+type version_t =
+  | Ok
+  | Redeploy
+  | Nothing;
+
+let parseVersion = version => {
+  switch (version) {
+  | Some(v) =>
+    switch (v) {
+    | 1 => Redeploy
+    | 2 => Ok
+    | _ => Nothing
+    }
+  | None => Nothing
+  };
+};
+
 type internal_t = {
   id: ID.OracleScript.t,
   owner: Address.t,
@@ -21,6 +38,7 @@ type internal_t = {
   transaction: option(transaction_t),
   relatedDataSources: array(related_data_sources),
   requestStat: option(request_stat_t),
+  version: version_t,
 };
 
 type t = {
@@ -33,6 +51,7 @@ type t = {
   timestamp: option(MomentRe.Moment.t),
   relatedDataSources: list(data_source_t),
   requestCount: int,
+  version: version_t,
 };
 
 let toExternal =
@@ -47,6 +66,7 @@ let toExternal =
         transaction: txOpt,
         relatedDataSources,
         requestStat: requestStatOpt,
+        version,
       },
     ) => {
   id,
@@ -63,6 +83,7 @@ let toExternal =
     relatedDataSources->Belt.Array.map(({dataSource}) => dataSource)->Belt.List.fromArray,
   // Note: requestCount can't be nullable value.
   requestCount: requestStatOpt->Belt.Option.map(({count}) => count)->Belt.Option.getExn,
+  version,
 };
 
 module MultiConfig = [%graphql
@@ -89,6 +110,7 @@ module MultiConfig = [%graphql
       requestStat: request_stat @bsRecord {
         count
       }
+      version  @bsDecoder(fn: "parseVersion")
     }
   }
 |}
@@ -118,6 +140,7 @@ module SingleConfig = [%graphql
       requestStat: request_stat @bsRecord {
         count
       }
+      version  @bsDecoder(fn: "parseVersion")
     }
   },
 |}
@@ -128,7 +151,7 @@ module OracleScriptsCountConfig = [%graphql
   subscription OracleScriptsCount($searchTerm: String!) {
     oracle_scripts_aggregate(where: {name: {_ilike: $searchTerm}}){
       aggregate{
-        count @bsDecoder(fn: "Belt_Option.getExn")
+        count
       }
     }
   }
