@@ -229,6 +229,7 @@ let make = () => {
          | Data(proposals) =>
            proposals->Belt.Array.size > 0
              ? proposals
+               ->Belt.Array.keep(({id}) => id != ID.Proposal.ID(8))
                ->Belt_Array.mapWithIndex((i, proposal) => {
                    <ProposalCard
                      key={i |> string_of_int}
