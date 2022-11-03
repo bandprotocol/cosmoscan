@@ -13,11 +13,33 @@ module Styles = {
           hover([color(theme.baseBlue)]),
         ],
       ),
-      selector("p", [color(theme.textSecondary), marginBottom(`em(1.))]),
+      selector("p, ul, ul > li", [color(theme.textSecondary), marginBottom(`em(1.))]),
       selector("p:last-child", [color(theme.textSecondary), marginBottom(`em(0.))]),
       selector(
-        "h2,h3,h4,h5,h6",
+        "h2, h3, h4, h5, h6",
         [color(theme.textSecondary), marginBottom(`px(10)), fontSize(`px(16))],
+      ),
+      selector("ul", [marginLeft(`em(1.2))]),
+      selector(
+        "ul > li",
+        [
+          fontSize(`px(14)),
+          paddingLeft(`px(15)),
+          position(`relative),
+          lineHeight(`em(1.42)),
+          before([
+            contentRule(`text("\f105")),
+            fontFamily(`custom("'Font Awesome 5 Pro'")),
+            fontSize(`px(14)),
+            lineHeight(`zero),
+            display(`block),
+            position(`absolute),
+            left(`zero),
+            top(`px(10)),
+            pointerEvents(`none),
+            color(theme.baseBlue),
+          ]),
+        ],
       ),
     ]);
 };
