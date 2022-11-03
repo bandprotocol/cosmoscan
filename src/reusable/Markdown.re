@@ -26,7 +26,7 @@ module Styles = {
           fontSize(`px(14)),
           paddingLeft(`px(15)),
           position(`relative),
-          after([
+          before([
             contentRule(`text("\f105")),
             fontFamily(`custom("'Font Awesome 5 Pro'")),
             fontSize(`px(14)),
