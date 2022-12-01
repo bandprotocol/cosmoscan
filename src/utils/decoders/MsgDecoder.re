@@ -44,6 +44,7 @@ type badge_t =
   | TimeoutBadge
   | TimeoutOnCloseBadge
   | TransferBadge
+  | RevokeAllowanceBadge
   | UnknownBadge;
 
 type msg_cat_t =
@@ -56,6 +57,7 @@ type msg_cat_t =
   | IBCChannelMsg
   | IBCPacketMsg
   | IBCTransferMsg
+  | FeeGrantMsg
   | UnknownMsg;
 
 let getBadgeVariantFromString = badge => {
@@ -105,6 +107,7 @@ let getBadgeVariantFromString = badge => {
   | "/ibc.core.channel.v1.MsgRecvPacket" => RecvPacketBadge
   | "/ibc.core.channel.v1.MsgAcknowledgement" => AcknowledgePacketBadge
   | "/ibc.applications.transfer.v1.MsgTransfer" => TransferBadge
+  | "/cosmos.feegrant.v1beta1.MsgRevokeAllowance" => RevokeAllowanceBadge
   | _ => UnknownBadge
   };
 };
@@ -1278,6 +1281,19 @@ module Exec = {
   };
 };
 
+module RevokeAllowance = {
+  type t = {
+    granter: Address.t,
+    grantee: Address.t,
+  };
+
+  let decode = json =>
+    JsonUtils.Decode.{
+      granter: json |> at(["msg", "granter"], string) |> Address.fromBech32,
+      grantee: json |> at(["msg", "grantee"], string) |> Address.fromBech32,
+    };
+};
+
 type decoded_t =
   | SendMsgSuccess(Send.t)
   | SendMsgFail(Send.t)
@@ -1328,6 +1344,7 @@ type decoded_t =
   | MultiSendMsgFail(MultiSend.t)
   | ActivateMsgSuccess(Activate.t)
   | ActivateMsgFail(Activate.t)
+  | RevokeAllowanceMsg(RevokeAllowance.t)
   // IBC
   | CreateClientMsg(CreateClient.t)
   | UpdateClientMsg(UpdateClient.t)
@@ -1409,6 +1426,7 @@ let isIBC =
   | MultiSendMsgFail(_)
   | ActivateMsgSuccess(_)
   | ActivateMsgFail(_)
+  | RevokeAllowanceMsg(_)
   | UnknownMsg => false
   // IBC
   | CreateClientMsg(_)
@@ -1452,6 +1470,7 @@ let getCreator = msg => {
   | ReportMsgFail(report) => report.reporter
   | GrantMsg(address) => address.validator
   | RevokeMsg(address) => address.validator
+  | RevokeAllowanceMsg(address) => address.granter
   | ExecMsgSuccess(address) => address.grantee
   | ExecMsgFail(address) => address.grantee
   | CreateValidatorMsgSuccess(validator)
@@ -1529,6 +1548,7 @@ let getBadge = badgeVariant => {
   | ReportBadge => {name: "Report", category: DataMsg}
   | GrantBadge => {name: "Grant", category: ValidatorMsg}
   | RevokeBadge => {name: "Revoke", category: ValidatorMsg}
+  | RevokeAllowanceBadge => {name: "Revoke Allowance", category: FeeGrantMsg}
   | ExecBadge => {name: "Exec", category: ValidatorMsg}
   | CreateValidatorBadge => {name: "Create Validator", category: ValidatorMsg}
   | EditValidatorBadge => {name: "Edit Validator", category: ValidatorMsg}
@@ -1590,6 +1610,7 @@ let getBadgeTheme = msg => {
   | ExecMsgFail(_) => getBadge(ExecBadge)
   | GrantMsg(_) => getBadge(GrantBadge)
   | RevokeMsg(_) => getBadge(RevokeBadge)
+  | RevokeAllowanceMsg(_) => getBadge(RevokeAllowanceBadge)
   | CreateValidatorMsgSuccess(_)
   | CreateValidatorMsgFail(_) => getBadge(CreateValidatorBadge)
   | EditValidatorMsgSuccess(_)
@@ -1662,6 +1683,7 @@ let decodeAction = json => {
       | ReportBadge => ReportMsgSuccess(json |> Report.decode)
       | GrantBadge => GrantMsg(json |> Grant.decode)
       | RevokeBadge => RevokeMsg(json |> Revoke.decode)
+      | RevokeAllowanceBadge => RevokeAllowanceMsg(json |> RevokeAllowance.decode)
       | ExecBadge => ExecMsgSuccess(json |> Exec.decodeSuccess)
       | CreateValidatorBadge => CreateValidatorMsgSuccess(json |> CreateValidator.decode)
       | EditValidatorBadge => EditValidatorMsgSuccess(json |> EditValidator.decode)
@@ -1722,6 +1744,7 @@ let decodeFailAction = json => {
       | ReportBadge => ReportMsgFail(json |> Report.decode)
       | GrantBadge => GrantMsg(json |> Grant.decode)
       | RevokeBadge => RevokeMsg(json |> Revoke.decode)
+      | RevokeAllowanceBadge => RevokeAllowanceMsg(json |> RevokeAllowance.decode)
       | ExecBadge => ExecMsgFail(json |> Exec.decodeFail)
       | CreateValidatorBadge => CreateValidatorMsgFail(json |> CreateValidator.decode)
       | EditValidatorBadge => EditValidatorMsgFail(json |> EditValidator.decode)

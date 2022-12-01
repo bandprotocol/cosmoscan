@@ -357,6 +357,39 @@ module RevokeMsg = {
   };
 };
 
+module RevokeAllowanceMsg = {
+  [@react.component]
+  let make = (~address: MsgDecoder.RevokeAllowance.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <Row>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Granter"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <AddressRender
+          position=AddressRender.Subtitle
+          address={address.granter}
+          accountType=`account
+        />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Grantee Address"
+          size=Heading.H4
+          weight=Heading.Regular
+          color={theme.textSecondary}
+          marginBottom=8
+        />
+        <AddressRender position=AddressRender.Subtitle address={address.grantee} />
+      </Col>
+    </Row>;
+  };
+};
+
 module ActivateMsg = {
   [@react.component]
   let make = (~activate: MsgDecoder.Activate.t) => {
