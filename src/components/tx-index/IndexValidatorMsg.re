@@ -390,6 +390,154 @@ module RevokeAllowanceMsg = {
   };
 };
 
+module RenderBasicAllowance = {
+  [@react.component]
+  let make = (~allowance: MsgDecoder.BasicAllowance.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    <>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Spend Limit"
+          size=Heading.H4
+          marginBottom=8
+          weight=Heading.Regular
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Expiration Date"
+          size=Heading.H4
+          marginBottom=8
+          weight=Heading.Regular
+          color={theme.textSecondary}
+        />
+        {switch (allowance.expiration) {
+         | Some(expiration) => <Timestamp time=expiration size=Text.Lg />
+         | None => <Text value="No Expiration" size=Text.Lg />
+         }}
+      </Col>
+    </>;
+  };
+};
+
+module RenderPeriodicAllowance = {
+  [@react.component]
+  let make = (~allowance: MsgDecoder.PeriodicAllowance.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
+    let periodFormat =
+      allowance.period
+      ->float_of_int
+      ->(nanoSec => nanoSec /. 1e6)
+      ->MomentRe.duration(`milliseconds)
+      ->MomentRe.Duration.humanize;
+
+    <>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Spend Limit"
+          size=Heading.H4
+          marginBottom=8
+          weight=Heading.Regular
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
+      </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Expiration Date"
+          size=Heading.H4
+          marginBottom=8
+          weight=Heading.Regular
+          color={theme.textSecondary}
+        />
+        {switch (allowance.expiration) {
+         | Some(expiration) => <Timestamp time=expiration size=Text.Lg />
+         | None => <Text value="No Expiration" size=Text.Lg />
+         }}
+      </Col>
+      <Col col=Col.Six mb=24>
+
+          <Heading
+            value="Period"
+            size=Heading.H4
+            marginBottom=8
+            weight=Heading.Regular
+            color={theme.textSecondary}
+          />
+          <Text value=periodFormat size=Text.Lg />
+        </Col>
+      <Col col=Col.Six mb=24>
+        <Heading
+          value="Period Spend Limit"
+          size=Heading.H4
+          marginBottom=8
+          weight=Heading.Regular
+          color={theme.textSecondary}
+        />
+        <AmountRender coins={allowance.periodSpendLimit} pos=AmountRender.TxIndex />
+      </Col>
+    </>;
+  };
+};
+module GrantAllowanceMsg = {
+  [@react.component]
+  let make = (~address: MsgDecoder.GrantAllowance.t) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    <>
+      <Row>
+        <Col col=Col.Six mb=24>
+          <Heading
+            value="Granter"
+            size=Heading.H4
+            weight=Heading.Regular
+            color={theme.textSecondary}
+            marginBottom=8
+          />
+          <AddressRender
+            position=AddressRender.Subtitle
+            address={address.granter}
+            accountType=`account
+          />
+        </Col>
+        <Col col=Col.Six mb=24>
+          <Heading
+            value="Grantee Address"
+            size=Heading.H4
+            weight=Heading.Regular
+            color={theme.textSecondary}
+            marginBottom=8
+          />
+          <AddressRender position=AddressRender.Subtitle address={address.grantee} />
+        </Col>
+        {switch (address.allowance) {
+         | BasicAllowance(allowance) => <RenderBasicAllowance allowance />
+         | PeriodicAllowance(allowance) => <RenderPeriodicAllowance allowance />
+         | _ => React.null
+         }}
+        <Col col=Col.Six mb=24>
+          <Heading
+            value="Allowed Messages"
+            size=Heading.H4
+            weight=Heading.Regular
+            color={theme.textSecondary}
+            marginBottom=8
+          />
+          {address.allowedMessages
+           ->Belt_List.mapWithIndex((i, msg) => {
+               <div key={i |> string_of_int}> <Text size=Text.Lg value=msg /> </div>
+             })
+           ->Belt_List.toArray
+           |> React.array}
+        </Col>
+      </Row>
+    </>;
+  };
+};
+
 module ActivateMsg = {
   [@react.component]
   let make = (~activate: MsgDecoder.Activate.t) => {

@@ -58,6 +58,7 @@ let renderBody = (msg: MsgDecoder.t) =>
   | GrantMsg(address) => <IndexValidatorMsg.GrantMsg address />
   | RevokeMsg(address) => <IndexValidatorMsg.RevokeMsg address />
   | RevokeAllowanceMsg(address) => <IndexValidatorMsg.RevokeAllowanceMsg address />
+  | GrantAllowanceMsg(address) => <IndexValidatorMsg.GrantAllowanceMsg address />
   | ExecMsgSuccess(address) => <IndexValidatorMsg.ExecSuccessMsg address />
   | ExecMsgFail(address) => <IndexValidatorMsg.ExecFailMsg address />
   | CreateValidatorMsgSuccess(validator)

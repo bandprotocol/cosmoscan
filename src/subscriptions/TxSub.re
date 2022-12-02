@@ -13,6 +13,7 @@ type t = {
   messages: list(MsgDecoder.t),
   memo: string,
   errMsg: string,
+  feePayer: option(Address.t),
 };
 
 type internal_t = {
@@ -28,6 +29,7 @@ type internal_t = {
   messages: Js.Json.t,
   memo: string,
   errMsg: option(string),
+  feePayer: option(Address.t),
 };
 
 type account_transaction_t = {transaction: internal_t};
@@ -57,6 +59,7 @@ let toExternal =
         block,
         messages,
         errMsg,
+        feePayer,
       },
     ) => {
   id,
@@ -74,6 +77,7 @@ let toExternal =
     msg->Belt.List.map(success ? MsgDecoder.decodeAction : MsgDecoder.decodeFailAction);
   },
   errMsg: errMsg->Belt.Option.getWithDefault(""),
+  feePayer,
 };
 
 module SingleConfig = [%graphql
@@ -91,6 +95,7 @@ module SingleConfig = [%graphql
       sender  @bsDecoder(fn: "Address.fromBech32")
       messages
       errMsg: err_msg
+      feePayer:  fee_payer @bsDecoder(fn: "GraphQLParser.addressOpt")
       block @bsRecord {
         timestamp @bsDecoder(fn: "GraphQLParser.timestamp")
       }
@@ -114,6 +119,7 @@ module MultiConfig = [%graphql
       sender  @bsDecoder(fn: "Address.fromBech32")
       messages
       errMsg: err_msg
+      feePayer:  fee_payer @bsDecoder(fn: "GraphQLParser.addressOpt")
       block @bsRecord {
         timestamp  @bsDecoder(fn: "GraphQLParser.timestamp")
       }
@@ -137,6 +143,7 @@ module MultiByHeightConfig = [%graphql
       sender  @bsDecoder(fn: "Address.fromBech32")
       messages
       errMsg: err_msg
+      feePayer: fee_payer @bsDecoder(fn: "GraphQLParser.addressOpt")
       block @bsRecord {
         timestamp  @bsDecoder(fn: "GraphQLParser.timestamp")
       }
@@ -162,6 +169,7 @@ module MultiBySenderConfig = [%graphql
           sender  @bsDecoder(fn: "Address.fromBech32")
           messages
           errMsg: err_msg
+          feePayer: fee_payer @bsDecoder(fn: "GraphQLParser.addressOpt")
           block @bsRecord {
             timestamp  @bsDecoder(fn: "GraphQLParser.timestamp")
           }
