@@ -395,6 +395,8 @@ module RenderBasicAllowance = {
   let make = (~allowance: MsgDecoder.BasicAllowance.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
+    let coinAmout = Coin.getBandAmountFromCoins(allowance.spendLimit);
+
     <>
       <Col col=Col.Six mb=24>
         <Heading
@@ -404,7 +406,9 @@ module RenderBasicAllowance = {
           weight=Heading.Regular
           color={theme.textSecondary}
         />
-        <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
+        {coinAmout > 0.
+           ? <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
+           : <Text value="Unlimited" size=Text.Lg />}
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
@@ -435,6 +439,8 @@ module RenderPeriodicAllowance = {
       ->MomentRe.duration(`milliseconds)
       ->MomentRe.Duration.humanize;
 
+    let coinAmout = Coin.getBandAmountFromCoins(allowance.spendLimit);
+
     <>
       <Col col=Col.Six mb=24>
         <Heading
@@ -444,7 +450,9 @@ module RenderPeriodicAllowance = {
           weight=Heading.Regular
           color={theme.textSecondary}
         />
-        <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
+        {coinAmout > 0.
+           ? <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
+           : <Text value="Unlimited" size=Text.Lg />}
       </Col>
       <Col col=Col.Six mb=24>
         <Heading
@@ -460,16 +468,15 @@ module RenderPeriodicAllowance = {
          }}
       </Col>
       <Col col=Col.Six mb=24>
-
-          <Heading
-            value="Period"
-            size=Heading.H4
-            marginBottom=8
-            weight=Heading.Regular
-            color={theme.textSecondary}
-          />
-          <Text value=periodFormat size=Text.Lg />
-        </Col>
+        <Heading
+          value="Period"
+          size=Heading.H4
+          marginBottom=8
+          weight=Heading.Regular
+          color={theme.textSecondary}
+        />
+        <Text value=periodFormat size=Text.Lg />
+      </Col>
       <Col col=Col.Six mb=24>
         <Heading
           value="Period Spend Limit"

@@ -1304,13 +1304,13 @@ module PeriodicAllowance = {
     periodSpendLimit: list(Coin.t),
   };
 
-  let decode = json => JsonUtils.Decode.{
-    spendLimit: json |> at(["basic", "spend_limit"], list(Coin.decodeCoin)),
-    expiration: json |> at(["basic", "expiration"], optional(moment)),
-    // period: MomentRe.duration(json |> at(["period"], int) |> GraphQLParser.numberWithDefault, `days),
-    period: json |> at(["period"], stringOrInt),
-    periodSpendLimit: json |> at(["period_spend_limit"], list(Coin.decodeCoin)),
-  };
+  let decode = json =>
+    JsonUtils.Decode.{
+      spendLimit: json |> at(["basic", "spend_limit"], list(Coin.decodeCoin)),
+      expiration: json |> at(["basic", "expiration"], optional(moment)),
+      period: json |> at(["period"], stringOrInt),
+      periodSpendLimit: json |> at(["period_spend_limit"], list(Coin.decodeCoin)),
+    };
 };
 
 module BasicAllowance = {
