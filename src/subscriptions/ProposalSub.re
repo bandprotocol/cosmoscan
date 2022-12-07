@@ -85,7 +85,13 @@ type internal_t = {
   votingEndTime: MomentRe.Moment.t,
   accountOpt: option(account_t),
   proposalType: string,
+  yes_vote: float,
+  no_vote: float,
+  no_with_veto_vote: float,
+  abstain_vote: float,
+  total_bonded_tokens: float,
   totalDeposit: list(Coin.t),
+  
 };
 
 type t = {
@@ -100,6 +106,16 @@ type t = {
   votingEndTime: MomentRe.Moment.t,
   proposerAddressOpt: option(Address.t),
   proposalType: string,
+  endTotalYes: float,
+  endTotalYesPercent: float,
+  endTotalNo: float,
+  endTotalNoPercent: float,
+  endTotalNoWithVeto: float,
+  endTotalNoWithVetoPercent: float,
+  endTotalAbstain: float,
+  endTotalAbstainPercent: float,
+  endTotalVote: float,
+  totalBondedTokens: float,
   totalDeposit: list(Coin.t),
 };
 
@@ -117,6 +133,11 @@ let toExternal =
         votingEndTime,
         accountOpt,
         proposalType,
+        yes_vote,
+        no_vote,
+        no_with_veto_vote,
+        abstain_vote,
+        total_bonded_tokens,
         totalDeposit,
       },
     ) => {
@@ -134,6 +155,16 @@ let toExternal =
   votingEndTime,
   proposerAddressOpt: accountOpt->Belt.Option.map(({address}) => address),
   proposalType,
+  endTotalYes: yes_vote /. 1e6,
+  endTotalYesPercent: yes_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalNo: no_vote /. 1e6,
+  endTotalNoPercent: no_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalNoWithVeto: no_with_veto_vote /. 1e6,
+  endTotalNoWithVetoPercent: no_with_veto_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalAbstain: abstain_vote /. 1e6,
+  endTotalAbstainPercent: abstain_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalVote: (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) /. 1e6,
+  totalBondedTokens: total_bonded_tokens /. 1e6,
   totalDeposit,
 };
 
@@ -154,6 +185,11 @@ module MultiConfig = [%graphql
       accountOpt: account @bsRecord {
         address @bsDecoder(fn: "Address.fromBech32")
       }
+      yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      total_bonded_tokens @bsDecoder(fn: "GraphQLParser.floatExn")
       totalDeposit: total_deposit @bsDecoder(fn: "GraphQLParser.coins")
     }
   }
@@ -177,6 +213,11 @@ module SingleConfig = [%graphql
       accountOpt: account @bsRecord {
           address @bsDecoder(fn: "Address.fromBech32")
       }
+      yes_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
+      total_bonded_tokens @bsDecoder(fn: "GraphQLParser.floatExn")
       totalDeposit: total_deposit @bsDecoder(fn: "GraphQLParser.coins")
     }
   }
