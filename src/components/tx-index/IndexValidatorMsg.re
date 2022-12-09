@@ -395,7 +395,7 @@ module RenderBasicAllowance = {
   let make = (~allowance: MsgDecoder.BasicAllowance.t) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
-    let coinAmout = Coin.getBandAmountFromCoins(allowance.spendLimit);
+    let coinAmount = Coin.getBandAmountFromCoins(allowance.spendLimit);
 
     <>
       <Col col=Col.Six mb=24>
@@ -406,7 +406,7 @@ module RenderBasicAllowance = {
           weight=Heading.Regular
           color={theme.textSecondary}
         />
-        {coinAmout > 0.
+        {coinAmount > 0.
            ? <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
            : <Text value="Unlimited" size=Text.Lg />}
       </Col>
@@ -439,7 +439,7 @@ module RenderPeriodicAllowance = {
       ->MomentRe.duration(`milliseconds)
       ->MomentRe.Duration.humanize;
 
-    let coinAmout = Coin.getBandAmountFromCoins(allowance.spendLimit);
+    let coinAmount = Coin.getBandAmountFromCoins(allowance.spendLimit);
 
     <>
       <Col col=Col.Six mb=24>
@@ -450,7 +450,7 @@ module RenderPeriodicAllowance = {
           weight=Heading.Regular
           color={theme.textSecondary}
         />
-        {coinAmout > 0.
+        {coinAmount > 0.
            ? <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
            : <Text value="Unlimited" size=Text.Lg />}
       </Col>
