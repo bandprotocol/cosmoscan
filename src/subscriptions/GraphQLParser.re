@@ -81,7 +81,14 @@ let coinExn = jsonOpt => {
 };
 
 let floatExn = jsonOpt => {
-  jsonOpt |> Belt_Option.flatMap(_, Js.Json.decodeString) |> Belt.Option.getExn |> float_of_string;
+  jsonOpt |> Belt_Option.flatMap(_, Js.Json.decodeString) |> ((opt) => switch (opt) {
+    | Some(value) => value
+    | None => "0"
+  }) |> float_of_string
+};
+
+let floatOpt = jsonOpt => {
+  jsonOpt |> Belt_Option.flatMap(_, Js.Json.decodeString) |> Belt.Option.map(_, float_of_string)
 };
 
 let coinWithDefault = jsonOpt => {
