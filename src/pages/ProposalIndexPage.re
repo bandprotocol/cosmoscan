@@ -416,9 +416,9 @@ let make = (~proposalID) => {
                            CssHelper.flexBoxSm(~justify=`spaceAround, ()),
                            CssHelper.flexBox(~justify=`flexEnd, ()),
                          ])}>
-                         {let turnoutPercent = switch (MomentRe.diff(MomentRe.momentNow(),votingEndTime, `seconds) < 0.) {
-                         | true => total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.
-                         | false => endTotalVote /. totalBondedTokens  *. 100.
+                         {let turnoutPercent = switch (totalBondedTokens) {
+                         | Some(totalBondedTokensExn) => endTotalVote /. totalBondedTokensExn  *. 100.
+                         | None => total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.
                          };
                           <div className=Styles.chartContainer>
                             <TurnoutChart percent=turnoutPercent />
@@ -487,30 +487,8 @@ let make = (~proposalID) => {
                    </div>
                    <SeperatedLine mt=24 mb=35 />
                    <div className=Styles.resultContainer>
-                      { switch (MomentRe.diff(MomentRe.momentNow(),votingEndTime, `seconds) < 0.) {
-                      | true => <>
-                        <ProgressBar.Voting
-                          label=VoteSub.Yes
-                          amount=totalYes
-                          percent=totalYesPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.No
-                          amount=totalNo
-                          percent=totalNoPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.NoWithVeto
-                          amount=totalNoWithVeto
-                          percent=totalNoWithVetoPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.Abstain
-                          amount=totalAbstain
-                          percent=totalAbstainPercent
-                        />
-                      </>
-                      | false => <>
+                      { switch (totalBondedTokens) {
+                      | Some(_) => <>
                         <ProgressBar.Voting
                           label=VoteSub.Yes
                           amount=endTotalYes
@@ -530,6 +508,28 @@ let make = (~proposalID) => {
                           label=VoteSub.Abstain
                           amount=endTotalAbstain
                           percent=endTotalAbstainPercent
+                        />
+                      </>
+                      | None => <>
+                        <ProgressBar.Voting
+                          label=VoteSub.Yes
+                          amount=totalYes
+                          percent=totalYesPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.No
+                          amount=totalNo
+                          percent=totalNoPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.NoWithVeto
+                          amount=totalNoWithVeto
+                          percent=totalNoWithVetoPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.Abstain
+                          amount=totalAbstain
+                          percent=totalAbstainPercent
                         />
                       </>
                       }}

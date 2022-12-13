@@ -89,7 +89,7 @@ type internal_t = {
   no_vote: float,
   no_with_veto_vote: float,
   abstain_vote: float,
-  total_bonded_tokens: float,
+  total_bonded_tokens: option(float),
   totalDeposit: list(Coin.t),
   
 };
@@ -115,7 +115,7 @@ type t = {
   endTotalAbstain: float,
   endTotalAbstainPercent: float,
   endTotalVote: float,
-  totalBondedTokens: float,
+  totalBondedTokens: option(float),
   totalDeposit: list(Coin.t),
 };
 
@@ -164,7 +164,7 @@ let toExternal =
   endTotalAbstain: abstain_vote /. 1e6,
   endTotalAbstainPercent: abstain_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
   endTotalVote: (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) /. 1e6,
-  totalBondedTokens: total_bonded_tokens /. 1e6,
+  totalBondedTokens: total_bonded_tokens -> Belt.Option.map(d => d /. 1e6) ,
   totalDeposit,
 };
 
@@ -189,7 +189,7 @@ module MultiConfig = [%graphql
       no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
       no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
       abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
-      total_bonded_tokens @bsDecoder(fn: "GraphQLParser.floatExn")
+      total_bonded_tokens @bsDecoder(fn: "GraphQLParser.floatOpt")
       totalDeposit: total_deposit @bsDecoder(fn: "GraphQLParser.coins")
     }
   }
@@ -217,7 +217,7 @@ module SingleConfig = [%graphql
       no_vote @bsDecoder(fn: "GraphQLParser.floatExn")
       no_with_veto_vote @bsDecoder(fn: "GraphQLParser.floatExn")
       abstain_vote @bsDecoder(fn: "GraphQLParser.floatExn")
-      total_bonded_tokens @bsDecoder(fn: "GraphQLParser.floatExn")
+      total_bonded_tokens @bsDecoder(fn: "GraphQLParser.floatOpt")
       totalDeposit: total_deposit @bsDecoder(fn: "GraphQLParser.coins")
     }
   }
