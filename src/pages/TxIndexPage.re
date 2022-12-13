@@ -324,7 +324,7 @@ let make = (~txHash) => {
                    }}
                 </Col>
               </Row>
-              <Row alignItems=Row.Center>
+              <Row marginBottom=24 alignItems=Row.Center>
                 <Col col=Col.Four mbSm=8>
                   <Heading
                     value="Fee (BAND)"
@@ -344,6 +344,28 @@ let make = (~txHash) => {
                    }}
                 </Col>
               </Row>
+              {switch (txSub) {
+               | Data({feePayer}) =>
+                 switch (feePayer) {
+                 | Some(payer) =>
+                   <Row alignItems=Row.Center>
+                     <Col col=Col.Four mbSm=8>
+                       <Heading
+                         value="Fee Payer"
+                         size=Heading.H4
+                         weight=Heading.Thin
+                         color={theme.textSecondary}
+                       />
+                     </Col>
+                     <Col col=Col.Eight>
+                       <AddressRender address=payer position=AddressRender.Subtitle />
+                     </Col>
+                   </Row>
+
+                 | None => React.null
+                 }
+               | _ => <LoadingCensorBar width=75 height=15 />
+               }}
             </InfoContainer>
           </Col>
         </Row>
