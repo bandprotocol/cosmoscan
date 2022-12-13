@@ -369,8 +369,21 @@ let make = (~proposalID) => {
         </Col>
       </Row>
       {switch (allSub) {
-       | Data((
-           {status, votingStartTime, votingEndTime},
+       | Data(({
+            status, 
+            votingStartTime, 
+            votingEndTime, 
+            endTotalYes,
+            endTotalYesPercent,
+            endTotalNo,
+            endTotalNoPercent,
+            endTotalNoWithVeto,
+            endTotalNoWithVetoPercent,
+            endTotalAbstain,
+            endTotalAbstainPercent,
+            endTotalVote,
+            totalBondedTokens,
+           },
            {
              total,
              totalYes,
@@ -403,8 +416,10 @@ let make = (~proposalID) => {
                            CssHelper.flexBoxSm(~justify=`spaceAround, ()),
                            CssHelper.flexBox(~justify=`flexEnd, ()),
                          ])}>
-                         {let turnoutPercent =
-                            total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.;
+                         {let turnoutPercent = switch (totalBondedTokens) {
+                         | Some(totalBondedTokensExn) => endTotalVote /. totalBondedTokensExn  *. 100.
+                         | None => total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.
+                         };
                           <div className=Styles.chartContainer>
                             <TurnoutChart percent=turnoutPercent />
                           </div>}
@@ -419,12 +434,20 @@ let make = (~proposalID) => {
                              color={theme.textSecondary}
                              marginBottom=4
                            />
-                           <Text
-                             value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
-                             size=Text.Lg
-                             block=true
-                             color={theme.textPrimary}
-                           />
+                           {switch (MomentRe.diff(MomentRe.momentNow(),votingEndTime, `seconds) < 0.) {
+                            | true =>  <Text
+                              value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
+                              size=Text.Lg
+                              block=true
+                              color={theme.textPrimary}
+                            />
+                            | false => <Text
+                              value={(endTotalVote |> Format.fPretty(~digits=2)) ++ " BAND"}
+                              size=Text.Lg
+                              block=true
+                              color={theme.textPrimary}
+                            />
+                            }}
                          </Col>
                          <Col mb=24 mbSm=0 colSm=Col.Six>
                            <Heading
@@ -464,28 +487,52 @@ let make = (~proposalID) => {
                    </div>
                    <SeperatedLine mt=24 mb=35 />
                    <div className=Styles.resultContainer>
-                     <>
-                       <ProgressBar.Voting
-                         label=VoteSub.Yes
-                         amount=totalYes
-                         percent=totalYesPercent
-                       />
-                       <ProgressBar.Voting
-                         label=VoteSub.No
-                         amount=totalNo
-                         percent=totalNoPercent
-                       />
-                       <ProgressBar.Voting
-                         label=VoteSub.NoWithVeto
-                         amount=totalNoWithVeto
-                         percent=totalNoWithVetoPercent
-                       />
-                       <ProgressBar.Voting
-                         label=VoteSub.Abstain
-                         amount=totalAbstain
-                         percent=totalAbstainPercent
-                       />
-                     </>
+                      { switch (totalBondedTokens) {
+                      | Some(_) => <>
+                        <ProgressBar.Voting
+                          label=VoteSub.Yes
+                          amount=endTotalYes
+                          percent=endTotalYesPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.No
+                          amount=endTotalNo
+                          percent=endTotalNoPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.NoWithVeto
+                          amount=endTotalNoWithVeto
+                          percent=endTotalNoWithVetoPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.Abstain
+                          amount=endTotalAbstain
+                          percent=endTotalAbstainPercent
+                        />
+                      </>
+                      | None => <>
+                        <ProgressBar.Voting
+                          label=VoteSub.Yes
+                          amount=totalYes
+                          percent=totalYesPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.No
+                          amount=totalNo
+                          percent=totalNoPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.NoWithVeto
+                          amount=totalNoWithVeto
+                          percent=totalNoWithVetoPercent
+                        />
+                        <ProgressBar.Voting
+                          label=VoteSub.Abstain
+                          amount=totalAbstain
+                          percent=totalAbstainPercent
+                        />
+                      </>
+                      }}
                    </div>
                  </InfoContainer>
                </Col>
