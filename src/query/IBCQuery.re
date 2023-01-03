@@ -170,7 +170,7 @@ let toExternal =
 };
 module IncomingPacketsConfig = [%graphql
   {|
-    query IncomingPackets($limit: Int!, $packetType: String!, $packetTypeIsNull: Boolean!, $port: String!, $channel: String!, $sequence: Int_comparison_exp, $chainID: String!) {
+  query IncomingPackets($limit: Int!, $packetType: String!, $packetTypeIsNull: Boolean!, $port: String!, $channel: String!, $sequence: Int_comparison_exp, $chainID: String!) {
     incoming_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: $sequence, dst_port: {_ilike: $port}, dst_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord {
         packetType: type @bsDecoder(fn: "parsePacketTypeOpt")
         srcPort: src_port
@@ -196,7 +196,7 @@ module IncomingPacketsConfig = [%graphql
 
 module OutgoingPacketsConfig = [%graphql
   {|
-    query OutgoingPackets($limit: Int!, $packetType: String!, $packetTypeIsNull: Boolean!, $port: String!, $channel: String!, $sequence: Int_comparison_exp, $chainID: String!) {
+  query OutgoingPackets($limit: Int!, $packetType: String!, $packetTypeIsNull: Boolean!, $port: String!, $channel: String!, $sequence: Int_comparison_exp, $chainID: String!) {
     outgoing_packets(limit: $limit, order_by: {block_height: desc}, where: {type: {_is_null: $packetTypeIsNull, _ilike: $packetType}, sequence: $sequence ,src_port: {_ilike: $port}, src_channel: {_ilike: $channel}, channel:{connection: {counterparty_chain: {chain_id: {_ilike: $chainID}}}}}) @bsRecord {
         packetType: type @bsDecoder(fn: "parsePacketTypeOpt")
         srcPort: src_port
@@ -227,6 +227,7 @@ let getList =
     | "Oracle Request" => Some("oracle_request")
     | "Oracle Response" => Some("oracle response")
     | "Fungible Token" => Some("fungible_token")
+    | "Interchain Account" => Some("interchain_account")
     | "Unknown"
     | "" => None
     | _ => raise(Not_found)
@@ -280,6 +281,7 @@ let getList =
                 | Some("oracle_request") => "oracle_request"
                 | Some("oracle response") => "oracle response"
                 | Some("fungible_token") => "fungible_token"
+                | Some("interchain_account") => "interchain_account"
                 | _ => "%%"
                 };
               },
@@ -318,6 +320,7 @@ let getList =
                 | Some("oracle_request") => "oracle_request"
                 | Some("oracle response") => "oracle response"
                 | Some("fungible_token") => "fungible_token"
+                | Some("interchain_account") => "interchain_account"
                 | _ => "%%"
                 };
               },
