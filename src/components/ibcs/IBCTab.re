@@ -57,18 +57,6 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
   let (packetSequence, setPacketSequence) = React.useState(_ => "");
   let (rawPacketSequence, setRawPacketSequence) = React.useState(_ => "");
 
-  let packetsSub =
-    IBCQuery.getList(
-      ~pageSize=10,
-      ~direction,
-      ~packetType,
-      ~port=packetPort,
-      ~channel=packetChannel,
-      ~sequence=packetSequence |> int_of_string_opt,
-      ~chainID,
-      (),
-    );
-
   let filters = IBCFilterSub.getFilterList(~chainID, ());
 
   let packetTypes = [|
@@ -99,6 +87,18 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
     setPacketSequence(_ => "");
     setRawPacketSequence(_ => "");
   };
+
+    let packetsSub =
+    IBCQuery.getList(
+      ~pageSize=10,
+      ~direction,
+      ~packetType,
+      ~port=packetPort,
+      ~channel=packetChannel,
+      ~sequence=packetSequence |> int_of_string_opt,
+      ~chainID,
+      (),
+    );
 
   React.useEffect1(
     () => {
@@ -193,6 +193,21 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
              </Col>
            )
          ->React.array
+       | Error(_) =>
+         <EmptyContainer backgroundColor={theme.mainBg}>
+           <img
+             alt="No Packets"
+             src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
+             className=Styles.noDataImage
+           />
+           <Heading
+             size=Heading.H4
+             value="No Packets"
+             align=Heading.Center
+             weight=Heading.Regular
+             color={theme.textSecondary}
+           />
+         </EmptyContainer>
        | _ =>
          Belt_Array.make(10, ApolloHooks.Subscription.NoData)
          ->Belt_Array.mapWithIndex((i, noData) =>
