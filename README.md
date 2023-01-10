@@ -29,7 +29,7 @@ yarn bsb -make-world -w -ws # ReasonML compiler
 RPC_URL=http://rpc.laozi-testnet6.bandchain.org GRAPHQL_URL=wss://graphql-lt6.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi-testnet6.bandchain.org/grpc-web FAUCET_URL=https://laozi-testnet6.bandchain.org/faucet yarn parcel index.html
 
 <!-- For mainnet -->
-RPC_URL=https://laozi-poa1.bandchain.org/api/ GRAPHQL_URL=wss://graphql-poa.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi-poa1.bandchain.org/grpc-web/ yarn parcel index.html --no-cache
+RPC_URL=https://laozi1.bandchain.org/api/ GRAPHQL_URL=wss://graphql-lm.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi1.bandchain.org/grpc-web/ yarn parcel index.html --no-cache
 ```
 
 Serve to <http://localhost:1234/>
