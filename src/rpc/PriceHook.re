@@ -7,9 +7,13 @@ type t = {
   circulatingSupply: float,
 };
 
+let headers = Axios.Headers.fromObj({"Access-Control-Allow-Origin": "*",
+"Access-Control-Allow-Headers": "*", "Access-Control-Allow-Methods": "*"});
+
 let getBandUsd24Change = () => {
-  Axios.get(
+  Axios.getc(
     "https://api.coingecko.com/api/v3/simple/price?ids=band-protocol&vs_currencies=usd&include_market_cap=true&include_24hr_change=true",
+    Axios.makeConfig(~headers, ())
   )
   |> Js.Promise.then_(result => {
        Promise.ret(
@@ -19,7 +23,8 @@ let getBandUsd24Change = () => {
      })
   |> Js.Promise.catch(_ => {
        Js.Console.log("swapped to use cryptocompare api");
-       Axios.get("https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BAND&tsyms=USD")
+       Axios.getc("https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BAND&tsyms=USD",
+       Axios.makeConfig(~headers, ()))
        |> Js.Promise.then_(result => {
             Promise.ret(
               result##data
@@ -33,7 +38,8 @@ let getBandUsd24Change = () => {
 };
 
 let getCirculatingSupply = () => {
-  Axios.get("https://api.bandchain.org/supply/circulating")
+  Axios.getc("https://api.bandchain.org/supply/circulating",
+  Axios.makeConfig(~headers, ()))
   |> Js.Promise.then_(result => Promise.ret(result##data |> JsonUtils.Decode.float))
   |> Js.Promise.catch(_ => {
        Js.Console.log("swapped to use coingekco api");

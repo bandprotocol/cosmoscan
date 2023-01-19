@@ -28,7 +28,24 @@ let renderCode = content => {
 let make = (~url: string) => {
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
-  let AxiosHooks.{data: dataOpt, loading} = AxiosHooks.useLoadable(url);
+  let isFromPinata = url |> Js.String.startsWith("https://gateway.pinata.cloud/ipfs/");
+  let AxiosHooks.{data: dataOpt, loading} = {
+    switch (isFromPinata) {
+    | true =>
+      let overrideUrl =
+        url
+        |> Js.String.split("https://gateway.pinata.cloud/ipfs/")
+        |> Belt.Array.get(_, 1)
+        |> Belt.Option.getWithDefault(_, url);
+
+      AxiosHooks.useLoadable("https://ipfs.io/ipfs/"++overrideUrl);
+
+    | _ => AxiosHooks.useLoadable(url)
+    };
+  };
+
+  // let AxiosHooks.{data: dataOpt, loading} = AxiosHooks.useLoadable(url);
+
   let codeOpt = dataOpt |> Belt.Option.flatMap(_, Js.Json.decodeString);
 
   switch (codeOpt, loading) {
