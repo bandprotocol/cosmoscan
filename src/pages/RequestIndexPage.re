@@ -331,7 +331,7 @@ let make = (~reqID) => {
                        <Text
                          block=true
                          value={
-                           (gasFee |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=2))
+                           (gasFee |> Coin.getBandAmountFromCoins |> Format.fPretty(~digits=6))
                            ++ " BAND"
                          }
                          size=Text.Lg
