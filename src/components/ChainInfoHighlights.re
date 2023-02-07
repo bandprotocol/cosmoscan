@@ -1,10 +1,11 @@
 module Styles = {
   open Css;
 
-  let card = (theme: Theme.t) =>
+  let card = (theme: Theme.t,isDarkMode) =>
     style([
-      backgroundColor(theme.neutral_100),
+      backgroundColor(isDarkMode ? theme.neutral_100 : theme.neutral_000),
       position(`relative),
+      border(`px(1), `solid, theme.neutral_100),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       Media.smallMobile([margin2(~v=`zero, ~h=`px(-5))]),
@@ -39,10 +40,10 @@ module HighlightCard = {
   [@react.component]
   let make =
       (~label, ~valueAndExtraComponentSub: ApolloHooks.Subscription.variant(_), ~special=false) => {
-    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+    let (ThemeContext.{theme,isDarkMode}, _) = React.useContext(ThemeContext.context);
     let isMobile = Media.isMobile();
 
-    <div className={Css.merge([Styles.card(theme), special ? Styles.specialBg : ""])}>
+    <div className={Css.merge([Styles.card(theme,isDarkMode), special ? Styles.specialBg : ""])}>
       {special && !isMobile
          ? <img alt="Band Token" src=Images.bandToken className=Styles.bandToken /> : React.null}
       <div
