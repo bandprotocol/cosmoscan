@@ -7,6 +7,7 @@ module RenderDesktop = {
         padding3(~top=`px(16), ~h=`zero, ~bottom=`px(12)),
         cursor(`pointer),
         fontSize(`px(12)),
+        fontWeight(`num(600)),
         hover([color(theme.neutral_900)]),
         active([color(theme.neutral_900)]),
         transition(~duration=400, "all"),
@@ -24,11 +25,11 @@ module RenderDesktop = {
     <div className={CssHelper.flexBox(~justify=`spaceBetween, ())} id="navigationBar">
       {routes
        ->Belt.List.map(((v, route)) =>
-           <div key=v className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+           {v != "Divider" ? <div key=v className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
              <Link className={Styles.nav(currentRoute == route, theme)} route>
                {v |> React.string}
              </Link>
-           </div>
+           </div> : <Divider />}
          )
        ->Array.of_list
        ->React.array}
@@ -120,9 +121,9 @@ module RenderMobile = {
       <div className={Styles.navContainer(show, theme)}>
         {routes
          ->Belt.List.map(((v, route)) =>
-             <Link key=v className={Styles.nav(theme)} route onClick={_ => setShow(_ => false)}>
-               <Text value=v weight=Text.Semibold color={theme.neutral_900} />
-             </Link>
+            <Link key=v className={Styles.nav(theme)} route onClick={_ => setShow(_ => false)}>
+              <Text value=v weight=Text.Bold color={theme.neutral_900} />
+            </Link>
            )
          ->Array.of_list
          ->React.array}
@@ -141,13 +142,16 @@ module RenderMobile = {
 let make = () => {
   let routes = [
     ("Home", Route.HomePage),
+    ("Divider", None),
     ("Validators", ValidatorHomePage),
     ("Blocks", BlockHomePage),
     ("Transactions", TxHomePage),
     ("Proposals", ProposalHomePage),
+    ("Divider", None),
     ("Data Sources", DataSourceHomePage),
     ("Oracle Scripts", OracleScriptHomePage),
     ("Requests", RequestHomePage),
+    ("Divider", None),
     ("IBCs", IBCHomePage),
   ];
 
