@@ -37,15 +37,15 @@ module Styles = {
       switch (variant) {
       | Primary =>
         style([
-          backgroundColor(theme.baseBlue),
+          backgroundColor(theme.primary_600),
           color(Theme.white),
-          border(`px(1), `solid, theme.baseBlue),
+          border(`px(1), `solid, theme.primary_600),
           hover([backgroundColor(theme.darkBlue)]),
-          active([backgroundColor(theme.darkenBlue)]),
+          active([backgroundColor(theme.primary_800)]),
           disabled([
-            backgroundColor(isDarkMode ? theme.darkBlue : theme.lightBlue),
+            backgroundColor(isDarkMode ? theme.darkBlue : theme.primary_500),
             color(Theme.white),
-            borderColor(isDarkMode ? theme.darkBlue : theme.lightBlue),
+            borderColor(isDarkMode ? theme.darkBlue : theme.primary_500),
             opacity(0.5),
           ]),
         ])

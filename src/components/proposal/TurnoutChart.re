@@ -23,7 +23,7 @@ module Styles = {
         [
           SVG.fill(theme.neutral_100),
           SVG.strokeWidth(`px(16)),
-          SVG.stroke(theme.baseBlue),
+          SVG.stroke(theme.primary_600),
           //TODO: it will be remove when the bs-css upgrade to have this proporty
           // 653.45 is from 2 * pi(3.141) * r(104)
           unsafe("stroke-dasharray", {j|calc($percent * 653.45 / 100) 653.45|j}),

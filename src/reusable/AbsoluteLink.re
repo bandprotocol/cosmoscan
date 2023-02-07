@@ -2,7 +2,7 @@ module Styles = {
   open Css;
 
   let a = (theme: Theme.t) =>
-    style([textDecoration(`none), color(theme.neutral_900), hover([color(theme.baseBlue)])]);
+    style([textDecoration(`none), color(theme.neutral_900), hover([color(theme.primary_600)])]);
 };
 
 [@react.component]

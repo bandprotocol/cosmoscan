@@ -22,7 +22,7 @@ module Styles = {
 
   let button = (active, theme: Theme.t) =>
     style([
-      border(`px(1), `solid, active ? theme.neutral_600 : theme.loadingBaseColor),
+      border(`px(1), `solid, active ? theme.neutral_600 : theme.neutral_100),
       borderRadius(`px(4)),
       cursor(`pointer),
       backgroundColor(theme.neutral_100),

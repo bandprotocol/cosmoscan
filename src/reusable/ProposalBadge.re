@@ -16,7 +16,7 @@ let getBadgeText =
 let getBadgeColor =
   fun
   | ProposalSub.Deposit
-  | Voting => Theme.baseBlue
+  | Voting => Theme.primary_600
   | Passed => Theme.successColor
   | Rejected
   | Failed => Theme.failColor;

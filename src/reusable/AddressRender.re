@@ -14,8 +14,8 @@ module Styles = {
           pointerEvents(`auto),
           transition(~duration=200, "all"),
           color(theme.neutral_900),
-          hover([color(theme.baseBlue)]),
-          active([color(theme.baseBlue)]),
+          hover([color(theme.primary_600)]),
+          active([color(theme.primary_600)]),
         ])
       : style([
           pointerEvents(`none),

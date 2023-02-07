@@ -6,7 +6,7 @@ module Styles = {
       display(`flex),
       borderRadius(`px(8)),
       border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
-      backgroundColor(theme.neutral_100),
+      backgroundColor(theme.neutral_000),
       padding2(~v=`px(8), ~h=`px(10)),
       minWidth(`px(153)),
       justifyContent(`spaceBetween),

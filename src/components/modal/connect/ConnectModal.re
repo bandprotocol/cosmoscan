@@ -46,7 +46,7 @@ module Styles = {
       width(`percent(100.)),
       height(`px(50)),
       borderRadius(`px(8)),
-      border(`px(2), `solid, active ? Theme.baseBlue : `transparent),
+      border(`px(2), `solid, active ? Theme.primary_600 : `transparent),
       cursor(`pointer),
       overflow(`hidden),
     ]);

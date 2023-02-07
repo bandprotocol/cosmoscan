@@ -4,16 +4,16 @@ module Styles = {
   let datePickerWrapper = (theme: Theme.t) =>
     style([
       important(fontFamily(`inherit_)),
-      selector(" .react-datepicker__day--selected", [backgroundColor(theme.baseBlue)]),
-      selector(" .react-datepicker__day--in-range", [backgroundColor(theme.lightenBlue)]),
+      selector(" .react-datepicker__day--selected", [backgroundColor(theme.primary_600)]),
+      selector(" .react-datepicker__day--in-range", [backgroundColor(theme.primary_200)]),
       selector(
         " .react-datepicker__day--in-selecting-range",
-        [backgroundColor(theme.lightenBlue)],
+        [backgroundColor(theme.primary_200)],
       ),
-      selector(" .react-datepicker__day--range-start", [backgroundColor(theme.baseBlue)]),
+      selector(" .react-datepicker__day--range-start", [backgroundColor(theme.primary_600)]),
       selector(
         " .react-datepicker__day--selecting-range-end",
-        [backgroundColor(theme.baseBlue)],
+        [backgroundColor(theme.primary_600)],
       ),
       selector(
         " .react-datepicker__header",

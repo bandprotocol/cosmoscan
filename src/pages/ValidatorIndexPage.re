@@ -13,7 +13,7 @@ module Styles = {
     ]);
   let rankContainer =
     style([
-      backgroundColor(Theme.baseBlue),
+      backgroundColor(Theme.primary_600),
       borderRadius(`percent(50.)),
       position(`absolute),
       right(`zero),

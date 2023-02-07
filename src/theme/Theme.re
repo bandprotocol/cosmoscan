@@ -7,21 +7,17 @@ type mode_t =
 type color_t = Types.Color.t;
 
 type t = {
-  baseBlue: color_t,
-  lightenBlue: color_t,
-  lightBlue: color_t,
+  primary_600: color_t,
+  primary_200: color_t,
+  primary_500: color_t,
   darkBlue: color_t,
-  darkenBlue: color_t,
+  primary_800: color_t,
   white: color_t,
   black: color_t,
   successColor: color_t,
   pendingColor: color_t,
   failColor: color_t,
   activeColor: color_t,
-  secondaryTableBg: color_t,
-  loadingBaseColor: color_t,
-  loadingSecondaryColor: color_t,
-  footer: color_t,
   warningColor: color_t,
   // new theme
   neutral_000: color_t,
@@ -38,31 +34,30 @@ type t = {
 };
 
 // Default Colors
-
-let baseBlue = hex("4520E6");
-let lightenBlue = hex("B4A5F5");
-let lightBlue = hex("6A4CEB");
+let primary_200 = hex("DAD1FE");
+let primary_500 = hex("6547EB");
+let primary_600 = hex("4520E6");
 let darkBlue = hex("3719B8");
-let darkenBlue = hex("29138A");
+let primary_800 = hex("210D77");
+
 let black = hex("000000");
 let white = hex("ffffff");
 
-let successColor = hex("5FD3C8");
+let successColor = hex("3FCA7E");
 let pendingColor = hex("F4D23E");
 let activeColor = hex("5FD3C8");
-let failColor = hex("E84A4B");
-let warningColor = hex("ffa733");
+let failColor = hex("E22E1D");
+let warningColor = hex("F2CC21");
 
-let footer = hex("1400A5");
 
 let get: mode_t => t =
   fun
   | Day => {
-      baseBlue,
-      lightenBlue,
-      lightBlue,
+      primary_600,
+      primary_200,
+      primary_500,
       darkBlue,
-      darkenBlue,
+      primary_800,
       white,
       black,
       successColor,
@@ -70,10 +65,6 @@ let get: mode_t => t =
       activeColor,
       failColor,
       warningColor,
-      secondaryTableBg: hex("F5F5F5"),
-      loadingBaseColor: hex("F5F5F5"),
-      loadingSecondaryColor: hex("B2B2B2"),
-      footer,
       // new theme
       neutral_000: hex("FFFFFF"),
       neutral_100: hex("F3F4F6"),
@@ -87,11 +78,11 @@ let get: mode_t => t =
       neutral_900: hex("202327"),
     }
   | Dark => {
-      baseBlue,
-      lightenBlue,
-      lightBlue,
+      primary_600,
+      primary_200,
+      primary_500,
       darkBlue,
-      darkenBlue,
+      primary_800,
       white,
       black,
       successColor,
@@ -99,10 +90,6 @@ let get: mode_t => t =
       activeColor,
       failColor,
       warningColor,
-      secondaryTableBg: hex("2C2C2C"),
-      loadingBaseColor: hex("303030"),
-      loadingSecondaryColor: hex("808080"),
-      footer,
 
        // new theme
       neutral_000: hex("101214"),

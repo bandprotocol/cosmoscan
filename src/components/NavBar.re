@@ -11,7 +11,7 @@ module RenderDesktop = {
         active([color(theme.neutral_900)]),
         transition(~duration=400, "all"),
         color(isActive ? theme.neutral_900 : theme.neutral_600),
-        borderBottom(`px(4), `solid, isActive ? theme.baseBlue : `transparent),
+        borderBottom(`px(4), `solid, isActive ? theme.primary_600 : `transparent),
       ]);
   };
 

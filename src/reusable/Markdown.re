@@ -10,7 +10,7 @@ module Styles = {
           color(theme.neutral_900),
           textDecoration(`none),
           transition(~duration=200, "all"),
-          hover([color(theme.baseBlue)]),
+          hover([color(theme.primary_600)]),
         ],
       ),
       selector("p, ul, ul > li, ol, ol > li", [color(theme.neutral_600), marginBottom(`em(1.))]),
@@ -38,7 +38,7 @@ module Styles = {
             left(`zero),
             top(`px(10)),
             pointerEvents(`none),
-            color(theme.baseBlue),
+            color(theme.primary_600),
           ]),
         ]
       ),

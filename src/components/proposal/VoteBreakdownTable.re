@@ -17,7 +17,7 @@ module Styles = {
       alignItems(`center),
       cursor(`pointer),
       padding2(~v=`px(32), ~h=`zero),
-      borderBottom(`px(4), `solid, active ? Theme.baseBlue : `transparent),
+      borderBottom(`px(4), `solid, active ? Theme.primary_600 : `transparent),
       Media.mobile([whiteSpace(`nowrap), padding2(~v=`px(24), ~h=`zero)]),
     ]);
 

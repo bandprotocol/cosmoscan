@@ -7,7 +7,7 @@ module Styles = {
       cursor(`pointer),
       width(w),
       alignItems(`center),
-      selector("> span:hover", [color(theme.baseBlue)]),
+      selector("> span:hover", [color(theme.primary_600)]),
       selector("> span", [transition(~duration=200, "all")]),
     ]);
 };

@@ -29,7 +29,7 @@ module Styles = {
 
   let button = isLoading =>
     style([
-      backgroundColor(isLoading ? Theme.lightenBlue : Theme.baseBlue),
+      backgroundColor(isLoading ? Theme.primary_200 : Theme.primary_600),
       fontWeight(`num(600)),
       opacity(isLoading ? 0.8 : 1.),
       cursor(isLoading ? `auto : `pointer),

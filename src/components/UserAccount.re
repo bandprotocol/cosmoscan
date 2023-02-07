@@ -11,7 +11,7 @@ module Styles = {
       justifyContent(`center),
       alignItems(`center),
       padding(`px(5)),
-      backgroundColor(theme.baseBlue),
+      backgroundColor(theme.primary_600),
       borderRadius(`percent(50.)),
     ]);
 
@@ -64,7 +64,7 @@ module DisconnectBtn = {
         Styles.disconnect,
       ])}
       onClick={_ => disconnect()}>
-      <Text value="Disconnect" weight=Text.Medium color=Theme.baseBlue nowrap=true block=true />
+      <Text value="Disconnect" weight=Text.Medium color=Theme.primary_600 nowrap=true block=true />
     </div>;
   };
 };
@@ -166,7 +166,7 @@ let make = () => {
             <Icon name="fal fa-user" color=Theme.white />
           </div>
           <HSpacing size=Spacing.sm />
-          <Icon name="fas fa-caret-down" color={theme.baseBlue} />
+          <Icon name="fas fa-caret-down" color={theme.primary_600} />
         </div>
         <div className={Styles.profileCard(show, theme)} id="addressWrapper">
           <div onClick={_ => setShow(_ => false)}>

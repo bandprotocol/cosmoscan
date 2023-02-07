@@ -3,7 +3,7 @@ module Styles = {
 
   let iconWrapper =
     style([
-      backgroundColor(Theme.baseBlue),
+      backgroundColor(Theme.primary_600),
       width(`px(24)),
       height(`px(24)),
       borderRadius(`percent(50.)),

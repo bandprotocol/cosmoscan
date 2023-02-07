@@ -23,7 +23,7 @@ module Styles = {
       height(`percent(100.)),
       borderRadius(`px(7)),
       transition(~duration=200, "all"),
-      background(success ? theme.baseBlue : theme.failColor),
+      background(success ? theme.primary_600 : theme.failColor),
     ]);
   let leftText =
     style([
@@ -104,9 +104,9 @@ module Uptime = {
   let make = (~percent) => {
     let color =
       if (percent == 100.) {
-        Theme.baseBlue;
+        Theme.primary_600;
       } else if (percent < 100. && percent >= 79.) {
-        Theme.lightBlue;
+        Theme.primary_500;
       } else {
         Theme.failColor;
       };
@@ -148,7 +148,7 @@ module Deposit = {
         />
       </div>
       <div className={Styles.progressOuter(theme)}>
-        <div className={Styles.progressUptimeInner(percent, theme.baseBlue)} />
+        <div className={Styles.progressUptimeInner(percent, theme.primary_600)} />
       </div>
     </div>;
   };

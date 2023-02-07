@@ -5,7 +5,7 @@ module Styles = {
       display(`flex),
       maxWidth(`px(w)),
       cursor(`pointer),
-      selector("> span:hover", [color(theme.baseBlue)]),
+      selector("> span:hover", [color(theme.primary_600)]),
       selector("> span", [transition(~duration=200, "all")]),
     ]);
 };

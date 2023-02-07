@@ -15,7 +15,7 @@ module Styles = {
   let chartContainer = style([paddingRight(`px(20)), Media.mobile([paddingRight(`zero)])]);
 
   let parameterChanges = (theme: Theme.t) =>
-    style([padding2(~v=`px(16), ~h=`px(24)), backgroundColor(theme.secondaryTableBg)]);
+    style([padding2(~v=`px(16), ~h=`px(24)), backgroundColor(theme.neutral_100)]);
 
   let jsonDisplay = (theme: Theme.t) =>
     style([

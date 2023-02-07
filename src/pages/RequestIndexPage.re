@@ -27,7 +27,7 @@ module Styles = {
     style([
       display(`flex),
       padding2(~v=`px(4), ~h=`px(16)),
-      background(Theme.baseBlue),
+      background(Theme.primary_600),
       borderRadius(`px(10)),
       marginLeft(`px(8)),
     ]);

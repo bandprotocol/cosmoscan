@@ -15,7 +15,7 @@ module Styles = {
 
   let oracleScriptLink = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.baseBlue),
+      backgroundColor(theme.primary_600),
       borderRadius(`px(8)),
       width(`px(32)),
       height(`px(32)),

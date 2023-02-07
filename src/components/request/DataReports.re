@@ -8,7 +8,7 @@ module Styles = {
       padding2(~v=`px(16), ~h=`px(24)),
       paddingBottom(`px(1)),
       marginTop(`px(24)),
-      backgroundColor(theme.secondaryTableBg),
+      backgroundColor(theme.neutral_100),
       transition(~duration=200, "all"),
       height(`auto),
       Media.mobile([paddingTop(`zero), paddingBottom(`zero)]),
