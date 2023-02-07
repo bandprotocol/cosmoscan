@@ -43,7 +43,7 @@ let make = (~url: string) => {
             <CTooltip
               tooltipPlacementSm=CTooltip.BottomLeft
               tooltipText="The platform to which to generate the code for">
-              <Icon name="fal fa-info-circle" size=10 color={theme.textPrimary} />
+              <Icon name="fal fa-info-circle" size=10 color={theme.neutral_900} />
             </CTooltip>
           </div>
           <Text value="OWASM v0.1" weight=Text.Regular size=Text.Lg block=true />
@@ -53,7 +53,7 @@ let make = (~url: string) => {
             <Heading size=Heading.H5 value="Language" />
             <HSpacing size=Spacing.xs />
             <CTooltip tooltipText="The programming language">
-              <Icon name="fal fa-info-circle" size=10 color={theme.textPrimary} />
+              <Icon name="fal fa-info-circle" size=10 color={theme.neutral_900} />
             </CTooltip>
           </div>
           <Text value="Rust 1.40.0" weight=Text.Regular size=Text.Lg block=true />
@@ -63,7 +63,7 @@ let make = (~url: string) => {
         <Col>
           <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
             <div className={CssHelper.flexBox()}>
-              <Icon name="fal fa-file" size=16 color={theme.textSecondary} />
+              <Icon name="fal fa-file" size=16 color={theme.neutral_600} />
               <HSpacing size=Spacing.sm />
               <Text value="src/logic.rs" weight=Text.Semibold size=Text.Lg block=true />
             </div>
@@ -85,7 +85,7 @@ let make = (~url: string) => {
         value="Unable to access OWASM Code"
         align=Heading.Center
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
     </EmptyContainer>
   };

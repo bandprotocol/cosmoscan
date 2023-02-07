@@ -35,7 +35,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       <VSpacing size=Spacing.sm />
       {switch (allSub) {
@@ -54,7 +54,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       <VSpacing size=Spacing.sm />
       {switch (allSub) {

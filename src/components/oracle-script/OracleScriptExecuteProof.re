@@ -44,7 +44,7 @@ let make = (~id: ID.Request.t) => {
     <div className=Styles.labelWrapper>
       <Text
         value="Proof of validaty"
-        color={theme.textSecondary}
+        color={theme.neutral_600}
         weight=Text.Regular
         height={Text.Px(15)}
       />

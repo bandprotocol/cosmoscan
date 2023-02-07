@@ -3,7 +3,7 @@ module Styles = {
 
   let card = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       height(`percent(100.)),
       borderRadius(`px(8)),
       padding4(~top=`px(31), ~left=`px(32), ~right=`px(32), ~bottom=`px(10)),
@@ -191,7 +191,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
         <Heading value="Total Requests" size=Heading.H4 />
         <HSpacing size=Spacing.xs />
         <CTooltip tooltipText="The total number of oracle data requests made">
-          <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+          <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
         </CTooltip>
       </div>
       <div className=Styles.requestCount>
@@ -206,7 +206,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
              }
              size=Heading.H4
              weight=Heading.Thin
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
          | _ => <LoadingCensorBar width=65 height=21 />
          }}
@@ -225,7 +225,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
              value="Insufficient data to visualize"
              align=Heading.Center
              weight=Heading.Regular
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
          </EmptyContainer>
        </div>;

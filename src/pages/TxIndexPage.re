@@ -13,7 +13,7 @@ module Styles = {
       paddingLeft(`px(50)),
       paddingRight(`px(50)),
       justifyContent(`center),
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
     ]);
@@ -133,7 +133,7 @@ let make = (~txHash) => {
                        nowrap=false
                        breakAll=true
                        code=true
-                       color={theme.textPrimary}
+                       color={theme.neutral_900}
                      />
                    : <>
                        <Text
@@ -141,7 +141,7 @@ let make = (~txHash) => {
                          size=Text.Xxl
                          nowrap=true
                          code=true
-                         color={theme.textPrimary}
+                         color={theme.neutral_900}
                        />
                        <HSpacing size=Spacing.sm />
                        <CopyRender width=15 message={txHash |> Hash.toHex(~upper=true)} />
@@ -164,7 +164,7 @@ let make = (~txHash) => {
                      size=Text.Sm
                      transform=Text.Uppercase
                      block=true
-                     color={theme.textPrimary}
+                     color={theme.neutral_900}
                    />
                  </>
                | _ =>
@@ -193,7 +193,7 @@ let make = (~txHash) => {
                     value="Block"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -210,7 +210,7 @@ let make = (~txHash) => {
                     value="Sender"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -227,7 +227,7 @@ let make = (~txHash) => {
                     value="Timestamp"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -255,7 +255,7 @@ let make = (~txHash) => {
                     value="Memo"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -273,7 +273,7 @@ let make = (~txHash) => {
                     value="Gas Used"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -289,7 +289,7 @@ let make = (~txHash) => {
                     value="Gas Limit"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -305,7 +305,7 @@ let make = (~txHash) => {
                     value="Gas Price (UBAND)"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -330,7 +330,7 @@ let make = (~txHash) => {
                     value="Fee (BAND)"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -354,7 +354,7 @@ let make = (~txHash) => {
                          value="Fee Payer"
                          size=Heading.H4
                          weight=Heading.Thin
-                         color={theme.textSecondary}
+                         color={theme.neutral_600}
                        />
                      </Col>
                      <Col col=Col.Eight>

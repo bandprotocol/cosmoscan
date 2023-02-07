@@ -3,7 +3,7 @@ module Styles = {
 
   let containerBase = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       overflow(`hidden),
       padding2(~v=`zero, ~h=`px(32)),

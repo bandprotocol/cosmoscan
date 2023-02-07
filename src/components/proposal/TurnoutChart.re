@@ -5,7 +5,7 @@ module Styles = {
 
   let textContainer = (theme: Theme.t) =>
     style([
-      background(theme.secondaryBg),
+      background(theme.neutral_100),
       position(`absolute),
       top(`px(8)),
       left(`px(8)),
@@ -21,7 +21,7 @@ module Styles = {
       selector(
         "> circle",
         [
-          SVG.fill(theme.tableRowBorderColor),
+          SVG.fill(theme.neutral_100),
           SVG.strokeWidth(`px(16)),
           SVG.stroke(theme.baseBlue),
           //TODO: it will be remove when the bs-css upgrade to have this proporty
@@ -54,13 +54,13 @@ let make = (~percent) => {
         value="Turnout"
         align=Heading.Center
         marginBottom=8
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       <Text
         size=Text.Xxxl
         value={percent |> Format.fPercent(~digits=2)}
         block=true
-        color={theme.textPrimary}
+        color={theme.neutral_900}
       />
     </div>
   </div>;

@@ -29,7 +29,7 @@ let make = (~id) => {
        | Data({resolveStatus, resolveHeight}) =>
          <>
            <div className=Styles.labelWrapper>
-             <Text value="Resolve Status" color={theme.textSecondary} weight=Text.Regular />
+             <Text value="Resolve Status" color={theme.neutral_600} weight=Text.Regular />
            </div>
            <div className={CssHelper.flexBox()}>
              <RequestStatus resolveStatus display=RequestStatus.Full size=Text.Md />
@@ -37,9 +37,9 @@ let make = (~id) => {
               | Some(height) =>
                 <>
                   <HSpacing size=Spacing.md />
-                  <Text value=" (" block=true color={theme.textPrimary} />
+                  <Text value=" (" block=true color={theme.neutral_900} />
                   <TypeID.Block id=height />
-                  <Text value=")" block=true color={theme.textPrimary} />
+                  <Text value=")" block=true color={theme.neutral_900} />
                 </>
               | None => React.null
               }}
@@ -55,7 +55,7 @@ let make = (~id) => {
          <div className=Styles.reasonSection>
            <img alt="Fail Icon" src=Images.fail />
            <HSpacing size=Spacing.md />
-           <Text value=reason' color={theme.textPrimary} />
+           <Text value=reason' color={theme.neutral_900} />
          </div>
        | _ => React.null
        }

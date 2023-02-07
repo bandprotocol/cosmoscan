@@ -20,7 +20,7 @@ module Styles = {
       width(`px(16)),
       height(`px(16)),
       borderRadius(`percent(50.)),
-      background(theme.textPrimary),
+      background(theme.neutral_900),
       transform(`translateX(checked ? `percent(200.) : `percent(0.))),
       transition(~duration=200, "all"),
     ]);

@@ -22,7 +22,7 @@ module Styles = {
       flexDirection(`column),
       alignItems(`center),
       paddingTop(`px(30)),
-      borderBottom(`px(1), `solid, theme.tableRowBorderColor),
+      borderBottom(`px(1), `solid, theme.neutral_100),
     ]);
 
   let row = style([height(`percent(100.))]);
@@ -37,7 +37,7 @@ module Styles = {
       padding2(~v=`zero, ~h=`px(20)),
       fontSize(`px(14)),
       fontWeight(active ? `bold : `normal),
-      color(active ? theme.textPrimary : theme.textSecondary),
+      color(active ? theme.neutral_900 : theme.neutral_600),
     ]);
 
   let loginList = active =>
@@ -51,7 +51,7 @@ module Styles = {
       overflow(`hidden),
     ]);
 
-  let loginSelectionBackground = (theme: Theme.t) => style([background(theme.contrastBg)]);
+  let loginSelectionBackground = (theme: Theme.t) => style([background(theme.neutral_100)]);
 
   let ledgerIcon = style([height(`px(28)), width(`px(28)), transform(translateY(`px(3)))]);
   let ledgerImageContainer = active =>
@@ -122,7 +122,7 @@ let make = (~chainID) => {
                    value="https://www.cosmoscan.io"
                    size=Text.Lg
                    weight=Text.Medium
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                </div>
              </>

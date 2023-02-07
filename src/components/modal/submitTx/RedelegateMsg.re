@@ -8,7 +8,7 @@ module Styles = {
       display(`flex),
       flexDirection(`column),
       padding2(~v=`px(16), ~h=`px(24)),
-      backgroundColor(theme.contrastBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(4)),
       marginBottom(`px(24)),
     ]);
@@ -201,7 +201,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       {switch (allSub) {
        | Data(({moniker}, _, _)) =>
@@ -219,7 +219,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       {switch (allSub) {
        | Data(({operatorAddress}, validators, _)) =>
@@ -238,7 +238,7 @@ let make = (~address, ~validator, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       {switch (allSub) {
        | Data((_, _, {amount: stakedAmount})) =>

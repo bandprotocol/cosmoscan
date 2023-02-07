@@ -2,7 +2,7 @@ module Styles = {
   open Css;
   let mostRequestCard = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(12)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       padding3(~top=`px(24), ~h=`px(24), ~bottom=`px(16)),
@@ -135,11 +135,11 @@ module RenderMostRequestedCard = {
               value="Requests"
               marginBottom=8
               weight=Heading.Thin
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
             {switch (oracleScriptSub) {
              | Data({requestCount}) =>
-               <Text value={requestCount |> Format.iPretty} block=true color={theme.textPrimary} />
+               <Text value={requestCount |> Format.iPretty} block=true color={theme.neutral_900} />
              | _ => <LoadingCensorBar width=100 height=15 />
              }}
           </div>
@@ -149,7 +149,7 @@ module RenderMostRequestedCard = {
               value="Response time"
               marginBottom=8
               weight=Heading.Thin
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
             {switch (allSub) {
              | Data(({id}, stats)) =>
@@ -159,7 +159,7 @@ module RenderMostRequestedCard = {
                  <Text
                    value={(responseTime |> Format.fPretty(~digits=2)) ++ " s"}
                    block=true
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                | None => <Text value="TBD" />
                };
@@ -199,7 +199,7 @@ module RenderBody = {
              <div className={CssHelper.flexBox()}>
                <TypeID.OracleScript id />
                <HSpacing size=Spacing.sm />
-               <Text value=name ellipsis=true color={theme.textPrimary} />
+               <Text value=name ellipsis=true color={theme.neutral_900} />
              </div>
            | _ => <LoadingCensorBar width=300 height=15 />
            }}
@@ -379,7 +379,7 @@ let make = () => {
                value="Most Requested"
                size=Heading.H3
                marginBottom=16
-               color={theme.textSecondary}
+               color={theme.neutral_600}
              />
              <Row>
                {oracleScripts
@@ -497,7 +497,7 @@ let make = () => {
                  value="No Oracle Script"
                  align=Heading.Center
                  weight=Heading.Regular
-                 color={theme.textSecondary}
+                 color={theme.neutral_600}
                />
              </EmptyContainer>
            | Data((oracleScripts, oracleScriptsCount)) =>

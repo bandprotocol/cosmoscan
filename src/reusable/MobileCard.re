@@ -6,7 +6,7 @@ module Styles = {
       padding2(~v=`px(22), ~h=`zero),
       selector(
         "+ div",
-        [marginTop(`px(10)), borderTop(`px(1), `solid, theme.tableRowBorderColor)],
+        [marginTop(`px(10)), borderTop(`px(1), `solid, theme.neutral_100)],
       ),
     ]);
   let cardItem = (alignItems_, isOneColumn) =>
@@ -33,7 +33,7 @@ module Styles = {
     ]);
   let toggle = (theme: Theme.t) =>
     style([
-      borderTop(`px(1), `solid, theme.tableRowBorderColor),
+      borderTop(`px(1), `solid, theme.neutral_100),
       paddingTop(`px(10)),
       marginTop(`px(10)),
       cursor(`pointer),
@@ -51,7 +51,7 @@ module Styles = {
       pointerEvents(`none),
       selector("> div + div", [paddingTop(`px(16))]),
       overflow(`hidden),
-      backgroundColor(theme.tableRowBorderColor),
+      backgroundColor(theme.neutral_100),
     ]);
   };
 };
@@ -142,12 +142,12 @@ let make = (~values, ~idx, ~status=?, ~requestStatus=?, ~styles="", ~panels=[]) 
                block=true
                value={show ? "Hide Report" : "Show Report"}
                weight=Text.Semibold
-               color={theme.textPrimary}
+               color={theme.neutral_900}
              />
              <HSpacing size=Spacing.xs />
              <Icon
                name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
-               color={theme.textSecondary}
+               color={theme.neutral_600}
              />
            </div>
          </>

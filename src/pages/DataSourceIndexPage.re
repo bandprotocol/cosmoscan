@@ -1,7 +1,7 @@
 module Styles = {
   open Css;
   let infoHeader = (theme: Theme.t) =>
-    style([borderBottom(`px(1), `solid, theme.tableRowBorderColor), paddingBottom(`px(16))]);
+    style([borderBottom(`px(1), `solid, theme.neutral_100), paddingBottom(`px(16))]);
 };
 
 module Content = {
@@ -42,11 +42,11 @@ module Content = {
                       value="Owner"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                     <HSpacing size=Spacing.xs />
                     <CTooltip tooltipText="The owner of the data source">
-                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                      <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
                     </CTooltip>
                   </div>
                 </Col>
@@ -64,7 +64,7 @@ module Content = {
                     value="Treasury"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -81,7 +81,7 @@ module Content = {
                     value="Fee"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -97,7 +97,7 @@ module Content = {
                     value="Accumulated Revenue"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -114,7 +114,7 @@ module Content = {
                     value="Description"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>

@@ -3,7 +3,7 @@ module Styles = {
 
   let container = (show, theme: Theme.t) =>
     style([
-      background(theme.tableRowBorderColor),
+      background(theme.neutral_100),
       padding2(~h=`px(32), ~v=`zero),
       width(`percent(100.)),
       marginTop(show ? `px(20) : `zero),
@@ -15,7 +15,7 @@ module Styles = {
     ]);
 
   let thead = (theme: Theme.t) =>
-    style([borderBottom(`px(1), `solid, theme.tableRowBorderColor)]);
+    style([borderBottom(`px(1), `solid, theme.neutral_100)]);
 };
 
 module RenderBody = {
@@ -66,7 +66,7 @@ module RenderMobile = {
         position(`relative),
         padding2(~v=`px(24), ~h=`zero),
         selector("> div + div", [marginTop(`px(24))]),
-        borderBottom(`px(1), `solid, theme.tableRowBorderColor),
+        borderBottom(`px(1), `solid, theme.neutral_100),
       ]);
 
     let status = style([position(`absolute), top(`px(24)), right(`zero)]);
@@ -110,7 +110,7 @@ module RenderMobile = {
         <div className=Styles.labelWrapper>
           <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
             <Text value="Port" size=Text.Sm transform=Text.Uppercase weight=Text.Semibold />
-            <Icon name="fal fa-arrow-down" color={theme.textSecondary} mt=4 mb=4 />
+            <Icon name="fal fa-arrow-down" color={theme.neutral_600} mt=4 mb=4 />
             <Text
               value="Counterparty"
               size=Text.Sm
@@ -122,7 +122,7 @@ module RenderMobile = {
         <div className=Styles.valueWrapper>
           <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
             <Text value={channel.port} size=Text.Sm />
-            <Icon name="fal fa-arrow-down" color={theme.textSecondary} mt=4 mb=4 />
+            <Icon name="fal fa-arrow-down" color={theme.neutral_600} mt=4 mb=4 />
             <Text value={channel.counterpartyPort} size=Text.Sm />
           </div>
         </div>
@@ -131,7 +131,7 @@ module RenderMobile = {
         <div className=Styles.labelWrapper>
           <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
             <Text value="Channel" size=Text.Sm transform=Text.Uppercase weight=Text.Semibold />
-            <Icon name="fal fa-arrow-down" color={theme.textSecondary} mt=4 mb=4 />
+            <Icon name="fal fa-arrow-down" color={theme.neutral_600} mt=4 mb=4 />
             <Text
               value="Counterparty"
               size=Text.Sm
@@ -145,7 +145,7 @@ module RenderMobile = {
            | Open =>
              <div className={CssHelper.flexBox(~direction=`column, ~align=`flexStart, ())}>
                <Text value={channel.channelID} size=Text.Sm />
-               <Icon name="fal fa-arrow-down" color={theme.textSecondary} mt=4 mb=4 />
+               <Icon name="fal fa-arrow-down" color={theme.neutral_600} mt=4 mb=4 />
                <Text value={channel.counterpartyChannelID} size=Text.Sm />
              </div>
            | _ => <Text value="Unconnected" size=Text.Sm />

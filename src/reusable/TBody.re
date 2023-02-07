@@ -3,8 +3,8 @@ module Styles = {
 
   let containerBase = (pv, ph, theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
-      borderTop(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.neutral_100),
+      borderTop(`px(1), `solid, theme.neutral_100),
       padding2(~v=pv, ~h=ph),
       overflow(`hidden),
     ]);

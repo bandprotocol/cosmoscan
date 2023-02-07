@@ -20,10 +20,10 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, theme.neutral_100),
+      backgroundColor(theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
@@ -48,7 +48,7 @@ module Styles = {
   let resultContainer = (theme: Theme.t) =>
     style([
       margin2(~v=`px(20), ~h=`zero),
-      selector("> div + div", [borderTop(`px(1), `solid, theme.tableRowBorderColor)]),
+      selector("> div + div", [borderTop(`px(1), `solid, theme.neutral_100)]),
     ]);
   let resultBox = style([padding(`px(20))]);
   let labelWrapper =

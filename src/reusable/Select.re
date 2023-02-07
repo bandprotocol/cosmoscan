@@ -10,10 +10,10 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, theme.neutral_100),
+      backgroundColor(theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
@@ -31,7 +31,7 @@ let make = (~options, ~setSelectOption, ~selectLabel, ~selectedOption, ~disabled
 
   <div className=Styles.selectWrapper>
     <div className={CssHelper.mb(~size=8, ())}> <Text value=selectLabel /> </div>
-    <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ~mW=770, ())}>
+    <div className={CssHelper.selectWrapper(~fontColor=theme.neutral_900, ~mW=770, ())}>
       <select
         disabled
         className={Styles.input(theme)}

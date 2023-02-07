@@ -134,7 +134,7 @@ let make = (~address) => {
         CssHelper.flexBox(~justify=`center, ~direction=`row, ~wrap=`nowrap, ~align=`start, ()),
         Styles.tips,
       ])}>
-      <Icon name="fal fa-exclamation-circle" color={theme.textSecondary} />
+      <Icon name="fal fa-exclamation-circle" color={theme.neutral_600} />
       <HSpacing size=Spacing.sm />
       <Text
         value="The exported transactions will be limited to 50 transactions. Please choose a small range to export."

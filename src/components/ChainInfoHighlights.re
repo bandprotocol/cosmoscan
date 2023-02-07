@@ -3,7 +3,7 @@ module Styles = {
 
   let card = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       position(`relative),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
@@ -119,7 +119,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Text
                 value={"$" ++ (financial.usdMarketCap |> Format.fCurrency)}
                 size=Text.Xxxl
-                color={theme.textPrimary}
+                color={theme.neutral_900}
                 weight=Text.Semibold
               />;
             },
@@ -162,7 +162,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Text
                 value=activeValidators
                 size=Text.Xxxl
-                color={theme.textPrimary}
+                color={theme.neutral_900}
                 weight=Text.Semibold
               />;
             },

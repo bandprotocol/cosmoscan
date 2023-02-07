@@ -125,10 +125,10 @@ module SubmitTxStep = {
           block=true
           value={show ? "Hide Advanced Options" : "Show Advanced Options"}
           weight=Text.Semibold
-          color={theme.textPrimary}
+          color={theme.neutral_900}
         />
         <HSpacing size=Spacing.xs />
-        <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color={theme.textSecondary} />
+        <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color={theme.neutral_600} />
       </div>
       <div className={Styles.advancedOptions(show, theme)}>
         <ValueInput

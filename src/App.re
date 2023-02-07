@@ -6,7 +6,7 @@ module Styles = {
       width(`percent(100.)),
       position(`relative),
       overflow(`auto),
-      backgroundColor(theme.mainBg),
+      backgroundColor(theme.neutral_000),
     ]);
 
   let routeContainer =

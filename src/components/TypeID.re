@@ -56,7 +56,7 @@ module ComponentCreator = (RawID: ID.IDSig) => {
         nowrap=true
         code=true
         block=true
-        color={theme.textPrimary}
+        color={theme.neutral_900}
       />
     </Link>;
   };

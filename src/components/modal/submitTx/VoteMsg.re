@@ -16,7 +16,7 @@ module Styles = {
           borderColor(theme.loadingBaseColor),
           position(`relative),
           disabled([
-            color(theme.textPrimary),
+            color(theme.neutral_900),
             opacity(1.),
             border(`px(1), `solid, theme.baseBlue),
             hover([backgroundColor(`transparent)]),

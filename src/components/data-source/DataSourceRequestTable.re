@@ -26,7 +26,7 @@ module RenderBody = {
         </Col>
         <Col col=Col.Two>
           {switch (requestsSub) {
-           | Data({feeEarned}) => <AmountRender coins=[feeEarned] color={theme.textPrimary} />
+           | Data({feeEarned}) => <AmountRender coins=[feeEarned] color={theme.neutral_900} />
            | _ => <LoadingCensorBar width=100 height=15 widthPercent=100.0 />
            }}
         </Col>
@@ -36,7 +36,7 @@ module RenderBody = {
              <div className={CssHelper.flexBox()}>
                <TypeID.OracleScript id=oracleScriptID />
                <HSpacing size=Spacing.sm />
-               <Text value=oracleScriptName ellipsis=true color={theme.textPrimary} />
+               <Text value=oracleScriptName ellipsis=true color={theme.neutral_900} />
              </div>
            | _ => <LoadingCensorBar width=212 height=15 widthPercent=100.0 />
            }}
@@ -293,7 +293,7 @@ let make = (~dataSourceID: ID.DataSource.t) => {
            value="No Request Found"
            align=Heading.Center
            weight=Heading.Regular
-           color={theme.textSecondary}
+           color={theme.neutral_600}
          />
        </EmptyContainer>
      | _ => React.null

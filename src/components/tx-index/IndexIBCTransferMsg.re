@@ -10,7 +10,7 @@ module TransferSuccess = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender address={msg.sender} />
       </Col>
@@ -20,7 +20,7 @@ module TransferSuccess = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={msg.receiver} />
       </Col>
@@ -30,7 +30,7 @@ module TransferSuccess = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={msg.sourcePort} />
       </Col>
@@ -40,7 +40,7 @@ module TransferSuccess = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={msg.sourceChannel} />
       </Col>
@@ -50,7 +50,7 @@ module TransferSuccess = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text
           size=Text.Lg
@@ -64,7 +64,7 @@ module TransferSuccess = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Timestamp time={msg.timeoutTimestamp} size=Text.Lg />
       </Col>
@@ -84,7 +84,7 @@ module TransferFail = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender address={msg.sender} />
       </Col>
@@ -94,7 +94,7 @@ module TransferFail = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={msg.receiver} />
       </Col>
@@ -104,7 +104,7 @@ module TransferFail = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={msg.sourcePort} />
       </Col>
@@ -114,7 +114,7 @@ module TransferFail = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={msg.sourceChannel} />
       </Col>
@@ -124,7 +124,7 @@ module TransferFail = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Timestamp time={msg.timeoutTimestamp} size=Text.Lg />
       </Col>

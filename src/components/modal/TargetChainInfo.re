@@ -4,8 +4,8 @@ module Styles = {
   let selectedChain = (theme: Theme.t) =>
     style([
       padding4(~top=`px(8), ~bottom=`px(8), ~left=`px(16), ~right=`px(27)),
-      backgroundColor(theme.inputContrastColor),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      backgroundColor(theme.neutral_100),
+      border(`px(1), `solid, theme.neutral_100),
       marginRight(`px(16)),
       borderRadius(`px(4)),
       width(`percent(100.)),
@@ -46,7 +46,7 @@ let make = (~targetChain) => {
             value=name
             size=Text.Lg
             weight=Text.Semibold
-            color={theme.textPrimary}
+            color={theme.neutral_900}
             transform=Text.Uppercase
           />
           {switch (targetChain) {

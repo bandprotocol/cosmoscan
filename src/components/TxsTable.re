@@ -48,7 +48,7 @@ module RenderBody = {
                block=true
                value={gasFee->Coin.getBandAmountFromCoins->Format.fPretty}
                weight=Text.Semibold
-               color={theme.textPrimary}
+               color={theme.neutral_900}
              />
            | _ => <LoadingCensorBar width=65 height=15 />
            }}
@@ -154,7 +154,7 @@ let make =
                value="No Transaction"
                align=Heading.Center
                weight=Heading.Regular
-               color={theme.textSecondary}
+               color={theme.neutral_600}
              />
            </EmptyContainer>
      | _ =>

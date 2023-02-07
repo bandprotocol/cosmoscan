@@ -31,7 +31,7 @@ let make = (~validator, ~amount, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       {switch (validatorInfoSub) {
        | Data({moniker}) =>
@@ -49,7 +49,7 @@ let make = (~validator, ~amount, ~setMsgsOpt) => {
         marginBottom=8
         align=Heading.Left
         weight=Heading.Regular
-        color={theme.textSecondary}
+        color={theme.neutral_600}
       />
       <div>
         <Text

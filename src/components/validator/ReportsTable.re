@@ -9,7 +9,7 @@ module Styles = {
     style([
       padding2(~v=show ? `px(16) : `zero, ~h=`px(24)),
       marginTop(show ? `px(24) : `zero),
-      backgroundColor(theme.tableRowBorderColor),
+      backgroundColor(theme.neutral_100),
       transition(~duration=200, "all"),
       height(show ? `auto : `zero),
       opacity(show ? 1. : 0.),
@@ -26,7 +26,7 @@ module DataSourceItem = {
 
     <Row>
       <Col col=Col.Two>
-        <Text block=true value={dataSource.externalID} color={theme.textPrimary} />
+        <Text block=true value={dataSource.externalID} color={theme.neutral_900} />
       </Col>
       <Col col=Col.Three>
         <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>
@@ -53,18 +53,18 @@ module DataSourceItem = {
                   let rawRequest = dataSource.rawRequest |> Belt_Option.getExn;
                   rawRequest.calldata |> JsBuffer.toUTF8;
                 }
-          color={theme.textPrimary}
+          color={theme.neutral_900}
         />
       </Col>
       <Col col=Col.Two>
-        <Text block=true value={dataSource.exitCode} color={theme.textPrimary} />
+        <Text block=true value={dataSource.exitCode} color={theme.neutral_900} />
       </Col>
       <Col col=Col.Three>
         <Text
           block=true
           value={dataSource.data |> JsBuffer.toUTF8}
           align=Text.Right
-          color={theme.textPrimary}
+          color={theme.neutral_900}
           ellipsis=true
         />
       </Col>
@@ -118,12 +118,12 @@ module RenderBody = {
                    block=true
                    value={show ? "Hide Report" : "Show Report"}
                    weight=Text.Semibold
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                  <HSpacing size=Spacing.xs />
                  <Icon
                    name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
-                   color={theme.textSecondary}
+                   color={theme.neutral_600}
                  />
                </>
              | _ => <LoadingCensorBar width=100 height=15 />
@@ -372,7 +372,7 @@ let make = (~address) => {
                   value="No Report"
                   align=Heading.Center
                   weight=Heading.Regular
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </EmptyContainer>}
          {isMobile

@@ -49,8 +49,8 @@ module Styles = {
       height(`px(37)),
       left(`zero),
       top(`px(32)),
-      background(theme.inputContrastColor),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      background(theme.neutral_100),
+      border(`px(1), `solid, theme.neutral_100),
       borderRadius(`px(6)),
       float(`left),
     ]);
@@ -59,7 +59,7 @@ module Styles = {
     style([
       backgroundColor(`transparent),
       borderColor(`transparent),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       width(`px(100)),
       lineHeight(`em(1.41)),
       outlineStyle(`none),
@@ -74,7 +74,7 @@ module InstructionCard = {
   let make = (~title, ~url) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.instructionCard>
-      <Text value=title color={theme.textPrimary} weight=Text.Semibold />
+      <Text value=title color={theme.neutral_900} weight=Text.Semibold />
       <img alt="Ledger Device" src=url className=Styles.ledgerGuide />
     </div>;
   };
@@ -117,7 +117,7 @@ let make = (~chainID, ~ledgerApp) => {
 
   <div className=Styles.container>
     <VSpacing size=Spacing.xl />
-    <Text value="1. Select HD Derivation Path" weight=Text.Semibold color={theme.textPrimary} />
+    <Text value="1. Select HD Derivation Path" weight=Text.Semibold color={theme.neutral_900} />
     <VSpacing size=Spacing.md />
     <div className={Styles.selectWrapper(theme)}>
       <div
@@ -125,7 +125,7 @@ let make = (~chainID, ~ledgerApp) => {
           ~pRight=8,
           ~mW=100,
           ~size=10,
-          ~fontColor=theme.textPrimary,
+          ~fontColor=theme.neutral_900,
           (),
         )}>
         <select
@@ -150,7 +150,7 @@ let make = (~chainID, ~ledgerApp) => {
       </div>
     </div>
     <VSpacing size=Spacing.xl />
-    <Text value="2. On Your Ledger" weight=Text.Semibold color={theme.textPrimary} />
+    <Text value="2. On Your Ledger" weight=Text.Semibold color={theme.neutral_900} />
     <VSpacing size=Spacing.xl />
     <InstructionCard title="1. Enter Pin Code" url=Images.ledgerStep1 />
     <VSpacing size=Spacing.lg />

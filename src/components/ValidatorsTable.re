@@ -315,11 +315,11 @@ module SortableTHead = {
       />
       <HSpacing size=Spacing.xs />
       {if (sortedBy == asc) {
-         <Icon name="fas fa-caret-down" color={theme.textSecondary} />;
+         <Icon name="fas fa-caret-down" color={theme.neutral_600} />;
        } else if (sortedBy == desc) {
-         <Icon name="fas fa-caret-up" color={theme.textSecondary} />;
+         <Icon name="fas fa-caret-up" color={theme.neutral_600} />;
        } else {
-         <Icon name="fas fa-sort" color={theme.textSecondary} />;
+         <Icon name="fas fa-sort" color={theme.neutral_600} />;
        }}
     </div>;
   };
@@ -457,7 +457,7 @@ let make = (~allSub, ~searchTerm, ~sortedBy, ~setSortedBy) => {
                   value="No Validator"
                   align=Heading.Center
                   weight=Heading.Regular
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </EmptyContainer>}
        </>;

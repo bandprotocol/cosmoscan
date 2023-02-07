@@ -22,13 +22,13 @@ module Styles = {
     switch (inputStyle_) {
     | Default =>
       style([
-        backgroundColor(theme.inputContrastColor),
+        backgroundColor(theme.neutral_100),
         borderRadius(`px(4)),
         isDarkMode_
-          ? border(`zero, `none, theme.textSecondary)
-          : border(`px(2), `solid, theme.tableRowBorderColor),
-        placeholder([color(theme.textSecondary)]),
-        color(theme.textPrimary),
+          ? border(`zero, `none, theme.neutral_600)
+          : border(`px(2), `solid, theme.neutral_100),
+        placeholder([color(theme.neutral_600)]),
+        color(theme.neutral_900),
         padding(`px(16)),
         paddingLeft(`px(44)),
         focus([outlineStyle(`none)]),
@@ -40,10 +40,10 @@ module Styles = {
       style([
         backgroundColor(`transparent),
         borderRadius(`zero),
-        border(`zero, `none, theme.textSecondary),
-        placeholder([color(theme.textSecondary)]),
-        borderBottom(`px(1), `solid, theme.textSecondary),
-        color(theme.textPrimary),
+        border(`zero, `none, theme.neutral_600),
+        placeholder([color(theme.neutral_600)]),
+        borderBottom(`px(1), `solid, theme.neutral_600),
+        color(theme.neutral_900),
         paddingLeft(`px(20)),
         paddingBottom(`px(10)),
         focus([outlineStyle(`none)]),
@@ -70,7 +70,7 @@ let make = (~placeholder, ~onChange, ~debounce=500, ~maxWidth=240, ~inputStyle=U
 
   <div className=Styles.searchContainer>
     <div className={Styles.iconContainer(inputStyle)}>
-      <Icon name="far fa-search" color={theme.textPrimary} size=14 />
+      <Icon name="far fa-search" color={theme.neutral_900} size=14 />
     </div>
     <input
       type_="text"

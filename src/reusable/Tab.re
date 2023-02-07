@@ -4,7 +4,7 @@ module Styles = {
   let container = style([Media.mobile([margin2(~h=`px(-12), ~v=`zero)])]);
   let header = (theme: Theme.t) =>
     style([
-      borderBottom(`px(1), `solid, theme.tableRowBorderColor),
+      borderBottom(`px(1), `solid, theme.neutral_100),
       selector("> * + *", [marginLeft(`px(32))]),
       Media.mobile([
         overflow(`auto),

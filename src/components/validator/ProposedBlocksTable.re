@@ -25,7 +25,7 @@ module RenderBody = {
                block=true
                code=true
                ellipsis=true
-               color={theme.textPrimary}
+               color={theme.neutral_900}
              />
            | _ => <LoadingCensorBar width=522 height=15 />
            }}
@@ -34,7 +34,7 @@ module RenderBody = {
           <div className={CssHelper.flexBox(~justify=`center, ())}>
             {switch (blockSub) {
              | Data({txn}) =>
-               <Text value={txn |> Format.iPretty} align=Text.Center color={theme.textPrimary} />
+               <Text value={txn |> Format.iPretty} align=Text.Center color={theme.neutral_900} />
              | _ => <LoadingCensorBar width=20 height=15 />
              }}
           </div>

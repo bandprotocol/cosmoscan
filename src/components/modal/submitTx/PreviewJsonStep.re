@@ -16,9 +16,9 @@ module Styles = {
     style([
       resize(`none),
       fontSize(`px(12)),
-      color(theme.textPrimary),
-      backgroundColor(theme.contrastBg),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      color(theme.neutral_900),
+      backgroundColor(theme.neutral_100),
+      border(`px(1), `solid, theme.neutral_100),
       borderRadius(`px(4)),
       width(`percent(100.)),
       height(`px(300)),
@@ -148,7 +148,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
              size=Text.Lg
              block=true
              align=Text.Center
-             color={theme.textPrimary}
+             color={theme.neutral_900}
            />
          </div>
          <Link className=Styles.txhashContainer route={Route.TxIndexPage(txHash)}>
@@ -171,7 +171,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            size=Text.Lg
            block=true
            align=Text.Center
-           color={theme.textPrimary}
+           color={theme.neutral_900}
          />
        </div>
      | Broadcasting =>
@@ -188,7 +188,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
            size=Text.Lg
            block=true
            align=Text.Center
-           color={theme.textPrimary}
+           color={theme.neutral_900}
          />
        </div>
      | Error(err) =>
@@ -204,7 +204,7 @@ let make = (~rawTx, ~onBack, ~account: AccountContext.t) => {
              size=Text.Lg
              block=true
              align=Text.Center
-             color={theme.textPrimary}
+             color={theme.neutral_900}
            />
          </div>
          <Text value=err color={theme.failColor} align=Text.Center breakAll=true />

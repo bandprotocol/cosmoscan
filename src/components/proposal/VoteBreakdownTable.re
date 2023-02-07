@@ -5,7 +5,7 @@ module Styles = {
 
   let header = (theme: Theme.t) =>
     style([
-      borderBottom(`px(1), `solid, theme.tableRowBorderColor),
+      borderBottom(`px(1), `solid, theme.neutral_100),
       selector("> div + div", [marginLeft(`px(32))]),
       Media.mobile([overflow(`auto), padding2(~v=`px(1), ~h=`px(15))]),
     ]);
@@ -256,7 +256,7 @@ let make = (~proposalID) => {
                      value="No Voters"
                      align=Heading.Center
                      weight=Heading.Regular
-                     color={theme.textSecondary}
+                     color={theme.neutral_600}
                    />
                  </EmptyContainer>
            | _ =>

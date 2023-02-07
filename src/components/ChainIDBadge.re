@@ -5,8 +5,8 @@ module Styles = {
     style([
       display(`flex),
       borderRadius(`px(8)),
-      border(`px(1), `solid, isDarkMode ? theme.secondaryBg : theme.textSecondary),
-      backgroundColor(theme.secondaryBg),
+      border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
+      backgroundColor(theme.neutral_100),
       padding2(~v=`px(8), ~h=`px(10)),
       minWidth(`px(153)),
       justifyContent(`spaceBetween),
@@ -22,8 +22,8 @@ module Styles = {
     style([
       position(`absolute),
       width(`percent(100.)),
-      border(`px(1), `solid, isDarkMode ? theme.secondaryBg : theme.textSecondary),
-      backgroundColor(theme.secondaryBg),
+      border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       transition(~duration=200, "all"),
       top(`percent(110.)),
@@ -38,10 +38,10 @@ module Styles = {
   let link = (theme: Theme.t) =>
     style([
       textDecoration(`none),
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       display(`block),
       padding2(~v=`px(5), ~h=`px(10)),
-      hover([backgroundColor(theme.dropdownHover)]),
+      hover([backgroundColor(theme.neutral_100)]),
     ]);
 };
 
@@ -126,21 +126,21 @@ let make = () =>
       }}>
       <Text
         value={currentChainID->getName}
-        color={theme.textPrimary}
+        color={theme.neutral_900}
         nowrap=true
         weight=Text.Semibold
       />
       <HSpacing size=Spacing.sm />
       {show
-         ? <Icon name="far fa-angle-up" color={theme.textSecondary} />
-         : <Icon name="far fa-angle-down" color={theme.textSecondary} />}
+         ? <Icon name="far fa-angle-up" color={theme.neutral_600} />
+         : <Icon name="far fa-angle-down" color={theme.neutral_600} />}
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
         {[|LaoziMainnet, LaoziTestnet|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
              <AbsoluteLink href={getLink(chainID)} key=name className={Styles.link(theme)}>
-               <Text value=name color={theme.textSecondary} nowrap=true weight=Text.Semibold />
+               <Text value=name color={theme.neutral_600} nowrap=true weight=Text.Semibold />
              </AbsoluteLink>;
            })
          ->React.array}

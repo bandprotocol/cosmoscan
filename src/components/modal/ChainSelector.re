@@ -20,7 +20,7 @@ let make = (~targetChain) => {
       size=Heading.H5
       marginBottom=8
       align=Heading.Left
-      color={theme.textSecondary}
+      color={theme.neutral_600}
       weight=Heading.Regular
     />
     <div className={CssHelper.flexBox(~wrap=`nowrap, ~justify=`spaceBetween, ())}>

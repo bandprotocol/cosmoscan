@@ -15,10 +15,10 @@ module Styles = {
       height(`px(37)),
       paddingLeft(`px(9)),
       borderRadius(`px(6)),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, theme.neutral_100),
+      backgroundColor(theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
     ]);
 
   let connectBtn = style([width(`percent(100.)), height(`px(37))]);

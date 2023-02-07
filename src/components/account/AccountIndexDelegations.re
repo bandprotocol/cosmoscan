@@ -48,13 +48,13 @@ module RenderBody = {
                   | Some({address}) when Address.isEqual(address, delegatorAddress) =>
                     <div className={CssHelper.flexBox()}>
                       <div className=Styles.actionText onClick={_ => delegate()}>
-                        <Text value="Delegate" underline=true color={theme.textPrimary} />
+                        <Text value="Delegate" underline=true color={theme.neutral_900} />
                       </div>
                       <div className=Styles.actionText onClick={_ => redelegate()}>
-                        <Text value="Redelegate" underline=true color={theme.textPrimary} />
+                        <Text value="Redelegate" underline=true color={theme.neutral_900} />
                       </div>
                       <div className=Styles.actionText onClick={_ => undelegate()}>
-                        <Text value="Undelegate" underline=true color={theme.textPrimary} />
+                        <Text value="Undelegate" underline=true color={theme.neutral_900} />
                       </div>
                     </div>
                   | _ => React.null
@@ -84,10 +84,10 @@ module RenderBody = {
                   | Some({address}) when Address.isEqual(address, delegatorAddress) =>
                     <div className={CssHelper.flexBox()}>
                       <div className=Styles.actionText onClick={_ => withdrawReward()}>
-                        <Text value="Claim" underline=true color={theme.textPrimary} />
+                        <Text value="Claim" underline=true color={theme.neutral_900} />
                       </div>
                       <div className=Styles.actionText onClick={_ => reinvest()}>
-                        <Text value="Reinvest" underline=true color={theme.textPrimary} />
+                        <Text value="Reinvest" underline=true color={theme.neutral_900} />
                       </div>
                     </div>
                   | _ => React.null
@@ -254,7 +254,7 @@ let make = (~address) => {
                value="No Delegation"
                align=Heading.Center
                weight=Heading.Regular
-               color={theme.textSecondary}
+               color={theme.neutral_600}
              />
            </EmptyContainer>
      | _ =>

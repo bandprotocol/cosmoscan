@@ -13,7 +13,7 @@ module Styles = {
       width(`percent(100.)),
       height(`px(12)),
       borderRadius(`px(7)),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      border(`px(1), `solid, theme.neutral_100),
       padding(`px(1)),
       overflow(`hidden),
     ]);
@@ -79,7 +79,7 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
         transform=Text.Uppercase
         weight=Text.Semibold
         size=Text.Sm
-        color={theme.textPrimary}
+        color={theme.neutral_900}
       />
     </div>
     <div className={Styles.progressOuter(theme)}>
@@ -93,7 +93,7 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
         size=Text.Sm
         transform=Text.Uppercase
         weight=Text.Semibold
-        color={theme.textPrimary}
+        color={theme.neutral_900}
       />
     </div>
   </div>;
@@ -138,12 +138,12 @@ module Deposit = {
         ])}>
         <Text
           value={j|Min Deposit $formatedMinDeposit BAND|j}
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           size=Text.Lg
         />
         <Text
           value={j|$formatedTotalDeposit / $formatedMinDeposit|j}
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           size=Text.Lg
         />
       </div>
@@ -182,7 +182,7 @@ module Voting = {
                    value={(amount |> Format.fPretty(~digits=2)) ++ " BAND"}
                    size=Text.Lg
                    block=true
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                </>}
         </div>

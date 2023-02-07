@@ -5,7 +5,7 @@ module Styles = {
     style([
       padding(`px(10)),
       color(theme.failColor),
-      backgroundColor(theme.mainBg),
+      backgroundColor(theme.neutral_000),
       border(`px(1), `solid, theme.failColor),
       borderRadius(`px(4)),
       marginBottom(`px(24)),
@@ -52,7 +52,7 @@ module Full = {
         size=Text.Lg
         spacing={Text.Em(0.02)}
         breakAll=true
-        color={theme.textPrimary}
+        color={theme.neutral_900}
       />
     </div>;
   };

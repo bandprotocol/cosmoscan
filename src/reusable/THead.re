@@ -2,7 +2,7 @@ module Styles = {
   open Css;
 
   let containerBase = (height_, theme: Theme.t) =>
-    style([backgroundColor(theme.secondaryBg), selector("> div", [height(`px(height_))])]);
+    style([backgroundColor(theme.neutral_100), selector("> div", [height(`px(height_))])]);
 };
 
 [@react.component]

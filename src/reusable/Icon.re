@@ -18,7 +18,7 @@ let make = (~name, ~color=?, ~size=12, ~mr=0, ~ml=0, ~mt=0, ~mb=0) => {
   <i
     className={Css.merge([
       name,
-      Styles.fontColor(color->Belt_Option.getWithDefault(theme.textSecondary)),
+      Styles.fontColor(color->Belt_Option.getWithDefault(theme.neutral_600)),
       Styles.fontSize(size),
       Styles.margin(mr, ml, mt, mb),
     ])}

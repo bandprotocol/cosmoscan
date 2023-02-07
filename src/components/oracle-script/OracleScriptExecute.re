@@ -20,10 +20,10 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, theme.neutral_100),
+      backgroundColor(theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
@@ -72,10 +72,10 @@ module ConnectPanel = {
     open Css;
     let connectContainer = (theme: Theme.t) =>
       style([
-        backgroundColor(theme.secondaryBg),
+        backgroundColor(theme.neutral_100),
         borderRadius(`px(8)),
         padding(`px(24)),
-        border(`px(1), `solid, theme.tableRowBorderColor),
+        border(`px(1), `solid, theme.neutral_100),
       ]);
     let connectInnerContainer = style([width(`percent(100.)), maxWidth(`px(370))]);
   };
@@ -92,7 +92,7 @@ module ConnectPanel = {
           Styles.connectInnerContainer,
           CssHelper.flexBox(~justify=`spaceBetween, ()),
         ])}>
-        <Icon name="fal fa-link" size=32 color={theme.textPrimary} />
+        <Icon name="fal fa-link" size=32 color={theme.neutral_900} />
         <Text value="Please connect to make request" size=Text.Lg nowrap=true block=true />
         <Button px=20 py=5 onClick={_ => {connect()}}> {"Connect" |> React.string} </Button>
       </div>
@@ -153,7 +153,7 @@ module CountInputs = {
             <Icon name="fal fa-info-circle" size=10 />
           </CTooltip>
         </div>
-        <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ())}>
+        <div className={CssHelper.selectWrapper(~fontColor=theme.neutral_900, ())}>
           <select
             className={Styles.input(theme)}
             onChange={event => {
@@ -181,7 +181,7 @@ module CountInputs = {
             <Icon name="fal fa-info-circle" size=10 />
           </CTooltip>
         </div>
-        <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ())}>
+        <div className={CssHelper.selectWrapper(~fontColor=theme.neutral_900, ())}>
           <select
             className={Styles.input(theme)}
             onChange={event => {
@@ -363,7 +363,7 @@ module ExecutionPart = {
 
     isMobile
       ? <MobileBlock>
-          <Icon name="fal fa-exclamation-circle" size=32 color={theme.textPrimary} />
+          <Icon name="fal fa-exclamation-circle" size=32 color={theme.neutral_900} />
           <Text value="Oracle request" size=Text.Lg align=Text.Center block=true />
           <Text value="not available on mobile" size=Text.Lg align=Text.Center block=true />
         </MobileBlock>

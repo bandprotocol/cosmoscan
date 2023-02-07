@@ -22,7 +22,7 @@ let make = (~value, ~size, ~weight, ~spacing=?, ~color=?, ~code=true, ~smallNumb
     [|value|],
   );
   let newVal = Countup.countUpGet(countup) |> Js.Float.toString;
-  let color_ = color->Belt.Option.getWithDefault(theme.textPrimary);
+  let color_ = color->Belt.Option.getWithDefault(theme.neutral_900);
 
   smallNumber
     ? {

@@ -14,26 +14,27 @@ type t = {
   darkenBlue: color_t,
   white: color_t,
   black: color_t,
-  textPrimary: color_t,
-  textSecondary: color_t,
-  mainBg: color_t,
-  contrastBg: color_t,
-  headerBg: color_t,
-  secondaryBg: color_t,
   successColor: color_t,
   pendingColor: color_t,
   failColor: color_t,
-  inputColor: color_t,
-  inputContrastColor: color_t,
   activeColor: color_t,
-  dropdownHover: color_t,
-  tableRowBorderColor: color_t,
   secondaryTableBg: color_t,
   loadingBaseColor: color_t,
   loadingSecondaryColor: color_t,
   footer: color_t,
-  baseGrey: color_t,
   warningColor: color_t,
+  // new theme
+  neutral_000: color_t,
+  neutral_100: color_t,
+  neutral_200: color_t,
+  neutral_300: color_t,
+  neutral_400: color_t,
+  neutral_500: color_t,
+  neutral_600: color_t,
+  neutral_700: color_t,
+  neutral_800: color_t,
+  neutral_900: color_t,
+
 };
 
 // Default Colors
@@ -45,7 +46,6 @@ let darkBlue = hex("3719B8");
 let darkenBlue = hex("29138A");
 let black = hex("000000");
 let white = hex("ffffff");
-// let baseGrey = hex("bdbdbd");
 
 let successColor = hex("5FD3C8");
 let pendingColor = hex("F4D23E");
@@ -70,21 +70,21 @@ let get: mode_t => t =
       activeColor,
       failColor,
       warningColor,
-      baseGrey: hex("bdbdbd"),
-      textPrimary: hex("303030"),
-      textSecondary: hex("7D7D7D"),
-      mainBg: hex("ffffff"),
-      contrastBg: hex("f5f5f5"),
-      headerBg: hex("f5f5f5"),
-      secondaryBg: hex("ffffff"),
-      inputColor: hex("2C2C2C"),
-      inputContrastColor: hex("ffffff"),
-      dropdownHover: hex("EDEDED"),
-      tableRowBorderColor: hex("EDEDED"),
       secondaryTableBg: hex("F5F5F5"),
       loadingBaseColor: hex("F5F5F5"),
       loadingSecondaryColor: hex("B2B2B2"),
       footer,
+      // new theme
+      neutral_000: hex("FFFFFF"),
+      neutral_100: hex("F3F4F6"),
+      neutral_200: hex("E5E7EB"),
+      neutral_300: hex("D1D5DB"),
+      neutral_400: hex("B0B6BF"),
+      neutral_500: hex("9096A2"),
+      neutral_600: hex("6C7889"),
+      neutral_700: hex("4A5568"),
+      neutral_800: hex("323A43"),
+      neutral_900: hex("202327"),
     }
   | Dark => {
       baseBlue,
@@ -99,19 +99,20 @@ let get: mode_t => t =
       activeColor,
       failColor,
       warningColor,
-      baseGrey: hex("424242"),
-      textPrimary: hex("ffffff"),
-      textSecondary: hex("9A9A9A"),
-      mainBg: hex("000000"),
-      contrastBg: hex("000000"),
-      headerBg: hex("1B1B1B"),
-      secondaryBg: hex("1B1B1B"),
-      inputColor: hex("ffffff"),
-      inputContrastColor: hex("2C2C2C"),
-      dropdownHover: hex("0F0F0F"),
-      tableRowBorderColor: hex("353535"),
       secondaryTableBg: hex("2C2C2C"),
       loadingBaseColor: hex("303030"),
       loadingSecondaryColor: hex("808080"),
       footer,
+
+       // new theme
+      neutral_000: hex("101214"),
+      neutral_100: hex("1A1E23"),
+      neutral_200: hex("21262C"),
+      neutral_300: hex("293037"),
+      neutral_400: hex("39424C"),
+      neutral_500: hex("4E5A6E"),
+      neutral_600: hex("7D8A9D"),
+      neutral_700: hex("A0AEC0"),
+      neutral_800: hex("CBD5E0"),
+      neutral_900: hex("FFFFFF"),
     };

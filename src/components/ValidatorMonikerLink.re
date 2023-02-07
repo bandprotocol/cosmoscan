@@ -36,7 +36,7 @@ let make =
      }}
     <Text
       value=moniker
-      color={theme.textPrimary}
+      color={theme.neutral_900}
       weight
       block=true
       size

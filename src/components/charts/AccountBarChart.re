@@ -27,6 +27,6 @@ let make = (~availableBalance, ~balanceAtStake, ~reward, ~unbonding, ~commission
     <div className={Styles.barItem(unbondingPercent, Theme.lightenBlue)} />
     <div className={Styles.barItem(rewardPercent, Theme.darkenBlue)} />
     {commission == 0.
-       ? React.null : <div className={Styles.barItem(commissionPercent, theme.textSecondary)} />}
+       ? React.null : <div className={Styles.barItem(commissionPercent, theme.neutral_600)} />}
   </div>;
 };

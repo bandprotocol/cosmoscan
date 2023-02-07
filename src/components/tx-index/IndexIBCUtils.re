@@ -6,7 +6,7 @@ module ProofHeight = {
       <SeperatedLine mt=24 mb=24 />
       <Row>
         <Col mb=24>
-          <Heading value="Proof Height" size=Heading.H4 color={theme.textSecondary} />
+          <Heading value="Proof Height" size=Heading.H4 color={theme.neutral_600} />
         </Col>
         <Col col=Col.Six mbSm=24>
           <Heading
@@ -14,7 +14,7 @@ module ProofHeight = {
             size=Heading.H4
             marginBottom=8
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={proofHeight.revisionHeight |> string_of_int} />
         </Col>
@@ -24,7 +24,7 @@ module ProofHeight = {
             size=Heading.H4
             marginBottom=8
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={proofHeight.revisionNumber |> string_of_int} />
         </Col>
@@ -41,7 +41,7 @@ module ConsensusHeight = {
       <SeperatedLine mt=24 mb=24 />
       <Row>
         <Col mb=24>
-          <Heading value="Consensus Height" size=Heading.H4 color={theme.textSecondary} />
+          <Heading value="Consensus Height" size=Heading.H4 color={theme.neutral_600} />
         </Col>
         <Col col=Col.Six mbSm=24>
           <Heading
@@ -49,7 +49,7 @@ module ConsensusHeight = {
             size=Heading.H4
             marginBottom=8
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={proofHeight.revisionHeight |> string_of_int} />
         </Col>
@@ -59,7 +59,7 @@ module ConsensusHeight = {
             size=Heading.H4
             marginBottom=8
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={proofHeight.revisionNumber |> string_of_int} />
         </Col>

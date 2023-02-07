@@ -11,11 +11,11 @@ module Styles = {
     style([
       borderTopRightRadius(`zero),
       borderBottomRightRadius(`zero),
-      backgroundColor(isActive ? theme.textPrimary : theme.secondaryBg),
-      color(isActive ? theme.secondaryBg : theme.textPrimary),
+      backgroundColor(isActive ? theme.neutral_900 : theme.neutral_100),
+      color(isActive ? theme.neutral_100 : theme.neutral_900),
       hover([
-        backgroundColor(isActive ? theme.textPrimary : theme.secondaryBg),
-        color(isActive ? theme.secondaryBg : theme.textPrimary),
+        backgroundColor(isActive ? theme.neutral_900 : theme.neutral_100),
+        color(isActive ? theme.neutral_100 : theme.neutral_900),
       ]),
     ]);
   };
@@ -23,11 +23,11 @@ module Styles = {
     style([
       borderTopLeftRadius(`zero),
       borderBottomLeftRadius(`zero),
-      color(isActive ? theme.textPrimary : theme.secondaryBg),
-      backgroundColor(isActive ? theme.secondaryBg : theme.textPrimary),
+      color(isActive ? theme.neutral_900 : theme.neutral_100),
+      backgroundColor(isActive ? theme.neutral_100 : theme.neutral_900),
       hover([
-        backgroundColor(isActive ? theme.secondaryBg : theme.textPrimary),
-        color(isActive ? theme.textPrimary : theme.secondaryBg),
+        backgroundColor(isActive ? theme.neutral_100 : theme.neutral_900),
+        color(isActive ? theme.neutral_900 : theme.neutral_100),
       ]),
     ]);
   };

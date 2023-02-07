@@ -21,9 +21,9 @@ module Styles = {
     style([
       resize(`none),
       fontSize(`px(12)),
-      color(theme.textPrimary),
-      backgroundColor(theme.contrastBg),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      color(theme.neutral_900),
+      backgroundColor(theme.neutral_100),
+      border(`px(1), `solid, theme.neutral_100),
       borderRadius(`px(4)),
       width(`percent(100.)),
       minHeight(`px(100)),
@@ -148,7 +148,7 @@ let make = (~proposalID) => {
                   value="Proposer"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -169,7 +169,7 @@ let make = (~proposalID) => {
                   value="Submit Time"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -185,7 +185,7 @@ let make = (~proposalID) => {
                   value="Proposal Type"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -202,7 +202,7 @@ let make = (~proposalID) => {
                   value="Description"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -224,7 +224,7 @@ let make = (~proposalID) => {
                          value="Parameter Changes"
                          size=Heading.H4
                          weight=Heading.Thin
-                         color={theme.textSecondary}
+                         color={theme.neutral_600}
                        />
                      </Col>
                      <Col col=Col.Eight>
@@ -263,7 +263,7 @@ let make = (~proposalID) => {
                            value="Upgrade Name"
                            size=Heading.H4
                            weight=Heading.Thin
-                           color={theme.textSecondary}
+                           color={theme.neutral_600}
                          />
                        </Col>
                        <Col col=Col.Eight>
@@ -276,7 +276,7 @@ let make = (~proposalID) => {
                            value="Upgrade Height"
                            size=Heading.H4
                            weight=Heading.Thin
-                           color={theme.textSecondary}
+                           color={theme.neutral_600}
                          />
                        </Col>
                        <Col col=Col.Eight>
@@ -301,7 +301,7 @@ let make = (~proposalID) => {
                       value="Parameter Changes"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                   </Col>
                   <Col col=Col.Eight>
@@ -317,7 +317,7 @@ let make = (~proposalID) => {
                       value="Parameter Changes"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                   </Col>
                   <Col col=Col.Eight>
@@ -336,7 +336,7 @@ let make = (~proposalID) => {
                       value="Parameter Changes"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                   </Col>
                   <Col col=Col.Eight>
@@ -353,7 +353,7 @@ let make = (~proposalID) => {
                       value="Parameter Changes"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                   </Col>
                   <Col col=Col.Eight>
@@ -431,7 +431,7 @@ let make = (~proposalID) => {
                            <Heading
                              value="Total Vote"
                              size=Heading.H5
-                             color={theme.textSecondary}
+                             color={theme.neutral_600}
                              marginBottom=4
                            />
                            {switch (MomentRe.diff(MomentRe.momentNow(),votingEndTime, `seconds) < 0.) {
@@ -439,13 +439,13 @@ let make = (~proposalID) => {
                               value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
                               size=Text.Lg
                               block=true
-                              color={theme.textPrimary}
+                              color={theme.neutral_900}
                             />
                             | false => <Text
                               value={(endTotalVote |> Format.fPretty(~digits=2)) ++ " BAND"}
                               size=Text.Lg
                               block=true
-                              color={theme.textPrimary}
+                              color={theme.neutral_900}
                             />
                             }}
                          </Col>
@@ -453,26 +453,26 @@ let make = (~proposalID) => {
                            <Heading
                              value="Voting Start"
                              size=Heading.H5
-                             color={theme.textSecondary}
+                             color={theme.neutral_600}
                              marginBottom=4
                            />
                            <Timestamp.Grid
                              size=Text.Lg
                              time=votingStartTime
-                             color={theme.textPrimary}
+                             color={theme.neutral_900}
                            />
                          </Col>
                          <Col mbSm=0 colSm=Col.Six>
                            <Heading
                              value="Voting End"
                              size=Heading.H5
-                             color={theme.textSecondary}
+                             color={theme.neutral_600}
                              marginBottom=4
                            />
                            <Timestamp.Grid
                              size=Text.Lg
                              time=votingEndTime
-                             color={theme.textPrimary}
+                             color={theme.neutral_900}
                            />
                          </Col>
                        </Row>
@@ -553,7 +553,7 @@ let make = (~proposalID) => {
                   value="Deposit Status"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -579,7 +579,7 @@ let make = (~proposalID) => {
                   value="Deposit End Time"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>

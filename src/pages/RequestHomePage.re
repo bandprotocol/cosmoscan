@@ -23,7 +23,7 @@ module RenderBody = {
              <div className={CssHelper.flexBox()}>
                <TypeID.OracleScript id=oracleScriptID />
                <HSpacing size=Spacing.sm />
-               <Text value=name ellipsis=true color={theme.textPrimary} />
+               <Text value=name ellipsis=true color={theme.neutral_900} />
              </div>
            | _ => <LoadingCensorBar width=270 height=15 />
            }}
@@ -234,7 +234,7 @@ let make = () => {
                       value="No Request"
                       align=Heading.Center
                       weight=Heading.Regular
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                   </EmptyContainer>}
              {isMobile

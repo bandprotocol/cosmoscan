@@ -52,22 +52,22 @@ module Styles = {
       | Outline =>
         style([
           backgroundColor(`transparent),
-          color(theme.textPrimary),
-          border(`px(1), `solid, theme.textPrimary),
-          selector("i", [color(theme.textPrimary)]),
+          color(theme.neutral_900),
+          border(`px(1), `solid, theme.neutral_900),
+          selector("i", [color(theme.neutral_900)]),
           hover([
-            backgroundColor(theme.textPrimary),
+            backgroundColor(theme.neutral_900),
             color(isDarkMode ? Theme.black : Theme.white),
             selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
           ]),
           active([
-            backgroundColor(theme.textPrimary),
+            backgroundColor(theme.neutral_900),
             color(isDarkMode ? Theme.black : Theme.white),
             selector("i", [color(isDarkMode ? Theme.black : Theme.white)]),
           ]),
           disabled([
-            borderColor(theme.textSecondary),
-            color(theme.textSecondary),
+            borderColor(theme.neutral_600),
+            color(theme.neutral_600),
             hover([backgroundColor(`transparent)]),
             opacity(0.5),
           ]),
