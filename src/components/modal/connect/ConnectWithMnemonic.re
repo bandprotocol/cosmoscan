@@ -15,7 +15,7 @@ module Styles = {
       height(`px(37)),
       paddingLeft(`px(9)),
       borderRadius(`px(6)),
-      border(`px(1), `solid, theme.neutral_100),
+      border(`px(1), `solid, theme.neutral_200),
       backgroundColor(theme.neutral_100),
       outlineStyle(`none),
       color(theme.neutral_900),

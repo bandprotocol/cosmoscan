@@ -22,13 +22,13 @@ module Styles = {
 
 [@react.component]
 let make = (~height=`px(300), ~display=true, ~backgroundColor=?, ~boxShadow=false, ~children) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
   <div
     className={Css.merge([
       Styles.emptyContainer,
       Styles.height(height),
       Styles.display(display),
-      Styles.backgroundColor(backgroundColor->Belt.Option.getWithDefault(theme.neutral_100)),
+      Styles.backgroundColor(backgroundColor->Belt.Option.getWithDefault(isDarkMode ? theme.neutral_100 : theme.neutral_000)),
       boxShadow ? Styles.boxShadow : "",
     ])}>
     children

@@ -11,10 +11,10 @@ module Styles = {
     style([
       borderTopRightRadius(`zero),
       borderBottomRightRadius(`zero),
-      backgroundColor(isActive ? theme.neutral_900 : theme.neutral_100),
+      backgroundColor(isActive ? theme.neutral_900 : theme.neutral_000),
       color(isActive ? theme.neutral_100 : theme.neutral_900),
       hover([
-        backgroundColor(isActive ? theme.neutral_900 : theme.neutral_100),
+        backgroundColor(isActive ? theme.neutral_900 : theme.neutral_000),
         color(isActive ? theme.neutral_100 : theme.neutral_900),
       ]),
     ]);
@@ -24,9 +24,9 @@ module Styles = {
       borderTopLeftRadius(`zero),
       borderBottomLeftRadius(`zero),
       color(isActive ? theme.neutral_900 : theme.neutral_100),
-      backgroundColor(isActive ? theme.neutral_100 : theme.neutral_900),
+      backgroundColor(isActive ? theme.neutral_000 : theme.neutral_900),
       hover([
-        backgroundColor(isActive ? theme.neutral_100 : theme.neutral_900),
+        backgroundColor(isActive ? theme.neutral_000 : theme.neutral_900),
         color(isActive ? theme.neutral_900 : theme.neutral_100),
       ]),
     ]);

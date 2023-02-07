@@ -11,7 +11,7 @@ module Styles = {
 
   let listContainer = style([marginBottom(`px(25))]);
 
-  let input = (theme: Theme.t) =>
+  let input = (theme: Theme.t, isDarkMode) =>
     style([
       width(`percent(100.)),
       height(`px(37)),
@@ -21,7 +21,7 @@ module Styles = {
       fontSize(`px(14)),
       fontWeight(`light),
       border(`px(1), `solid, theme.neutral_100),
-      backgroundColor(theme.neutral_100),
+      backgroundColor(isDarkMode ? theme.neutral_300 : theme.neutral_100),
       outlineStyle(`none),
       color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
@@ -71,13 +71,13 @@ module ParameterInput = {
   [@react.component]
   let make = (~name, ~index, ~setCalldataList) => {
     let name = Js.String.replaceByRe([%re "/[_]/g"], " ", name);
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <div className=Styles.listContainer>
       <Text value=name size=Text.Md weight=Text.Semibold transform=Text.Capitalize />
       <VSpacing size=Spacing.sm />
       <input
-        className={Styles.input(theme)}
+        className={Styles.input(theme, isDarkMode)}
         type_="text"
         // TODO: Think about placeholder later
         // placeholder="Value"
