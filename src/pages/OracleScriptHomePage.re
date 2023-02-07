@@ -1,10 +1,7 @@
 module Styles = {
   open Css;
-  let mostRequestCard = (theme: Theme.t) =>
+  let mostRequestCard = () =>
     style([
-      backgroundColor(theme.neutral_100),
-      borderRadius(`px(12)),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       padding3(~top=`px(24), ~h=`px(24), ~bottom=`px(16)),
       height(`calc((`sub, `percent(100.), `px(23)))),
       marginBottom(`px(24)),
@@ -71,7 +68,7 @@ module RenderMostRequestedCard = {
            ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
       ) => {
     let allSub = Sub.all2(oracleScriptSub, statsSub);
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <Col
       key={
@@ -83,7 +80,8 @@ module RenderMostRequestedCard = {
       col=Col.Four>
       <div
         className={Css.merge([
-          Styles.mostRequestCard(theme),
+          Styles.mostRequestCard(),
+          CommonStyles.card(theme, isDarkMode),
           CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
         ])}>
         <div

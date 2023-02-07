@@ -3,11 +3,8 @@ module Styles = {
 
   let card = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.neutral_100),
       height(`percent(100.)),
-      borderRadius(`px(8)),
       padding4(~top=`px(31), ~left=`px(32), ~right=`px(32), ~bottom=`px(10)),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       Media.mobile([padding2(~v=`px(24), ~h=`px(16))]),
     ]);
 
@@ -183,7 +180,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
     (dataQuery, isDarkMode),
   );
 
-  <div className={Styles.card(theme)}>
+  <div className={Css.merge([Styles.card(theme),CommonStyles.card(theme,isDarkMode)])}>
     <div
       id="totalRequestsGraphSection"
       className={Css.merge([CssHelper.mb(~size=40, ()), CssHelper.mbSm(~size=16, ())])}>
