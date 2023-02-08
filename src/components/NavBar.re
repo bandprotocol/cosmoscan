@@ -146,14 +146,14 @@ let make = () => {
   let routes = [
     ("Home", Route.HomePage),
     ("Divider_1", NotFound),
-    ("Validators", ValidatorHomePage),
     ("Blocks", BlockHomePage),
     ("Transactions", TxHomePage),
+    ("Validators", ValidatorHomePage),
     ("Proposals", ProposalHomePage),
     ("Divider_2", NotFound),
+    ("Requests", RequestHomePage),
     ("Data Sources", DataSourceHomePage),
     ("Oracle Scripts", OracleScriptHomePage),
-    ("Requests", RequestHomePage),
     ("Divider_3", NotFound),
     ("IBCs", IBCHomePage),
   ];
