@@ -7,34 +7,34 @@ module Styles = {
       Media.mobile([flexGrow(0.), flexShrink(0.), flexBasis(`percent(50.))]),
     ]);
 
-  let activeBtn = (isActive, theme: Theme.t, isDarkMode) => {
+  let leftBtn = (state, theme: Theme.t, isDarkMode) => {
     style([
       borderTopRightRadius(`zero),
       borderBottomRightRadius(`zero),
-      backgroundColor(isActive ? theme.neutral_900 : theme.neutral_100),
-      color(isActive ? theme.neutral_100 : theme.neutral_900),
+      backgroundColor(state ? theme.neutral_900 : theme.neutral_100),
+      color(state ? theme.neutral_100 : theme.neutral_900),
       hover([
-        backgroundColor(isActive ? theme.neutral_900 : theme.neutral_100),
-        color(isActive ? theme.neutral_100 : theme.neutral_900),
+        backgroundColor(state ? theme.neutral_900 : theme.neutral_100),
+        color(state ? theme.neutral_100 : theme.neutral_900),
       ]),
     ]);
   };
-  let inActiveBtn = (isActive, theme: Theme.t, isDarkMode) => {
+  let rightBtn = (state, theme: Theme.t, isDarkMode) => {
     style([
       borderTopLeftRadius(`zero),
       borderBottomLeftRadius(`zero),
-      color(isActive ? theme.neutral_900 : theme.neutral_100),
-      backgroundColor(isActive ? theme.neutral_100 : theme.neutral_900),
+      color(state ? theme.neutral_900 : theme.neutral_100),
+      backgroundColor(state ? theme.neutral_100 : theme.neutral_900),
       hover([
-        backgroundColor(isActive ? theme.neutral_100 : theme.neutral_900),
-        color(isActive ? theme.neutral_900 : theme.neutral_100),
+        backgroundColor(state ? theme.neutral_100 : theme.neutral_900),
+        color(state ? theme.neutral_900 : theme.neutral_100),
       ]),
     ]);
   };
 };
 
 [@react.component]
-let make = (~isActive, ~setIsActive) => {
+let make = (~state, ~setState, ~nameArray) => {
   let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
@@ -42,17 +42,17 @@ let make = (~isActive, ~setIsActive) => {
       px=30
       py=8
       variant=Button.Outline
-      onClick={_ => setIsActive(_ => true)}
-      style={Css.merge([Styles.baseBtn, Styles.activeBtn(isActive, theme, isDarkMode)])}>
-      {"Active" |> React.string}
+      onClick={_ => setState(_ => true)}
+      style={Css.merge([Styles.baseBtn, Styles.leftBtn(state, theme, isDarkMode)])}>
+      {nameArray[0]  |> React.string}
     </Button>
     <Button
       px=30
       py=8
       variant=Button.Outline
-      onClick={_ => setIsActive(_ => false)}
-      style={Css.merge([Styles.baseBtn, Styles.inActiveBtn(isActive, theme, isDarkMode)])}>
-      {"Inactive" |> React.string}
+      onClick={_ => setState(_ => false)}
+      style={Css.merge([Styles.baseBtn, Styles.rightBtn(state, theme, isDarkMode)])}>
+      {nameArray[1] |> React.string}
     </Button>
   </div>;
 };

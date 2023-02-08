@@ -117,7 +117,7 @@ let make = () =>
 
     let%Sub tracking = trackingSub;
     let currentChainID = tracking.chainID->parseChainID;
-
+    
     <div
       className={Styles.version(theme, isDarkMode)}
       onClick={event => {

@@ -75,7 +75,9 @@ module DesktopRender = {
                   </div>
                 </div>
               </LinkToHome>
-              <div className=Styles.chainIDContainer> <ChainIDBadge /> </div>
+              <div className=Styles.chainIDContainer> 
+                <ChainIDBadge /> 
+              </div>
             </div>
           </Col>
           <Col col=Col.Six>

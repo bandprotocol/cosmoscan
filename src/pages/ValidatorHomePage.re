@@ -197,7 +197,7 @@ let make = () => {
              : React.null}
           <Col col=Col.Six>
             <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-              <ToggleButton isActive setIsActive />
+              <ToggleButton state=isActive setState=setIsActive nameArray=[|"Active","inActive"|] />
             </div>
           </Col>
         </Row>
