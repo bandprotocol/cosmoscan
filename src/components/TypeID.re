@@ -42,8 +42,8 @@ module Styles = {
 
 module ComponentCreator = (RawID: ID.IDSig) => {
   [@react.component]
-  let make = (~id, ~position=Text) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let make = (~id, ~position=Text, ~primary=false) => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <Link
       className={Css.merge([Styles.link(theme), Styles.pointerEvents(position)])}
@@ -56,7 +56,7 @@ module ComponentCreator = (RawID: ID.IDSig) => {
         nowrap=true
         code=true
         block=true
-        color={theme.neutral_900}
+        color={primary ? (isDarkMode ? theme.primary_600 : theme.primary_600) : theme.neutral_900}
       />
     </Link>;
   };

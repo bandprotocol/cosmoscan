@@ -11,7 +11,7 @@ module Styles = {
     style([
       position(`relative),
       zIndex(2),
-      minHeight(`px(177)),
+      minHeight(`px(152)),
       padding2(~v=`px(24), ~h=`px(32)),
       Media.mobile([padding2(~v=`px(10), ~h=`px(12)), minHeight(`px(146))]),
     ]);
@@ -50,7 +50,7 @@ module HighlightCard = {
         ])}>
         {switch (valueAndExtraComponentSub) {
          | Data((valueComponent, extraComponent)) =>
-           <> <Text value=label size=Text.Lg /> valueComponent extraComponent </>
+           <> <Text value=label size=Text.Xl weight=Text.Regular /> valueComponent extraComponent </>
          | _ =>
            <>
              <LoadingCensorBar width=90 height=18 />
@@ -135,7 +135,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
         valueAndExtraComponentSub={
           let%Sub ({height, validator: {moniker, identity, operatorAddress}}, _, _) = allSub;
           (
-            <TypeID.Block id=height position=TypeID.Landing />,
+            <TypeID.Block id=height position=TypeID.Landing primary=true />,
             <ValidatorMonikerLink
               validatorAddress=operatorAddress
               moniker
@@ -159,7 +159,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Text
                 value=activeValidators
                 size=Text.Xxxl
-                color={theme.neutral_900}
+                color={theme.primary_600}
                 weight=Text.Semibold
               />;
             },
