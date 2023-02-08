@@ -11,7 +11,7 @@ module Styles = {
   let tabletContainer = (theme: Theme.t) =>
     style([
       padding2(~v=`px(8), ~h=`px(24)),
-      backgroundColor(theme.secondaryTableBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       Media.mobile([padding2(~v=`px(8), ~h=`px(12))]),
     ]);

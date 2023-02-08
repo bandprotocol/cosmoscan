@@ -135,7 +135,7 @@ let make = (~txsSub: ApolloHooks.Subscription.variant(array(TxSub.t))) => {
                value="No Transaction"
                align=Heading.Center
                weight=Heading.Regular
-               color={theme.textSecondary}
+               color={theme.neutral_600}
              />
            </EmptyContainer>
      | _ =>

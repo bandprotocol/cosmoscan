@@ -21,8 +21,8 @@ module Styles = {
   let search = (theme: Theme.t) =>
     style([
       width(`percent(100.)),
-      color(theme.textPrimary),
-      background(theme.secondaryBg),
+      color(theme.neutral_900),
+      background(theme.neutral_000),
       borderRadius(`px(8)),
       padding4(~left=`px(15), ~right=Spacing.md, ~top=`px(10), ~bottom=`px(10)),
       boxShadows([
@@ -30,9 +30,9 @@ module Styles = {
         Shadow.box(~x=`zero, ~y=`px(4), ~blur=`px(12), Css.rgba(0, 0, 0, `num(0.02))),
       ]),
       fontSize(`px(12)),
-      outline(`px(1), `none, theme.secondaryBg),
-      border(`px(1), `solid, theme.secondaryBg),
-      placeholder([color(theme.textSecondary)]),
+      outline(`px(1), `none, theme.neutral_100),
+      border(`px(1), `solid, theme.neutral_100),
+      placeholder([color(theme.neutral_600)]),
       Media.mobile([fontSize(`px(10))]),
     ]);
 
@@ -98,7 +98,7 @@ module SearchResults = {
               <Text
                 value="ADDRESS"
                 size=Text.Xs
-                color={theme.textSecondary}
+                color={theme.neutral_600}
                 weight=Text.Semibold
               />
               <VSpacing size=Spacing.xs />
@@ -112,7 +112,7 @@ module SearchResults = {
               <Text
                 value="TRANSACTION"
                 size=Text.Xs
-                color={theme.textSecondary}
+                color={theme.neutral_600}
                 weight=Text.Semibold
               />
               <VSpacing size=Spacing.xs />
@@ -225,7 +225,7 @@ let make = () => {
         Route.redirect(searchTerm |> Route.search);
         dispatch(ChangeSearchTerm(""));
       }}>
-      <Icon name="far fa-search" color={theme.textPrimary} size=16 />
+      <Icon name="far fa-search" color={theme.neutral_900} size=16 />
     </button>
   </div>;
 };

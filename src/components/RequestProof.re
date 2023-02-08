@@ -89,7 +89,7 @@ let make = (~request: RequestSub.t) => {
          : React.null}
     </>
   | None =>
-    <EmptyContainer height={`px(130)} backgroundColor={theme.secondaryTableBg}>
+    <EmptyContainer height={`px(130)} backgroundColor={theme.neutral_100}>
       <LoadingCensorBar.CircleSpin size=30 height=80 />
       <Heading
         size=Heading.H4

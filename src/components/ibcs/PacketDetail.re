@@ -93,7 +93,7 @@ module Common = {
         <div className=Styles.valueWrapper>
           <div className={CssHelper.flexBox(~align=`center, ())}>
             <Text value=srcPort />
-            <Icon name="far fa-arrow-right" color={theme.textSecondary} />
+            <Icon name="far fa-arrow-right" color={theme.neutral_600} />
             <Text value=dstPort />
           </div>
         </div>
@@ -103,7 +103,7 @@ module Common = {
         <div className=Styles.valueWrapper>
           <div className={CssHelper.flexBox(~align=`center, ())}>
             <Text value=srcChannel />
-            <Icon name="far fa-arrow-right" color={theme.textSecondary} />
+            <Icon name="far fa-arrow-right" color={theme.neutral_600} />
             <Text value=dstChannel />
           </div>
         </div>

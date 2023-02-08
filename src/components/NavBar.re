@@ -7,11 +7,11 @@ module RenderDesktop = {
         padding3(~top=`px(16), ~h=`zero, ~bottom=`px(12)),
         cursor(`pointer),
         fontSize(`px(12)),
-        hover([color(theme.textPrimary)]),
-        active([color(theme.textPrimary)]),
+        hover([color(theme.neutral_900)]),
+        active([color(theme.neutral_900)]),
         transition(~duration=400, "all"),
-        color(isActive ? theme.textPrimary : theme.textSecondary),
-        borderBottom(`px(4), `solid, isActive ? theme.baseBlue : `transparent),
+        color(isActive ? theme.neutral_900 : theme.neutral_600),
+        borderBottom(`px(4), `solid, isActive ? theme.primary_600 : `transparent),
       ]);
   };
 
@@ -54,7 +54,7 @@ module RenderMobile = {
         left(`zero),
         right(`zero),
         transition(~duration=400, "all"),
-        backgroundColor(theme.secondaryBg),
+        backgroundColor(theme.neutral_100),
         boxShadow(
           Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08))),
         ),
@@ -62,7 +62,7 @@ module RenderMobile = {
 
     let nav = (theme: Theme.t) =>
       style([
-        color(theme.textPrimary),
+        color(theme.neutral_900),
         width(`percent(100.)),
         padding2(~v=`px(18), ~h=`zero),
         textAlign(`center),
@@ -72,7 +72,7 @@ module RenderMobile = {
             ~x=`zero,
             ~y=`px(-1),
             ~blur=`px(0),
-            theme.tableRowBorderColor,
+            theme.neutral_100,
           ),
         ),
       ]);
@@ -114,14 +114,14 @@ module RenderMobile = {
     <>
       <div className=Styles.menuContainer onClick={_ => setShow(prev => !prev)}>
         {show
-           ? <Icon name="fal fa-times" color={theme.textPrimary} size=24 />
-           : <Icon name="fal fa-bars" color={theme.textPrimary} size=24 />}
+           ? <Icon name="fal fa-times" color={theme.neutral_900} size=24 />
+           : <Icon name="fal fa-bars" color={theme.neutral_900} size=24 />}
       </div>
       <div className={Styles.navContainer(show, theme)}>
         {routes
          ->Belt.List.map(((v, route)) =>
              <Link key=v className={Styles.nav(theme)} route onClick={_ => setShow(_ => false)}>
-               <Text value=v weight=Text.Semibold color={theme.textPrimary} />
+               <Text value=v weight=Text.Semibold color={theme.neutral_900} />
              </Link>
            )
          ->Array.of_list
@@ -129,7 +129,7 @@ module RenderMobile = {
         <div className={Css.merge([CssHelper.flexBox(), Styles.toggleContainer])}>
           <ToggleThemeButton />
           <HSpacing size={`px(8)} />
-          <Text value=modeMsg weight=Text.Semibold color={theme.textPrimary} />
+          <Text value=modeMsg weight=Text.Semibold color={theme.neutral_900} />
         </div>
       </div>
       <div onClick={_ => setShow(prev => !prev)} className={Styles.backdropContainer(show)} />

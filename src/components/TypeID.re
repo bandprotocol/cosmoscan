@@ -27,7 +27,7 @@ module Styles = {
   let link = (theme: Theme.t) =>
     style([
       cursor(`pointer),
-      selector("&:hover > span", [color(theme.baseBlue)]),
+      selector("&:hover > span", [color(theme.primary_600)]),
       selector("> span", [transition(~duration=200, "all")]),
     ]);
 
@@ -56,7 +56,7 @@ module ComponentCreator = (RawID: ID.IDSig) => {
         nowrap=true
         code=true
         block=true
-        color={theme.textPrimary}
+        color={theme.neutral_900}
       />
     </Link>;
   };

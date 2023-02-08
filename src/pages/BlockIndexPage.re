@@ -7,7 +7,7 @@ module Styles = {
     style([
       paddingTop(`px(50)),
       minHeight(`px(450)),
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(4)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), rgba(0, 0, 0, `num(0.1)))),
     ]);
@@ -56,20 +56,20 @@ let make = (~height) => {
              ? <Text
                  value={j|This block(#B$height) hasn't mined yet.|j}
                  size=Text.Lg
-                 color={theme.textSecondary}
+                 color={theme.neutral_600}
                />
              : <div className={CssHelper.flexBox(~justify=`center, ())}>
                  <Text
                    value="The database is syncing."
                    size=Text.Lg
-                   color={theme.textSecondary}
+                   color={theme.neutral_600}
                    block=true
                  />
                  <VSpacing size=Spacing.md />
                  <Text
                    value="Please waiting for the state up to date."
                    size=Text.Lg
-                   color={theme.textSecondary}
+                   color={theme.neutral_600}
                    block=true
                  />
                </div>}
@@ -79,7 +79,7 @@ let make = (~height) => {
               value="Back to Homepage"
               weight=Text.Bold
               size=Text.Md
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
             <HSpacing size=Spacing.md />
             <img alt="Right Arrow Icon" src=Images.rightArrow className=Styles.rightArrow />
@@ -111,7 +111,7 @@ let make = (~height) => {
                     value="Block Hash"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -134,7 +134,7 @@ let make = (~height) => {
                     value="Transaction"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -150,7 +150,7 @@ let make = (~height) => {
                     value="Timestamp"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -184,7 +184,7 @@ let make = (~height) => {
                     value="Proposer"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>

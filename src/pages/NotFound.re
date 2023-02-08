@@ -12,7 +12,7 @@ module Styles = {
       flexDirection(`column),
       alignItems(`center),
       justifyContent(`center),
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), rgba(0, 0, 0, `num(0.1)))),
     ]);
@@ -42,9 +42,9 @@ let make = () => {
         <Text value="Oops! We cannot find the page you're looking for." size=Text.Lg />
         <VSpacing size=Spacing.lg />
         <Link className=Styles.linkToHome route=Route.HomePage>
-          <Text value="Back to Homepage" weight=Text.Bold size=Text.Lg color={theme.textPrimary} />
+          <Text value="Back to Homepage" weight=Text.Bold size=Text.Lg color={theme.neutral_900} />
           <HSpacing size=Spacing.md />
-          <Icon name="far fa-arrow-right" color={theme.textPrimary} />
+          <Icon name="far fa-arrow-right" color={theme.neutral_900} />
         </Link>
         <VSpacing size=Spacing.xxl />
       </div>

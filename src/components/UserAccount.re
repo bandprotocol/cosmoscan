@@ -11,7 +11,7 @@ module Styles = {
       justifyContent(`center),
       alignItems(`center),
       padding(`px(5)),
-      backgroundColor(theme.baseBlue),
+      backgroundColor(theme.primary_600),
       borderRadius(`percent(50.)),
     ]);
 
@@ -20,7 +20,7 @@ module Styles = {
   let profileCard = (show, theme: Theme.t) =>
     style([
       position(`absolute),
-      backgroundColor(theme.mainBg),
+      backgroundColor(theme.neutral_000),
       top(`px(30)),
       right(`px(-10)),
       borderRadius(`px(4)),
@@ -35,7 +35,7 @@ module Styles = {
   let innerProfileCard = (theme: Theme.t) =>
     style([
       padding(`px(16)),
-      backgroundColor(theme.headerBg),
+      backgroundColor(theme.neutral_100),
       boxShadow(Shadow.box(~x=`zero, ~y=`zero, ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.08)))),
     ]);
 
@@ -64,7 +64,7 @@ module DisconnectBtn = {
         Styles.disconnect,
       ])}
       onClick={_ => disconnect()}>
-      <Text value="Disconnect" weight=Text.Medium color=Theme.baseBlue nowrap=true block=true />
+      <Text value="Disconnect" weight=Text.Medium color=Theme.primary_600 nowrap=true block=true />
     </div>;
   };
 };
@@ -113,7 +113,7 @@ module Balance = {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
     <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
-      <Text value="Balance" weight=Text.Medium color={theme.textPrimary} />
+      <Text value="Balance" weight=Text.Medium color={theme.neutral_900} />
       <div className={CssHelper.flexBox()} id="bandBalance">
         <Text
           value={
@@ -124,10 +124,10 @@ module Balance = {
             }
           }
           code=true
-          color={theme.textPrimary}
+          color={theme.neutral_900}
         />
         <HSpacing size=Spacing.sm />
-        <Text value="BAND" weight=Text.Thin color={theme.textPrimary} />
+        <Text value="BAND" weight=Text.Thin color={theme.neutral_900} />
       </div>
     </div>;
   };
@@ -166,7 +166,7 @@ let make = () => {
             <Icon name="fal fa-user" color=Theme.white />
           </div>
           <HSpacing size=Spacing.sm />
-          <Icon name="fas fa-caret-down" color={theme.baseBlue} />
+          <Icon name="fas fa-caret-down" color={theme.primary_600} />
         </div>
         <div className={Styles.profileCard(show, theme)} id="addressWrapper">
           <div onClick={_ => setShow(_ => false)}>

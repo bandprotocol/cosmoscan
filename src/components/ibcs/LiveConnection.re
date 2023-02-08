@@ -19,7 +19,7 @@ module ConnectionListDesktop = {
     let listContainer = (theme: Theme.t) =>
       style([
         padding2(~v=`px(20), ~h=`px(32)),
-        background(theme.headerBg),
+        background(theme.neutral_100),
         borderRadius(`px(12)),
         marginBottom(`px(8)),
         overflow(`hidden),
@@ -48,7 +48,7 @@ module ConnectionListDesktop = {
           {switch (connectionSub) {
            | Data({connectionID}) =>
              <div className={CssHelper.flexBox()}>
-               <Text value=connectionID color={theme.textPrimary} />
+               <Text value=connectionID color={theme.neutral_900} />
              </div>
            | _ => <LoadingCensorBar width=80 height=15 />
            }}
@@ -77,11 +77,11 @@ module ConnectionListDesktop = {
         <Col col=Col.Three>
           <div className={CssHelper.flexBox(~justify=`flexEnd, ())} onClick={_ => toggle()}>
             <div className=Styles.toggleButton>
-              <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.textPrimary} />
+              <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.neutral_900} />
               <HSpacing size=Spacing.sm />
               <Icon
                 name={show ? "fas fa-caret-up" : "fas fa-caret-down"}
-                color={theme.textSecondary}
+                color={theme.neutral_600}
               />
             </div>
           </div>
@@ -158,7 +158,7 @@ module ConnectionListMobile = {
           </div>
           <div className=Styles.valueWrapper>
             {switch (connectionSub) {
-             | Data({connectionID}) => <Text value=connectionID color={theme.textPrimary} />
+             | Data({connectionID}) => <Text value=connectionID color={theme.neutral_900} />
              | _ => <LoadingCensorBar width=60 height=15 />
              }}
           </div>
@@ -175,7 +175,7 @@ module ConnectionListMobile = {
           <div className=Styles.valueWrapper>
             {switch (connectionSub) {
              | Data({counterpartyChainID}) =>
-               <Text value=counterpartyChainID color={theme.textSecondary} />
+               <Text value=counterpartyChainID color={theme.neutral_600} />
              | _ => <LoadingCensorBar width=60 height=15 />
              }}
           </div>
@@ -186,7 +186,7 @@ module ConnectionListMobile = {
           </div>
           <div className=Styles.valueWrapper>
             {switch (connectionSub) {
-             | Data({clientID}) => <Text value=clientID color={theme.textSecondary} />
+             | Data({clientID}) => <Text value=clientID color={theme.neutral_600} />
              | _ => <LoadingCensorBar width=60 height=15 />
              }}
           </div>
@@ -203,7 +203,7 @@ module ConnectionListMobile = {
           <div className=Styles.valueWrapper>
             {switch (connectionSub) {
              | Data({counterpartyClientID}) =>
-               <Text value=counterpartyClientID color={theme.textSecondary} />
+               <Text value=counterpartyClientID color={theme.neutral_600} />
              | _ => <LoadingCensorBar width=60 height=15 />
              }}
           </div>
@@ -214,9 +214,9 @@ module ConnectionListMobile = {
        | _ => React.null
        }}
       <div className=Styles.toggleButton onClick={_ => toggle()}>
-        <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.textPrimary} />
+        <Text value={show ? "Hide Channels" : "Show Channels"} color={theme.neutral_900} />
         <HSpacing size=Spacing.sm />
-        <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color={theme.textSecondary} />
+        <Icon name={show ? "fas fa-caret-up" : "fas fa-caret-down"} color={theme.neutral_600} />
       </div>
     </InfoContainer>;
   };
@@ -286,7 +286,7 @@ let make = (~counterpartyChainID) => {
     // Table List
     {switch (conntectionsSub) {
      | Data(connections) when connections->Belt.Array.length == 0 =>
-       <EmptyContainer backgroundColor={theme.mainBg}>
+       <EmptyContainer backgroundColor={theme.neutral_000}>
          <img
            alt="No Connections"
            src={isDarkMode ? Images.noDataDark : Images.noDataLight}
@@ -297,7 +297,7 @@ let make = (~counterpartyChainID) => {
            value="No Connections"
            align=Heading.Center
            weight=Heading.Regular
-           color={theme.textSecondary}
+           color={theme.neutral_600}
          />
        </EmptyContainer>
      | Data(connections) =>

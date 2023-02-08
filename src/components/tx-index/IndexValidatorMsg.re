@@ -8,7 +8,7 @@ module CreateValidatorMsg = {
           value="Moniker"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <ValidatorMonikerLink
@@ -25,7 +25,7 @@ module CreateValidatorMsg = {
           value="Identity"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text size=Text.Lg value={validator.identity} />
@@ -35,7 +35,7 @@ module CreateValidatorMsg = {
           value="Commission Rate"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -50,7 +50,7 @@ module CreateValidatorMsg = {
           value="Commission Max Rate"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -65,7 +65,7 @@ module CreateValidatorMsg = {
           value="Commission Max Change"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -81,7 +81,7 @@ module CreateValidatorMsg = {
           value="Delegator Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={validator.delegatorAddress} />
@@ -91,7 +91,7 @@ module CreateValidatorMsg = {
           value="Validator Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -105,7 +105,7 @@ module CreateValidatorMsg = {
           value="Min Self Delegation"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AmountRender coins=[validator.minSelfDelegation] pos=AmountRender.TxIndex />
@@ -115,7 +115,7 @@ module CreateValidatorMsg = {
           value="Self Delegation"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AmountRender coins=[validator.selfDelegation] pos=AmountRender.TxIndex />
@@ -125,7 +125,7 @@ module CreateValidatorMsg = {
           value="Details"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text size=Text.Lg value={validator.details} />
@@ -135,7 +135,7 @@ module CreateValidatorMsg = {
           value="Website"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text size=Text.Lg value={validator.website} />
@@ -154,7 +154,7 @@ module EditValidatorMsg = {
           value="Moniker"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -167,7 +167,7 @@ module EditValidatorMsg = {
           value="Identity"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -180,7 +180,7 @@ module EditValidatorMsg = {
           value="Commission Rate"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -198,7 +198,7 @@ module EditValidatorMsg = {
           value="Validator Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -212,7 +212,7 @@ module EditValidatorMsg = {
           value="Min Self Delegation"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         {switch (validator.minSelfDelegation) {
@@ -226,7 +226,7 @@ module EditValidatorMsg = {
           value="Details"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text
@@ -248,7 +248,7 @@ module UnjailMsg = {
           value="Validator"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -271,7 +271,7 @@ module GrantMsg = {
           value="Granter"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -285,7 +285,7 @@ module GrantMsg = {
           value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
@@ -295,7 +295,7 @@ module GrantMsg = {
           value="Authorization URL"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text size=Text.Lg value={address.url} />
@@ -305,7 +305,7 @@ module GrantMsg = {
           value="Expiration Date"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Timestamp time={address.expiration} size=Text.Lg />
@@ -324,7 +324,7 @@ module RevokeMsg = {
           value="Granter"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -338,7 +338,7 @@ module RevokeMsg = {
           value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.reporter} />
@@ -348,7 +348,7 @@ module RevokeMsg = {
           value="Message Type URL"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <Text size=Text.Lg value={address.msgTypeUrl} />
@@ -367,7 +367,7 @@ module RevokeAllowanceMsg = {
           value="Granter"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -381,7 +381,7 @@ module RevokeAllowanceMsg = {
           value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.grantee} />
@@ -404,7 +404,7 @@ module RenderBasicAllowance = {
           size=Heading.H4
           marginBottom=8
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         {coinAmount > 0.
            ? <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
@@ -416,7 +416,7 @@ module RenderBasicAllowance = {
           size=Heading.H4
           marginBottom=8
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         {switch (allowance.expiration) {
          | Some(expiration) => <Timestamp time=expiration size=Text.Lg />
@@ -448,7 +448,7 @@ module RenderPeriodicAllowance = {
           size=Heading.H4
           marginBottom=8
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         {coinAmount > 0.
            ? <AmountRender coins={allowance.spendLimit} pos=AmountRender.TxIndex />
@@ -460,7 +460,7 @@ module RenderPeriodicAllowance = {
           size=Heading.H4
           marginBottom=8
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         {switch (allowance.expiration) {
          | Some(expiration) => <Timestamp time=expiration size=Text.Lg />
@@ -473,7 +473,7 @@ module RenderPeriodicAllowance = {
           size=Heading.H4
           marginBottom=8
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value=periodFormat size=Text.Lg />
       </Col>
@@ -483,7 +483,7 @@ module RenderPeriodicAllowance = {
           size=Heading.H4
           marginBottom=8
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AmountRender coins={allowance.periodSpendLimit} pos=AmountRender.TxIndex />
       </Col>
@@ -501,7 +501,7 @@ module GrantAllowanceMsg = {
             value="Granter"
             size=Heading.H4
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
             marginBottom=8
           />
           <AddressRender
@@ -515,7 +515,7 @@ module GrantAllowanceMsg = {
             value="Grantee Address"
             size=Heading.H4
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
             marginBottom=8
           />
           <AddressRender position=AddressRender.Subtitle address={address.grantee} />
@@ -530,7 +530,7 @@ module GrantAllowanceMsg = {
             value="Allowed Messages"
             size=Heading.H4
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
             marginBottom=8
           />
           {address.allowedMessages
@@ -555,7 +555,7 @@ module ActivateMsg = {
           value="Validator"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -578,7 +578,7 @@ module SetWithdrawAddressMsg = {
           value="Delegator Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender
@@ -592,7 +592,7 @@ module SetWithdrawAddressMsg = {
           value="Withdraw Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={set.withdrawAddress} />
@@ -611,7 +611,7 @@ module ExecSuccessMsg = {
           value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.grantee} />
@@ -621,7 +621,7 @@ module ExecSuccessMsg = {
           value="Executed Messages"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         {address.msgs
@@ -649,7 +649,7 @@ module ExecFailMsg = {
           value="Grantee Address"
           size=Heading.H4
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
           marginBottom=8
         />
         <AddressRender position=AddressRender.Subtitle address={address.grantee} />

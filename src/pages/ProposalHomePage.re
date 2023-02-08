@@ -16,7 +16,7 @@ module Styles = {
 
   let proposalLink = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.baseBlue),
+      backgroundColor(theme.primary_600),
       borderRadius(`px(8)),
       width(`px(32)),
       height(`px(32)),
@@ -43,13 +43,13 @@ module Turnout = {
              value="Turnout"
              size=Heading.H5
              marginBottom=8
-             color={theme.textSecondary}
+             color={theme.neutral_600}
              weight=Heading.Thin
            />
            <Text
              value={turnoutRate |> Format.fPercent(~digits=2)}
              size=Text.Lg
-             color={theme.textPrimary}
+             color={theme.neutral_900}
            />
          </Col>;
        | _ => React.null
@@ -81,7 +81,7 @@ module ProposalCard = {
                    <Heading
                      size=Heading.H3
                      value=name
-                     color={theme.textSecondary}
+                     color={theme.neutral_600}
                      weight=Heading.Thin
                    />
                  </>
@@ -139,7 +139,7 @@ module ProposalCard = {
               size=Heading.H5
               marginBottom=8
               weight=Heading.Thin
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
             {switch (proposalSub) {
              | Data({proposerAddressOpt}) =>
@@ -167,7 +167,7 @@ module ProposalCard = {
                    }
                    size=Heading.H5
                    weight=Heading.Thin
-                   color={theme.textSecondary}
+                   color={theme.neutral_600}
                  />
                | _ => <LoadingCensorBar width=100 height=15 />
                }}
@@ -185,7 +185,7 @@ module ProposalCard = {
                    | Failed => votingEndTime
                    }
                  }
-                 color={theme.textPrimary}
+                 color={theme.neutral_900}
                  suffix=" +UTC"
                />
              | _ => <LoadingCensorBar width={isMobile ? 120 : 270} height=15 />
@@ -248,7 +248,7 @@ let make = () => {
                    value="No Proposal"
                    align=Heading.Center
                    weight=Heading.Regular
-                   color={theme.textSecondary}
+                   color={theme.neutral_600}
                  />
                </EmptyContainer>
          | _ =>

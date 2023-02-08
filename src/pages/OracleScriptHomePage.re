@@ -1,10 +1,7 @@
 module Styles = {
   open Css;
-  let mostRequestCard = (theme: Theme.t) =>
+  let mostRequestCard = () =>
     style([
-      backgroundColor(theme.secondaryBg),
-      borderRadius(`px(12)),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       padding3(~top=`px(24), ~h=`px(24), ~bottom=`px(16)),
       height(`calc((`sub, `percent(100.), `px(23)))),
       marginBottom(`px(24)),
@@ -18,7 +15,7 @@ module Styles = {
 
   let oracleScriptLink = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.baseBlue),
+      backgroundColor(theme.primary_600),
       borderRadius(`px(8)),
       width(`px(32)),
       height(`px(32)),
@@ -71,7 +68,7 @@ module RenderMostRequestedCard = {
            ApolloHooks.Subscription.variant(array(OracleScriptSub.response_last_1_day_t)),
       ) => {
     let allSub = Sub.all2(oracleScriptSub, statsSub);
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <Col
       key={
@@ -83,7 +80,8 @@ module RenderMostRequestedCard = {
       col=Col.Four>
       <div
         className={Css.merge([
-          Styles.mostRequestCard(theme),
+          Styles.mostRequestCard(),
+          CommonStyles.card(theme, isDarkMode),
           CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`stretch, ()),
         ])}>
         <div
@@ -135,11 +133,11 @@ module RenderMostRequestedCard = {
               value="Requests"
               marginBottom=8
               weight=Heading.Thin
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
             {switch (oracleScriptSub) {
              | Data({requestCount}) =>
-               <Text value={requestCount |> Format.iPretty} block=true color={theme.textPrimary} />
+               <Text value={requestCount |> Format.iPretty} block=true color={theme.neutral_900} />
              | _ => <LoadingCensorBar width=100 height=15 />
              }}
           </div>
@@ -149,7 +147,7 @@ module RenderMostRequestedCard = {
               value="Response time"
               marginBottom=8
               weight=Heading.Thin
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
             {switch (allSub) {
              | Data(({id}, stats)) =>
@@ -159,7 +157,7 @@ module RenderMostRequestedCard = {
                  <Text
                    value={(responseTime |> Format.fPretty(~digits=2)) ++ " s"}
                    block=true
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                | None => <Text value="TBD" />
                };
@@ -199,7 +197,7 @@ module RenderBody = {
              <div className={CssHelper.flexBox()}>
                <TypeID.OracleScript id />
                <HSpacing size=Spacing.sm />
-               <Text value=name ellipsis=true color={theme.textPrimary} />
+               <Text value=name ellipsis=true color={theme.neutral_900} />
              </div>
            | _ => <LoadingCensorBar width=300 height=15 />
            }}
@@ -379,7 +377,7 @@ let make = () => {
                value="Most Requested"
                size=Heading.H3
                marginBottom=16
-               color={theme.textSecondary}
+               color={theme.neutral_600}
              />
              <Row>
                {oracleScripts
@@ -497,7 +495,7 @@ let make = () => {
                  value="No Oracle Script"
                  align=Heading.Center
                  weight=Heading.Regular
-                 color={theme.textSecondary}
+                 color={theme.neutral_600}
                />
              </EmptyContainer>
            | Data((oracleScripts, oracleScriptsCount)) =>

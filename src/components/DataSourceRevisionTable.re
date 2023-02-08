@@ -66,7 +66,7 @@ let make = (~id) =>
                             block=true
                             value=name
                             weight=Text.Medium
-                            color={theme.textSecondary}
+                            color={theme.neutral_600}
                             nowrap=true
                             ellipsis=true
                           />
@@ -94,7 +94,7 @@ let make = (~id) =>
                              value="Genesis transaction"
                              weight=Text.Medium
                              code=true
-                             color={theme.textSecondary}
+                             color={theme.neutral_600}
                              ellipsis=true
                              nowrap=true
                            />
@@ -110,7 +110,7 @@ let make = (~id) =>
              <VSpacing size={`px(30)} />
              <img alt="No Revision" src=Images.noRevisionIcon className=Styles.icon />
              <VSpacing size={`px(40)} />
-             <Text block=true value="NO REVISION" weight=Text.Regular color={theme.lightenBlue} />
+             <Text block=true value="NO REVISION" weight=Text.Regular color={theme.primary_200} />
              <VSpacing size={`px(15)} />
            </div>}
     </div>

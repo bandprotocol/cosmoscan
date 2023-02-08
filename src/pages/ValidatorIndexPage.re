@@ -13,7 +13,7 @@ module Styles = {
     ]);
   let rankContainer =
     style([
-      backgroundColor(Theme.baseBlue),
+      backgroundColor(Theme.primary_600),
       borderRadius(`percent(50.)),
       position(`absolute),
       right(`zero),
@@ -51,7 +51,7 @@ module UptimePercentage = {
              value={uptime |> Format.fPercent(~digits=2)}
              size=Text.Xxxl
              block=true
-             color={theme.textPrimary}
+             color={theme.neutral_900}
              transform=Text.Uppercase
              weight=Text.Semibold
            />
@@ -140,7 +140,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                    />
                  </div>
                  <HSpacing size=Spacing.sm />
-                 <Text value={isActive ? "Active" : "Inactive"} color={theme.textSecondary} />
+                 <Text value={isActive ? "Active" : "Inactive"} color={theme.neutral_600} />
                </div>
              | _ => <LoadingCensorBar width=60 height=20 />
              }}
@@ -173,7 +173,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               value="Voting power"
               size=Heading.H4
               marginBottom=27
-              color={theme.textSecondary}
+              color={theme.neutral_600}
               weight=Heading.Thin
             />
             <div className={CssHelper.mb(~size=4, ())}>
@@ -184,7 +184,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                    size=Text.Xxxl
                    align=Text.Left
                    block=true
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                    transform=Text.Uppercase
                    weight=Text.Semibold
                  />
@@ -210,7 +210,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               value="Commission"
               size=Heading.H4
               marginBottom=27
-              color={theme.textSecondary}
+              color={theme.neutral_600}
               weight=Heading.Thin
             />
             {switch (allSub) {
@@ -220,7 +220,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                  size=Text.Xxxl
                  align=Text.Left
                  block=true
-                 color={theme.textPrimary}
+                 color={theme.neutral_900}
                  transform=Text.Uppercase
                  weight=Text.Semibold
                />
@@ -234,7 +234,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               value="Uptime"
               size=Heading.H4
               marginBottom=27
-              color={theme.textSecondary}
+              color={theme.neutral_600}
               weight=Heading.Thin
             />
             {switch (allSub) {
@@ -249,14 +249,14 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
               <Heading
                 value="Oracle Reports"
                 size=Heading.H4
-                color={theme.textSecondary}
+                color={theme.neutral_600}
                 weight=Heading.Thin
               />
               <HSpacing size=Spacing.xs />
               <CTooltip
                 tooltipPlacementSm=CTooltip.BottomRight
                 tooltipText="The number of reports this validator has submitted to date">
-                <Icon name="fal fa-info-circle" size=12 color={theme.textSecondary} />
+                <Icon name="fal fa-info-circle" size=12 color={theme.neutral_600} />
               </CTooltip>
             </div>
             {switch (oracleReportsCountSub) {
@@ -265,7 +265,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                  value={oracleReportsCount |> Format.iPretty}
                  size=Text.Xxxl
                  block=true
-                 color={theme.textPrimary}
+                 color={theme.neutral_900}
                  transform=Text.Uppercase
                  weight=Text.Semibold
                />
@@ -292,11 +292,11 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                     value="Operator Address"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                   <HSpacing size={`px(4)} />
                   <CTooltip tooltipText="The address used to show the validator's entity status">
-                    <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                    <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
                   </CTooltip>
                 </div>
               </Col>
@@ -321,7 +321,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                     value="Address"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                   <HSpacing size=Spacing.xs />
                   <CTooltip tooltipText="The validator entity's unique address">
@@ -344,12 +344,12 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                     value="Commission Max Change"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                   <HSpacing size=Spacing.xs />
                   <CTooltip
                     tooltipText="The maximum increment by which the validator can increase their commission rate">
-                    <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                    <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
                   </CTooltip>
                 </div>
               </Col>
@@ -368,12 +368,12 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                     value="Commission Max Rate"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                   <HSpacing size=Spacing.xs />
                   <CTooltip
                     tooltipText="Highest possible commission rate that the validator can set">
-                    <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                    <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
                   </CTooltip>
                 </div>
               </Col>
@@ -391,7 +391,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                   value="Website"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -410,7 +410,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                   value="Description"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>

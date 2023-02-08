@@ -75,7 +75,7 @@ let make =
       Styles.[
         fontSize(size),
         fontWeight(weight),
-        textColor(color->Belt.Option.getWithDefault(theme.textPrimary)),
+        textColor(color->Belt.Option.getWithDefault(theme.neutral_900)),
         textAlign(align),
         lineHeight,
         mb(~mb=marginBottom, ~mbSm=marginBottomSm, ()),

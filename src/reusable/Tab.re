@@ -2,9 +2,9 @@ module Styles = {
   open Css;
 
   let container = style([Media.mobile([margin2(~h=`px(-12), ~v=`zero)])]);
-  let header = (theme: Theme.t) =>
+  let header = (theme: Theme.t, isDarkMode) =>
     style([
-      borderBottom(`px(1), `solid, theme.tableRowBorderColor),
+      borderBottom(`px(1), `solid, isDarkMode ? theme.neutral_300 : theme.neutral_100),
       selector("> * + *", [marginLeft(`px(32))]),
       Media.mobile([
         overflow(`auto),
@@ -20,7 +20,7 @@ module Styles = {
       alignItems(`center),
       cursor(`pointer),
       padding2(~v=`px(32), ~h=`zero),
-      borderBottom(`px(4), `solid, active ? Theme.baseBlue : `transparent),
+      borderBottom(`px(4), `solid, active ? Theme.primary_600 : `transparent),
       Media.mobile([whiteSpace(`nowrap), padding2(~v=`px(24), ~h=`zero)]),
     ]);
 
@@ -41,10 +41,10 @@ module Route = {
 
   [@react.component]
   let make = (~tabs: array(t), ~currentRoute, ~children) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <div className=Styles.container>
-      <div className={Css.merge([Styles.header(theme), CssHelper.flexBox(~wrap=`nowrap, ())])}>
+      <div className={Css.merge([Styles.header(theme, isDarkMode), CssHelper.flexBox(~wrap=`nowrap, ())])}>
         {tabs
          ->Belt.Array.map(({name, route}) =>
              button(~name, ~route, ~active=route == currentRoute)
@@ -65,10 +65,10 @@ module State = {
 
   [@react.component]
   let make = (~tabs: array(string), ~tabIndex, ~setTab, ~children) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <div className=Styles.container>
-      <div className={Css.merge([Styles.header(theme), CssHelper.flexBox(~wrap=`nowrap, ())])}>
+      <div className={Css.merge([Styles.header(theme, isDarkMode), CssHelper.flexBox(~wrap=`nowrap, ())])}>
         {tabs
          ->Belt.Array.mapWithIndex((index, name) =>
              button(~name, ~active=index == tabIndex, ~setTab=() => setTab(index))

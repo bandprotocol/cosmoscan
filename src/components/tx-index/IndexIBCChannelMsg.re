@@ -10,7 +10,7 @@ module ChannelOpenInit = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <AddressRender address={channel.signer} />
         </Col>
@@ -20,7 +20,7 @@ module ChannelOpenInit = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.portID} />
         </Col>
@@ -30,7 +30,7 @@ module ChannelOpenInit = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.state} />
         </Col>
@@ -40,7 +40,7 @@ module ChannelOpenInit = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.ordering} />
         </Col>
@@ -48,7 +48,7 @@ module ChannelOpenInit = {
       <SeperatedLine mt=24 mb=24 />
       <Row>
         <Col mb=24>
-          <Heading value="Counterparty" size=Heading.H4 color={theme.textSecondary} />
+          <Heading value="Counterparty" size=Heading.H4 color={theme.neutral_600} />
         </Col>
         <Col col=Col.Six>
           <Heading
@@ -56,7 +56,7 @@ module ChannelOpenInit = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.counterparty.portID} />
         </Col>
@@ -77,7 +77,7 @@ module ChannelOpenTry = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <AddressRender address={channel.signer} />
         </Col>
@@ -87,7 +87,7 @@ module ChannelOpenTry = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.portID} />
         </Col>
@@ -97,7 +97,7 @@ module ChannelOpenTry = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.state} />
         </Col>
@@ -107,7 +107,7 @@ module ChannelOpenTry = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.ordering} />
         </Col>
@@ -116,7 +116,7 @@ module ChannelOpenTry = {
       <SeperatedLine mt=24 mb=24 />
       <Row>
         <Col mb=24>
-          <Heading value="Counterparty" size=Heading.H4 color={theme.textSecondary} />
+          <Heading value="Counterparty" size=Heading.H4 color={theme.neutral_600} />
         </Col>
         <Col col=Col.Six mbSm=24>
           <Heading
@@ -124,7 +124,7 @@ module ChannelOpenTry = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.counterparty.portID} />
         </Col>
@@ -134,7 +134,7 @@ module ChannelOpenTry = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channel.counterparty.channelID} />
         </Col>
@@ -155,7 +155,7 @@ module ChannelOpenAck = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <AddressRender address={channel.signer} />
         </Col>
@@ -165,7 +165,7 @@ module ChannelOpenAck = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.portID} />
         </Col>
@@ -175,7 +175,7 @@ module ChannelOpenAck = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channelID} />
         </Col>
@@ -184,7 +184,7 @@ module ChannelOpenAck = {
       <SeperatedLine mt=24 mb=24 />
       <Row>
         <Col mb=24>
-          <Heading value="Counterparty" size=Heading.H4 color={theme.textSecondary} />
+          <Heading value="Counterparty" size=Heading.H4 color={theme.neutral_600} />
         </Col>
         <Col col=Col.Six>
           <Heading
@@ -192,7 +192,7 @@ module ChannelOpenAck = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.counterpartyChannelID} />
         </Col>
@@ -213,7 +213,7 @@ module ChannelOpenConfirm = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <AddressRender address={channel.signer} />
         </Col>
@@ -223,7 +223,7 @@ module ChannelOpenConfirm = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.portID} />
         </Col>
@@ -233,7 +233,7 @@ module ChannelOpenConfirm = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channelID} />
         </Col>
@@ -255,7 +255,7 @@ module ChannelCloseInit = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender address={channel.signer} />
       </Col>
@@ -265,7 +265,7 @@ module ChannelCloseInit = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={channel.portID} />
       </Col>
@@ -275,7 +275,7 @@ module ChannelCloseInit = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text size=Text.Lg value={channel.channelID} />
       </Col>
@@ -295,7 +295,7 @@ module ChannelCloseConfirm = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <AddressRender address={channel.signer} />
         </Col>
@@ -305,7 +305,7 @@ module ChannelCloseConfirm = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.portID} />
         </Col>
@@ -315,7 +315,7 @@ module ChannelCloseConfirm = {
             size=Heading.H4
             weight=Heading.Regular
             marginBottom=8
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <Text size=Text.Lg value={channel.channelID} />
         </Col>

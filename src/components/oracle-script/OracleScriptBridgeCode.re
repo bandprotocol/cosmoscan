@@ -19,7 +19,7 @@ module Styles = {
   let selectWrapper = (theme: Theme.t) =>
     style([
       backgroundColor(theme.white),
-      border(`px(1), `solid, theme.tableRowBorderColor),
+      border(`px(1), `solid, theme.neutral_100),
       borderRadius(`px(4)),
       display(`flex),
       flexDirection(`row),
@@ -175,7 +175,7 @@ module GenerateDecodeCode = {
         <Col>
           <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
             <div className={CssHelper.flexBox()}>
-              <Icon name="fal fa-file" size=16 color={theme.textSecondary} />
+              <Icon name="fal fa-file" size=16 color={theme.neutral_600} />
               <HSpacing size=Spacing.sm />
               <Text
                 value={getFileNameFromLanguage(~language, ~dataType)}
@@ -209,7 +209,7 @@ let make = (~schema) => {
           <CTooltip
             tooltipPlacementSm=CTooltip.BottomLeft
             tooltipText="The target platform to which to generate the code for">
-            <Icon name="fal fa-info-circle" size=10 color={theme.textPrimary} />
+            <Icon name="fal fa-info-circle" size=10 color={theme.neutral_900} />
           </CTooltip>
         </div>
         <div className={Styles.selectWrapper(theme)}>
@@ -240,7 +240,7 @@ let make = (~schema) => {
           <Heading size=Heading.H5 value="Language" />
           <HSpacing size=Spacing.xs />
           <CTooltip tooltipText="The programming language">
-            <Icon name="fal fa-info-circle" size=10 color={theme.textPrimary} />
+            <Icon name="fal fa-info-circle" size=10 color={theme.neutral_900} />
           </CTooltip>
         </div>
         <div className={Styles.selectWrapper(theme)}>
@@ -269,7 +269,7 @@ let make = (~schema) => {
       <Col>
         <div className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
           <div className={CssHelper.flexBox()}>
-            <Icon name="fal fa-file" size=16 color={theme.textSecondary} />
+            <Icon name="fal fa-file" size=16 color={theme.neutral_600} />
             <HSpacing size=Spacing.sm />
             <Text value="Oracle Script Schema" weight=Text.Semibold size=Text.Lg block=true />
           </div>

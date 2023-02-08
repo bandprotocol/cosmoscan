@@ -14,7 +14,7 @@ module Styles = {
           | Success => theme.activeColor
           | Warning => theme.warningColor
           | Danger => theme.failColor
-          | Default => theme.baseGrey
+          | Default => theme.neutral_100
           };
         },
       ),

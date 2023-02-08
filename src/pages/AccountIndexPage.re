@@ -7,7 +7,7 @@ module Styles = {
   let balance = style([minWidth(`px(150)), justifyContent(`flexEnd)]);
 
   let infoHeader = (theme: Theme.t) =>
-    style([borderBottom(`px(1), `solid, theme.dropdownHover), paddingBottom(`px(16))]);
+    style([borderBottom(`px(1), `solid, theme.neutral_100), paddingBottom(`px(16))]);
 
   let totalBalance =
     style([
@@ -61,7 +61,7 @@ module BalanceDetails = {
             weight=Text.Semibold
             tooltipItem={description |> React.string}
             tooltipPlacement=Text.AlignBottomStart
-            color={theme.textPrimary}
+            color={theme.neutral_900}
           />
         </div>
       </Col>
@@ -73,7 +73,7 @@ module BalanceDetails = {
                    value=amount
                    size=Text.Lg
                    weight=Text.Regular
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                : <Text
                    value={amount |> Format.fPretty}
@@ -81,7 +81,7 @@ module BalanceDetails = {
                    weight=Text.Regular
                    nowrap=true
                    code=true
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />}
             <HSpacing size=Spacing.sm />
             <Text
@@ -89,7 +89,7 @@ module BalanceDetails = {
               size=Text.Lg
               weight=Text.Thin
               nowrap=true
-              color={theme.textPrimary}
+              color={theme.neutral_900}
             />
           </div>
           <VSpacing size=Spacing.xs />
@@ -100,7 +100,7 @@ module BalanceDetails = {
                    size=Text.Md
                    weight=Text.Thin
                    spacing={Text.Em(0.02)}
-                   color={theme.textSecondary}
+                   color={theme.neutral_600}
                  />
                : <Text
                    value={amount *. usdPrice |> Format.fPretty}
@@ -116,7 +116,7 @@ module BalanceDetails = {
               size=Text.Md
               weight=Text.Thin
               nowrap=true
-              color={theme.textSecondary}
+              color={theme.neutral_600}
             />
           </div>
         </div>
@@ -153,14 +153,14 @@ module TotalBalanceRender = {
         ])}>
         <NumberCountup value=amountBAND size=Text.Xxxl weight=Text.Regular smallNumber=true />
         <HSpacing size=Spacing.sm />
-        <Text value="BAND" size=Text.Lg code=false weight=Text.Thin color={theme.textPrimary} />
+        <Text value="BAND" size=Text.Lg code=false weight=Text.Thin color={theme.neutral_900} />
       </div>
       <div className={CssHelper.flexBox()}>
         <NumberCountup
           value={amountBAND *. usdPrice}
           size=Text.Lg
           weight=Text.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <HSpacing size=Spacing.sm />
         <Text
@@ -361,7 +361,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Balance available to send, delegate, etc"
                      amount={balance->Coin.getBandAmountFromCoins}
                      usdPrice={financial.usdPrice}
-                     color=Theme.baseBlue
+                     color=Theme.primary_600
                    />
                  | _ => <BalanceDetailLoading />
                  }}
@@ -374,7 +374,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Balance currently delegated to validators"
                      amount={amount->Coin.getBandAmountFromCoin}
                      usdPrice={financial.usdPrice}
-                     color=Theme.lightBlue
+                     color=Theme.primary_500
                    />
                  | _ => <BalanceDetailLoading />
                  }}
@@ -387,7 +387,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Amount undelegated from validators awaiting 21 days lockup period"
                      amount={unbonding->Coin.getBandAmountFromCoin}
                      usdPrice={financial.usdPrice}
-                     color=Theme.lightenBlue
+                     color=Theme.primary_200
                    />
                  | _ => <BalanceDetailLoading />
                  }}
@@ -400,7 +400,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Reward from staking to validators"
                      amount={reward->Coin.getBandAmountFromCoin}
                      usdPrice={financial.usdPrice}
-                     color=Theme.darkenBlue
+                     color=Theme.primary_800
                      isCountup=true
                    />
                  | _ => <BalanceDetailLoading />
@@ -418,7 +418,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                          amount=commissionAmount
                          usdPrice={financial.usdPrice}
                          isCountup=true
-                         color=Theme.darkenBlue
+                         color=Theme.primary_800
                        />
                      </div>;
 

@@ -3,10 +3,7 @@ module Styles = {
 
   let card = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
       position(`relative),
-      borderRadius(`px(8)),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       Media.smallMobile([margin2(~v=`zero, ~h=`px(-5))]),
     ]);
 
@@ -39,10 +36,10 @@ module HighlightCard = {
   [@react.component]
   let make =
       (~label, ~valueAndExtraComponentSub: ApolloHooks.Subscription.variant(_), ~special=false) => {
-    let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+    let (ThemeContext.{theme,isDarkMode}, _) = React.useContext(ThemeContext.context);
     let isMobile = Media.isMobile();
 
-    <div className={Css.merge([Styles.card(theme), special ? Styles.specialBg : ""])}>
+    <div className={Css.merge([Styles.card(theme), special ? Styles.specialBg : "",CommonStyles.card(theme,isDarkMode)])}>
       {special && !isMobile
          ? <img alt="Band Token" src=Images.bandToken className=Styles.bandToken /> : React.null}
       <div
@@ -119,7 +116,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Text
                 value={"$" ++ (financial.usdMarketCap |> Format.fCurrency)}
                 size=Text.Xxxl
-                color={theme.textPrimary}
+                color={theme.neutral_900}
                 weight=Text.Semibold
               />;
             },
@@ -162,7 +159,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               <Text
                 value=activeValidators
                 size=Text.Xxxl
-                color={theme.textPrimary}
+                color={theme.neutral_900}
                 weight=Text.Semibold
               />;
             },

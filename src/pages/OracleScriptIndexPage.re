@@ -47,7 +47,7 @@ module Content = {
                 value="Requests"
                 size=Heading.H4
                 weight=Heading.Thin
-                color={theme.textSecondary}
+                color={theme.neutral_600}
                 marginBottom=26
               />
               {switch (oracleScriptSub) {
@@ -57,7 +57,7 @@ module Content = {
                    size=Text.Xxxl
                    block=true
                    weight=Text.Bold
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                | _ => <LoadingCensorBar width=100 height=15 />
                }}
@@ -70,13 +70,13 @@ module Content = {
                   value="Response time"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
                 <HSpacing size=Spacing.xs />
                 <CTooltip
                   tooltipPlacementSm=CTooltip.BottomRight
                   tooltipText="The average time requests to this oracle script takes to resolve">
-                  <Icon name="fal fa-info-circle" size=12 color={theme.textSecondary} />
+                  <Icon name="fal fa-info-circle" size=12 color={theme.neutral_600} />
                 </CTooltip>
               </div>
               {switch (statSub) {
@@ -91,7 +91,7 @@ module Content = {
                    size=Text.Xxxl
                    weight=Text.Bold
                    block=true
-                   color={theme.textPrimary}
+                   color={theme.neutral_900}
                  />
                | _ => <LoadingCensorBar width=100 height=15 />
                }}
@@ -110,11 +110,11 @@ module Content = {
                       value="Owner"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                     <HSpacing size=Spacing.xs />
                     <CTooltip tooltipText="The owner of the oracle script">
-                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                      <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
                     </CTooltip>
                   </div>
                 </Col>
@@ -133,11 +133,11 @@ module Content = {
                       value="Data Sources"
                       size=Heading.H4
                       weight=Heading.Thin
-                      color={theme.textSecondary}
+                      color={theme.neutral_600}
                     />
                     <HSpacing size=Spacing.xs />
                     <CTooltip tooltipText="The data sources used in this oracle script">
-                      <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+                      <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
                     </CTooltip>
                   </div>
                 </Col>
@@ -156,7 +156,7 @@ module Content = {
                                    value=dataSourceName
                                    size=Text.Lg
                                    block=true
-                                   color={theme.textPrimary}
+                                   color={theme.neutral_900}
                                  />
                                </div>
                              )
@@ -175,7 +175,7 @@ module Content = {
                     value="Description"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -191,7 +191,7 @@ module Content = {
                     value="Version"
                     size=Heading.H4
                     weight=Heading.Thin
-                    color={theme.textSecondary}
+                    color={theme.neutral_600}
                   />
                 </Col>
                 <Col col=Col.Eight>
@@ -258,7 +258,7 @@ module Content = {
                      value="Unable to access OWASM Code"
                      align=Heading.Center
                      weight=Heading.Regular
-                     color={theme.textSecondary}
+                     color={theme.neutral_600}
                    />
                  </EmptyContainer>
                }

@@ -32,7 +32,7 @@ module Styles = {
       position(`absolute),
       top(`percent(50.)),
       left(`percent(50.)),
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       animation(
@@ -125,7 +125,7 @@ let make = () => {
           src=Images.closeButton
           onClick={_ => {canExit ? closeModal() : ()}}
           className={Styles.closeButton(canExit)}>
-          <Icon name="fal fa-times" color={theme.textPrimary} size=18 />
+          <Icon name="fal fa-times" color={theme.neutral_900} size=18 />
         </div>
         {switch (modal) {
          | Connect(chainID) => <ConnectModal chainID />

@@ -71,7 +71,7 @@ let make = _ => {
              value="Waiting for user to sign the transaction"
              weight=Text.Bold
              size=Text.Xxxl
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
            <VSpacing size=Spacing.xxl />
            <Loading width={`px(100)} />
@@ -82,7 +82,7 @@ let make = _ => {
              value="User Signed Successfully"
              weight=Text.Bold
              size=Text.Xxxl
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
            <VSpacing size=Spacing.xxl />
            <img alt="Success Icon" src=Images.success2 className=Styles.icon />
@@ -93,7 +93,7 @@ let make = _ => {
              value="Signing Fail"
              weight=Text.Bold
              size=Text.Xxxl
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
            <VSpacing size=Spacing.xxl />
            <div className=Styles.errorContainer>

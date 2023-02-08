@@ -7,7 +7,7 @@ module Styles = {
       cursor(`pointer),
       width(w),
       alignItems(`center),
-      selector("> span:hover", [color(theme.baseBlue)]),
+      selector("> span:hover", [color(theme.primary_600)]),
       selector("> span", [transition(~duration=200, "all")]),
     ]);
 };
@@ -36,7 +36,7 @@ let make =
      }}
     <Text
       value=moniker
-      color={theme.textPrimary}
+      color={theme.neutral_900}
       weight
       block=true
       size

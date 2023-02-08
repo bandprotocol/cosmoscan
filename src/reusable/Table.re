@@ -3,7 +3,7 @@ module Styles = {
 
   let containerBase = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(8)),
       overflow(`hidden),
       padding2(~v=`zero, ~h=`px(32)),
@@ -14,6 +14,6 @@ module Styles = {
 
 [@react.component]
 let make = (~children) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-  <div className={Styles.containerBase(theme)}> children </div>;
+  let ({ThemeContext.theme,isDarkMode}, _) = React.useContext(ThemeContext.context);
+  <div className={Css.merge([Styles.containerBase(theme),CommonStyles.card(theme,isDarkMode)])}> children </div>;
 };

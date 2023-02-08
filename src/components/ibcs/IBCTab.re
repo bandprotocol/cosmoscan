@@ -10,10 +10,10 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, theme.neutral_100),
+      backgroundColor(theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
   let searchContainer =
@@ -152,8 +152,8 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
           <div
             onClick={_ => handleReset()}
             className={Css.merge([Styles.resetButton, CssHelper.flexBox(~align=`center, ())])}>
-            <Icon name="fas fa-times-circle" color={theme.textPrimary} size=16 />
-            <Text value="Reset" size=Text.Lg color={theme.textPrimary} />
+            <Icon name="fas fa-times-circle" color={theme.neutral_900} size=16 />
+            <Text value="Reset" size=Text.Lg color={theme.neutral_900} />
           </div>
         </div>
       </Col>
@@ -171,7 +171,7 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
     <Row marginTop=32>
       {switch (packetsSub) {
        | Data(packets) when packets->Belt.Array.length === 0 =>
-         <EmptyContainer backgroundColor={theme.mainBg}>
+         <EmptyContainer backgroundColor={theme.neutral_000}>
            <img
              alt="No Packets"
              src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
@@ -182,7 +182,7 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
              value="No Packets"
              align=Heading.Center
              weight=Heading.Regular
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
          </EmptyContainer>
        | Data(packets) =>
@@ -194,7 +194,7 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
            )
          ->React.array
        | Error(_) =>
-         <EmptyContainer backgroundColor={theme.mainBg}>
+         <EmptyContainer backgroundColor={theme.neutral_000}>
            <img
              alt="No Packets"
              src={isDarkMode ? Images.noOracleDark : Images.noOracleLight}
@@ -205,7 +205,7 @@ let make = (~direction: IBCQuery.packet_direction_t, ~chainID) => {
              value="No Packets"
              align=Heading.Center
              weight=Heading.Regular
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
          </EmptyContainer>
        | _ =>

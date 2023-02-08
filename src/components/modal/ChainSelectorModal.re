@@ -22,21 +22,21 @@ module Styles = {
 
   let button = (active, theme: Theme.t) =>
     style([
-      border(`px(1), `solid, active ? theme.textSecondary : theme.loadingBaseColor),
+      border(`px(1), `solid, active ? theme.neutral_600 : theme.neutral_100),
       borderRadius(`px(4)),
       cursor(`pointer),
-      backgroundColor(theme.inputContrastColor),
-      hover([border(`px(1), `solid, theme.textSecondary)]),
+      backgroundColor(theme.neutral_100),
+      hover([border(`px(1), `solid, theme.neutral_600)]),
     ]);
 
   let backButton = (theme: Theme.t) =>
     style([
-      border(`zero, `none, theme.textSecondary),
+      border(`zero, `none, theme.neutral_600),
       hover([
-        border(`zero, `none, theme.textSecondary),
+        border(`zero, `none, theme.neutral_600),
         backgroundColor(`rgba((0, 0, 0, `num(0.0)))),
-        color(theme.textPrimary),
-        selector("> i", [color(theme.textPrimary)]),
+        color(theme.neutral_900),
+        selector("> i", [color(theme.neutral_900)]),
       ]),
     ]);
 };
@@ -74,7 +74,7 @@ let make = (~targetChain) => {
       py=0
       onClick={_ => backModal()}
       style={Styles.backButton(theme)}>
-      <Icon name="far fa-angle-left" color={theme.textPrimary} size=18 mr=5 />
+      <Icon name="far fa-angle-left" color={theme.neutral_900} size=18 mr=5 />
       {"Back" |> React.string}
     </Button>
     <Heading value="Select Chain" size=Heading.H4 marginBottom=24 marginTop=24 />

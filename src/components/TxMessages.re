@@ -10,14 +10,14 @@ module Styles = {
   let showButton = (theme: Theme.t) =>
     style([
       display(`flex),
-      backgroundColor(theme.contrastBg),
+      backgroundColor(theme.neutral_100),
       borderRadius(`px(30)),
       width(`px(70)),
       alignItems(`center),
       justifyContent(`center),
       fontSize(`px(10)),
       cursor(`pointer),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       height(`px(20)),
     ]);
   let showContainer = style([display(`flex), marginTop(`px(10))]);

@@ -12,10 +12,10 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, theme.neutral_100),
+      backgroundColor(theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
@@ -71,7 +71,7 @@ let make =
       size=Heading.H5
       marginBottom=8
       align=Heading.Left
-      color={theme.textSecondary}
+      color={theme.neutral_600}
       weight=Heading.Regular
     />
     <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>
@@ -133,7 +133,7 @@ module Loading = {
         size=Heading.H5
         marginBottom=8
         align=Heading.Left
-        color={theme.textSecondary}
+        color={theme.neutral_600}
         weight=Heading.Regular
       />
       <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>

@@ -9,7 +9,7 @@ module CreateDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
@@ -19,7 +19,7 @@ module CreateDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <TypeID.DataSource position=TypeID.Subtitle id={dataSource.id} />
@@ -33,7 +33,7 @@ module CreateDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.treasury} />
       </Col>
@@ -43,7 +43,7 @@ module CreateDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AmountRender coins={dataSource.fee} />
       </Col>
@@ -62,7 +62,7 @@ module CreateDataSourceFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
@@ -72,7 +72,7 @@ module CreateDataSourceFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={dataSource.name} size=Text.Lg />
       </Col>
@@ -82,7 +82,7 @@ module CreateDataSourceFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.treasury} />
       </Col>
@@ -92,7 +92,7 @@ module CreateDataSourceFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AmountRender coins={dataSource.fee} />
       </Col>
@@ -111,7 +111,7 @@ module EditDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.owner} />
       </Col>
@@ -121,7 +121,7 @@ module EditDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <TypeID.DataSource position=TypeID.Subtitle id={dataSource.id} />
@@ -136,7 +136,7 @@ module EditDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={dataSource.treasury} />
       </Col>
@@ -146,7 +146,7 @@ module EditDataSourceMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AmountRender coins={dataSource.fee} />
       </Col>
@@ -165,7 +165,7 @@ module CreateOracleScriptMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={oracleScript.owner} />
       </Col>
@@ -175,7 +175,7 @@ module CreateOracleScriptMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <TypeID.OracleScript position=TypeID.Subtitle id={oracleScript.id} />
@@ -198,7 +198,7 @@ module CreateOracleScriptFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={oracleScript.owner} />
       </Col>
@@ -208,7 +208,7 @@ module CreateOracleScriptFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={oracleScript.name} size=Text.Lg />
       </Col>
@@ -227,7 +227,7 @@ module EditOracleScriptMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={oracleScript.owner} />
       </Col>
@@ -237,7 +237,7 @@ module EditOracleScriptMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <TypeID.OracleScript position=TypeID.Subtitle id={oracleScript.id} />
@@ -262,7 +262,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={request.sender} />
       </Col>
@@ -272,7 +272,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <TypeID.Request position=TypeID.Subtitle id={request.id} />
       </Col>
@@ -282,7 +282,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <TypeID.OracleScript position=TypeID.Subtitle id={request.oracleScriptID} />
@@ -296,7 +296,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AmountRender coins={request.feeLimit} pos=AmountRender.TxIndex />
       </Col>
@@ -306,7 +306,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.prepareGas |> string_of_int} size=Text.Lg />
       </Col>
@@ -316,7 +316,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.executeGas |> string_of_int} size=Text.Lg />
       </Col>
@@ -327,7 +327,7 @@ module RequestMsg = {
             value="Calldata"
             size=Heading.H4
             weight=Heading.Regular
-            color={theme.textSecondary}
+            color={theme.neutral_600}
           />
           <CopyButton
             data={request.calldata |> JsBuffer.toHex(~with0x=false)}
@@ -364,7 +364,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.askCount |> string_of_int} size=Text.Lg />
       </Col>
@@ -374,7 +374,7 @@ module RequestMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.minCount |> string_of_int} size=Text.Lg />
       </Col>
@@ -393,7 +393,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={request.sender} />
       </Col>
@@ -403,7 +403,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <TypeID.OracleScript position=TypeID.Subtitle id={request.oracleScriptID} />
@@ -415,7 +415,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <div className={CssHelper.flexBox()}>
           <Text value={request.calldata |> JsBuffer.toHex} size=Text.Lg breakAll=true />
@@ -429,7 +429,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AmountRender coins={request.feeLimit} pos=AmountRender.TxIndex />
       </Col>
@@ -439,7 +439,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.prepareGas |> string_of_int} size=Text.Lg />
       </Col>
@@ -449,7 +449,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.executeGas |> string_of_int} size=Text.Lg />
       </Col>
@@ -459,7 +459,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.askCount |> string_of_int} size=Text.Lg />
       </Col>
@@ -469,7 +469,7 @@ module RequestFailMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <Text value={request.minCount |> string_of_int} size=Text.Lg />
       </Col>
@@ -488,7 +488,7 @@ module ReportMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <AddressRender position=AddressRender.Subtitle address={report.reporter} />
       </Col>
@@ -498,7 +498,7 @@ module ReportMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <TypeID.Request position=TypeID.Subtitle id={report.requestID} />
       </Col>
@@ -508,7 +508,7 @@ module ReportMsg = {
           size=Heading.H4
           weight=Heading.Regular
           marginBottom=8
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
         <KVTable
           headers=["External Id", "Exit Code", "Value"]

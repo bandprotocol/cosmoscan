@@ -52,7 +52,7 @@ let make = (~info, ~header, ~isLeft=true) => {
   <div className={Styles.mainContainer(isLeft)}>
     <Text
       value=header
-      color={theme.textSecondary}
+      color={theme.neutral_600}
       size=Text.Sm
       weight=Text.Thin
       height={Text.Px(18)}
@@ -118,7 +118,7 @@ let make = (~info, ~header, ~isLeft=true) => {
            size=Text.Md
            weight=Text.Thin
            spacing={Text.Em(0.06)}
-           color={theme.textSecondary}
+           color={theme.neutral_600}
          />
        </div>
      | Fee(fee) =>

@@ -3,11 +3,8 @@ module Styles = {
 
   let card = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.secondaryBg),
       height(`percent(100.)),
-      borderRadius(`px(8)),
       padding4(~top=`px(31), ~left=`px(32), ~right=`px(32), ~bottom=`px(10)),
-      boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
       Media.mobile([padding2(~v=`px(24), ~h=`px(16))]),
     ]);
 
@@ -183,7 +180,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
     (dataQuery, isDarkMode),
   );
 
-  <div className={Styles.card(theme)}>
+  <div className={Css.merge([Styles.card(theme),CommonStyles.card(theme,isDarkMode)])}>
     <div
       id="totalRequestsGraphSection"
       className={Css.merge([CssHelper.mb(~size=40, ()), CssHelper.mbSm(~size=16, ())])}>
@@ -191,7 +188,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
         <Heading value="Total Requests" size=Heading.H4 />
         <HSpacing size=Spacing.xs />
         <CTooltip tooltipText="The total number of oracle data requests made">
-          <Icon name="fal fa-info-circle" size=10 color={theme.textSecondary} />
+          <Icon name="fal fa-info-circle" size=10 color={theme.neutral_600} />
         </CTooltip>
       </div>
       <div className=Styles.requestCount>
@@ -206,7 +203,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
              }
              size=Heading.H4
              weight=Heading.Thin
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
          | _ => <LoadingCensorBar width=65 height=21 />
          }}
@@ -225,7 +222,7 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
              value="Insufficient data to visualize"
              align=Heading.Center
              weight=Heading.Regular
-             color={theme.textSecondary}
+             color={theme.neutral_600}
            />
          </EmptyContainer>
        </div>;

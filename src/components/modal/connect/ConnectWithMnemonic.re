@@ -9,16 +9,16 @@ module Styles = {
       padding2(~v=`zero, ~h=`px(18)),
     ]);
 
-  let inputBar = (theme: Theme.t) =>
+  let inputBar = (theme: Theme.t, isDarkMode) =>
     style([
       width(`percent(100.)),
       height(`px(37)),
       paddingLeft(`px(9)),
       borderRadius(`px(6)),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, isDarkMode ? theme.neutral_400 : theme.neutral_200),
+      backgroundColor(isDarkMode ? theme.neutral_300 : theme.neutral_000),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
     ]);
 
   let connectBtn = style([width(`percent(100.)), height(`px(37))]);
@@ -31,7 +31,7 @@ let make = (~chainID) => {
   let (mnemonic, setMnemonic) = React.useState(_ => "");
   let (errMsg, setErrMsg) = React.useState(_ => "");
 
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let createMnemonic = () =>
     if (mnemonic->Js.String.trim == "") {
@@ -61,7 +61,7 @@ let make = (~chainID) => {
       id="mnemonicInput"
       autoFocus=true
       value=mnemonic
-      className={Styles.inputBar(theme)}
+      className={Styles.inputBar(theme, isDarkMode)}
       onChange={event => setMnemonic(ReactEvent.Form.target(event)##value)}
       onKeyDown={event =>
         switch (ReactEvent.Keyboard.key(event)) {

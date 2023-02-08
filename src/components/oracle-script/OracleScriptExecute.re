@@ -11,7 +11,7 @@ module Styles = {
 
   let listContainer = style([width(`percent(100.)), marginBottom(`px(25))]);
 
-  let input = (theme: Theme.t) =>
+  let input = (theme: Theme.t, isDarkMode) =>
     style([
       width(`percent(100.)),
       height(`px(37)),
@@ -20,16 +20,16 @@ module Styles = {
       borderRadius(`px(4)),
       fontSize(`px(14)),
       fontWeight(`light),
-      border(`px(1), `solid, theme.tableRowBorderColor),
-      backgroundColor(theme.inputContrastColor),
+      border(`px(1), `solid, isDarkMode ? theme.neutral_200 : theme.neutral_100),
+      backgroundColor(isDarkMode ? theme.neutral_300 : theme.neutral_100),
       outlineStyle(`none),
-      color(theme.textPrimary),
+      color(theme.neutral_900),
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
   let button = isLoading =>
     style([
-      backgroundColor(isLoading ? Theme.lightenBlue : Theme.baseBlue),
+      backgroundColor(isLoading ? Theme.primary_200 : Theme.primary_600),
       fontWeight(`num(600)),
       opacity(isLoading ? 0.8 : 1.),
       cursor(isLoading ? `auto : `pointer),
@@ -72,10 +72,10 @@ module ConnectPanel = {
     open Css;
     let connectContainer = (theme: Theme.t) =>
       style([
-        backgroundColor(theme.secondaryBg),
+        backgroundColor(theme.neutral_100),
         borderRadius(`px(8)),
         padding(`px(24)),
-        border(`px(1), `solid, theme.tableRowBorderColor),
+        border(`px(1), `solid, theme.neutral_100),
       ]);
     let connectInnerContainer = style([width(`percent(100.)), maxWidth(`px(370))]);
   };
@@ -92,7 +92,7 @@ module ConnectPanel = {
           Styles.connectInnerContainer,
           CssHelper.flexBox(~justify=`spaceBetween, ()),
         ])}>
-        <Icon name="fal fa-link" size=32 color={theme.textPrimary} />
+        <Icon name="fal fa-link" size=32 color={theme.neutral_900} />
         <Text value="Please connect to make request" size=Text.Lg nowrap=true block=true />
         <Button px=20 py=5 onClick={_ => {connect()}}> {"Connect" |> React.string} </Button>
       </div>
@@ -105,7 +105,7 @@ module ParameterInput = {
   let make = (~params: Obi.field_key_type_t, ~index, ~setCallDataArr) => {
     let fieldType = params.fieldType;
     let fieldName = Js.String.replaceByRe([%re "/[_]/g"], " ", params.fieldName);
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.listContainer key=fieldName>
       <div className={CssHelper.flexBox()}>
         <Text value=fieldName weight=Text.Semibold transform=Text.Capitalize />
@@ -114,7 +114,7 @@ module ParameterInput = {
       </div>
       <VSpacing size=Spacing.sm />
       <input
-        className={Styles.input(theme)}
+        className={Styles.input(theme, isDarkMode)}
         type_="text"
         onChange={event => {
           let inputVal: string = ReactEvent.Form.target(event)##value;
@@ -140,7 +140,7 @@ module ParameterInput = {
 module CountInputs = {
   [@react.component]
   let make = (~askCount, ~setAskCount, ~setMinCount, ~validatorCount) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <Row marginBottom=24>
       <Col col=Col.Two colSm=Col.Six>
@@ -153,9 +153,9 @@ module CountInputs = {
             <Icon name="fal fa-info-circle" size=10 />
           </CTooltip>
         </div>
-        <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ())}>
+        <div className={CssHelper.selectWrapper(~fontColor=theme.neutral_900, ())}>
           <select
-            className={Styles.input(theme)}
+            className={Styles.input(theme, isDarkMode)}
             onChange={event => {
               let newVal = ReactEvent.Form.target(event)##value;
               setAskCount(_ => newVal);
@@ -181,9 +181,9 @@ module CountInputs = {
             <Icon name="fal fa-info-circle" size=10 />
           </CTooltip>
         </div>
-        <div className={CssHelper.selectWrapper(~fontColor=theme.textPrimary, ())}>
+        <div className={CssHelper.selectWrapper(~fontColor=theme.neutral_900, ())}>
           <select
-            className={Styles.input(theme)}
+            className={Styles.input(theme, isDarkMode)}
             onChange={event => {
               let newVal = ReactEvent.Form.target(event)##value;
               setMinCount(_ => newVal);
@@ -206,7 +206,7 @@ module CountInputs = {
 module ClientIDInput = {
   [@react.component]
   let make = (~clientID, ~setClientID) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.listContainer>
       <div className={CssHelper.flexBox()}>
         <Text value="Client ID" weight=Text.Semibold transform=Text.Capitalize />
@@ -215,7 +215,7 @@ module ClientIDInput = {
       </div>
       <VSpacing size=Spacing.sm />
       <input
-        className={Styles.input(theme)}
+        className={Styles.input(theme, isDarkMode)}
         type_="text"
         onChange={event => {
           let newVal = ReactEvent.Form.target(event)##value;
@@ -230,7 +230,7 @@ module ClientIDInput = {
 module ValueInput = {
   [@react.component]
   let make = (~value, ~setValue, ~title, ~info=?) => {
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <div className=Styles.listContainer>
       <div className={CssHelper.flexBox()}>
         <Text value=title weight=Text.Semibold transform=Text.Capitalize />
@@ -239,7 +239,7 @@ module ValueInput = {
       </div>
       <VSpacing size=Spacing.sm />
       <input
-        className={Styles.input(theme)}
+        className={Styles.input(theme, isDarkMode)}
         type_="text"
         onChange={event => {
           let newVal = ReactEvent.Form.target(event)##value;
@@ -363,7 +363,7 @@ module ExecutionPart = {
 
     isMobile
       ? <MobileBlock>
-          <Icon name="fal fa-exclamation-circle" size=32 color={theme.textPrimary} />
+          <Icon name="fal fa-exclamation-circle" size=32 color={theme.neutral_900} />
           <Text value="Oracle request" size=Text.Lg align=Text.Center block=true />
           <Text value="not available on mobile" size=Text.Lg align=Text.Center block=true />
         </MobileBlock>

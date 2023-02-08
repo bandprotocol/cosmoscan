@@ -122,7 +122,7 @@ module MsgDetailCard = {
           <Heading value={badgeTheme.name} size=Heading.H4 />
         </div>
         <div className=Styles.jsonMode onClick={_ => toggle()}>
-          <Text value="JSON Mode" weight=Text.Semibold color={theme.textPrimary} />
+          <Text value="JSON Mode" weight=Text.Semibold color={theme.neutral_900} />
           <Switch checked=showJson />
         </div>
       </div>

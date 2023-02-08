@@ -13,15 +13,15 @@ module Styles = {
       ? style([
           pointerEvents(`auto),
           transition(~duration=200, "all"),
-          color(theme.textPrimary),
-          hover([color(theme.baseBlue)]),
-          active([color(theme.baseBlue)]),
+          color(theme.neutral_900),
+          hover([color(theme.primary_600)]),
+          active([color(theme.primary_600)]),
         ])
       : style([
           pointerEvents(`none),
-          color(theme.textSecondary),
-          hover([color(theme.textSecondary)]),
-          active([color(theme.textSecondary)]),
+          color(theme.neutral_600),
+          hover([color(theme.neutral_600)]),
+          active([color(theme.neutral_600)]),
         ]);
 
   let prefix = style([fontWeight(`num(600))]);

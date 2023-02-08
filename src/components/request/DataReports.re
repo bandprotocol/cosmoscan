@@ -8,7 +8,7 @@ module Styles = {
       padding2(~v=`px(16), ~h=`px(24)),
       paddingBottom(`px(1)),
       marginTop(`px(24)),
-      backgroundColor(theme.secondaryTableBg),
+      backgroundColor(theme.neutral_100),
       transition(~duration=200, "all"),
       height(`auto),
       Media.mobile([paddingTop(`zero), paddingBottom(`zero)]),
@@ -43,7 +43,7 @@ let make = (~reports: array(RequestSub.report_t)) => {
                   value="Report by"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -62,7 +62,7 @@ let make = (~reports: array(RequestSub.report_t)) => {
                   value="TX Hash"
                   size=Heading.H4
                   weight=Heading.Thin
-                  color={theme.textSecondary}
+                  color={theme.neutral_600}
                 />
               </Col>
               <Col col=Col.Eight>
@@ -130,7 +130,7 @@ let make = (~reports: array(RequestSub.report_t)) => {
           value="No Report"
           align=Heading.Center
           weight=Heading.Regular
-          color={theme.textSecondary}
+          color={theme.neutral_600}
         />
       </EmptyContainer>;
 };

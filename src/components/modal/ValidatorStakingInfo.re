@@ -2,10 +2,10 @@ module Styles = {
   open Css;
 
   let connectContainer = (theme: Theme.t) =>
-    style([height(`px(145)), backgroundColor(theme.secondaryBg)]);
+    style([height(`px(145)), backgroundColor(theme.neutral_100)]);
   let rewardContainer = (theme: Theme.t) =>
     style([
-      backgroundColor(theme.tableRowBorderColor),
+      backgroundColor(theme.neutral_100),
       padding2(~v=`px(16), ~h=`px(24)),
       borderRadius(`px(8)),
     ]);
@@ -99,17 +99,17 @@ module DisplayBalance = {
                size=Text.Lg
                weight=Text.Regular
                spacing={Text.Em(0.)}
-               color={theme.textSecondary}
+               color={theme.neutral_600}
                code=false
              />
            : <Text
                value={amount->Coin.getBandAmountFromCoin |> Format.fPretty(~digits=6)}
                size=Text.Lg
-               color={theme.textSecondary}
+               color={theme.neutral_600}
                block=true
              />}
         <HSpacing size=Spacing.sm />
-        <Text value="BAND" size=Text.Lg color={theme.textSecondary} block=true />
+        <Text value="BAND" size=Text.Lg color={theme.neutral_600} block=true />
       </div>
       <div className={CssHelper.flexBox()}>
         {isCountup
@@ -117,18 +117,18 @@ module DisplayBalance = {
                value={amount->Coin.getBandAmountFromCoin *. usdPrice}
                size=Text.Md
                weight=Text.Regular
-               color={theme.textSecondary}
+               color={theme.neutral_600}
                code=false
                spacing={Text.Em(0.)}
              />
            : <Text
                value={amount->Coin.getBandAmountFromCoin *. usdPrice |> Format.fPretty(~digits=6)}
                size=Text.Md
-               color={theme.textSecondary}
+               color={theme.neutral_600}
                block=true
              />}
         <HSpacing size=Spacing.sm />
-        <Text value="USD" size=Text.Md color={theme.textSecondary} block=true />
+        <Text value="USD" size=Text.Md color={theme.neutral_600} block=true />
       </div>
     </>;
   };
@@ -164,7 +164,7 @@ module StakingInfo = {
         <Col>
           <Text
             value="Note: You have a non-zero pending reward on this validator. Any additional staking actions will automatically withdraw that reward balance."
-            color={theme.textSecondary}
+            color={theme.neutral_600}
             weight=Text.Thin
           />
         </Col>
@@ -175,7 +175,7 @@ module StakingInfo = {
             <Heading
               value="Balance at Stake"
               size=Heading.H5
-              color={theme.textSecondary}
+              color={theme.neutral_600}
               marginBottom=8
             />
             {switch (allSub) {
@@ -193,7 +193,7 @@ module StakingInfo = {
                 value="Unbonding Amount"
                 size=Heading.H5
                 marginBottom=8
-                color={theme.textSecondary}
+                color={theme.neutral_600}
               />
             </div>
             {switch (allSub) {
@@ -212,7 +212,7 @@ module StakingInfo = {
         </Col>
         <Col col=Col.Three>
           <div className={CssHelper.mb(~size=16, ())}>
-            <Heading value="Reward" size=Heading.H5 color={theme.textSecondary} marginBottom=8 />
+            <Heading value="Reward" size=Heading.H5 color={theme.neutral_600} marginBottom=8 />
             {switch (allSub) {
              | Data(({financial: {usdPrice}}, balanceAtStake, _)) =>
                <DisplayBalance amount={balanceAtStake.reward} usdPrice isCountup=true />
