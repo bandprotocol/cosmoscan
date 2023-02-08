@@ -8,7 +8,10 @@ module Styles = {
 [@react.component]
 let make = (~href, ~className="", ~children) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-  <a href className={Css.merge([Styles.a(theme), className])} target="_blank" rel="noopener">
-    children
-  </a>;
+  switch(href){
+    | "" => children
+    | _ =>  <a href className={Css.merge([Styles.a(theme), className])} target="_blank" rel="noopener">
+            children
+          </a>
+  }
 };

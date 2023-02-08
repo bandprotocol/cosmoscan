@@ -11,7 +11,7 @@ module Styles = {
     style([
       borderTopRightRadius(`zero),
       borderBottomRightRadius(`zero),
-      backgroundColor(state ? theme.neutral_900 : theme.neutral_100),
+      backgroundColor(state ? theme.neutral_900 : theme.neutral_000),
       color(state ? theme.neutral_100 : theme.neutral_900),
       hover([
         backgroundColor(state ? theme.neutral_900 : theme.neutral_100),
@@ -24,7 +24,7 @@ module Styles = {
       borderTopLeftRadius(`zero),
       borderBottomLeftRadius(`zero),
       color(state ? theme.neutral_900 : theme.neutral_100),
-      backgroundColor(state ? theme.neutral_100 : theme.neutral_900),
+      backgroundColor(state ? theme.neutral_000 : theme.neutral_900),
       hover([
         backgroundColor(state ? theme.neutral_100 : theme.neutral_900),
         color(state ? theme.neutral_900 : theme.neutral_100),
@@ -39,7 +39,7 @@ let make = (~state, ~setState, ~nameArray) => {
 
   <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
     <Button
-      px=30
+      px=16
       py=8
       variant=Button.Outline
       onClick={_ => setState(_ => true)}
@@ -47,7 +47,7 @@ let make = (~state, ~setState, ~nameArray) => {
       {nameArray[0]  |> React.string}
     </Button>
     <Button
-      px=30
+      px=16
       py=8
       variant=Button.Outline
       onClick={_ => setState(_ => false)}

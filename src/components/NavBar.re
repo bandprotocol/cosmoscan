@@ -25,11 +25,14 @@ module RenderDesktop = {
     <div className={CssHelper.flexBox(~justify=`spaceBetween, ())} id="navigationBar">
       {routes
        ->Belt.List.map(((v, route)) =>
-           {v != "Divider" ? <div key=v className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
-             <Link className={Styles.nav(currentRoute == route, theme)} route>
+          <div key=v className={CssHelper.flexBox(~justify=`spaceBetween, ())}>
+            { 
+              !Js.String2.includes(v, "Divider") ? <Link className={Styles.nav(currentRoute == route, theme)} route>
                {v |> React.string}
              </Link>
-           </div> : <Divider />}
+            : <Divider />
+            }
+          </div> 
          )
        ->Array.of_list
        ->React.array}
@@ -142,18 +145,18 @@ module RenderMobile = {
 let make = () => {
   let routes = [
     ("Home", Route.HomePage),
-    ("Divider", None),
+    ("Divider_1", NotFound),
     ("Validators", ValidatorHomePage),
     ("Blocks", BlockHomePage),
     ("Transactions", TxHomePage),
     ("Proposals", ProposalHomePage),
-    ("Divider", None),
+    ("Divider_2", NotFound),
     ("Data Sources", DataSourceHomePage),
     ("Oracle Scripts", OracleScriptHomePage),
     ("Requests", RequestHomePage),
-    ("Divider", None),
+    ("Divider_3", NotFound),
     ("IBCs", IBCHomePage),
   ];
 
-  Media.isMobile() ? <RenderMobile routes /> : <RenderDesktop routes />;
+  Media.isMobile() ? <RenderMobile routes /> : <RenderDesktop routes />; 
 };

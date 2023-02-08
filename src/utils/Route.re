@@ -22,7 +22,6 @@ type validator_tab_t =
   | Reporters;
 
 type t =
-  | None
   | NotFound
   | HomePage
   | DataSourceHomePage
