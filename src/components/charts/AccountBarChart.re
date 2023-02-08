@@ -22,10 +22,10 @@ let make = (~availableBalance, ~balanceAtStake, ~reward, ~unbonding, ~commission
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className={Css.merge([Styles.barChart, CssHelper.flexBox()])}>
-    <div className={Styles.barItem(availableBalancePercent, Theme.primary_600)} />
-    <div className={Styles.barItem(balanceAtStakePercent, Theme.primary_500)} />
-    <div className={Styles.barItem(unbondingPercent, Theme.primary_200)} />
-    <div className={Styles.barItem(rewardPercent, Theme.primary_800)} />
+    <div className={Styles.barItem(availableBalancePercent, theme.primary_600)} />
+    <div className={Styles.barItem(balanceAtStakePercent, theme.primary_500)} />
+    <div className={Styles.barItem(unbondingPercent, theme.primary_200)} />
+    <div className={Styles.barItem(rewardPercent, theme.primary_800)} />
     {commission == 0.
        ? React.null : <div className={Styles.barItem(commissionPercent, theme.neutral_600)} />}
   </div>;

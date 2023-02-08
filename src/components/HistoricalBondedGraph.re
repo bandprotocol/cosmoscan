@@ -135,7 +135,7 @@ function(data, isDarkMode) {
 [@react.component]
 let make = (~operatorAddress) => {
   let dataQuery = HistoricalBondedQuery.get(operatorAddress);
-  let (ThemeContext.{isDarkMode}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   React.useEffect2(
     () => {
@@ -156,7 +156,7 @@ let make = (~operatorAddress) => {
     <div className=Styles.container>
       <canvas id="historicalBonded" className={Styles.chart(show)} />
       <EmptyContainer height={`percent(100.)} display={!show}>
-        <Icon name="fal fa-clock" size=40 color=Theme.primary_600 />
+        <Icon name="fal fa-clock" size=40 color=theme.primary_600 />
         <VSpacing size={`px(16)} />
         <Heading
           size=Heading.H4

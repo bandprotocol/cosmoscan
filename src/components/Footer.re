@@ -28,7 +28,7 @@ let make = () => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let isMobile = Media.isMobile();
 
-  <Section bg={theme.primary_600} pt=24 pb=24 ptSm=24 pbSm=24 style=Styles.footerBg>
+  <Section bg={theme.footer} pt=24 pb=24 ptSm=24 pbSm=24 style=Styles.footerBg>
     <div className=CssHelper.container>
       <Row alignItems=Row.Center>
         <Col col=Col.Six mbSm=24>

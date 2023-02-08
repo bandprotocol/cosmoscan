@@ -41,13 +41,13 @@ module Styles = {
       color(active ? theme.neutral_900 : theme.neutral_600),
     ]);
 
-  let loginList = active =>
+  let loginList = (theme: Theme.t, active) =>
     style([
       display(`flex),
       width(`percent(100.)),
       height(`px(50)),
       borderRadius(`px(8)),
-      border(`px(2), `solid, active ? Theme.primary_600 : `transparent),
+      border(`px(2), `solid, active ? theme.primary_600 : `transparent),
       cursor(`pointer),
       overflow(`hidden),
     ]);
@@ -77,7 +77,7 @@ module LoginMethod = {
   let make = (~name, ~active, ~onClick) => {
     let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
-    <div className={Styles.loginList(active)} onClick>
+    <div className={Styles.loginList(theme, active)} onClick>
       <div className={Styles.header(active, theme)}>
         {switch (name) {
          | LedgerWithCosmos =>

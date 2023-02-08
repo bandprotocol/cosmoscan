@@ -19,6 +19,7 @@ type t = {
   failColor: color_t,
   activeColor: color_t,
   warningColor: color_t,
+  footer: color_t,
   // new theme
   neutral_000: color_t,
   neutral_100: color_t,
@@ -36,7 +37,7 @@ type t = {
 // Default Colors
 let primary_200 = hex("DAD1FE");
 let primary_500 = hex("6547EB");
-let primary_600 = hex("4520E6");
+let primary = hex("4520E6");
 let darkBlue = hex("3719B8");
 let primary_800 = hex("210D77");
 
@@ -53,7 +54,7 @@ let warningColor = hex("F2CC21");
 let get: mode_t => t =
   fun
   | Day => {
-      primary_600,
+      primary_600: hex("4520E6"),
       primary_200,
       primary_500,
       darkBlue,
@@ -65,6 +66,7 @@ let get: mode_t => t =
       activeColor,
       failColor,
       warningColor,
+      footer: hex("4520E6"),
       // new theme
       neutral_000: hex("FFFFFF"),
       neutral_100: hex("F3F4F6"),
@@ -78,7 +80,7 @@ let get: mode_t => t =
       neutral_900: hex("202327"),
     }
   | Dark => {
-      primary_600,
+      primary_600: hex("8871EF"),
       primary_200,
       primary_500,
       darkBlue,
@@ -90,6 +92,7 @@ let get: mode_t => t =
       activeColor,
       failColor,
       warningColor,
+      footer: hex("21262C"),
 
        // new theme
       neutral_000: hex("101214"),

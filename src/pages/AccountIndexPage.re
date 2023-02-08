@@ -175,6 +175,7 @@ module TotalBalanceRender = {
 
 [@react.component]
 let make = (~address, ~hashtag: Route.account_tab_t) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let currentTime =
     React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
   let isMobile = Media.isMobile();
@@ -361,7 +362,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Balance available to send, delegate, etc"
                      amount={balance->Coin.getBandAmountFromCoins}
                      usdPrice={financial.usdPrice}
-                     color=Theme.primary_600
+                     color=theme.primary_600
                    />
                  | _ => <BalanceDetailLoading />
                  }}
@@ -374,7 +375,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Balance currently delegated to validators"
                      amount={amount->Coin.getBandAmountFromCoin}
                      usdPrice={financial.usdPrice}
-                     color=Theme.primary_500
+                     color=theme.primary_500
                    />
                  | _ => <BalanceDetailLoading />
                  }}
@@ -387,7 +388,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Amount undelegated from validators awaiting 21 days lockup period"
                      amount={unbonding->Coin.getBandAmountFromCoin}
                      usdPrice={financial.usdPrice}
-                     color=Theme.primary_200
+                     color=theme.primary_200
                    />
                  | _ => <BalanceDetailLoading />
                  }}
@@ -400,7 +401,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                      description="Reward from staking to validators"
                      amount={reward->Coin.getBandAmountFromCoin}
                      usdPrice={financial.usdPrice}
-                     color=Theme.primary_800
+                     color=theme.primary_800
                      isCountup=true
                    />
                  | _ => <BalanceDetailLoading />
@@ -418,7 +419,7 @@ let make = (~address, ~hashtag: Route.account_tab_t) => {
                          amount=commissionAmount
                          usdPrice={financial.usdPrice}
                          isCountup=true
-                         color=Theme.primary_800
+                         color=theme.primary_800
                        />
                      </div>;
 

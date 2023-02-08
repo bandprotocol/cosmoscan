@@ -27,9 +27,9 @@ module Styles = {
       fontFamilies([`custom("Montserrat"), `custom("sans-serif")]),
     ]);
 
-  let button = isLoading =>
+  let button = (theme: Theme.t, isLoading) =>
     style([
-      backgroundColor(isLoading ? Theme.primary_200 : Theme.primary_600),
+      backgroundColor(isLoading ? theme.primary_200 : theme.primary_600),
       fontWeight(`num(600)),
       opacity(isLoading ? 0.8 : 1.),
       cursor(isLoading ? `auto : `pointer),
@@ -150,6 +150,7 @@ module ResultRender = {
 
 [@react.component]
 let make = (~executable: JsBuffer.t) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   let params =
     ExecutableParser.parseExecutableScript(executable)->Belt_Option.getWithDefault([]);
   let numParams = params->Belt_List.length;
@@ -198,7 +199,7 @@ let make = (~executable: JsBuffer.t) => {
           </div>
           <Button
             fsize=14
-            style={Styles.button(result == Loading)}
+            style={Styles.button(theme, result == Loading)}
             px=25
             py=13
             onClick={_ =>
