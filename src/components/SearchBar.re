@@ -22,7 +22,7 @@ module Styles = {
     style([
       width(`percent(100.)),
       color(theme.neutral_900),
-      background(theme.neutral_100),
+      background(theme.neutral_000),
       borderRadius(`px(8)),
       padding4(~left=`px(15), ~right=Spacing.md, ~top=`px(10), ~bottom=`px(10)),
       boxShadows([

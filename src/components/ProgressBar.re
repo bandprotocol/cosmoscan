@@ -7,13 +7,13 @@ module Styles = {
       paddingTop(`px(20)),
       Media.mobile([display(`flex), alignItems(`center), paddingTop(`zero)]),
     ]);
-  let progressOuter = (theme: Theme.t) =>
+  let progressOuter = (theme: Theme.t, isDarkMode) =>
     style([
       position(`relative),
       width(`percent(100.)),
       height(`px(12)),
       borderRadius(`px(7)),
-      border(`px(1), `solid, theme.neutral_100),
+      border(`px(1), `solid,isDarkMode ? theme.neutral_300  : theme.neutral_100),
       padding(`px(1)),
       overflow(`hidden),
     ]);
@@ -70,7 +70,7 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
     (reportedValidators * 100 |> float_of_int) /. (requestValidators |> float_of_int);
   let success = reportedValidators >= minimumValidators;
 
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.barContainer>
     <div className=Styles.leftText>
@@ -82,7 +82,7 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
         color={theme.neutral_900}
       />
     </div>
-    <div className={Styles.progressOuter(theme)}>
+    <div className={Styles.progressOuter(theme, isDarkMode)}>
       <div className={Styles.progressInner(progressPercentage, success, theme)} />
     </div>
     <div className=Styles.rightText>
@@ -111,8 +111,8 @@ module Uptime = {
         Theme.failColor;
       };
 
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-    <div className={Styles.progressOuter(theme)}>
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+    <div className={Styles.progressOuter(theme, isDarkMode)}>
       <div className={Styles.progressUptimeInner(percent, color)} />
     </div>;
   };
@@ -128,7 +128,7 @@ module Deposit = {
     let formatedMinDeposit = minDeposit |> Format.fPretty(~digits=0);
     let formatedTotalDeposit = totalDeposit_ |> Format.fPretty(~digits=0);
 
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <div>
       <div
@@ -147,7 +147,7 @@ module Deposit = {
           size=Text.Lg
         />
       </div>
-      <div className={Styles.progressOuter(theme)}>
+      <div className={Styles.progressOuter(theme, isDarkMode)}>
         <div className={Styles.progressUptimeInner(percent, theme.primary_600)} />
       </div>
     </div>;
@@ -158,7 +158,7 @@ module Voting = {
   [@react.component]
   let make = (~percent, ~label, ~amount) => {
     let isMobile = Media.isMobile();
-    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <div>
       <div
         className={Css.merge([
@@ -187,7 +187,7 @@ module Voting = {
                </>}
         </div>
       </div>
-      <div className={Styles.progressOuter(theme)}>
+      <div className={Styles.progressOuter(theme, isDarkMode)}>
         <div className={Styles.progressInner(percent, true, theme)} />
       </div>
     </div>;

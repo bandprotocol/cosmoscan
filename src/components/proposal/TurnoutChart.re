@@ -13,7 +13,7 @@ module Styles = {
       bottom(`px(8)),
       borderRadius(`percent(50.)),
     ]);
-  let circle = (percent, theme: Theme.t) => {
+  let circle = (percent, theme: Theme.t, isDarkMode) => {
     style([
       width(`percent(100.)),
       height(`percent(100.)),
@@ -21,7 +21,7 @@ module Styles = {
       selector(
         "> circle",
         [
-          SVG.fill(theme.neutral_100),
+          SVG.fill(theme.neutral_300),
           SVG.strokeWidth(`px(16)),
           SVG.stroke(theme.primary_600),
           //TODO: it will be remove when the bs-css upgrade to have this proporty
@@ -36,11 +36,11 @@ module Styles = {
 
 [@react.component]
 let make = (~percent) => {
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   <div className=Styles.chartContainer>
     <svg
-      className={Styles.circle(percent |> int_of_float |> string_of_int, theme)}
+      className={Styles.circle(percent |> int_of_float |> string_of_int, theme, isDarkMode)}
       viewBox="0 0 208 208">
       <circle r="104" cx="104" cy="104" />
     </svg>

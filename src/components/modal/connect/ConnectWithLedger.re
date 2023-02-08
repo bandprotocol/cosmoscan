@@ -39,7 +39,7 @@ module Styles = {
       alignSelf(`flexEnd),
     ]);
 
-  let selectWrapper = (theme: Theme.t) =>
+  let selectWrapper = (theme: Theme.t, isDarkMode) =>
     style([
       display(`flex),
       padding2(~v=`px(3), ~h=`px(8)),
@@ -49,8 +49,8 @@ module Styles = {
       height(`px(37)),
       left(`zero),
       top(`px(32)),
-      background(theme.neutral_100),
-      border(`px(1), `solid, theme.neutral_100),
+      background(isDarkMode ? theme.neutral_300 : theme.neutral_000),
+      border(`px(1), `solid, isDarkMode ? theme.neutral_400 : theme.neutral_200),
       borderRadius(`px(6)),
       float(`left),
     ]);
@@ -92,7 +92,7 @@ let make = (~chainID, ~ledgerApp) => {
   let (result, setResult) = React.useState(_ => Nothing);
   let (accountIndex, setAccountIndex) = React.useState(_ => 0);
 
-  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let createLedger = accountIndex => {
     dispatchModal(DisableExit);
@@ -119,7 +119,7 @@ let make = (~chainID, ~ledgerApp) => {
     <VSpacing size=Spacing.xl />
     <Text value="1. Select HD Derivation Path" weight=Text.Semibold color={theme.neutral_900} />
     <VSpacing size=Spacing.md />
-    <div className={Styles.selectWrapper(theme)}>
+    <div className={Styles.selectWrapper(theme, isDarkMode)}>
       <div
         className={CssHelper.selectWrapper(
           ~pRight=8,
