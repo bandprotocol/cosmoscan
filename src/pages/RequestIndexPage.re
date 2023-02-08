@@ -23,11 +23,11 @@ module Styles = {
   let addressContainer = style([Media.mobile([width(`px(260))])]);
   let validatorReportStatus = style([marginBottom(`px(13))]);
   let noPaddingBottom = style([paddingBottom(`zero), Media.mobile([paddingBottom(`zero)])]);
-  let ibcBadge =
+  let ibcBadge = (theme: Theme.t) =>
     style([
       display(`flex),
       padding2(~v=`px(4), ~h=`px(16)),
-      background(Theme.primary_600),
+      background(theme.primary_600),
       borderRadius(`px(10)),
       marginLeft(`px(8)),
     ]);
@@ -236,7 +236,7 @@ let make = (~reqID) => {
                <div className={CssHelper.flexBox()}>
                  <TypeID.Request id position=TypeID.Title />
                  {isIBC
-                    ? <div className=Styles.ibcBadge>
+                    ? <div className=Styles.ibcBadge(theme)>
                         <Text value="IBC" color={theme.white} weight=Text.Semibold />
                       </div>
                     : React.null}
