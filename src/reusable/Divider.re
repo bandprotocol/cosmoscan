@@ -1,9 +1,9 @@
 module Styles = {
   open Css;
 
-  let container = (theme: Theme.t, ml, mr) => {
+  let container = (theme: Theme.t, ml, mr, h) => {
     style([
-      height(`px(32)),
+      height(`px(h)),
       width(`px(1)),
       marginLeft(`px(ml)),
       marginRight(`px(mr)),
@@ -14,7 +14,7 @@ module Styles = {
 };
 
 [@react.component]
-let make = (~ml=0, ~mr=0) => {
+let make = (~ml=0, ~mr=0, ~h=32) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-  <div className={Styles.container(theme, ml, mr)} />;
+  <div className={Styles.container(theme, ml, mr, h)} />;
 };
