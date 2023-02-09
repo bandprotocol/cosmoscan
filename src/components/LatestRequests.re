@@ -12,21 +12,13 @@ module Styles = {
     style([
       boxShadow(Shadow.box(~x=`zero, ~y=`px(2), ~blur=`px(4), Css.rgba(0, 0, 0, `num(0.2)))),
     ]);
-
-  let allRequestLink = (theme: Theme.t) =>
-    style([
-      backgroundColor(theme.primary_600),
-      borderRadius(`px(8)),
-      width(`px(32)),
-      height(`px(32)),
-      hover([backgroundColor(theme.darkBlue)]),
-    ]);
+  let textMRight = style([marginRight(`px(6))]);
 };
 
 module RenderBody = {
   [@react.component]
   let make = (~requestSub: ApolloHooks.Subscription.variant(RequestSub.t)) => {
-    <TBody>
+    <TBody paddingV=`px(18)>
       <Row alignItems=Row.Center>
         <Col col=Col.Three>
           {switch (requestSub) {
@@ -38,9 +30,7 @@ module RenderBody = {
           {switch (requestSub) {
            | Data({oracleScript: {oracleScriptID, name}}) =>
              <div className={CssHelper.flexBox(~wrap=`nowrap, ())}>
-               <TypeID.OracleScript id=oracleScriptID />
-               <HSpacing size=Spacing.sm />
-               <Text value=name ellipsis=true />
+               <TypeID.OracleScript id=oracleScriptID details=name />
              </div>
            | _ => <LoadingCensorBar width=150 height=15 />
            }}
@@ -134,16 +124,17 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
       </Col>
       <Col col=Col.Six colSm=Col.Six>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
-          {isMobile ? React.null : <Heading value="More Requests" size=Heading.H4 />}
-          <HSpacing size=Spacing.md />
           <Link className={CssHelper.flexBox(~align=`center, ())} route=Route.RequestHomePage>
-            <div
-              className={Css.merge([
-                Styles.allRequestLink(theme),
-                CssHelper.flexBox(~justify=`center, ()),
-              ])}>
-              <Icon name="far fa-arrow-right" color={theme.white} />
+            <div className=Styles.textMRight>
+              <Text 
+                value="All Requests" 
+                size=Text.Md 
+                weight=Text.Semibold 
+                underline=true 
+                color=theme.neutral_900 
+              />
             </div>
+            <Icon name="far fa-arrow-right" color=theme.neutral_900 />
           </Link>
         </div>
       </Col>
@@ -158,7 +149,6 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
                  value="Request ID"
                  size=Text.Sm
                  weight=Text.Semibold
-                 transform=Text.Uppercase
                />
              </Col>
              <Col col=Col.Six>
@@ -167,7 +157,6 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
                  value="Oracle Script"
                  size=Text.Sm
                  weight=Text.Semibold
-                 transform=Text.Uppercase
                />
              </Col>
              <Col col=Col.Three>
@@ -177,7 +166,6 @@ let make = (~latest5RequestSub: Sub.t(array(RequestSub.t))) => {
                  size=Text.Sm
                  weight=Text.Semibold
                  align=Text.Right
-                 transform=Text.Uppercase
                />
              </Col>
            </Row>

@@ -2,14 +2,6 @@ module Styles = {
   open Css;
 
   let statusImg = style([width(`px(20)), marginTop(`px(-3))]);
-  let allTxLink = (theme: Theme.t) =>
-    style([
-      backgroundColor(theme.primary_600),
-      borderRadius(`px(8)),
-      width(`px(32)),
-      height(`px(32)),
-      hover([backgroundColor(theme.darkBlue)]),
-    ]);
   let textMRight = style([marginRight(`px(6))]);
 };
 
@@ -34,7 +26,7 @@ module MsgBadgeGroup = {
 module RenderBody = {
   [@react.component]
   let make = (~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
-    <TBody>
+    <TBody paddingV=`px(17)>
       <Row alignItems=Row.Center>
         <Col col=Col.Four>
           {switch (txSub) {
@@ -122,7 +114,6 @@ let make = () => {
     <Row marginTop=30 marginBottom=25 marginTopSm=24 marginBottomSm=0>
       <Col col=Col.Six colSm=Col.Six>
         <Heading value="Latest Transactions" size=Heading.H4 />
-        <VSpacing size={`px(4)} />
       </Col>
       <Col col=Col.Six colSm=Col.Six>
         <div className={CssHelper.flexBox(~justify=`flexEnd, ())}>
@@ -146,16 +137,16 @@ let make = () => {
        : <THead height=30>
            <Row alignItems=Row.Center>
              <Col col=Col.Four>
-                 <Text value="Tx Hash" size=Text.Sm transform=Text.Uppercase />
+                 <Text value="Tx Hash" size=Text.Sm />
              </Col>
              <Col col=Col.Three>
-                 <Text value="Block" size=Text.Sm transform=Text.Uppercase />
+                 <Text value="Block" size=Text.Sm />
              </Col>
              <Col col=Col.Three>
-                 <Text value="Message" size=Text.Sm transform=Text.Uppercase />
+                 <Text value="Message" size=Text.Sm />
              </Col>
              <Col col=Col.Two>
-                 <Text value="Status" size=Text.Sm transform=Text.Uppercase />
+                 <Text value="Status" size=Text.Sm />
              </Col>
            </Row>
          </THead>}
