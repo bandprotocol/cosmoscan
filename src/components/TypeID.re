@@ -42,7 +42,7 @@ module Styles = {
 
 module ComponentCreator = (RawID: ID.IDSig) => {
   [@react.component]
-  let make = (~id, ~position=Text, ~primary=false) => {
+  let make = (~id, ~position=Text, ~primary=false, ~weight=Text.Regular) => {
     let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
     <Link
@@ -51,12 +51,12 @@ module ComponentCreator = (RawID: ID.IDSig) => {
       <Text
         value={id |> RawID.toString}
         size={position |> fontSize}
-        weight=Text.Semibold
+        weight
         height={position |> lineHeight}
         nowrap=true
         code=true
         block=true
-        color={primary ? (isDarkMode ? theme.primary_600 : theme.primary_600) : theme.neutral_900}
+        color=theme.primary_600
       />
     </Link>;
   };

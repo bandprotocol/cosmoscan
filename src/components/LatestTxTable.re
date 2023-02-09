@@ -35,10 +35,10 @@ module RenderBody = {
   [@react.component]
   let make = (~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
     <TBody>
-      <Row alignItems=Row.Start>
+      <Row alignItems=Row.Center>
         <Col col=Col.Four>
           {switch (txSub) {
-           | Data({txHash}) => <TxLink txHash width=110 />
+           | Data({txHash}) => <TxLink txHash width=110 weight=Text.Regular />
            | _ => <LoadingCensorBar width=60 height=15 />
            }}
         </Col>

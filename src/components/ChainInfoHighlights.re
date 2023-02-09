@@ -135,7 +135,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
         valueAndExtraComponentSub={
           let%Sub ({height, validator: {moniker, identity, operatorAddress}}, _, _) = allSub;
           (
-            <TypeID.Block id=height position=TypeID.Landing primary=true />,
+            <TypeID.Block id=height position=TypeID.Landing weight=Text.Semibold />,
             <ValidatorMonikerLink
               validatorAddress=operatorAddress
               moniker
