@@ -2,6 +2,7 @@ module Styles = {
   open Css;
   let msgBadge = (theme: Theme.t) =>
     style([
+      maxWidth(`px(80)),
       backgroundColor(theme.neutral_700),
       border(`px(1), `solid, theme.neutral_600),
       borderRadius(`px(50)),
@@ -25,8 +26,8 @@ let make = (~name) => {
       size=Text.Md
       weight=Text.Semibold
       color=theme.neutral_000
-      transform=Text.Uppercase
       align=Text.Center
+      ellipsis=true
     />
   </div>;
 };
