@@ -192,35 +192,6 @@ module BlockCountConsensusAddressConfig = [%graphql
 |}
 ];
 
-module BlockWithTxByTimestamp = [%graphql
-  {|
-  subscription BlockWithTxByTimestamp($greater: timestamp) {
-    blocks(limit: 20, where: {timestamp: {_gte: $greater}}) {
-      transactions {
-        id
-      }
-    }
-  }
-|}
-];
-
-// utility func
-let getFirstTxOfBlock = (blocks) => {
-    Belt.Array.reduce(blocks,[||], (acc, block) => {
-      Belt.Array.concat(acc, block##transactions)
-    }
-  )
-}
-
-let getFirstTxOfTheDay = (~timestamp) => {
-  let (result, _) =
-    ApolloHooks.useSubscription(
-      BlockWithTxByTimestamp.definition,
-      ~variables=BlockWithTxByTimestamp.makeVariables(~greater=timestamp |> Js.Json.string, ()),
-    );
-  result |> Sub.map(_, internal => internal##blocks -> getFirstTxOfBlock -> (txs => txs[0]##id));
-};
-
 let get = height => {
   let (result, _) =
     ApolloHooks.useSubscription(

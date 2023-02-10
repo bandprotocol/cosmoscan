@@ -95,6 +95,13 @@ let getPrevDay = _ => {
   |> MomentRe.Moment.format(Config.timestampUseFormat);
 };
 
+let getPrevDayUnix = _ => {
+  MomentRe.momentNow()
+  |> MomentRe.Moment.defaultUtc
+  |> MomentRe.Moment.subtract(~duration=MomentRe.duration(1., `days))
+  |> MomentRe.Moment.toUnix;
+};
+
 [@react.component]
 let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
   let currentTime =
@@ -107,12 +114,14 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
   let activeValidatorCountSub = ValidatorSub.countByActive(true);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
   let txsCountSub = TxSub.count();
+  let last24txsCountSub = TxSub.countOffset(prevDayTime);
   let requestCountSub = RequestSub.count();
+  let last24RequestCountSub = RequestSub.countOffset(getPrevDayUnix());
   let latestBlock = BlockSub.getLatest();
   let avgBlockTimeSub = BlockSub.getAvgBlockTime(prevDayTime, currentTime);
-  let txPast24Sub = BlockSub.getFirstTxOfTheDay(prevDayTime);
   
-  let txInfoSub = Sub.all2(txPast24Sub,txsCountSub)
+  let txInfoSub = Sub.all2(last24txsCountSub, txsCountSub);
+  let requestInfoSub = Sub.all2(last24RequestCountSub, requestCountSub);
   let validatorInfoSub = Sub.all3(activeValidatorCountSub, bondedTokenCountSub, avgBlockTimeSub);
   let allSub = Sub.all3(latestBlockSub, infoSub, validatorInfoSub);
 
@@ -120,19 +129,33 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
     <Row justify=Row.Between>
       <Col col=Col.Three colSm=Col.Six mbSm=16>
         <HighlightCard
-          label="Band Price"
+          label="BAND Price"
           special=true
           valueAndExtraComponentSub={
             let%Sub (_, {financial}, _) = allSub;
             (
               {
                 let bandPriceInUSD = "$" ++ (financial.usdPrice |> Format.fPretty(~digits=2));
-                <Text
-                  value=bandPriceInUSD
-                  size=Text.Xxxl
-                  weight=Text.Semibold
-                  color={theme.white}
-                />;
+                <div className=CssHelper.flexBox()>
+                  <div className=Styles.mr2>
+                    <Text 
+                      value=bandPriceInUSD
+                      size=Text.Xxl 
+                      weight=Text.Bold 
+                      color=theme.white
+                    />
+                  </div>
+                  <Text 
+                    value={
+                      (financial.usd24HrChange > 0. ? "+" : "") 
+                      ++ (financial.usd24HrChange |> Format.fPretty(~digits=2)) 
+                      ++ "%"
+                    }
+                    size=Text.Md 
+                    weight=Text.Regular 
+                    color=(financial.usd24HrChange > 0. ? theme.successColor : theme.failColor)
+                  />
+                </div>
               },
               {
                 let bandPriceInBTC = financial.btcPrice;
@@ -208,7 +231,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 />;
               },
               <Text
-                value={"block time" ++ (avgBlockTime |> Format.fPretty(~digits=2)) ++ " secs"}
+                value={"block time " ++ (avgBlockTime |> Format.fPretty(~digits=2)) ++ " secs"}
                 size=Text.Lg 
                 weight=Text.Regular 
               />,
@@ -228,7 +251,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
                 {switch (txInfoSub) {
-                | Data((txs24, totalTxs)) =>
+                | Data((last24Tx, totalTxs)) =>
                   <>
                     <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
                     <div className=CssHelper.flexBox()>
@@ -241,7 +264,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                         />
                       </div>
                       <Text 
-                        value={"( " ++ ((totalTxs - txs24) |> string_of_int ) ++ " last 24 hr)"}
+                        value={"( " ++ (last24Tx |> string_of_int ) ++ " last 24 hr)"}
                         size=Text.Md 
                         weight=Text.Regular 
                         color=theme.neutral_900
@@ -262,16 +285,26 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   Styles.innerLongCard,
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                {switch (requestCountSub) {
-                | Data(requestCount) =>
+                {switch (requestInfoSub) {
+                | Data((last24Request, totalRequest)) =>
                   <>
                     <Text value="Total Requests" size=Text.Lg weight=Text.Regular />
-                    <Text 
-                      value={requestCount |> string_of_int} 
-                      size=Text.Xxl 
-                      weight=Text.Bold 
-                      color=theme.neutral_900
-                    />
+                    <div className=CssHelper.flexBox()>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={totalRequest |> string_of_int} 
+                          size=Text.Xxl 
+                          weight=Text.Bold 
+                          color=theme.neutral_900
+                        />
+                      </div>
+                      <Text 
+                        value={"( " ++ (last24Request |> string_of_int ) ++ " last 24 hr)"}
+                        size=Text.Md 
+                        weight=Text.Regular 
+                        color=theme.neutral_900
+                      />
+                    </div>
                   </>
                 | _ =>
                   <>
@@ -317,12 +350,12 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 Styles.innerLongCard,
                 CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
               ])}>
-              {switch (allSub) {
-              | Data((_, {financial}, _)) =>
+              {switch (last24RequestCountSub) {
+              | Data(temp) =>
                 <>
                   <Text value="Staking APR" size=Text.Lg weight=Text.Regular />
                   <Text 
-                    value={financial.circulatingSupply |> Format.fCurrency} 
+                    value={temp |> string_of_int} 
                     size=Text.Xxl 
                     weight=Text.Bold 
                     color=theme.neutral_900

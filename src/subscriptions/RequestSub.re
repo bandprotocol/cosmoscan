@@ -615,6 +615,18 @@ module RequestCountConfig = [%graphql
 |}
 ];
 
+module RequestCountWithOffsetConfig = [%graphql
+  {|
+  subscription RequestCount($request_time: Int) {
+    requests_aggregate(where: {request_time: {_gte: $request_time}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+|}
+];
+
 let get = id => {
   let (result, _) =
     ApolloHooks.useSubscription(
@@ -645,6 +657,16 @@ let getList = (~page, ~pageSize, ()) => {
 
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(RequestCountConfig.definition);
+  result
+  |> Sub.map(_, x => x##requests_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
+};
+
+let countOffset = (~timestamp) => {
+  let (result, _) = 
+    ApolloHooks.useSubscription(
+      RequestCountWithOffsetConfig.definition,
+      ~variables=RequestCountWithOffsetConfig.makeVariables(~request_time=timestamp, ()),
+    );
   result
   |> Sub.map(_, x => x##requests_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };
