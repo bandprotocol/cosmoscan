@@ -110,7 +110,9 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
   let requestCountSub = RequestSub.count();
   let latestBlock = BlockSub.getLatest();
   let avgBlockTimeSub = BlockSub.getAvgBlockTime(prevDayTime, currentTime);
-
+  let txPast24Sub = BlockSub.getFirstTxOfTheDay(prevDayTime);
+  
+  let txInfoSub = Sub.all2(txPast24Sub,txsCountSub)
   let validatorInfoSub = Sub.all3(activeValidatorCountSub, bondedTokenCountSub, avgBlockTimeSub);
   let allSub = Sub.all3(latestBlockSub, infoSub, validatorInfoSub);
 
@@ -225,16 +227,26 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   Styles.innerLongCard,
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                {switch (txsCountSub) {
-                | Data(totalTxs) =>
+                {switch (txInfoSub) {
+                | Data((txs24, totalTxs)) =>
                   <>
                     <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
-                    <Text 
-                      value={totalTxs |> string_of_int} 
-                      size=Text.Xxl 
-                      weight=Text.Bold 
-                      color=theme.neutral_900
-                    />
+                    <div className=CssHelper.flexBox()>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={totalTxs |> string_of_int} 
+                          size=Text.Xxl 
+                          weight=Text.Bold 
+                          color=theme.neutral_900
+                        />
+                      </div>
+                      <Text 
+                        value={"( " ++ ((totalTxs - txs24) |> string_of_int ) ++ " last 24 hr)"}
+                        size=Text.Md 
+                        weight=Text.Regular 
+                        color=theme.neutral_900
+                      />
+                    </div>
                   </>
                 | _ =>
                   <>
