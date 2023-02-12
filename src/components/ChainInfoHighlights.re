@@ -281,6 +281,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                           }
                           size=Text.Xxl 
                           weight=Text.Bold 
+                          height={Text.Px(20)}
                           color=theme.neutral_900
                         />
                       </div>
@@ -326,6 +327,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                           }
                           size=Text.Xxl 
                           weight=Text.Bold 
+                          height={Text.Px(20)}
                           color=theme.neutral_900
                         />
                       </div>
@@ -369,6 +371,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                      value={(inflation *. 100. |> Format.fPretty(~digits=2)) ++ "%"}
                     size=Text.Xxl 
                     weight=Text.Bold 
+                    height={Text.Px(20)}
                     color=theme.neutral_900
                   />
                 </>
@@ -396,6 +399,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                     value={(avgCommission |> Format.fPretty(~digits=2)) ++ "%"} 
                     size=Text.Xxl 
                     weight=Text.Bold 
+                      height={Text.Px(20)}
                     color=theme.neutral_900
                   />
                 </>
@@ -442,6 +446,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                       }
                       size=Text.Md 
                       weight=Text.Regular 
+                      height={Text.Px(20)}
                       color=theme.neutral_900
                     />
                   </div>

@@ -23,6 +23,7 @@ type t =
   | OracleScript(ID.OracleScript.t, string)
   | RequestID(ID.Request.t)
   | RequestResponse(request_response_t)
+  | RequestStatus(RequestSub.resolve_status_t, string)
   | ProgressBar(request_count_t)
   | Float(float, option(int))
   | KVTableReport(list(string), list(MsgDecoder.RawDataReport.t))
@@ -80,12 +81,7 @@ let make = (~info) => {
       <HSpacing size=Spacing.sm />
       <Text value=name ellipsis=true />
     </div>
-  | OracleScript(id, name) =>
-    <div className=Styles.vFlex>
-      <TypeID.OracleScript id />
-      <HSpacing size=Spacing.sm />
-      <Text value=name ellipsis=true />
-    </div>
+  | OracleScript(id, name) => <TypeID.OracleScript id details=name/>
   | RequestID(id) => <TypeID.Request id />
   | RequestResponse({requestCount, responseTime: responseTimeOpt}) =>
     <div className={CssHelper.flexBox()}>
@@ -101,6 +97,7 @@ let make = (~info) => {
         block=true
       />
     </div>
+  | RequestStatus(resolveStatus, text) => <RequestStatus resolveStatus text />
   | ProgressBar({reportedValidators, minimumValidators, requestValidators}) =>
     <ProgressBar reportedValidators minimumValidators requestValidators />
   | Float(value, digits) => <Text value={value |> Format.fPretty(~digits?)} />
