@@ -119,6 +119,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
   let last24RequestCountSub = RequestSub.countOffset(getPrevDayUnix());
   let latestBlock = BlockSub.getLatest();
   let avgBlockTimeSub = BlockSub.getAvgBlockTime(prevDayTime, currentTime);
+  let avgCommissionSub = ValidatorSub.avgCommission(~isActive=true, ());
   
   let txInfoSub = Sub.all2(last24txsCountSub, txsCountSub);
   let requestInfoSub = Sub.all2(last24RequestCountSub, requestCountSub);
@@ -350,12 +351,12 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 Styles.innerLongCard,
                 CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
               ])}>
-              {switch (last24RequestCountSub) {
-              | Data(temp) =>
+              {switch (avgCommissionSub) {
+              | Data(avgCommission) =>
                 <>
                   <Text value="Staking APR" size=Text.Lg weight=Text.Regular />
                   <Text 
-                    value={temp |> string_of_int} 
+                    value={avgCommission |> Format.fPretty(~digits=2)} 
                     size=Text.Xxl 
                     weight=Text.Bold 
                     color=theme.neutral_900
