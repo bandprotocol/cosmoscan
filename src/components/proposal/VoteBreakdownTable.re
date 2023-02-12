@@ -10,14 +10,14 @@ module Styles = {
       Media.mobile([overflow(`auto), padding2(~v=`px(1), ~h=`px(15))]),
     ]);
 
-  let buttonContainer = active =>
+  let buttonContainer = (theme: Theme.t, active) =>
     style([
       display(`inlineFlex),
       justifyContent(`center),
       alignItems(`center),
       cursor(`pointer),
       padding2(~v=`px(32), ~h=`zero),
-      borderBottom(`px(4), `solid, active ? Theme.primary_600 : `transparent),
+      borderBottom(`px(4), `solid, active ? theme.primary_600 : `transparent),
       Media.mobile([whiteSpace(`nowrap), padding2(~v=`px(24), ~h=`zero)]),
     ]);
 
@@ -129,9 +129,10 @@ module RenderBodyMobile = {
 module TabButton = {
   [@react.component]
   let make = (~tab, ~active, ~setTab) => {
+    let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
     let tabString = tab |> VoteSub.toString(~withSpace=true);
 
-    <div className={Styles.buttonContainer(active)} onClick={_ => setTab(_ => tab)}>
+    <div className={Styles.buttonContainer(theme, active)} onClick={_ => setTab(_ => tab)}>
       <Text value=tabString weight={active ? Text.Semibold : Text.Regular} size=Text.Lg />
     </div>;
   };

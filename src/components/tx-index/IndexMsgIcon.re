@@ -1,9 +1,9 @@
 module Styles = {
   open Css;
 
-  let iconWrapper =
+  let iconWrapper = (theme: Theme.t) =>
     style([
-      backgroundColor(Theme.primary_600),
+      backgroundColor(theme.primary_600),
       width(`px(24)),
       height(`px(24)),
       borderRadius(`percent(50.)),
@@ -22,7 +22,9 @@ module Styles = {
 
 [@react.component]
 let make = (~category: MsgDecoder.msg_cat_t) => {
-  <div className=Styles.iconWrapper>
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+  
+  <div className=Styles.iconWrapper(theme)>
     {switch (category) {
      | TokenMsg => <Icon name="far fa-wallet" color=Theme.white size=14 />
      | FeeGrantMsg

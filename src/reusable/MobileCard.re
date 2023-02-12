@@ -6,7 +6,7 @@ module Styles = {
       padding2(~v=`px(22), ~h=`zero),
       selector(
         "+ div",
-        [marginTop(`px(10)), borderTop(`px(1), `solid, theme.neutral_100)],
+        [marginTop(`px(10)), borderTop(`px(1), `solid, theme.neutral_300)],
       ),
     ]);
   let cardItem = (alignItems_, isOneColumn) =>
@@ -33,7 +33,7 @@ module Styles = {
     ]);
   let toggle = (theme: Theme.t) =>
     style([
-      borderTop(`px(1), `solid, theme.neutral_100),
+      borderTop(`px(1), `solid, theme.neutral_300),
       paddingTop(`px(10)),
       marginTop(`px(10)),
       cursor(`pointer),
@@ -91,7 +91,6 @@ module InnerPanel = {
                      value=each
                      size=Text.Sm
                      weight=Text.Semibold
-                     transform=Text.Uppercase
                    />
                  }
                })
@@ -111,14 +110,6 @@ let make = (~values, ~idx, ~status=?, ~requestStatus=?, ~styles="", ~panels=[]) 
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
 
   <div className={Css.merge([Styles.cardContainer(theme), styles])}>
-    {switch (status) {
-     | Some(success) => <img src={success ? Images.success : Images.fail} className=Styles.logo />
-     | None => React.null
-     }}
-    {switch (requestStatus) {
-     | Some(resolveStatus) => <RequestStatus resolveStatus style=Styles.logo />
-     | None => React.null
-     }}
     <InnerPanel values idx />
     {panels->Belt.List.size > 0
        ? <>

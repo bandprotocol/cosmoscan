@@ -1,7 +1,7 @@
 module Styles = {
   open Css;
 
-  let card = (theme: Theme.t) =>
+  let card =
     style([
       position(`relative),
       Media.smallMobile([margin2(~v=`zero, ~h=`px(-5))]),
@@ -11,7 +11,7 @@ module Styles = {
     style([
       position(`relative),
       zIndex(2),
-      minHeight(`px(177)),
+      minHeight(`px(152)),
       padding2(~v=`px(24), ~h=`px(32)),
       Media.mobile([padding2(~v=`px(10), ~h=`px(12)), minHeight(`px(146))]),
     ]);
@@ -30,7 +30,37 @@ module Styles = {
 
   let bandToken =
     style([position(`absolute), width(`percent(60.)), top(`percent(-40.)), right(`zero)]);
-};
+  
+  let longCard = 
+    style([
+      width(`percent(100.)),
+      marginTop(`px(24)),
+      padding2(~v=`px(4), ~h=`px(24)),
+    ]);
+
+  let innerLongCard =
+    style([
+      minHeight(`px(106)),
+      padding2(~v=`px(24), ~h=`px(12)),
+      Media.mobile([padding2(~v=`px(10), ~h=`px(12)), minHeight(`px(50))]),
+    ]);
+
+  let halfWidth =
+    style([
+      width(`calc((`sub, `percent(50.), `px(17)))),
+      Media.mobile([width(`percent(100.))]),
+    ]);
+
+  let mr2 =
+    style([
+      marginRight(`px(16)),
+    ]);
+
+  let pb = 
+    style([
+      Media.mobile([paddingBottom(`px(4))]),
+    ]);
+  };
 
 module HighlightCard = {
   [@react.component]
@@ -39,7 +69,7 @@ module HighlightCard = {
     let (ThemeContext.{theme,isDarkMode}, _) = React.useContext(ThemeContext.context);
     let isMobile = Media.isMobile();
 
-    <div className={Css.merge([Styles.card(theme), special ? Styles.specialBg : "",CommonStyles.card(theme,isDarkMode)])}>
+    <div className={Css.merge([Styles.card, special ? Styles.specialBg : "",CommonStyles.card(theme,isDarkMode)])}>
       {special && !isMobile
          ? <img alt="Band Token" src=Images.bandToken className=Styles.bandToken /> : React.null}
       <div
@@ -50,7 +80,7 @@ module HighlightCard = {
         ])}>
         {switch (valueAndExtraComponentSub) {
          | Data((valueComponent, extraComponent)) =>
-           <> <Text value=label size=Text.Lg /> valueComponent extraComponent </>
+           <> <Text value=label size=Text.Xl weight=Text.Regular /> valueComponent extraComponent </>
          | _ =>
            <>
              <LoadingCensorBar width=90 height=18 />
@@ -63,116 +93,374 @@ module HighlightCard = {
   };
 };
 
+let getPrevDay = _ => {
+  MomentRe.momentNow()
+  |> MomentRe.Moment.defaultUtc
+  |> MomentRe.Moment.subtract(~duration=MomentRe.duration(1., `days))
+  |> MomentRe.Moment.format(Config.timestampUseFormat);
+};
+
+let getUnixTime = _ => {
+  MomentRe.momentNow()
+  |> MomentRe.Moment.defaultUtc
+  |> MomentRe.Moment.subtract(~duration=MomentRe.duration(1., `days))
+  |> MomentRe.Moment.toUnix;
+};
+
 [@react.component]
 let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
+  let isMobile = Media.isMobile();
+  let currentTime =
+    React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
+  let (prevDayTime, setPrevDayTime) = React.useState(getPrevDay);
+  let (prevUnixTime, setPrevUnixTime) = React.useState(getUnixTime);
+
   let infoSub = React.useContext(GlobalContext.context);
-  let (ThemeContext.{theme}, _) = React.useContext(ThemeContext.context);
+  let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
+
   let activeValidatorCountSub = ValidatorSub.countByActive(true);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
-
-  let validatorInfoSub = Sub.all2(activeValidatorCountSub, bondedTokenCountSub);
+  let latestTxsSub = TxSub.getList(~pageSize=1, ~page=1, ());
+  let last24txsCountSub = TxQuery.countOffset(prevDayTime);
+  let latestRequestSub = RequestSub.getList(~pageSize=1, ~page=1, ());
+  let last24RequestCountSub = RequestQuery.countOffset(prevUnixTime);
+  let latestBlock = BlockSub.getLatest();
+  let avgBlockTimeSub = BlockSub.getAvgBlockTime(prevDayTime, currentTime);
+  let avgCommissionSub = ValidatorSub.avgCommission(~isActive=true, ());
+  
+  let validatorInfoSub = Sub.all3(activeValidatorCountSub, bondedTokenCountSub, avgBlockTimeSub);
   let allSub = Sub.all3(latestBlockSub, infoSub, validatorInfoSub);
 
-  <Row justify=Row.Between>
-    <Col col=Col.Three colSm=Col.Six mbSm=16>
-      <HighlightCard
-        label="Band Price"
-        special=true
-        valueAndExtraComponentSub={
-          let%Sub (_, {financial}, _) = allSub;
-          (
-            {
-              let bandPriceInUSD = "$" ++ (financial.usdPrice |> Format.fPretty(~digits=2));
-              <Text
-                value=bandPriceInUSD
-                size=Text.Xxxl
-                weight=Text.Semibold
-                color={theme.white}
-              />;
-            },
-            {
-              let bandPriceInBTC = financial.btcPrice;
+  React.useEffect0(() => {
+    let timeOutID = Js.Global.setInterval(() => {
+      setPrevDayTime(getPrevDay)
+      setPrevUnixTime(getUnixTime)
+    }, 600_000);
+    Some(() => {Js.Global.clearInterval(timeOutID)});
+  });
 
+  <>
+    <Row justify=Row.Between>
+      <Col col=Col.Three colSm=Col.Six mbSm=16>
+        <HighlightCard
+          label="BAND Price"
+          special=true
+          valueAndExtraComponentSub={
+            let%Sub (_, {financial}, _) = allSub;
+            (
+              {
+                let bandPriceInUSD = "$" ++ (financial.usdPrice |> Format.fPretty(~digits=2));
+                <div className=CssHelper.flexBox()>
+                  <div className=Styles.mr2>
+                    <Text 
+                      value=bandPriceInUSD
+                      size=Text.Xxxl 
+                      weight=Text.Bold 
+                      color=theme.white
+                    />
+                  </div>
+                  <Text 
+                    value={
+                      (financial.usd24HrChange > 0. ? "+" : "") 
+                      ++ (financial.usd24HrChange |> Format.fPretty(~digits=2)) 
+                      ++ "%"
+                    }
+                    size=Text.Md 
+                    weight=Text.Regular 
+                    color=(financial.usd24HrChange > 0. ? theme.successColor : theme.failColor)
+                  />
+                </div>
+              },
+              {
+                let bandPriceInBTC = financial.btcPrice;
+
+                <div
+                  className={Css.merge([
+                    CssHelper.flexBox(~justify=`spaceBetween, ()),
+                    Styles.fullWidth,
+                  ])}>
+                  <Text value={bandPriceInBTC->Format.fPretty ++ " BTC"} />
+                </div>;
+              },
+            )
+            |> Sub.resolve;
+          }
+        />
+      </Col>
+      <Col col=Col.Three colSm=Col.Six mbSm=16>
+        <HighlightCard
+          label="Market Cap"
+          valueAndExtraComponentSub={
+            let%Sub (_, {financial}, _) = allSub;
+            (
+              {
+                <Text
+                  value={"$" ++ (financial.usdMarketCap |> Format.fCurrency)}
+                  size=Text.Xxxl
+                  color={theme.neutral_900}
+                  weight=Text.Semibold
+                />;
+              },
+              {
+                let marketcap = financial.btcMarketCap;
+                <Text value={(marketcap |> Format.fPretty) ++ " BTC"} />;
+              },
+            )
+            |> Sub.resolve;
+          }
+        />
+      </Col>
+      <Col col=Col.Three colSm=Col.Six>
+        <HighlightCard
+          label="Latest Block"
+          valueAndExtraComponentSub={
+            let%Sub ({height, validator: {moniker, identity, operatorAddress}}, _, _) = allSub;
+            (
+              <TypeID.Block id=height position=TypeID.Landing weight=Text.Semibold />,
+              <ValidatorMonikerLink
+                validatorAddress=operatorAddress
+                moniker
+                identity
+                width={`percent(100.)}
+                avatarWidth=20
+              />,
+            )
+            |> Sub.resolve;
+          }
+        />
+      </Col>
+      <Col col=Col.Three colSm=Col.Six>
+        <HighlightCard
+          label="Active Validators"
+          valueAndExtraComponentSub={
+            let%Sub (_, {financial}, (activeValidatorCount, bondedTokenCount, avgBlockTime)) = allSub;
+            (
+              {
+                let activeValidators = activeValidatorCount->Format.iPretty;
+                <Text
+                  value=activeValidators
+                  size=Text.Xxxl
+                  color={theme.primary_600}
+                  weight=Text.Semibold
+                />;
+              },
+              <Text
+                value={"block time " ++ (avgBlockTime |> Format.fPretty(~digits=2)) ++ " secs"}
+                size=Text.Lg 
+                weight=Text.Regular 
+              />,
+            )
+            |> Sub.resolve;
+          }
+        />
+      </Col>
+    </Row>
+    <div className={Css.merge([CssHelper.flexBox(), Styles.longCard, CommonStyles.card(theme, isDarkMode)])}>
+      <div className=Styles.halfWidth>
+        <Row justify=Row.Between >
+            <Col col=Col.Six colSm=Col.Twelve>
               <div
                 className={Css.merge([
-                  CssHelper.flexBox(~justify=`spaceBetween, ()),
-                  Styles.fullWidth,
+                  Styles.innerLongCard,
+                  CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                <Text value={bandPriceInBTC->Format.fPretty ++ " BTC"} />
-              </div>;
-            },
-          )
-          |> Sub.resolve;
-        }
-      />
-    </Col>
-    <Col col=Col.Three colSm=Col.Six mbSm=16>
-      <HighlightCard
-        label="Market Cap"
-        valueAndExtraComponentSub={
-          let%Sub (_, {financial}, _) = allSub;
-          (
-            {
-              <Text
-                value={"$" ++ (financial.usdMarketCap |> Format.fCurrency)}
-                size=Text.Xxxl
-                color={theme.neutral_900}
-                weight=Text.Semibold
-              />;
-            },
-            {
-              let marketcap = financial.btcMarketCap;
-              <Text value={(marketcap |> Format.fPretty) ++ " BTC"} />;
-            },
-          )
-          |> Sub.resolve;
-        }
-      />
-    </Col>
-    <Col col=Col.Three colSm=Col.Six>
-      <HighlightCard
-        label="Latest Block"
-        valueAndExtraComponentSub={
-          let%Sub ({height, validator: {moniker, identity, operatorAddress}}, _, _) = allSub;
-          (
-            <TypeID.Block id=height position=TypeID.Landing />,
-            <ValidatorMonikerLink
-              validatorAddress=operatorAddress
-              moniker
-              identity
-              width={`percent(100.)}
-              avatarWidth=20
-            />,
-          )
-          |> Sub.resolve;
-        }
-      />
-    </Col>
-    <Col col=Col.Three colSm=Col.Six>
-      <HighlightCard
-        label="Active Validators"
-        valueAndExtraComponentSub={
-          let%Sub (_, _, (activeValidatorCount, bondedTokenCount)) = allSub;
-          (
-            {
-              let activeValidators = activeValidatorCount->Format.iPretty ++ " Nodes";
-              <Text
-                value=activeValidators
-                size=Text.Xxxl
-                color={theme.neutral_900}
-                weight=Text.Semibold
-              />;
-            },
-            <Text
-              value={
-                (bondedTokenCount |> Coin.getBandAmountFromCoin |> Format.fPretty)
-                ++ " BAND Bonded"
-              }
-            />,
-          )
-          |> Sub.resolve;
-        }
-      />
-    </Col>
-  </Row>;
+                  <div className=Styles.pb>
+                    <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
+                  </div>
+                  <div className=CssHelper.flexBox()>
+                    {switch (latestTxsSub) {
+                    | Data((latestTx)) =>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={
+                            latestTx
+                            ->Belt.Array.get(0)
+                            ->Belt.Option.mapWithDefault(0, ({id}) => id )
+                            ->float_of_int
+                            ->Format.fCurrency
+                          }
+                          size=Text.Xxl 
+                          weight=Text.Bold 
+                          height={Text.Px(20)}
+                          color=theme.neutral_900
+                        />
+                      </div>
+                    | _ =>
+                      <LoadingCensorBar width=90 height=18 />
+                    }}
+                    {switch (last24txsCountSub) {
+                    | Data((last24Tx)) =>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={"( " ++ (last24Tx |> float_of_int |> Format.fCurrency ) ++ " last 24 hr)"}
+                          size=Text.Md 
+                          weight=Text.Regular 
+                          color=theme.neutral_900
+                        />
+                      </div>
+                    | _ =>
+                      <LoadingCensorBar width=120 height=20 />
+                    }}
+                  </div>
+              </div>
+            </Col>
+            <Col col=Col.Six colSm=Col.Twelve>
+              <div
+                className={Css.merge([
+                  Styles.innerLongCard,
+                  CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
+                ])}>
+                  <div className=Styles.pb>
+                    <Text value="Total Requests" size=Text.Lg weight=Text.Regular />
+                  </div>
+                  <div className=CssHelper.flexBox()>
+                    {switch (latestRequestSub) {
+                    | Data((latestRequest)) =>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={
+                            latestRequest
+                            ->Belt.Array.get(0)
+                            ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt)
+                            ->float_of_int
+                            ->Format.fCurrency
+                          }
+                          size=Text.Xxl 
+                          weight=Text.Bold 
+                          height={Text.Px(20)}
+                          color=theme.neutral_900
+                        />
+                      </div>
+                    | _ =>
+                      <LoadingCensorBar width=90 height=18 />
+                    }}
+                    {switch (last24RequestCountSub) {
+                    | Data((last24Request)) =>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={"( " ++ (last24Request |> float_of_int |> Format.fCurrency ) ++ " last 24 hr)"}
+                          size=Text.Md 
+                          weight=Text.Regular 
+                          color=theme.neutral_900
+                        />
+                      </div>
+                    | _ =>
+                      <LoadingCensorBar width=120 height=20 />
+                    }}
+                  </div>
+              </div>
+            </Col>
+        </Row>
+      </div>
+      {isMobile ? React.null : <Divider ml=16 mr=16 h=58 />}
+      <div className=Styles.halfWidth>
+        <Row justify=Row.Between >
+          <Col col=Col.Three colSm=Col.Twelve>
+            <div
+              className={Css.merge([
+                Styles.innerLongCard,
+                CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
+              ])}>
+              {switch (latestBlock) {
+              | Data({inflation}) =>
+                <>
+                  <div className=Styles.pb>
+                    <Text value="Inflation Rate" size=Text.Lg weight=Text.Regular />
+                  </div>
+                  <Text 
+                     value={(inflation *. 100. |> Format.fPretty(~digits=2)) ++ "%"}
+                    size=Text.Xxl 
+                    weight=Text.Bold 
+                    height={Text.Px(20)}
+                    color=theme.neutral_900
+                  />
+                </>
+              | _ =>
+                <>
+                  <LoadingCensorBar width=90 height=18 />
+                  <LoadingCensorBar width=120 height=20 />
+                </>
+              }}
+            </div>
+          </Col>
+          <Col col=Col.Three colSm=Col.Twelve>
+            <div
+              className={Css.merge([
+                Styles.innerLongCard,
+                CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
+              ])}>
+              {switch (avgCommissionSub) {
+              | Data(avgCommission) =>
+                <>
+                  <div className=Styles.pb>
+                    <Text value="Staking APR" size=Text.Lg weight=Text.Regular />
+                  </div>
+                  <Text 
+                    value={(avgCommission |> Format.fPretty(~digits=2)) ++ "%"} 
+                    size=Text.Xxl 
+                    weight=Text.Bold 
+                      height={Text.Px(20)}
+                    color=theme.neutral_900
+                  />
+                </>
+              | _ =>
+                <>
+                  <LoadingCensorBar width=90 height=18 />
+                  <LoadingCensorBar width=120 height=20 />
+                </>
+              }}
+            </div>
+          </Col>
+          <Col col=Col.Six colSm=Col.Twelve>
+            <div
+              className={Css.merge([
+                Styles.innerLongCard,
+                CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
+              ])}>
+              {switch (allSub) {
+              | Data((_, {financial}, (_, bondedTokenCount, _))) =>
+                <>
+                  <div className=Styles.pb>
+                    <Text value="BAND Bonded" size=Text.Lg weight=Text.Regular />
+                  </div>
+                  <div className=CssHelper.flexBox()>
+                    <div className=Styles.mr2>
+                      <Text 
+                        value={
+                          (
+                            ((bondedTokenCount |> Coin.getBandAmountFromCoin) /. financial.circulatingSupply *. 100.) 
+                            |> Format.fPretty(~digits=2)
+                          )
+                          ++ "%"
+                        }
+                        size=Text.Xxl 
+                        weight=Text.Bold 
+                        color=theme.neutral_900
+                      />
+                    </div>
+                    <Text 
+                      value={
+                        (bondedTokenCount |> Coin.getBandAmountFromCoin |> Format.fCurrency)
+                        ++ "/" ++ (financial.circulatingSupply |> Format.fCurrency)
+                        ++ " BAND"
+                      }
+                      size=Text.Md 
+                      weight=Text.Regular 
+                      height={Text.Px(20)}
+                      color=theme.neutral_900
+                    />
+                  </div>
+                </>
+              | _ =>
+                <>
+                  <LoadingCensorBar width=90 height=18 />
+                  <LoadingCensorBar width=120 height=20 />
+                </>
+              }}
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </div>
+  </>
 };

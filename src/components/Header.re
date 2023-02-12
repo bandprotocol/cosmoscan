@@ -75,7 +75,9 @@ module DesktopRender = {
                   </div>
                 </div>
               </LinkToHome>
-              <div className=Styles.chainIDContainer> <ChainIDBadge /> </div>
+              <div className=Styles.chainIDContainer> 
+                <ChainIDBadge />
+              </div>
             </div>
           </Col>
           <Col col=Col.Six>
@@ -144,9 +146,17 @@ module MobileRender = {
         </Col>
         <Col colSm=Col.Six>
           <div className={CssHelper.flexBox(~justify=`flexEnd, ~wrap=`nowrap, ())}>
-            <ChainIDBadge />
+            <ToggleThemeButton />
             <NavBar />
           </div>
+        </Col>
+      </Row>
+      <Row marginTop=20>
+        <Col colSm=Col.Six>
+          <ChainIDBadge dropdown=true />
+        </Col>
+        <Col colSm=Col.Six>
+          <UserAccount />
         </Col>
       </Row>
     </header>;

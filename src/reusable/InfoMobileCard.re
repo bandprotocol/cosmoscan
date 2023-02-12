@@ -23,6 +23,7 @@ type t =
   | OracleScript(ID.OracleScript.t, string)
   | RequestID(ID.Request.t)
   | RequestResponse(request_response_t)
+  | RequestStatus(RequestSub.resolve_status_t, string)
   | ProgressBar(request_count_t)
   | Float(float, option(int))
   | KVTableReport(list(string), list(MsgDecoder.RawDataReport.t))
@@ -34,6 +35,7 @@ type t =
   | BlockHash(Hash.t)
   | Validator(Address.t, string, string)
   | Messages(Hash.t, list(MsgDecoder.t), bool, string)
+  | MsgBadgeGroup(Hash.t, list(MsgDecoder.t))
   | PubKey(PubKey.t)
   | Badge(MsgDecoder.badge_theme_t)
   | VotingPower(Coin.t, float)
@@ -79,12 +81,7 @@ let make = (~info) => {
       <HSpacing size=Spacing.sm />
       <Text value=name ellipsis=true />
     </div>
-  | OracleScript(id, name) =>
-    <div className=Styles.vFlex>
-      <TypeID.OracleScript id />
-      <HSpacing size=Spacing.sm />
-      <Text value=name ellipsis=true />
-    </div>
+  | OracleScript(id, name) => <TypeID.OracleScript id details=name/>
   | RequestID(id) => <TypeID.Request id />
   | RequestResponse({requestCount, responseTime: responseTimeOpt}) =>
     <div className={CssHelper.flexBox()}>
@@ -100,6 +97,7 @@ let make = (~info) => {
         block=true
       />
     </div>
+  | RequestStatus(resolveStatus, text) => <RequestStatus resolveStatus text />
   | ProgressBar({reportedValidators, minimumValidators, requestValidators}) =>
     <ProgressBar reportedValidators minimumValidators requestValidators />
   | Float(value, digits) => <Text value={value |> Format.fPretty(~digits?)} />
@@ -168,6 +166,7 @@ let make = (~info) => {
       color={theme.neutral_900}
     />
   | Messages(txHash, messages, success, errMsg) => <TxMessages txHash messages success errMsg />
+  | MsgBadgeGroup(txHash, messages) => <MsgBadgeGroup txHash messages />
   | Badge({name, category}) => <MsgBadge name />
   | VotingPower(tokens, votingPercent) =>
     <div className=Styles.vFlex>
@@ -182,8 +181,7 @@ let make = (~info) => {
         block=true
       />
     </div>
-  | Status(status) =>
-    <img alt="Status Icon" src={status ? Images.success : Images.fail} className=Styles.logo />
+  | Status(status) => <StatusIcon status />
 
   // Special case for uptime to have loading state inside.
   | Uptime(uptimeOpt) =>

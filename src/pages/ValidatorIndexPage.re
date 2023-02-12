@@ -11,9 +11,9 @@ module Styles = {
       marginRight(`px(24)),
       Media.mobile([marginRight(`zero), marginBottom(`px(16))]),
     ]);
-  let rankContainer =
+  let rankContainer = (theme: Theme.t) =>
     style([
-      backgroundColor(Theme.primary_600),
+      backgroundColor(theme.primary_600),
       borderRadius(`percent(50.)),
       position(`absolute),
       right(`zero),
@@ -101,7 +101,7 @@ let make = (~address, ~hashtag: Route.validator_tab_t) => {
                     | Some(rank) =>
                       <div
                         className={Css.merge([
-                          Styles.rankContainer,
+                          Styles.rankContainer(theme),
                           CssHelper.flexBox(~justify=`center, ()),
                         ])}>
                         <Text value={rank |> string_of_int} color={theme.white} />

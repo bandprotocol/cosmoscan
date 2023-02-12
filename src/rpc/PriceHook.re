@@ -5,6 +5,8 @@ type t = {
   btcPrice: float,
   btcMarketCap: float,
   circulatingSupply: float,
+  totalSupply: float
+
 };
 
 let getBandUsd24Change = () => {
@@ -52,6 +54,16 @@ let getCirculatingSupply = () => {
      });
 };
 
+let getTotalSupply = () => {
+  Axios.get("https://api.bandchain.org/supply/total")
+  |> Js.Promise.then_(result => Promise.ret(result##data |> JsonUtils.Decode.float))
+  |> Js.Promise.catch(e => {
+      Js.Console.log("can't get totalsupply");
+      Js.Console.log(e);
+      Js.Promise.resolve(0.);
+     });
+};
+
 module Price = {
   type t = {
     multiplier: float,
@@ -93,10 +105,11 @@ let getBandInfo = client => {
   // let ratesPromise = client->BandChainJS.getReferenceData([|"BAND/USD", "BAND/BTC"|]);
   let ratesPromise = getPrices();
   let supplyPromise = getCirculatingSupply();
+  let totalPromise = getTotalSupply();
   let usd24HrChangePromise = getBandUsd24Change();
 
-  let%Promise (rates, usd24HrChange, supply) =
-    Js.Promise.all3((ratesPromise, usd24HrChangePromise, supplyPromise));
+  let%Promise (rates, usd24HrChange, supply, totalSupply) =
+    Js.Promise.all4((ratesPromise, usd24HrChangePromise, supplyPromise, totalPromise));
 
   let bandInfoOpt = {
     let%Opt (bandUsd, bandBtc) = rates;
@@ -107,6 +120,7 @@ let getBandInfo = client => {
       btcPrice: bandBtc,
       btcMarketCap: bandBtc *. supply,
       circulatingSupply: supply,
+      totalSupply
     });
   };
 

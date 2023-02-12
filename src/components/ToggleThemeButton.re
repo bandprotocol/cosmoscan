@@ -1,12 +1,12 @@
 module Styles = {
   open Css;
 
-  let button = (isDarkMode, theme: Theme.t) =>
+  let button = (theme: Theme.t, isDarkMode) =>
     style([
-      backgroundColor(isDarkMode ? theme.white : theme.black),
+      backgroundColor(isDarkMode ? theme.neutral_900 : theme.neutral_800),
       position(`relative),
       borderRadius(`px(8)),
-      border(`px(1), `solid, isDarkMode ? theme.white : theme.black),
+      border(`px(1), `solid, isDarkMode ? theme.neutral_900 : theme.neutral_800),
       cursor(`pointer),
       outlineStyle(`none),
       width(`px(32)),
@@ -27,9 +27,9 @@ module Styles = {
 
 [@react.component]
 let make = () => {
-  let ({ThemeContext.isDarkMode, theme}, toggle) = React.useContext(ThemeContext.context);
+  let ({ThemeContext.theme, isDarkMode}, toggle) = React.useContext(ThemeContext.context);
 
-  <button className={Styles.button(isDarkMode, theme)} onClick={_ => toggle()}>
+  <button className={Styles.button(theme, isDarkMode)} onClick={_ => toggle()}>
     {isDarkMode
        ? <img alt="Sun Icon" src=Images.sunIcon className=Styles.icon />
        : <Icon name="fal fa-moon" size=14 color={theme.white} />}

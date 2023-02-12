@@ -13,19 +13,20 @@ let getBadgeText =
   | Rejected => "Rejected"
   | Failed => "Failed";
 
-let getBadgeColor =
+let getBadgeColor = (theme: Theme.t) =>
   fun
   | ProposalSub.Deposit
-  | Voting => Theme.primary_600
-  | Passed => Theme.successColor
+  | Voting => theme.primary_600
+  | Passed => theme.successColor
   | Rejected
-  | Failed => Theme.failColor;
+  | Failed => theme.failColor;
 
 [@react.component]
 let make = (~status) => {
+  let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
   <div
     className={Css.merge([
-      Styles.badge(getBadgeColor(status)),
+      Styles.badge(getBadgeColor(theme)(status)),
       CssHelper.flexBox(~justify=`center, ()),
     ])}>
     <Text value={getBadgeText(status)} size=Text.Sm transform=Text.Uppercase color=Theme.white />

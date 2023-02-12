@@ -102,16 +102,16 @@ let make = (~reportedValidators, ~minimumValidators, ~requestValidators) => {
 module Uptime = {
   [@react.component]
   let make = (~percent) => {
+    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     let color =
       if (percent == 100.) {
-        Theme.primary_600;
+        theme.primary_600;
       } else if (percent < 100. && percent >= 79.) {
-        Theme.primary_500;
+        theme.primary_500;
       } else {
-        Theme.failColor;
+        theme.failColor;
       };
 
-    let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
     <div className={Styles.progressOuter(theme, isDarkMode)}>
       <div className={Styles.progressUptimeInner(percent, color)} />
     </div>;

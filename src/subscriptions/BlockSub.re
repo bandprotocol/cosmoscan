@@ -3,6 +3,7 @@ open ValidatorSub.Mini;
 type aggregate_t = {count: int};
 
 type transactions_aggregate_t = {aggregate: option(aggregate_t)};
+type transaction_t = {id: option(int)};
 
 type resolve_request_t = {
   id: ID.Request.t,
@@ -58,6 +59,10 @@ type block_t = {
   validator: ValidatorSub.Mini.t,
   txn: int,
   requests: array(resolve_request_t),
+};
+
+type block_with_tx_t = {
+  transactions: array(transaction_t),
 };
 
 let toExternalBlock =

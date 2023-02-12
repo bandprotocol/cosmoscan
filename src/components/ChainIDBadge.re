@@ -5,11 +5,11 @@ module Styles = {
     style([
       display(`flex),
       borderRadius(`px(8)),
-      border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
+      // border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
       backgroundColor(theme.neutral_000),
-      padding2(~v=`px(8), ~h=`px(10)),
+      padding2(~v=`px(8), ~h=`px(16)),
       minWidth(`px(153)),
-      justifyContent(`spaceBetween),
+      // justifyContent(`spaceBetween),
       alignItems(`center),
       position(`relative),
       cursor(`pointer),
@@ -43,7 +43,39 @@ module Styles = {
       padding2(~v=`px(5), ~h=`px(10)),
       hover([backgroundColor(theme.neutral_100)]),
     ]);
+  let buttonContainer = style([Media.mobile([width(`percent(100.))])]);
+  let baseBtn =
+    style([
+      textAlign(`center),
+      Media.mobile([flexGrow(0.), flexShrink(0.), flexBasis(`percent(50.))]),
+    ]);
+
+  let leftBtn = (state, theme: Theme.t, isDarkMode) => {
+    style([
+      borderTopRightRadius(`zero),
+      borderBottomRightRadius(`zero),
+      backgroundColor(state ? theme.neutral_900 : theme.neutral_000),
+      color(state ? theme.neutral_100 : theme.neutral_900),
+      hover([
+        backgroundColor(state ? theme.neutral_900 : theme.neutral_100),
+        color(state ? theme.neutral_100 : theme.neutral_900),
+      ]),
+    ]);
+  };
+  let rightBtn = (state, theme: Theme.t, isDarkMode) => {
+    style([
+      borderTopLeftRadius(`zero),
+      borderBottomLeftRadius(`zero),
+      color(state ? theme.neutral_900 : theme.neutral_100),
+      backgroundColor(state ? theme.neutral_000 : theme.neutral_900),
+      hover([
+        backgroundColor(state ? theme.neutral_100 : theme.neutral_900),
+        color(state ? theme.neutral_900 : theme.neutral_100),
+      ]),
+    ]);
+  };
 };
+
 
 type chainID =
   | WenchangTestnet
@@ -109,7 +141,7 @@ let getName =
   | Unknown => "unknown";
 
 [@react.component]
-let make = () =>
+let make = (~dropdown=false) =>
   {
     let (show, setShow) = React.useState(_ => false);
     let trackingSub = TrackingSub.use();
@@ -118,7 +150,18 @@ let make = () =>
     let%Sub tracking = trackingSub;
     let currentChainID = tracking.chainID->parseChainID;
 
-    <div
+    let networkNames = [|LaoziMainnet, LaoziTestnet|] -> Belt.Array.map(chainID => chainID->getName);
+    
+    let isMainnet = (currentChainID->getName) == "laozi-mainnet"
+    let handleToggle = (value) => {
+      Js.log(value)
+      Js.log(currentChainID->getName)
+      if(!value && isMainnet){
+        ReasonReactRouter.push(LaoziMainnet |> getLink)
+      }
+    };
+
+    {dropdown ? <div
       className={Styles.version(theme, isDarkMode)}
       onClick={event => {
         setShow(oldVal => !oldVal);
@@ -130,22 +173,43 @@ let make = () =>
         nowrap=true
         weight=Text.Semibold
       />
-      <HSpacing size=Spacing.sm />
-      {show
-         ? <Icon name="far fa-angle-up" color={theme.neutral_600} />
-         : <Icon name="far fa-angle-down" color={theme.neutral_600} />}
+      <div className={Css.style([Css.paddingLeft(`px(4))])}>
+        {show
+          ? <Icon name="far fa-angle-up" color={theme.neutral_900} />
+          : <Icon name="far fa-angle-down" color={theme.neutral_900} />}
+      </div>
       <div className={Styles.dropdown(show, theme, isDarkMode)}>
         {[|LaoziMainnet, LaoziTestnet|]
          ->Belt.Array.keep(chainID => chainID != currentChainID)
          ->Belt.Array.map(chainID => {
              let name = chainID->getName;
              <AbsoluteLink href={getLink(chainID)} key=name className={Styles.link(theme)}>
-               <Text value=name color={theme.neutral_600} nowrap=true weight=Text.Semibold />
+               <Text value=name color={theme.neutral_900} nowrap=true weight=Text.Semibold />
              </AbsoluteLink>;
            })
          ->React.array}
       </div>
-    </div>
+    </div> : <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
+      <AbsoluteLink href={isMainnet ? "" : getLink(LaoziMainnet)} >
+        <Button
+          px=16
+          py=8
+          variant=Button.Outline
+          style={Css.merge([Styles.baseBtn, Styles.leftBtn(isMainnet, theme, isDarkMode)])}>
+          {networkNames[0]  |> React.string}
+        </Button>
+      </AbsoluteLink>
+      <AbsoluteLink href={isMainnet ? getLink(LaoziTestnet) : ""} >
+        <Button
+          px=16
+          py=8
+          variant=Button.Outline
+          style={Css.merge([Styles.baseBtn, Styles.rightBtn(isMainnet, theme, isDarkMode)])}>
+          {networkNames[1] |> React.string}
+        </Button>
+      </AbsoluteLink>
+    </div>}
+
     |> Sub.resolve;
   }
   |> Sub.default(

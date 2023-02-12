@@ -1,9 +1,9 @@
 module Styles = {
   open Css;
-  let withWidth = (w, theme: Theme.t) =>
+  let txLink = (theme: Theme.t) =>
     style([
       display(`flex),
-      maxWidth(`px(w)),
+      maxWidth(`percent(100.)),
       cursor(`pointer),
       selector("> span:hover", [color(theme.primary_600)]),
       selector("> span", [transition(~duration=200, "all")]),
@@ -13,7 +13,7 @@ module Styles = {
 [@react.component]
 let make = (~txHash: Hash.t, ~width: int, ~size=Text.Md, ~weight=Text.Medium) => {
   let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
-  <Link className={Styles.withWidth(width, theme)} route={Route.TxIndexPage(txHash)}>
+  <Link className={Styles.txLink(theme)} route={Route.TxIndexPage(txHash)}>
     <Text
       block=true
       code=true
@@ -22,7 +22,7 @@ let make = (~txHash: Hash.t, ~width: int, ~size=Text.Md, ~weight=Text.Medium) =>
       weight
       ellipsis=true
       size
-      color={theme.neutral_900}
+      color={theme.primary_600}
     />
   </Link>;
 };
