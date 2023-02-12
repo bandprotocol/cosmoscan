@@ -83,7 +83,7 @@ module RenderMobile = {
 
     let menuContainer =
       style([
-        marginLeft(`px(10)),
+        marginLeft(`px(16)),
         flexBasis(`px(24)),
         flexGrow(0.),
         flexShrink(0.),

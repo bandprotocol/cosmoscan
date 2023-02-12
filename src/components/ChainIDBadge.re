@@ -5,11 +5,11 @@ module Styles = {
     style([
       display(`flex),
       borderRadius(`px(8)),
-      border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
+      // border(`px(1), `solid, isDarkMode ? theme.neutral_100 : theme.neutral_600),
       backgroundColor(theme.neutral_000),
-      padding2(~v=`px(8), ~h=`px(10)),
+      padding2(~v=`px(8), ~h=`px(16)),
       minWidth(`px(153)),
-      justifyContent(`spaceBetween),
+      // justifyContent(`spaceBetween),
       alignItems(`center),
       position(`relative),
       cursor(`pointer),
@@ -141,8 +141,9 @@ let getName =
   | Unknown => "unknown";
 
 [@react.component]
-let make = () =>
+let make = (~dropdown=false) =>
   {
+    let (show, setShow) = React.useState(_ => false);
     let trackingSub = TrackingSub.use();
     let ({ThemeContext.theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
@@ -160,7 +161,35 @@ let make = () =>
       }
     };
 
-    <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
+    {dropdown ? <div
+      className={Styles.version(theme, isDarkMode)}
+      onClick={event => {
+        setShow(oldVal => !oldVal);
+        ReactEvent.Mouse.stopPropagation(event);
+      }}>
+      <Text
+        value={currentChainID->getName}
+        color={theme.neutral_900}
+        nowrap=true
+        weight=Text.Semibold
+      />
+      <div className={Css.style([Css.paddingLeft(`px(4))])}>
+        {show
+          ? <Icon name="far fa-angle-up" color={theme.neutral_900} />
+          : <Icon name="far fa-angle-down" color={theme.neutral_900} />}
+      </div>
+      <div className={Styles.dropdown(show, theme, isDarkMode)}>
+        {[|LaoziMainnet, LaoziTestnet|]
+         ->Belt.Array.keep(chainID => chainID != currentChainID)
+         ->Belt.Array.map(chainID => {
+             let name = chainID->getName;
+             <AbsoluteLink href={getLink(chainID)} key=name className={Styles.link(theme)}>
+               <Text value=name color={theme.neutral_900} nowrap=true weight=Text.Semibold />
+             </AbsoluteLink>;
+           })
+         ->React.array}
+      </div>
+    </div> : <div className={Css.merge([CssHelper.flexBox(), Styles.buttonContainer])}>
       <AbsoluteLink href={isMainnet ? "" : getLink(LaoziMainnet)} >
         <Button
           px=16
@@ -179,7 +208,7 @@ let make = () =>
           {networkNames[1] |> React.string}
         </Button>
       </AbsoluteLink>
-    </div>
+    </div>}
 
     |> Sub.resolve;
   }
