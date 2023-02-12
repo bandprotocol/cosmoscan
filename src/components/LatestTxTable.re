@@ -5,24 +5,6 @@ module Styles = {
   let textMRight = style([marginRight(`px(6))]);
 };
 
-module MsgBadgeGroup = {
-  [@react.component]
-  let make = (~messages, ~txHash) => {
-    let theme = List.nth(messages, 0) |> MsgDecoder.getBadgeTheme;
-    let length = List.length(messages);
-
-    <div className={CssHelper.flexBox(~direction=`row, ())}>
-      <MsgBadge name=theme.name />
-      {
-        length > 1 ? <Text 
-        value={"+" ++ ((length - 1) |> string_of_int)}
-        size=Text.Md
-        transform=Text.Uppercase /> : React.null
-      }
-    </div>;
-    
-  }
-}
 module RenderBody = {
   [@react.component]
   let make = (~txSub: ApolloHooks.Subscription.variant(TxSub.t)) => {
@@ -76,7 +58,8 @@ module RenderBodyMobile = {
         values=InfoMobileCard.[
           ("Tx Hash", TxHash(txHash, isSmallMobile ? 170 : 200)),
           ("Block", Height(blockHeight)),
-          ("Actions", Messages(txHash, messages, success, errMsg)),
+          ("Actions", MsgBadgeGroup(txHash, messages)),
+          ("Status", Status(success)),
         ]
         key={txHash |> Hash.toHex}
         idx={txHash |> Hash.toHex}
@@ -95,6 +78,7 @@ module RenderBodyMobile = {
               },
             ),
           ),
+          ("Status", Loading(70)),
         ]
         key={reserveIndex |> string_of_int}
         idx={reserveIndex |> string_of_int}

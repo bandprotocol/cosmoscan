@@ -35,25 +35,30 @@ module Styles = {
     style([
       width(`percent(100.)),
       marginTop(`px(24)),
-      padding2(~v=`zero, ~h=`px(24)),
-      // margin2(~v=`zero, ~h=`px(12)),
+      padding2(~v=`px(4), ~h=`px(24)),
     ]);
 
   let innerLongCard =
     style([
       minHeight(`px(106)),
       padding2(~v=`px(24), ~h=`px(12)),
-      Media.mobile([padding2(~v=`px(10), ~h=`px(12)), minHeight(`px(304))]),
+      Media.mobile([padding2(~v=`px(10), ~h=`px(12)), minHeight(`px(50))]),
     ]);
 
   let halfWidth =
     style([
-      width(`calc((`sub, `percent(50.), `px(17))))
+      width(`calc((`sub, `percent(50.), `px(17)))),
+      Media.mobile([width(`percent(100.))]),
     ]);
 
   let mr2 =
     style([
-      marginRight(`px(16))
+      marginRight(`px(16)),
+    ]);
+
+  let pb = 
+    style([
+      Media.mobile([paddingBottom(`px(4))]),
     ]);
   };
 
@@ -104,6 +109,7 @@ let getUnixTime = _ => {
 
 [@react.component]
 let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
+  let isMobile = Media.isMobile();
   let currentTime =
     React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
   let (prevDayTime, setPrevDayTime) = React.useState(getPrevDay);
@@ -148,7 +154,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   <div className=Styles.mr2>
                     <Text 
                       value=bandPriceInUSD
-                      size=Text.Xxl 
+                      size=Text.Xxxl 
                       weight=Text.Bold 
                       color=theme.white
                     />
@@ -252,13 +258,15 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
     <div className={Css.merge([CssHelper.flexBox(), Styles.longCard, CommonStyles.card(theme, isDarkMode)])}>
       <div className=Styles.halfWidth>
         <Row justify=Row.Between >
-            <Col col=Col.Six colSm=Col.Six>
+            <Col col=Col.Six colSm=Col.Twelve>
               <div
                 className={Css.merge([
                   Styles.innerLongCard,
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                  <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
+                  <div className=Styles.pb>
+                    <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
+                  </div>
                   <div className=CssHelper.flexBox()>
                     {switch (latestTxsSub) {
                     | Data((latestTx)) =>
@@ -295,13 +303,15 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   </div>
               </div>
             </Col>
-            <Col col=Col.Six colSm=Col.Six>
+            <Col col=Col.Six colSm=Col.Twelve>
               <div
                 className={Css.merge([
                   Styles.innerLongCard,
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                  <Text value="Total Requests" size=Text.Lg weight=Text.Regular />
+                  <div className=Styles.pb>
+                    <Text value="Total Requests" size=Text.Lg weight=Text.Regular />
+                  </div>
                   <div className=CssHelper.flexBox()>
                     {switch (latestRequestSub) {
                     | Data((latestRequest)) =>
@@ -340,10 +350,10 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
             </Col>
         </Row>
       </div>
-      <Divider ml=16 mr=16 h=58 />
+      {isMobile ? React.null : <Divider ml=16 mr=16 h=58 />}
       <div className=Styles.halfWidth>
         <Row justify=Row.Between >
-          <Col col=Col.Three colSm=Col.Six>
+          <Col col=Col.Three colSm=Col.Twelve>
             <div
               className={Css.merge([
                 Styles.innerLongCard,
@@ -352,7 +362,9 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               {switch (latestBlock) {
               | Data({inflation}) =>
                 <>
-                  <Text value="Inflation Rate" size=Text.Lg weight=Text.Regular />
+                  <div className=Styles.pb>
+                    <Text value="Inflation Rate" size=Text.Lg weight=Text.Regular />
+                  </div>
                   <Text 
                      value={(inflation *. 100. |> Format.fPretty(~digits=2)) ++ "%"}
                     size=Text.Xxl 
@@ -368,7 +380,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               }}
             </div>
           </Col>
-          <Col col=Col.Three colSm=Col.Six>
+          <Col col=Col.Three colSm=Col.Twelve>
             <div
               className={Css.merge([
                 Styles.innerLongCard,
@@ -377,7 +389,9 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               {switch (avgCommissionSub) {
               | Data(avgCommission) =>
                 <>
-                  <Text value="Staking APR" size=Text.Lg weight=Text.Regular />
+                  <div className=Styles.pb>
+                    <Text value="Staking APR" size=Text.Lg weight=Text.Regular />
+                  </div>
                   <Text 
                     value={(avgCommission |> Format.fPretty(~digits=2)) ++ "%"} 
                     size=Text.Xxl 
@@ -393,7 +407,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               }}
             </div>
           </Col>
-          <Col col=Col.Six colSm=Col.Six>
+          <Col col=Col.Six colSm=Col.Twelve>
             <div
               className={Css.merge([
                 Styles.innerLongCard,
@@ -402,7 +416,9 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
               {switch (allSub) {
               | Data((_, {financial}, (_, bondedTokenCount, _))) =>
                 <>
-                  <Text value="BAND Bonded" size=Text.Lg weight=Text.Regular />
+                  <div className=Styles.pb>
+                    <Text value="BAND Bonded" size=Text.Lg weight=Text.Regular />
+                  </div>
                   <div className=CssHelper.flexBox()>
                     <div className=Styles.mr2>
                       <Text 

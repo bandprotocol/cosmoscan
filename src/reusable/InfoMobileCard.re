@@ -34,6 +34,7 @@ type t =
   | BlockHash(Hash.t)
   | Validator(Address.t, string, string)
   | Messages(Hash.t, list(MsgDecoder.t), bool, string)
+  | MsgBadgeGroup(Hash.t, list(MsgDecoder.t))
   | PubKey(PubKey.t)
   | Badge(MsgDecoder.badge_theme_t)
   | VotingPower(Coin.t, float)
@@ -168,6 +169,7 @@ let make = (~info) => {
       color={theme.neutral_900}
     />
   | Messages(txHash, messages, success, errMsg) => <TxMessages txHash messages success errMsg />
+  | MsgBadgeGroup(txHash, messages) => <MsgBadgeGroup txHash messages />
   | Badge({name, category}) => <MsgBadge name />
   | VotingPower(tokens, votingPercent) =>
     <div className=Styles.vFlex>
@@ -182,8 +184,7 @@ let make = (~info) => {
         block=true
       />
     </div>
-  | Status(status) =>
-    <img alt="Status Icon" src={status ? Images.success : Images.fail} className=Styles.logo />
+  | Status(status) => <StatusIcon status />
 
   // Special case for uptime to have loading state inside.
   | Uptime(uptimeOpt) =>

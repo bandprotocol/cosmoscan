@@ -40,10 +40,6 @@ let make = () => {
         <Col col=Col.Six> <LatestTxTable /> </Col>
         <Col col=Col.Six> <LatestRequests latest5RequestSub /> </Col>
       </Row>
-      // <Row marginTop=24>
-      //   <Col col=Col.Four> <LatestBlocks blocksSub=latest5BlocksSub /> </Col>
-      //   <Col col=Col.Six mbSm=24> <TotalRequestsGraph latest5RequestSub /> </Col>
-      // </Row>
     </div>
   </Section>;
 };

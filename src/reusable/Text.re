@@ -103,7 +103,7 @@ module Styles = {
       | Xl =>
         style([
           fontSize(`px(16)),
-          lineHeight(`em(1.41)),
+          lineHeight(`px(26)),
           Media.smallMobile([fontSize(`px(14))]),
         ])
       | Xxl => style([fontSize(`px(18)), Media.smallMobile([fontSize(`px(16))])])
