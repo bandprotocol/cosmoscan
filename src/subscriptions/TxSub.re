@@ -193,18 +193,6 @@ module TxCountConfig = [%graphql
 |}
 ];
 
-module TxCountWithOffsetConfig = [%graphql
-  {|
-  subscription TransactionsCount($greater: timestamp) {
-    transactions_aggregate(where: {block: {timestamp: {_gt: $greater }}}) {
-      aggregate {
-        count
-      }
-    }
-  }
-|}
-];
-
 module TxCountBySenderConfig = [%graphql
   {|
   subscription TransactionsCountBySender($sender: String!) {
@@ -280,16 +268,6 @@ let getListByBlockHeight = (height, ()) => {
 
 let count = () => {
   let (result, _) = ApolloHooks.useSubscription(TxCountConfig.definition);
-  result
-  |> Sub.map(_, x => x##transactions_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
-};
-
-let countOffset = (~timestamp) => {
-  let (result, _) = 
-    ApolloHooks.useSubscription(
-      TxCountWithOffsetConfig.definition,
-      ~variables=TxCountWithOffsetConfig.makeVariables(~greater=timestamp |> Js.Json.string, ()),
-    );
   result
   |> Sub.map(_, x => x##transactions_aggregate##aggregate |> Belt_Option.getExn |> (y => y##count));
 };

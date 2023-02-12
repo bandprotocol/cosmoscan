@@ -95,7 +95,7 @@ let getPrevDay = _ => {
   |> MomentRe.Moment.format(Config.timestampUseFormat);
 };
 
-let getPrevDayUnix = _ => {
+let getUnixTime = _ => {
   MomentRe.momentNow()
   |> MomentRe.Moment.defaultUtc
   |> MomentRe.Moment.subtract(~duration=MomentRe.duration(1., `days))
@@ -107,24 +107,31 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
   let currentTime =
     React.useContext(TimeContext.context) |> MomentRe.Moment.format(Config.timestampUseFormat);
   let (prevDayTime, setPrevDayTime) = React.useState(getPrevDay);
+  let (prevUnixTime, setPrevUnixTime) = React.useState(getUnixTime);
 
   let infoSub = React.useContext(GlobalContext.context);
   let (ThemeContext.{theme, isDarkMode}, _) = React.useContext(ThemeContext.context);
 
   let activeValidatorCountSub = ValidatorSub.countByActive(true);
   let bondedTokenCountSub = ValidatorSub.getTotalBondedAmount();
-  let txsCountSub = TxSub.count();
-  let last24txsCountSub = TxSub.countOffset(prevDayTime);
-  let requestCountSub = RequestSub.count();
-  let last24RequestCountSub = RequestSub.countOffset(getPrevDayUnix());
+  let latestTxsSub = TxSub.getList(~pageSize=1, ~page=1, ());
+  let last24txsCountSub = TxQuery.countOffset(prevDayTime);
+  let latestRequestSub = RequestSub.getList(~pageSize=1, ~page=1, ());
+  let last24RequestCountSub = RequestQuery.countOffset(prevUnixTime);
   let latestBlock = BlockSub.getLatest();
   let avgBlockTimeSub = BlockSub.getAvgBlockTime(prevDayTime, currentTime);
   let avgCommissionSub = ValidatorSub.avgCommission(~isActive=true, ());
   
-  let txInfoSub = Sub.all2(last24txsCountSub, txsCountSub);
-  let requestInfoSub = Sub.all2(last24RequestCountSub, requestCountSub);
   let validatorInfoSub = Sub.all3(activeValidatorCountSub, bondedTokenCountSub, avgBlockTimeSub);
   let allSub = Sub.all3(latestBlockSub, infoSub, validatorInfoSub);
+
+  React.useEffect0(() => {
+    let timeOutID = Js.Global.setInterval(() => {
+      setPrevDayTime(getPrevDay)
+      setPrevUnixTime(getUnixTime)
+    }, 600_000);
+    Some(() => {Js.Global.clearInterval(timeOutID)});
+  });
 
   <>
     <Row justify=Row.Between>
@@ -223,7 +230,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
             let%Sub (_, {financial}, (activeValidatorCount, bondedTokenCount, avgBlockTime)) = allSub;
             (
               {
-                let activeValidators = activeValidatorCount->Format.iPretty ++ " Nodes";
+                let activeValidators = activeValidatorCount->Format.iPretty;
                 <Text
                   value=activeValidators
                   size=Text.Xxxl
@@ -251,33 +258,41 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   Styles.innerLongCard,
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                {switch (txInfoSub) {
-                | Data((last24Tx, totalTxs)) =>
-                  <>
-                    <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
-                    <div className=CssHelper.flexBox()>
+                  <Text value="Total Transactions" size=Text.Lg weight=Text.Regular />
+                  <div className=CssHelper.flexBox()>
+                    {switch (latestTxsSub) {
+                    | Data((latestTx)) =>
                       <div className=Styles.mr2>
                         <Text 
-                          value={totalTxs |> string_of_int} 
+                          value={
+                            latestTx
+                            ->Belt.Array.get(0)
+                            ->Belt.Option.mapWithDefault(0, ({id}) => id )
+                            ->float_of_int
+                            ->Format.fCurrency
+                          }
                           size=Text.Xxl 
                           weight=Text.Bold 
                           color=theme.neutral_900
                         />
                       </div>
-                      <Text 
-                        value={"( " ++ (last24Tx |> string_of_int ) ++ " last 24 hr)"}
-                        size=Text.Md 
-                        weight=Text.Regular 
-                        color=theme.neutral_900
-                      />
-                    </div>
-                  </>
-                | _ =>
-                  <>
-                    <LoadingCensorBar width=90 height=18 />
-                    <LoadingCensorBar width=120 height=20 />
-                  </>
-                }}
+                    | _ =>
+                      <LoadingCensorBar width=90 height=18 />
+                    }}
+                    {switch (last24txsCountSub) {
+                    | Data((last24Tx)) =>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={"( " ++ (last24Tx |> float_of_int |> Format.fCurrency ) ++ " last 24 hr)"}
+                          size=Text.Md 
+                          weight=Text.Regular 
+                          color=theme.neutral_900
+                        />
+                      </div>
+                    | _ =>
+                      <LoadingCensorBar width=120 height=20 />
+                    }}
+                  </div>
               </div>
             </Col>
             <Col col=Col.Six colSm=Col.Six>
@@ -286,33 +301,41 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                   Styles.innerLongCard,
                   CssHelper.flexBox(~direction=`column, ~justify=`spaceBetween, ~align=`flexStart, ()),
                 ])}>
-                {switch (requestInfoSub) {
-                | Data((last24Request, totalRequest)) =>
-                  <>
-                    <Text value="Total Requests" size=Text.Lg weight=Text.Regular />
-                    <div className=CssHelper.flexBox()>
+                  <Text value="Total Requests" size=Text.Lg weight=Text.Regular />
+                  <div className=CssHelper.flexBox()>
+                    {switch (latestRequestSub) {
+                    | Data((latestRequest)) =>
                       <div className=Styles.mr2>
                         <Text 
-                          value={totalRequest |> string_of_int} 
+                          value={
+                            latestRequest
+                            ->Belt.Array.get(0)
+                            ->Belt.Option.mapWithDefault(0, ({id}) => id |> ID.Request.toInt)
+                            ->float_of_int
+                            ->Format.fCurrency
+                          }
                           size=Text.Xxl 
                           weight=Text.Bold 
                           color=theme.neutral_900
                         />
                       </div>
-                      <Text 
-                        value={"( " ++ (last24Request |> string_of_int ) ++ " last 24 hr)"}
-                        size=Text.Md 
-                        weight=Text.Regular 
-                        color=theme.neutral_900
-                      />
-                    </div>
-                  </>
-                | _ =>
-                  <>
-                    <LoadingCensorBar width=90 height=18 />
-                    <LoadingCensorBar width=120 height=20 />
-                  </>
-                }}
+                    | _ =>
+                      <LoadingCensorBar width=90 height=18 />
+                    }}
+                    {switch (last24RequestCountSub) {
+                    | Data((last24Request)) =>
+                      <div className=Styles.mr2>
+                        <Text 
+                          value={"( " ++ (last24Request |> float_of_int |> Format.fCurrency ) ++ " last 24 hr)"}
+                          size=Text.Md 
+                          weight=Text.Regular 
+                          color=theme.neutral_900
+                        />
+                      </div>
+                    | _ =>
+                      <LoadingCensorBar width=120 height=20 />
+                    }}
+                  </div>
               </div>
             </Col>
         </Row>
@@ -356,7 +379,7 @@ let make = (~latestBlockSub: Sub.t(BlockSub.t)) => {
                 <>
                   <Text value="Staking APR" size=Text.Lg weight=Text.Regular />
                   <Text 
-                    value={avgCommission |> Format.fPretty(~digits=2)} 
+                    value={(avgCommission |> Format.fPretty(~digits=2)) ++ "%"} 
                     size=Text.Xxl 
                     weight=Text.Bold 
                     color=theme.neutral_900
