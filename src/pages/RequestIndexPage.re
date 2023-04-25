@@ -354,10 +354,10 @@ let make = (~reqID) => {
                 </Col>
                 <Col col=Col.Eight>
                   {switch (requestSub) {
-                   | Data({prepareGas}) =>
+                   | Data({prepareGasUsed, prepareGas}) =>
                      <Text
                        block=true
-                       value={prepareGas |> string_of_int}
+                       value={(prepareGasUsed == 0 ? "-" : prepareGasUsed |> string_of_int) ++ " / " ++ (prepareGas |> string_of_int)}
                        size=Text.Lg
                        color={theme.textSecondary}
                      />
@@ -376,10 +376,10 @@ let make = (~reqID) => {
                 </Col>
                 <Col col=Col.Eight>
                   {switch (requestSub) {
-                   | Data({executeGas}) =>
+                   | Data({executeGasUsed, executeGas}) =>
                      <Text
                        block=true
-                       value={executeGas |> string_of_int}
+                       value={ (executeGasUsed == 0 ? "-" : executeGasUsed |> string_of_int) ++ " / " ++ (executeGas |> string_of_int)}
                        size=Text.Lg
                        color={theme.textSecondary}
                      />
