@@ -365,6 +365,8 @@ type internal_t = {
   reason: option(string),
   prepareGas: int,
   executeGas: int,
+  prepareGasUsed: int,
+  executeGasUsed: int,
   feeLimit: list(Coin.t),
   feeUsed: list(Coin.t),
   resolveHeight: option(int),
@@ -389,6 +391,8 @@ type t = {
   reason: option(string),
   prepareGas: int,
   executeGas: int,
+  prepareGasUsed: int,
+  executeGasUsed: int,
   feeLimit: list(Coin.t),
   feeUsed: list(Coin.t),
   resolveHeight: option(ID.Block.t),
@@ -415,6 +419,8 @@ let toExternal =
         reason,
         prepareGas,
         executeGas,
+        prepareGasUsed,
+        executeGasUsed,
         feeLimit,
         feeUsed,
         resolveHeight,
@@ -438,6 +444,8 @@ let toExternal =
   reason,
   prepareGas,
   executeGas,
+  prepareGasUsed,
+  executeGasUsed,
   feeLimit,
   feeUsed,
   resolveHeight: resolveHeight |> Belt.Option.map(_, ID.Block.fromInt),
@@ -469,6 +477,8 @@ module SingleRequestConfig = [%graphql
         reason
         prepareGas: prepare_gas
         executeGas: execute_gas
+        prepareGasUsed: prepare_gas_used
+        executeGasUsed: execute_gas_used
         feeLimit: fee_limit @bsDecoder(fn: "GraphQLParser.coins")
         feeUsed: total_fees @bsDecoder(fn: "GraphQLParser.coins")
         resolveHeight: resolve_height
@@ -545,6 +555,8 @@ module MultiRequestConfig = [%graphql
         reason
         prepareGas: prepare_gas
         executeGas: execute_gas
+        prepareGasUsed: prepare_gas_used
+        executeGasUsed: execute_gas_used
         feeLimit: fee_limit @bsDecoder(fn: "GraphQLParser.coins")
         feeUsed: total_fees @bsDecoder(fn: "GraphQLParser.coins")
         resolveHeight: resolve_height
