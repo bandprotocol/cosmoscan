@@ -346,7 +346,7 @@ let make = (~reqID) => {
               <Row marginBottom=24 alignItems=Row.Center>
                 <Col col=Col.Four mbSm=8>
                   <Heading
-                    value="Prepare Gas"
+                    value="Prepare Gas Used / Prepare Gas"
                     size=Heading.H4
                     weight=Heading.Thin
                     color={theme.textSecondary}
@@ -368,7 +368,7 @@ let make = (~reqID) => {
               <Row marginBottom=24 alignItems=Row.Center>
                 <Col col=Col.Four mbSm=8>
                   <Heading
-                    value="Execute Gas"
+                    value="Execute Gas Used / Execute Gas"
                     size=Heading.H4
                     weight=Heading.Thin
                     color={theme.textSecondary}
