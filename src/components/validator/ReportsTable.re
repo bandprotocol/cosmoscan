@@ -99,11 +99,7 @@ module RenderBody = {
         </Col>
         <Col col=Col.Three>
           {switch (reportsSub) {
-           | Data({txHash}) =>
-             switch (txHash) {
-             | Some(txHash') => <TxLink txHash=txHash' width=140 />
-             | None => <Text value="Syncing" />
-             }
+           | Data({txHash}) => <TxLink txHash=txHash width=140 />
            | _ => <LoadingCensorBar width=170 height=15 />
            }}
         </Col>
@@ -209,11 +205,7 @@ module RenderBodyMobile = {
           ("Request ID", RequestID(id)),
           ("Oracle Script", OracleScript(oracleScriptID, name)),
           (
-            "TX Hash",
-            switch (txHash) {
-            | Some(txHash') => TxHash(txHash', isSmallMobile ? 170 : 200)
-            | None => Text("Syncing")
-            },
+            "TX Hash", TxHash(txHash, isSmallMobile ? 170 : 200)
           ),
         ]
         key={id |> ID.Request.toString}
