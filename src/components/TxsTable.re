@@ -13,6 +13,7 @@ module RenderBody = {
         ~msgTransform: MsgDecoder.t => MsgDecoder.t,
       ) => {
     let ({ThemeContext.theme}, _) = React.useContext(ThemeContext.context);
+
     <TBody>
       <Row alignItems=Row.Start>
         <Col col=Col.Three>

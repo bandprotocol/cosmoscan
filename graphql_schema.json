@@ -9395,6 +9395,22 @@
             "deprecationReason": null
           },
           {
+            "name": "last_update",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "timestamp",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "order",
             "description": null,
             "args": [],
@@ -10166,6 +10182,16 @@
             "defaultValue": null
           },
           {
+            "name": "last_update",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "timestamp_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "order",
             "description": null,
             "type": {
@@ -10315,6 +10341,16 @@
             "defaultValue": null
           },
           {
+            "name": "last_update",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "order",
             "description": null,
             "type": {
@@ -10413,6 +10449,18 @@
             "deprecationReason": null
           },
           {
+            "name": "last_update",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "order",
             "description": null,
             "args": [],
@@ -10492,6 +10540,16 @@
           },
           {
             "name": "counterparty_port",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "last_update",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10589,6 +10647,18 @@
             "deprecationReason": null
           },
           {
+            "name": "last_update",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "order",
             "description": null,
             "args": [],
@@ -10668,6 +10738,16 @@
           },
           {
             "name": "counterparty_port",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "last_update",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10921,6 +11001,16 @@
             "defaultValue": null
           },
           {
+            "name": "last_update",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "order",
             "description": null,
             "type": {
@@ -11037,6 +11127,12 @@
             "deprecationReason": null
           },
           {
+            "name": "last_update",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "order",
             "description": "column name",
             "isDeprecated": false,
@@ -11099,6 +11195,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "last_update",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null
@@ -11342,6 +11448,12 @@
           },
           {
             "name": "counterparty_port",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "last_update",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -50024,6 +50136,18 @@
         "description": "columns and relationships of \"proposals\"",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "account",
             "description": "An object relationship",
             "args": [],
@@ -50281,6 +50405,30 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposal_route",
             "description": null,
             "args": [],
@@ -50352,6 +50500,18 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -50590,6 +50750,18 @@
                 "name": "timestamp",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -50993,6 +51165,18 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -51005,7 +51189,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -51029,6 +51261,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -51039,7 +51281,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -51106,6 +51388,16 @@
             "defaultValue": null
           },
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "bigint_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "account",
             "description": null,
             "type": {
@@ -51166,6 +51458,26 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "bigint_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "bigint_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposal_route",
             "description": null,
             "type": {
@@ -51211,6 +51523,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "bigint_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -51264,6 +51586,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "bigint_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -51294,6 +51626,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -51304,11 +51646,51 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null
@@ -51324,6 +51706,16 @@
         "description": "input type for inserting data into table \"proposals\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
           {
             "name": "account",
             "description": null,
@@ -51385,6 +51777,26 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposal_route",
             "description": null,
             "type": {
@@ -51430,6 +51842,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null
@@ -51483,6 +51905,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -51494,6 +51926,18 @@
         "name": "proposals_max_fields",
         "description": "aggregate max on columns",
         "fields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "deposit_end_time",
             "description": null,
@@ -51525,6 +51969,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -51591,6 +52059,18 @@
             "deprecationReason": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "total_deposit",
             "description": null,
             "args": [],
@@ -51637,6 +52117,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -51650,6 +52142,16 @@
         "description": "order by max() on columns of table \"proposals\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
           {
             "name": "deposit_end_time",
             "description": null,
@@ -51672,6 +52174,26 @@
           },
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -51731,6 +52253,16 @@
             "defaultValue": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "total_deposit",
             "description": null,
             "type": {
@@ -51762,6 +52294,16 @@
           },
           {
             "name": "voting_time",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -51781,6 +52323,18 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "deposit_end_time",
             "description": null,
             "args": [],
@@ -51811,6 +52365,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -51877,6 +52455,18 @@
             "deprecationReason": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "total_deposit",
             "description": null,
             "args": [],
@@ -51923,6 +52513,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -51936,6 +52538,16 @@
         "description": "order by min() on columns of table \"proposals\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
           {
             "name": "deposit_end_time",
             "description": null,
@@ -51958,6 +52570,26 @@
           },
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52017,6 +52649,16 @@
             "defaultValue": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "total_deposit",
             "description": null,
             "type": {
@@ -52048,6 +52690,16 @@
           },
           {
             "name": "voting_time",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52211,6 +52863,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "account",
             "description": null,
             "type": {
@@ -52271,6 +52933,26 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposal_route",
             "description": null,
             "type": {
@@ -52312,6 +52994,16 @@
           },
           {
             "name": "title",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52369,6 +53061,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -52409,6 +53111,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "abstain_vote",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "content",
             "description": "column name",
             "isDeprecated": false,
@@ -52428,6 +53136,18 @@
           },
           {
             "name": "id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_vote",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -52463,6 +53183,12 @@
             "deprecationReason": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "total_deposit",
             "description": "column name",
             "isDeprecated": false,
@@ -52485,6 +53211,12 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -52495,6 +53227,16 @@
         "description": "input type for updating data in table \"proposals\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
           {
             "name": "content",
             "description": null,
@@ -52531,6 +53273,26 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null
@@ -52586,6 +53348,16 @@
             "defaultValue": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "total_deposit",
             "description": null,
             "type": {
@@ -52624,6 +53396,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -52635,6 +53417,18 @@
         "name": "proposals_stddev_fields",
         "description": "aggregate stddev on columns",
         "fields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "id",
             "description": null,
@@ -52648,7 +53442,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -52672,6 +53514,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -52682,7 +53534,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52702,6 +53594,18 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -52714,7 +53618,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -52738,6 +53690,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -52748,7 +53710,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52768,6 +53770,18 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -52780,7 +53794,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -52804,6 +53866,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -52814,7 +53886,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52834,6 +53946,18 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -52846,12 +53970,60 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52870,6 +54042,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -52880,7 +54062,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -52903,6 +54125,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "abstain_vote",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "content",
             "description": "column name",
             "isDeprecated": false,
@@ -52922,6 +54150,18 @@
           },
           {
             "name": "id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_vote",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -52957,6 +54197,12 @@
             "deprecationReason": null
           },
           {
+            "name": "total_bonded_tokens",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "total_deposit",
             "description": "column name",
             "isDeprecated": false,
@@ -52979,6 +54225,12 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -52988,6 +54240,18 @@
         "name": "proposals_var_pop_fields",
         "description": "aggregate var_pop on columns",
         "fields": [
+          {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "id",
             "description": null,
@@ -53001,7 +54265,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -53025,6 +54337,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -53035,7 +54357,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -53055,6 +54417,18 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -53067,7 +54441,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -53091,6 +54513,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -53101,7 +54533,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -53121,6 +54593,18 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -53133,7 +54617,55 @@
             "deprecationReason": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "args": [],
             "type": {
@@ -53157,6 +54689,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "abstain_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -53167,7 +54709,47 @@
             "defaultValue": null
           },
           {
+            "name": "no_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "no_with_veto_vote",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "proposer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "total_bonded_tokens",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "yes_vote",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -72429,9 +74011,13 @@
             "description": "An object relationship",
             "args": [],
             "type": {
-              "kind": "OBJECT",
-              "name": "transactions",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "transactions",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -72441,9 +74027,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -75682,6 +77272,22 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "args": [],
@@ -75779,6 +77385,22 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -76866,6 +78488,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -76903,6 +78537,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -76994,6 +78640,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -77025,6 +78681,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -77181,6 +78847,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "type": {
@@ -77242,6 +78918,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -77394,6 +79080,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "req_oracle_script_id_and_id",
+            "description": "unique or primary key constraint on columns \"oracle_script_id\", \"id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "requests_pkey",
             "description": "unique or primary key constraint on columns \"id\"",
             "isDeprecated": false,
@@ -77420,6 +79112,16 @@
           },
           {
             "name": "execute_gas",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "execute_gas_used",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -77460,6 +79162,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -77570,6 +79282,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "type": {
@@ -77631,6 +79353,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -77816,6 +79548,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "args": [],
@@ -77865,6 +79609,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -78014,6 +79770,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "type": {
@@ -78055,6 +79821,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -78190,6 +79966,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "args": [],
@@ -78239,6 +80027,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -78388,6 +80188,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "type": {
@@ -78429,6 +80239,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -78722,6 +80542,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "type": {
@@ -78783,6 +80613,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -78984,6 +80824,12 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fee_limit",
             "description": "column name",
             "isDeprecated": false,
@@ -79015,6 +80861,12 @@
           },
           {
             "name": "prepare_gas",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -79123,6 +80975,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "fee_limit",
             "description": null,
             "type": {
@@ -79174,6 +81036,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -79307,6 +81179,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -79344,6 +81228,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -79435,6 +81331,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -79466,6 +81372,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -79549,6 +81465,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -79586,6 +81514,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -79677,6 +81617,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -79708,6 +81658,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -79791,6 +81751,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -79828,6 +81800,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -79919,6 +81903,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -79950,6 +81944,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -80033,6 +82037,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -80070,6 +82086,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -80161,6 +82189,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -80192,6 +82230,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -80278,6 +82326,12 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fee_limit",
             "description": "column name",
             "isDeprecated": false,
@@ -80309,6 +82363,12 @@
           },
           {
             "name": "prepare_gas",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -80400,6 +82460,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -80437,6 +82509,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -80528,6 +82612,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -80559,6 +82653,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -80642,6 +82746,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -80679,6 +82795,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -80770,6 +82898,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -80801,6 +82939,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -80884,6 +83032,18 @@
             "deprecationReason": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -80921,6 +83081,18 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "args": [],
             "type": {
@@ -81012,6 +83184,16 @@
             "defaultValue": null
           },
           {
+            "name": "execute_gas_used",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -81043,6 +83225,16 @@
           },
           {
             "name": "prepare_gas",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "prepare_gas_used",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -90365,7 +92557,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "bigint",
                 "ofType": null
               }
             },
@@ -90751,7 +92943,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "bigint_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -90819,7 +93011,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null
@@ -90860,7 +93052,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null
@@ -90923,7 +93115,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -90994,7 +93186,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -91298,7 +93490,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null
@@ -91454,7 +93646,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -92185,6 +94377,18 @@
           },
           {
             "name": "err_msg",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fee_payer",
             "description": null,
             "args": [],
             "type": {
@@ -94010,6 +96214,16 @@
             "defaultValue": null
           },
           {
+            "name": "fee_payer",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "gas_fee",
             "description": null,
             "type": {
@@ -94305,6 +96519,16 @@
             "defaultValue": null
           },
           {
+            "name": "fee_payer",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "gas_fee",
             "description": null,
             "type": {
@@ -94489,6 +96713,18 @@
             "deprecationReason": null
           },
           {
+            "name": "fee_payer",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "gas_fee",
             "description": null,
             "args": [],
@@ -94593,6 +96829,16 @@
             "defaultValue": null
           },
           {
+            "name": "fee_payer",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "gas_fee",
             "description": null,
             "type": {
@@ -94676,6 +96922,18 @@
           },
           {
             "name": "err_msg",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fee_payer",
             "description": null,
             "args": [],
             "type": {
@@ -94782,6 +97040,16 @@
           },
           {
             "name": "err_msg",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fee_payer",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -95065,6 +97333,16 @@
             "defaultValue": null
           },
           {
+            "name": "fee_payer",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "gas_fee",
             "description": null,
             "type": {
@@ -95265,6 +97543,12 @@
             "deprecationReason": null
           },
           {
+            "name": "fee_payer",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "gas_fee",
             "description": "column name",
             "isDeprecated": false,
@@ -95339,6 +97623,16 @@
           },
           {
             "name": "err_msg",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fee_payer",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -95898,6 +98192,12 @@
           },
           {
             "name": "err_msg",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fee_payer",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
