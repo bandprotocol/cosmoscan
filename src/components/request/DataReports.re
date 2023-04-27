@@ -66,10 +66,7 @@ let make = (~reports: array(RequestSub.report_t)) => {
                 />
               </Col>
               <Col col=Col.Eight>
-                {switch (transactionOpt) {
-                 | Some({hash}) => <TxLink txHash=hash width=280 />
-                 | None => <Text value="Genesis Transaction" />
-                 }}
+                <TxLink txHash=transactionOpt.hash width=280 />
               </Col>
             </Row>
             <div className={Styles.reportsTable(theme)}>

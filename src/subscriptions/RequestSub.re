@@ -329,7 +329,7 @@ type report_detail_t = {
 };
 
 type report_t = {
-  transactionOpt: option(TxSub.Mini.t),
+  transactionOpt: TxSub.Mini.t,
   reportDetails: array(report_detail_t),
   reportValidator: ValidatorSub.Mini.t,
 };
