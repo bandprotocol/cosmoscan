@@ -35,6 +35,10 @@ RPC_URL=https://laozi-testnet6.bandchain.org/api GRAPHQL_URL=wss://graphql-lt6.b
 RPC_URL=https://laozi1.bandchain.org/api/ GRAPHQL_URL=wss://graphql-lm.bandchain.org/v1/graphql LAMBDA_URL=https://asia-southeast1-testnet-instances.cloudfunctions.net/executer-cosmoscan GRPC=https://laozi1.bandchain.org/grpc-web/ yarn parcel index.html --no-cache
 ```
 
+```
+RPC_URL=https://devnet.d3n.xyz/rpc/ GRAPHQL_URL=wss://devnet.d3n.xyz/hasura/v1/graphql LAMBDA_URL=https://asia-southeast2-band-playground.cloudfunctions.net/test-runtime-executor GRPC=https://devnet.d3n.xyz/grpc/ FAUCET_URL=https://devnet.d3n.xyz/faucet/request yarn parcel index.html
+```
+
 Serve to <http://localhost:1234/>
 
 ## Build production
