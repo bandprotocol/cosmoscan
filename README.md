@@ -16,7 +16,7 @@ npx get-graphql-schema https://graphql-lt6.bandchain.org/v1/graphql -j > graphql
 npx get-graphql-schema https://graphql-lm.bandchain.org/v1/graphql -j > graphql_schema.json
 
 <!-- For local -->
-npx get-graphql-schema https://devnet.d3n.xyz/hasura/v1//graphql -j > graphql_schema.json
+npx get-graphql-schema https://devnet.d3n.xyz/hasura/v1/graphql -j > graphql_schema.json
 ```
 
 ## Running App Development
