@@ -25,6 +25,8 @@ module Content = {
     description: string,
     changes: option(array(Changes.changes_t)),
     plan: option(plan_t),
+    recipient: option(Address.t),
+    amount: option(list(Coin.t)),
   };
 
   let decodeChanges = json => {
@@ -40,12 +42,19 @@ module Content = {
     };
   };
 
+  let decodeAddress = json => {
+    let address = json |> Js.Json.decodeString |> Belt.Option.getExn;
+    address->Address.fromBech32;
+  };
+
   let decode = (json: Js.Json.t) =>
     JsonUtils.Decode.{
       title: json |> field("title", string),
       description: json |> field("description", string),
       changes: json |> optional(field("changes", decodeChanges)),
       plan: json |> optional(field("plan", decodePlan)),
+      recipient: json |> optional(field("recipient", decodeAddress)),
+      amount: json |> optional(field("amount", list(Coin.decodeCoin))),
     };
 };
 
@@ -91,7 +100,6 @@ type internal_t = {
   abstain_vote: float,
   total_bonded_tokens: option(float),
   totalDeposit: list(Coin.t),
-  
 };
 
 type t = {
@@ -156,15 +164,18 @@ let toExternal =
   proposerAddressOpt: accountOpt->Belt.Option.map(({address}) => address),
   proposalType,
   endTotalYes: yes_vote /. 1e6,
-  endTotalYesPercent: yes_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalYesPercent:
+    yes_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
   endTotalNo: no_vote /. 1e6,
   endTotalNoPercent: no_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
   endTotalNoWithVeto: no_with_veto_vote /. 1e6,
-  endTotalNoWithVetoPercent: no_with_veto_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalNoWithVetoPercent:
+    no_with_veto_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
   endTotalAbstain: abstain_vote /. 1e6,
-  endTotalAbstainPercent: abstain_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
+  endTotalAbstainPercent:
+    abstain_vote /. (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) *. 100.,
   endTotalVote: (yes_vote +. no_vote +. no_with_veto_vote +. abstain_vote) /. 1e6,
-  totalBondedTokens: total_bonded_tokens -> Belt.Option.map(d => d /. 1e6) ,
+  totalBondedTokens: total_bonded_tokens->Belt.Option.map(d => d /. 1e6),
   totalDeposit,
 };
 

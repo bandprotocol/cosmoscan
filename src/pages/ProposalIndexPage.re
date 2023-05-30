@@ -75,6 +75,15 @@ module VoteButton = {
   };
 };
 
+let parseProposalType = proposalType => {
+  switch (proposalType) {
+  | "CommunityPoolSpend" => "Community Pool Spend"
+  | "SoftwareUpgrade" => "Software Upgrade"
+  | "ParameterChange" => "Parameter Change"
+  | _ => proposalType
+  };
+};
+
 [@react.component]
 let make = (~proposalID) => {
   let isMobile = Media.isMobile();
@@ -191,7 +200,7 @@ let make = (~proposalID) => {
               <Col col=Col.Eight>
                 {switch (allSub) {
                  | Data(({proposalType}, _, _)) =>
-                   <Text value=proposalType size=Text.Lg block=true />
+                   <Text value={proposalType->parseProposalType} size=Text.Lg block=true />
                  | _ => <LoadingCensorBar width=90 height=15 />
                  }}
               </Col>
@@ -212,6 +221,58 @@ let make = (~proposalID) => {
                  }}
               </Col>
             </Row>
+          </InfoContainer>
+        </Col>
+      </Row>
+      <Row marginBottom=24>
+        <Col>
+          <InfoContainer>
+            <Heading value="Proposal Details" size=Heading.H4 />
+            <SeperatedLine mt=32 mb=24 />
+            {switch (allSub) {
+             | Data(({content}, _, _)) =>
+               switch (content) {
+               | Some({recipient, amount}) =>
+                 <>
+                   {switch (recipient, amount) {
+                    | (Some(address), Some(coins)) =>
+                      <>
+                        <Row marginBottom=24>
+                          <Col col=Col.Four mbSm=8>
+                            <Heading
+                              value="Recipient Address"
+                              size=Heading.H4
+                              weight=Heading.Thin
+                              color={theme.textSecondary}
+                            />
+                          </Col>
+                          <Col col=Col.Eight>
+                            <AddressRender address position=AddressRender.Subtitle />
+                          </Col>
+                        </Row>
+                        <Row marginBottom=24>
+                          <Col col=Col.Four mbSm=8>
+                            <Heading
+                              value="Amount"
+                              size=Heading.H4
+                              weight=Heading.Thin
+                              color={theme.textSecondary}
+                            />
+                          </Col>
+                          <Col col=Col.Eight>
+                            <AmountRender coins pos=AmountRender.TxIndex />
+                          </Col>
+                        </Row>
+                      </>
+                    | (_, _) => React.null
+                    }}
+                 </>
+
+               | None => React.null
+               }
+             | Loading => <LoadingCensorBar width=270 height=15 />
+             | _ => React.null
+             }}
             {switch (allSub) {
              | Data(({content}, _, _)) =>
                switch (content) {
@@ -291,98 +352,100 @@ let make = (~proposalID) => {
 
              | _ => React.null
              }}
-
-              // Display when related to Enable IBC
-              {switch (allSub) {
-              | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Oracle") =>
-                <Row>
-                  <Col col=Col.Four mbSm=8>
-                    <Heading
-                      value="Parameter Changes"
-                      size=Heading.H4
-                      weight=Heading.Thin
-                      color={theme.textSecondary}
-                    />
-                  </Col>
-                  <Col col=Col.Eight>
-                    <div className={Styles.parameterChanges(theme)}>
-                      <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
-                    </div>
-                  </Col>
-                </Row>
-              | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Transfer") =>
-                <Row>
-                  <Col col=Col.Four mbSm=8>
-                    <Heading
-                      value="Parameter Changes"
-                      size=Heading.H4
-                      weight=Heading.Thin
-                      color={theme.textSecondary}
-                    />
-                  </Col>
-                  <Col col=Col.Eight>
-                    <div className={Styles.parameterChanges(theme)}>
-                      <Text value="HistoricalEntries: 10000" size=Text.Lg block=true />
-                      <Text value="SendEnabled: True" size=Text.Lg block=true />
-                      <Text value="ReceiveEnabled: True" size=Text.Lg block=true />
-                    </div>
-                  </Col>
-                </Row>
-              | Data(({name}, _, _))
-                  when name->Js.String2.includes("Increase Block Capacity through Request Gas Parameter") =>
-                <Row>
-                  <Col col=Col.Four mbSm=8>
-                    <Heading
-                      value="Parameter Changes"
-                      size=Heading.H4
-                      weight=Heading.Thin
-                      color={theme.textSecondary}
-                    />
-                  </Col>
-                  <Col col=Col.Eight>
-                    <div className={Styles.parameterChanges(theme)}>
-                      <Text value="PerValidatorRequestGas: 0" size=Text.Lg block=true />
-                    </div>
-                  </Col>
-                </Row>
-              | Data(({name}, _, _))
-                  when name->Js.String2.includes("Increase max_raw_request_count from 12 to 16") =>
-                <Row>
-                  <Col col=Col.Four mbSm=8>
-                    <Heading
-                      value="Parameter Changes"
-                      size=Heading.H4
-                      weight=Heading.Thin
-                      color={theme.textSecondary}
-                    />
-                  </Col>
-                  <Col col=Col.Eight>
-                    <div className={Styles.parameterChanges(theme)}>
-                      <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
-                    </div>
-                  </Col>
-                </Row>
-              | _ => React.null
-              }}
-       
+            // Display when related to Enable IBC
+            {switch (allSub) {
+             | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Oracle") =>
+               <Row>
+                 <Col col=Col.Four mbSm=8>
+                   <Heading
+                     value="Parameter Changes"
+                     size=Heading.H4
+                     weight=Heading.Thin
+                     color={theme.textSecondary}
+                   />
+                 </Col>
+                 <Col col=Col.Eight>
+                   <div className={Styles.parameterChanges(theme)}>
+                     <Text value="IBCRequestEnabled: True" size=Text.Lg block=true />
+                   </div>
+                 </Col>
+               </Row>
+             | Data(({name}, _, _)) when name->Js.String2.includes("Enable IBC Transfer") =>
+               <Row>
+                 <Col col=Col.Four mbSm=8>
+                   <Heading
+                     value="Parameter Changes"
+                     size=Heading.H4
+                     weight=Heading.Thin
+                     color={theme.textSecondary}
+                   />
+                 </Col>
+                 <Col col=Col.Eight>
+                   <div className={Styles.parameterChanges(theme)}>
+                     <Text value="HistoricalEntries: 10000" size=Text.Lg block=true />
+                     <Text value="SendEnabled: True" size=Text.Lg block=true />
+                     <Text value="ReceiveEnabled: True" size=Text.Lg block=true />
+                   </div>
+                 </Col>
+               </Row>
+             | Data(({name}, _, _))
+                 when
+                   name->Js.String2.includes(
+                     "Increase Block Capacity through Request Gas Parameter",
+                   ) =>
+               <Row>
+                 <Col col=Col.Four mbSm=8>
+                   <Heading
+                     value="Parameter Changes"
+                     size=Heading.H4
+                     weight=Heading.Thin
+                     color={theme.textSecondary}
+                   />
+                 </Col>
+                 <Col col=Col.Eight>
+                   <div className={Styles.parameterChanges(theme)}>
+                     <Text value="PerValidatorRequestGas: 0" size=Text.Lg block=true />
+                   </div>
+                 </Col>
+               </Row>
+             | Data(({name}, _, _))
+                 when name->Js.String2.includes("Increase max_raw_request_count from 12 to 16") =>
+               <Row>
+                 <Col col=Col.Four mbSm=8>
+                   <Heading
+                     value="Parameter Changes"
+                     size=Heading.H4
+                     weight=Heading.Thin
+                     color={theme.textSecondary}
+                   />
+                 </Col>
+                 <Col col=Col.Eight>
+                   <div className={Styles.parameterChanges(theme)}>
+                     <Text value="MaxRawRequestCount: 16" size=Text.Lg block=true />
+                   </div>
+                 </Col>
+               </Row>
+             | _ => React.null
+             }}
           </InfoContainer>
         </Col>
       </Row>
       {switch (allSub) {
-       | Data(({
-            status, 
-            votingStartTime, 
-            votingEndTime, 
-            endTotalYes,
-            endTotalYesPercent,
-            endTotalNo,
-            endTotalNoPercent,
-            endTotalNoWithVeto,
-            endTotalNoWithVetoPercent,
-            endTotalAbstain,
-            endTotalAbstainPercent,
-            endTotalVote,
-            totalBondedTokens,
+       | Data((
+           {
+             status,
+             votingStartTime,
+             votingEndTime,
+             endTotalYes,
+             endTotalYesPercent,
+             endTotalNo,
+             endTotalNoPercent,
+             endTotalNoWithVeto,
+             endTotalNoWithVetoPercent,
+             endTotalAbstain,
+             endTotalAbstainPercent,
+             endTotalVote,
+             totalBondedTokens,
            },
            {
              total,
@@ -416,10 +479,12 @@ let make = (~proposalID) => {
                            CssHelper.flexBoxSm(~justify=`spaceAround, ()),
                            CssHelper.flexBox(~justify=`flexEnd, ()),
                          ])}>
-                         {let turnoutPercent = switch (totalBondedTokens) {
-                         | Some(totalBondedTokensExn) => endTotalVote /. totalBondedTokensExn  *. 100.
-                         | None => total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.
-                         };
+                         {let turnoutPercent =
+                            switch (totalBondedTokens) {
+                            | Some(totalBondedTokensExn) =>
+                              endTotalVote /. totalBondedTokensExn *. 100.
+                            | None => total /. (bondedToken |> Coin.getBandAmountFromCoin) *. 100.
+                            };
                           <div className=Styles.chartContainer>
                             <TurnoutChart percent=turnoutPercent />
                           </div>}
@@ -434,20 +499,19 @@ let make = (~proposalID) => {
                              color={theme.textSecondary}
                              marginBottom=4
                            />
-                           {switch (MomentRe.diff(MomentRe.momentNow(),votingEndTime, `seconds) < 0.) {
-                            | true =>  <Text
-                              value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
-                              size=Text.Lg
-                              block=true
-                              color={theme.textPrimary}
-                            />
-                            | false => <Text
-                              value={(endTotalVote |> Format.fPretty(~digits=2)) ++ " BAND"}
-                              size=Text.Lg
-                              block=true
-                              color={theme.textPrimary}
-                            />
-                            }}
+                           {MomentRe.diff(MomentRe.momentNow(), votingEndTime, `seconds) < 0.
+                              ? <Text
+                                  value={(total |> Format.fPretty(~digits=2)) ++ " BAND"}
+                                  size=Text.Lg
+                                  block=true
+                                  color={theme.textPrimary}
+                                />
+                              : <Text
+                                  value={(endTotalVote |> Format.fPretty(~digits=2)) ++ " BAND"}
+                                  size=Text.Lg
+                                  block=true
+                                  color={theme.textPrimary}
+                                />}
                          </Col>
                          <Col mb=24 mbSm=0 colSm=Col.Six>
                            <Heading
@@ -487,51 +551,53 @@ let make = (~proposalID) => {
                    </div>
                    <SeperatedLine mt=24 mb=35 />
                    <div className=Styles.resultContainer>
-                      { switch (totalBondedTokens) {
-                      | Some(_) => <>
-                        <ProgressBar.Voting
-                          label=VoteSub.Yes
-                          amount=endTotalYes
-                          percent=endTotalYesPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.No
-                          amount=endTotalNo
-                          percent=endTotalNoPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.NoWithVeto
-                          amount=endTotalNoWithVeto
-                          percent=endTotalNoWithVetoPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.Abstain
-                          amount=endTotalAbstain
-                          percent=endTotalAbstainPercent
-                        />
-                      </>
-                      | None => <>
-                        <ProgressBar.Voting
-                          label=VoteSub.Yes
-                          amount=totalYes
-                          percent=totalYesPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.No
-                          amount=totalNo
-                          percent=totalNoPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.NoWithVeto
-                          amount=totalNoWithVeto
-                          percent=totalNoWithVetoPercent
-                        />
-                        <ProgressBar.Voting
-                          label=VoteSub.Abstain
-                          amount=totalAbstain
-                          percent=totalAbstainPercent
-                        />
-                      </>
+                     {switch (totalBondedTokens) {
+                      | Some(_) =>
+                        <>
+                          <ProgressBar.Voting
+                            label=VoteSub.Yes
+                            amount=endTotalYes
+                            percent=endTotalYesPercent
+                          />
+                          <ProgressBar.Voting
+                            label=VoteSub.No
+                            amount=endTotalNo
+                            percent=endTotalNoPercent
+                          />
+                          <ProgressBar.Voting
+                            label=VoteSub.NoWithVeto
+                            amount=endTotalNoWithVeto
+                            percent=endTotalNoWithVetoPercent
+                          />
+                          <ProgressBar.Voting
+                            label=VoteSub.Abstain
+                            amount=endTotalAbstain
+                            percent=endTotalAbstainPercent
+                          />
+                        </>
+                      | None =>
+                        <>
+                          <ProgressBar.Voting
+                            label=VoteSub.Yes
+                            amount=totalYes
+                            percent=totalYesPercent
+                          />
+                          <ProgressBar.Voting
+                            label=VoteSub.No
+                            amount=totalNo
+                            percent=totalNoPercent
+                          />
+                          <ProgressBar.Voting
+                            label=VoteSub.NoWithVeto
+                            amount=totalNoWithVeto
+                            percent=totalNoWithVetoPercent
+                          />
+                          <ProgressBar.Voting
+                            label=VoteSub.Abstain
+                            amount=totalAbstain
+                            percent=totalAbstainPercent
+                          />
+                        </>
                       }}
                    </div>
                  </InfoContainer>
