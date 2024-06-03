@@ -1,11 +1,17 @@
-let wsLink = ApolloLinks.webSocketLink(~uri=Env.graphql, ~reconnect=true, ());
+/* Create an InMemoryCache */
+let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
 
-let client =
-  ReasonApollo.createApolloClient(
-    ~link=wsLink,
-    ~cache=ApolloInMemoryCache.createInMemoryCache(),
-    (),
-  );
+/* Create a WS Link */
+let webSocketLink =
+  ApolloLinks.webSocketLink({
+    uri: Env.graphql,
+    options: {
+      reconnect: true,
+      connectionParams: None,
+    },
+  });
+
+let client = ReasonApollo.createApolloClient(~link=webSocketLink, ~cache=inMemoryCache, ());
 
 [@react.component]
 let make = (~children) => {
